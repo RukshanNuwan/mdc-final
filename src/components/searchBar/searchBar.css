@@ -1,0 +1,26 @@
+.searchBarContainer {
+  min-width: 30rem;
+  padding: 0 4rem;
+}
+
+.searchForm input {
+  width: 100%;
+}
+
+.searchForm button {
+  border: 0;
+  padding: 0;
+  margin-left: -30px;
+  background: none;
+}
+
+.searchForm button {
+  color: var(--primaryTextGray);
+}
+
+@media (max-width: 1199px) {
+  .searchBarContainer {
+    position: fixed;
+    visibility: hidden;
+  }
+}

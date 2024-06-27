@@ -1,0 +1,4 @@
+.breadcrumb-container {
+  background-color: var(--buttonPrimaryTextColor);
+  border-radius: 0.75rem;
+}

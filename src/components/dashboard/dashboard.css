@@ -1,0 +1,144 @@
+.dashboardContainer {
+  transition: all 0.3s;
+}
+
+.sectionContainer {
+  padding: 0.5rem;
+  background-color: #d6e3ff;
+  border-radius: 1rem;
+}
+
+.sectionTitle {
+  padding: 0.25rem 0.5rem;
+  font-size: var(--smallText);
+  font-weight: bold;
+  border-radius: 1rem;
+}
+
+.sectionTitleBlue {
+  background-color: #415f91;
+  color: #d6e3ff;
+}
+
+.sectionTitlePurple {
+  background-color: #6750a4;
+  color: #f7f2fa;
+}
+
+.sectionTitleMaroon {
+  background-color: #8f4c38;
+  color: #fff8f6;
+}
+
+.sectionBodyTextMaroon {
+  color: #8f4c38;
+}
+
+.sectionTitleRed {
+  background-color: #a33232;
+  color: #eeefe3;
+}
+
+.sectionTitleGreen {
+  background-color: #386663;
+  color: #eeefe3;
+}
+
+.sectionHeading {
+  margin-top: 1rem;
+  font-size: var(--heading);
+  font-weight: 300;
+}
+
+.sectionHeadingTextBlue {
+  color: var(--buttonDefaultTextColor);
+}
+
+.sectionHeadingTextGreen {
+  color: #00210f;
+}
+
+.sectionMainValue {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--buttonDefaultTextColor);
+}
+
+.sectionSubHeadingContainer {
+  font-size: var(--mediumText);
+}
+
+.sectionSubValue {
+  font-weight: 500;
+}
+
+.status {
+  font-size: var(--mediumText);
+  font-weight: 600;
+}
+
+.running {
+  padding: 0.125rem 0.75rem;
+  background-color: #cdeda3;
+  color: #4c662b;
+  border-radius: 1rem;
+}
+
+.stopped {
+  padding: 0.125rem 0.75rem;
+  background-color: #ffdbd1;
+  color: #8f4c38;
+  border-radius: 1rem;
+}
+
+.detailContainer {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: #f7f2fa;
+}
+
+.batchNumber {
+  color: #3e0249;
+}
+
+.cutterBatchNumber {
+  color: #102000;
+}
+
+.labDetailContainer {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: #fff8f6;
+}
+
+.subSectionHeading {
+  font-size: var(--subHeading);
+  font-weight: 500;
+}
+
+.subSectionKey {
+  font-size: 1rem;
+}
+
+.subSectionValue {
+  font-size: var(--mediumText);
+  color: var(--primaryTextDark);
+}
+
+.breakdownContainer {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid #a33232;
+}
+
+.cutterContainer {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: #eeefe3;
+}
+
+@media only screen and (max-width: 600px) {
+  .labDetailsContainer {
+    margin-top: 0.5rem;
+  }
+}

@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import "./common.css";
-import Header from "../components/header/Header";
-import SideBar from "../components/sideBar/SideBar";
-import Footer from "../components/footer/Footer";
-import BackToTop from "../components/backToTop/BackToTop";
+import './common.css';
+import Header from '../components/header/Header';
+import SideBar from '../components/sideBar/SideBar';
+import Footer from '../components/footer/Footer';
+import BackToTop from '../components/backToTop/BackToTop';
 
 const Index = () => {
   return (
