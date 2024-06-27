@@ -135,7 +135,7 @@ const Dashboard = () => {
           querySnapshot.forEach((doc) => {
             list.push(doc.data());
           });
-          setSdData(list[0]);
+          setSdData(list);
         });
 
         return () => {
@@ -288,9 +288,10 @@ const Dashboard = () => {
                   </div>
 
                   <p className="batchNumber text-center display-1">
-                    {sdData && sdData.location === "mdc"
-                      ? sdData.batchNumber
-                      : "-"}
+                    {sdData &&
+                      sdData.map(
+                        (data) => data.location === "mdc" && data.batchNumber
+                      )}
                   </p>
 
                   <div className="col-12 sectionDetailsContainer">
@@ -437,9 +438,11 @@ const Dashboard = () => {
                   </div>
 
                   <p className="batchNumber text-center display-1">
-                    {sdData && sdData.location === "araliya_kele"
-                      ? sdData.batchNumber
-                      : "-"}
+                    {sdData &&
+                      sdData.map(
+                        (data) =>
+                          data.location === "araliya_kele" && data.batchNumber
+                      )}
                   </p>
 
                   <div className="col-12 sectionDetailsContainer">

@@ -43,7 +43,7 @@ const NewMixing = () => {
   const [rawMilkInTime, setRawMilkInTime] = useState();
   const [dailyProductionData, setDailyProductionData] = useState({});
   const [additionalCratesCount, setAdditionalCratesCount] = useState(0);
-  const [newKernelWeight, setNewKernelWeight] = useState();
+  const [newKernelWeight, setNewKernelWeight] = useState(0);
   const [isInformed, setIsInformed] = useState(false);
   const [batchNumber, setBatchNumber] = useState();
 
@@ -189,13 +189,17 @@ const NewMixing = () => {
         }
 
         // update kernel batch weight in wet section
-        try {
-          const docRef = doc(db, "wet_section", batchNumberData.wet_batch_id);
-          await updateDoc(docRef, {
-            kernelWeight: newKernelWeight,
-          });
-        } catch (error) {
-          console.log(error);
+        if (newKernelWeight > 0) {
+          try {
+            const docRef = doc(db, "wet_section", batchNumberData.wet_batch_id);
+            await updateDoc(docRef, {
+              kernelWeight: newKernelWeight,
+            });
+
+            console.log("successfully updated kernel weight in wet section");
+          } catch (error) {
+            console.log(error);
+          }
         }
       } catch (error) {
         console.log(error);
