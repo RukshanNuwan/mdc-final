@@ -1,8 +1,0 @@
-.tableAction {
-  color: var(--linksTextColor);
-}
-
-.tableAction:hover {
-  cursor: pointer;
-  color: var(--buttonPrimaryBgColor);
-}

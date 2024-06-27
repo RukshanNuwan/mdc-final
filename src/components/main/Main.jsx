@@ -1,10 +1,10 @@
-import './main.css';
-import Dashboard from '../dashboard/Dashboard';
+import "./main.css";
+// import Dashboard from "../dashboard/Dashboard";
 
 const Main = () => {
   return (
     <main id="main" className="main">
-      <Dashboard />
+      {/* <Dashboard /> */}
     </main>
   );
 };

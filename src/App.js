@@ -10,28 +10,28 @@ import "./App.css";
 import Login from "./pages/login/Login";
 import Protected from "./routes/Protected";
 import Home from "./pages/home/Home";
-import Index from "./pages";
-import WetSection from "./pages/wetSection/WetSection";
-import WetDetails from "./pages/wetSection/WetDetails";
-import NewWet from "./pages/wetSection/NewWet";
-import CutterSection from "./pages/cutterSection/CutterSection";
-import NewCutter from "./pages/cutterSection/NewCutter";
-import CutterDetails from "./pages/cutterSection/CutterDetails";
-import MixingSection from "./pages/mixingSection/MixingSection";
-import MixingDetails from "./pages/mixingSection/MixingDetails";
-import NewMixing from "./pages/mixingSection/NewMixing";
-import SprayDryerSection from "./pages/sprayDryerSection/SprayDryerSection";
-import SprayDryerDetails from "./pages/sprayDryerSection/SprayDryerDetails";
-import NewSprayDryer from "./pages/sprayDryerSection/NewSprayDryer";
-import LaboratorySection from "./pages/laboratory/LaboratorySection";
-import LaboratoryDetails from "./pages/laboratory/LaboratoryDetails";
-import NewLaboratory from "./pages/laboratory/NewLaboratory";
-import Orders from "./pages/orders/Orders";
-import UpdateWet from "./pages/wetSection/UpdateWet";
-import UpdateCutter from "./pages/cutterSection/UpdateCutter";
-import UpdateMixing from "./pages/mixingSection/UpdateMixing";
-import UpdateLaboratory from "./pages/laboratory/UpdateLaboratory";
-import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
+// import Index from "./pages";
+// import WetSection from "./pages/wetSection/WetSection";
+// import WetDetails from "./pages/wetSection/WetDetails";
+// import NewWet from "./pages/wetSection/NewWet";
+// import CutterSection from "./pages/cutterSection/CutterSection";
+// import NewCutter from "./pages/cutterSection/NewCutter";
+// import CutterDetails from "./pages/cutterSection/CutterDetails";
+// import MixingSection from "./pages/mixingSection/MixingSection";
+// import MixingDetails from "./pages/mixingSection/MixingDetails";
+// import NewMixing from "./pages/mixingSection/NewMixing";
+// import SprayDryerSection from "./pages/sprayDryerSection/SprayDryerSection";
+// import SprayDryerDetails from "./pages/sprayDryerSection/SprayDryerDetails";
+// import NewSprayDryer from "./pages/sprayDryerSection/NewSprayDryer";
+// import LaboratorySection from "./pages/laboratory/LaboratorySection";
+// import LaboratoryDetails from "./pages/laboratory/LaboratoryDetails";
+// import NewLaboratory from "./pages/laboratory/NewLaboratory";
+// import Orders from "./pages/orders/Orders";
+// import UpdateWet from "./pages/wetSection/UpdateWet";
+// import UpdateCutter from "./pages/cutterSection/UpdateCutter";
+// import UpdateMixing from "./pages/mixingSection/UpdateMixing";
+// import UpdateLaboratory from "./pages/laboratory/UpdateLaboratory";
+// import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
 
 function App() {
   const Layout = () => {
@@ -52,7 +52,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index path="/" element={<Home />} />
 
-            <Route path="wet-section">
+            {/* <Route path="wet-section">
               <Route index element={<WetSection />} />
               <Route path=":id" element={<WetDetails />} />
               <Route path="new" element={<NewWet />} />
@@ -92,7 +92,7 @@ function App() {
 
             <Route path="orders">
               <Route index element={<Orders />} />
-            </Route>
+            </Route> */}
           </Route>
         </Route>
       </Route>
