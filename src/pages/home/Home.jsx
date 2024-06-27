@@ -15,7 +15,7 @@ const Home = () => {
     <>
       <Header />
       <SideBar />
-      {/* <Main /> */}
+      <Main />
       <Footer />
       <BackToTop />
     </>
