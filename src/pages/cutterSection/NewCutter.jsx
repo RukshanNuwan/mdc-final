@@ -37,7 +37,7 @@ const NewCutter = () => {
   const [heatValve, setHeatValve] = useState(true);
   const [dailyProductionData, setDailyProductionData] = useState({});
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ const NewCutter = () => {
       ...data,
       location,
       heatValve,
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       sectionName: "cutter",
       status: "updated",
       [id]: value,

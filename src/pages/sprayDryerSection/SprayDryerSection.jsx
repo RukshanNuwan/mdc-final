@@ -33,7 +33,7 @@ const SprayDryerSection = () => {
   const [ongoingBreakdown, setOngoingBreakdown] = useState();
 
   const currentDate = UseCurrentDate();
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const { location } = useParams();
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const SprayDryerSection = () => {
     setData({
       ...data,
       date: currentDate,
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       sectionName: "sd",
       location: location,
       status: "ongoing",

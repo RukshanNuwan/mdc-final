@@ -32,7 +32,7 @@ const CutterSection = () => {
   const [ongoingBreakdown, setOngoingBreakdown] = useState();
 
   const currentDate = useCurrentDate();
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const CutterSection = () => {
     setData({
       ...data,
       date: currentDate,
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       sectionName: "cutter",
       location: "mdc",
       status: "ongoing",

@@ -34,7 +34,7 @@ const NewWet = () => {
   const [date, setDate] = useState();
   const [nextBatchNumber, setNextBatchNumber] = useState();
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,7 +47,7 @@ const NewWet = () => {
       quality,
       kernelWeight,
       batchNumber: Number(nextBatchNumber),
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       sectionName: "wet",
       [id]: value,
     });

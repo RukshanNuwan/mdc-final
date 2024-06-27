@@ -259,14 +259,14 @@ const CutterDetails = () => {
                       </div>
                     </div>
 
-                    <div className="mt-4 text-end">
+                    {/* <div className="mt-4 text-end">
                       <p className="smallText">
                         Added at {data?.timeStamp?.toDate().toLocaleString()}
                       </p>
                       <p className="smallText">
                         by {data?.addedBy?.displayName}
                       </p>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="col d-xs-none"></div>

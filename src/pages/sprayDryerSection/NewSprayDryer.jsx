@@ -32,7 +32,7 @@ const NewSprayDryer = () => {
   const [batchNumberData, setBatchNumberData] = useState({});
   const [expectedTime, setExpectedTime] = useState();
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -43,7 +43,7 @@ const NewSprayDryer = () => {
 
     setData({
       ...data,
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       sectionName: "spraydryer",
       status: "updated",
       [id]: value,

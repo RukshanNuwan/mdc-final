@@ -33,7 +33,7 @@ const MixingSection = () => {
   const [ongoingBreakdown, setOngoingBreakdown] = useState();
 
   const currentDate = UseCurrentDate();
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const { location } = useParams();
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const MixingSection = () => {
     setData({
       ...data,
       date: currentDate,
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       sectionName: "mixing",
       location: location,
       status: "ongoing",

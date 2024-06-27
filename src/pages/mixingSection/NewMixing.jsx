@@ -47,7 +47,7 @@ const NewMixing = () => {
   const [isInformed, setIsInformed] = useState(false);
   const [batchNumber, setBatchNumber] = useState();
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -83,7 +83,7 @@ const NewMixing = () => {
       milkRecovery,
       additionalCratesCount,
       isInformed,
-      addedBy: loggedInUser,
+      // addedBy: loggedInUser,
       status: "completed",
       sectionName: "mixing",
       [id]: value,
