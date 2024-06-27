@@ -1,0 +1,17 @@
+.footer {
+  padding: 1.25rem 0 0.625rem;
+  font-size: var(--smallText);
+  background-color: var(--cardBodyBgColor);
+  transition: all 0.3s;
+}
+
+.footer .copyright {
+  text-align: center;
+  color: var(--primaryTextDark);
+}
+
+@media only screen and (max-width: 600px) {
+  .footer {
+    padding: 1.25rem 0.25rem;
+  }
+}

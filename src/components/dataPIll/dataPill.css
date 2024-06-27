@@ -1,0 +1,4 @@
+.data-pill {
+  background-color: var(--buttonSecondaryBgColor) !important;
+  color: #ecedf6 !important;
+}

@@ -1,0 +1,14 @@
+.sidebarToggle {
+  background-color: var(--buttonPrimaryTextColor) !important;
+  color: var(--buttonPrimaryBgColor);
+}
+
+.sidebarToggle:hover {
+  background-color: #a6ddff !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebarToggle {
+    padding: 0.5rem !important;
+  }
+}

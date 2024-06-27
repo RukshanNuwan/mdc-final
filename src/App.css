@@ -1,38 +1,173 @@
-.App {
-  text-align: center;
-}
+:root {
+  scroll-behavior: smooth;
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+  /* body */
+  --bgColor: #fff;
+  --primaryTextDark: #444746;
+  --primaryTextGray: #5f6368;
+  --secondaryText: #969696;
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  /* navbar */
+  --navbarBgColor: #eef2f6;
+
+  /* buttons */
+  --buttonPrimaryBgColor: #001d35;
+  --buttonPrimaryTextColor: #c2e7ff;
+  --buttonSecondaryBgColor: #415f91;
+  --buttonSecondaryTextColor: #eff1f6;
+  --buttonDefaultBgColor: transparent;
+  --buttonDefaultTextColor: #001d35;
+
+  /* inputs */
+  /*--inputBgColor: #dfe2ee;*/
+  --inputBgColor: #e0e2ec;
+
+  /* links */
+  --linksTextColor: #0065b3;
+
+  /* cards */
+  --cardBodyBgColor: #ecedf6;
+
+  /* search bar */
+  --searchBarBgColor: #eaf1fb;
+  --searchBarTextColor: #444746;
+
+  /* text sizes */
+  --heading: 1.375rem;
+  --subHeading: 1.125rem;
+  --mediumText: 0.875rem;
+  --smallText: 0.75rem;
+
+  /* paddings */
+  --buttonPaddingHorizontal: 1rem;
+  --buttonPaddingVertical: 0.75rem;
+
+  * {
+    /* margin: 0; */
+    /* padding: 0; */
+    box-sizing: border-box;
+  }
+
+  body {
+    color: var(--primaryTextDark);
+    background: var(--bgColor);
+  }
+
+  dl,
+  ol,
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  a {
+    color: var(--linksTextColor);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  .bodyText {
+    font-size: var(--mediumText);
+  }
+
+  .smallText {
+    font-size: var(--smallText);
+  }
+
+  .customBtn {
+    padding: var(--buttonPaddingVertical) var(--buttonPaddingHorizontal);
+    background: var(--buttonDefaultBgColor);
+    color: var(--buttonDefaultTextColor);
+    font-size: var(--mediumText);
+    border: none;
+    outline: none;
+    border-radius: 0.75rem;
+  }
+
+  .customBtnPrimary {
+    background: var(--buttonPrimaryBgColor);
+    color: var(--buttonPrimaryTextColor);
+  }
+
+  .customBtnPrimary:hover {
+    background: #0a3354;
+  }
+
+  .customBtnSecondary {
+    background: var(--buttonSecondaryBgColor);
+    color: var(--buttonSecondaryTextColor);
+  }
+
+  .customBtnSecondary:hover {
+    background: #2d4875;
+  }
+
+  .customBtnUpdate {
+    background-color: #566e00;
+    color: var(--buttonSecondaryTextColor);
+  }
+
+  .customBtnUpdate:hover {
+    background-color: #7b8f00;
+  }
+
+  .customClearBtn {
+    background: var(--buttonDefaultBgColor);
+    color: var(--linksTextColor);
+    font-size: var(--mediumText);
+  }
+
+  .customSearchInput {
+    padding: 0.75rem 1.25rem;
+    outline: none;
+    border: none;
+    border-radius: 2rem;
+    background-color: var(--inputBgColor);
+    font-size: var(--mediumText);
+    color: var(--primaryTextDark);
+  }
+
+  .customSearchInput:focus {
+    outline: none;
+    border: none;
+  }
+
+  .fs-xs {
+    font-size: 0.6rem;
+  }
+
+  .disabled {
+    background-color: #f8f8f8 !important;
+    color: var(--primaryTextDark);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media only screen and (max-width: 600px) {
+  .header-text {
+    font-size: 16px !important;
   }
-  to {
-    transform: rotate(360deg);
+
+  .d-xs-none {
+    display: none;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+  .MuiDataGrid-main {
+    font-size: 14px;
+  }
+
+  p.MuiTablePagination-displayedRows {
+    font-size: 12px;
   }
 }

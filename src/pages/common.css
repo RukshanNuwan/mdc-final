@@ -1,0 +1,126 @@
+label.form-label {
+  font-size: var(--mediumText);
+  margin-bottom: 0.25rem;
+}
+
+.subFormWrapper {
+  padding: 0.5rem 0.75rem !important;
+  background-color: #f8f8f8;
+  border-radius: 1rem;
+}
+
+.formWrapper {
+  padding: 0.75rem !important;
+  background-color: #f8f8f8;
+  border-radius: 1rem;
+}
+
+.customInput {
+  padding: 0.75rem 1.25rem;
+  outline: none;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--inputBgColor);
+  font-size: var(--mediumText);
+  color: var(--primaryTextDark);
+}
+
+.addNewBtnWrapper {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.dataItemWrapper {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--cardBodyBgColor);
+}
+
+.touchable-card {
+  height: 100%;
+  width: 100%;
+  background-color: #705575;
+  border-radius: 1rem;
+  font-weight: bold;
+  font-size: var(--subHeading);
+  text-decoration: none;
+  color: #fff !important;
+}
+
+.touchable-card:hover {
+  background-color: #623a69;
+  cursor: pointer;
+}
+
+.css-yrdy0g-MuiDataGrid-columnHeaderRow {
+  background-color: #dae2f9 !important;
+}
+
+.errorMessageWrapper {
+  background-color: #ffdbd1;
+  border-radius: 0.5rem;
+}
+
+.errorMessage {
+  color: #8f4c38;
+  font-weight: bold;
+  font-size: var(--smallText);
+}
+
+.sectionContainer {
+  padding: 0.5rem;
+  background-color: #ecedf5;
+  border-radius: 1rem;
+}
+
+.sectionTitle {
+  padding: 0.25rem 0.5rem;
+  font-size: var(--smallText);
+  font-weight: bold;
+  border-radius: 1rem;
+}
+
+.sectionTitleBlue {
+  background-color: #415f91;
+  color: #d6e3ff;
+}
+
+@media only screen and (max-width: 600px) {
+  button.btn-submit,
+  button.subform-btn-submit {
+    width: 100% !important;
+    margin-top: 1rem;
+    font-size: var(--mediumText);
+  }
+
+  .customClearBtn {
+    width: 100% !important;
+  }
+
+  .subFormParent {
+    margin-top: 0.5rem;
+  }
+
+  .addNewBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .MuiDataGrid-cell,
+  .MuiDataGrid-columnHeader {
+    font-size: var(--smallText) !important;
+  }
+
+  .touchable-card-parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .touchable-card {
+    width: 90% !important;
+    margin-bottom: 8px;
+  }
+}
