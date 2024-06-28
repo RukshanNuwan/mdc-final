@@ -1,38 +1,16 @@
-import { useEffect, useState } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Link, useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { Link, useLocation } from "react-router-dom";
 
-import BackToTop from '../../components/backToTop/BackToTop';
-import Breadcrumb from '../../components/breadcrumb/Breadcrumb';
-import Footer from '../../components/footer/Footer';
-import Header from '../../components/header/Header';
-import SideBar from '../../components/sideBar/SideBar';
-import { db } from '../../config/firebase.config';
+import BackToTop from "../../components/backToTop/BackToTop";
+import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
+import SideBar from "../../components/sideBar/SideBar";
 
 const WetDetails = () => {
-  const [data, setData] = useState();
-
-  const { id } = useParams();
-
-  useEffect(() => {
-    const fetchDocument = async () => {
-      try {
-        const docRef = doc(db, 'wet_section', id);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setData(docSnap.data());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchDocument();
-  }, [id]);
+  const { state } = useLocation();
 
   return (
     <>
@@ -69,7 +47,7 @@ const WetDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">{data?.date}</p>
+                          <p className="bodyText fw-bold">{state?.date}</p>
                         </div>
                       </div>
                     </div>
@@ -82,7 +60,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.batchNumber}
+                            {state?.batchNumber}
                           </p>
                         </div>
                       </div>
@@ -93,7 +71,9 @@ const WetDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">{data?.tankNumber}</p>
+                          <p className="bodyText fw-bold">
+                            {state?.tankNumber}
+                          </p>
                         </div>
                       </div>
 
@@ -104,7 +84,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.kernelWeight}kg
+                            {state?.kernelWeight}kg
                           </p>
                         </div>
                       </div>
@@ -116,7 +96,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.quality === true ? (
+                            {state?.quality === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -134,7 +114,9 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {data?.kernelQualityRemark}
+                            {state?.kernelQualityRemark
+                              ? state?.kernelQualityRemark
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -148,7 +130,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.blancherInTime}
+                            {state?.blancherInTime}
                           </p>
                         </div>
                       </div>
@@ -162,20 +144,20 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {data?.operator}
+                            {state?.operator}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* <div className="mt-4 text-end">
+                    <div className="mt-4 text-end">
                       <p className="smallText">
-                        Added at {data?.timeStamp?.toDate().toLocaleString()}
+                        Added at {state?.timeStamp?.toDate().toLocaleString()}
                       </p>
-                      <p className="smallText">
+                      {/* <p className="smallText">
                         by {data?.addedBy.displayName}
-                      </p>
-                    </div> */}
+                      </p> */}
+                    </div>
                   </div>
 
                   <div className="col d-xs-none"></div>

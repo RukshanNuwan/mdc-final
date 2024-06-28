@@ -1,69 +1,16 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
-import { db } from "../../config/firebase.config";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import DataPill from "../../components/dataPIll/DataPill";
 
 const MixingDetails = () => {
-  const [data, setData] = useState();
-  const [operators, setOperators] = useState();
-
-  const { id, location } = useParams();
-
-  useEffect(() => {
-    const fetchDocument = async () => {
-      try {
-        const docRef = doc(db, "mixing_section", id);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setData(docSnap.data());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchDocument();
-  }, [id]);
-
-  useEffect(() => {
-    const getOperatorNames = async () => {
-      try {
-        const q = query(
-          collection(db, "mixing_section"),
-          where("location", "==", location),
-          where("date", "==", data?.date),
-          where("batchNumber", "==", data?.batchNumber)
-        );
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          setOperators(doc.data().operators);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getOperatorNames();
-  }, [location, data]);
-
-  console.log(data);
+  const { location } = useParams();
+  const { state } = useLocation();
 
   return (
     <>
@@ -105,7 +52,7 @@ const MixingDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">{data?.date}</p>
+                          <p className="bodyText fw-bold">{state?.date}</p>
                         </div>
                       </div>
                     </div>
@@ -118,7 +65,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.wet_batch_number}
+                            {state?.wet_batch_number}
                           </p>
                         </div>
                       </div>
@@ -130,7 +77,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.batchNumber}
+                            {state?.batchNumber}
                           </p>
                         </div>
                       </div>
@@ -142,7 +89,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {data?.recipeName}
+                            {state?.recipeName}
                           </p>
                         </div>
                       </div>
@@ -154,7 +101,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.recipeType === "organic"
+                            {state?.recipeType === "organic"
                               ? "Organic"
                               : "Conventional"}
                           </p>
@@ -170,7 +117,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.milkQuantity}kg
+                            {state?.milkQuantity}kg
                           </p>
                         </div>
                       </div>
@@ -183,17 +130,17 @@ const MixingDetails = () => {
                         <div className="col-4">
                           <p
                             className={`bodyText fw-bold ${
-                              data?.milkRecovery < "75"
+                              state?.milkRecovery < "75"
                                 ? "text-danger"
                                 : "text-success"
                             }`}
                           >
-                            {data?.milkRecovery}%
+                            {state?.milkRecovery}%
                           </p>
                         </div>
                       </div>
 
-                      {data?.additionalCratesCount !== 0 && (
+                      {state?.additionalCratesCount !== 0 && (
                         <>
                           <div className="row py-1">
                             <div className="col-7">
@@ -204,7 +151,7 @@ const MixingDetails = () => {
                             <div className="col-1" />
                             <div className="col-4">
                               <p className="bodyText fw-bold">
-                                {data?.additionalCratesCount}
+                                {state?.additionalCratesCount}
                               </p>
                             </div>
                           </div>
@@ -216,7 +163,7 @@ const MixingDetails = () => {
                             <div className="col-1" />
                             <div className="col-4">
                               <p className="bodyText fw-bold text-capitalize">
-                                {data?.informedTo}
+                                {state?.informedTo}
                               </p>
                             </div>
                           </div>
@@ -236,8 +183,8 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.prevBatchPhValue
-                              ? data?.prevBatchPhValue
+                            {state?.prevBatchPhValue
+                              ? state?.prevBatchPhValue
                               : "-"}
                           </p>
                         </div>
@@ -250,8 +197,8 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.prevBatchTSSValue
-                              ? `${data?.prevBatchTSSValue}%`
+                            {state?.prevBatchTSSValue
+                              ? `${state?.prevBatchTSSValue}%`
                               : "-"}
                           </p>
                         </div>
@@ -266,7 +213,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.rawMilkInTime}
+                            {state?.rawMilkInTime}
                           </p>
                         </div>
                       </div>
@@ -278,7 +225,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.mixingTankInTime}
+                            {state?.mixingTankInTime}
                           </p>
                         </div>
                       </div>
@@ -290,7 +237,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.mixingStartTime}
+                            {state?.mixingStartTime}
                           </p>
                         </div>
                       </div>
@@ -302,7 +249,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.mixingFinishTime}
+                            {state?.mixingFinishTime}
                           </p>
                         </div>
                       </div>
@@ -316,7 +263,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.feedTankInTime}
+                            {state?.feedTankInTime}
                           </p>
                         </div>
                       </div>
@@ -328,7 +275,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.feedingStartTime}
+                            {state?.feedingStartTime}
                           </p>
                         </div>
                       </div>
@@ -342,7 +289,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.steamBars} MPa
+                            {state?.steamBars} MPa
                           </p>
                         </div>
                       </div>
@@ -354,7 +301,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.pressurePumpValue} MPa
+                            {state?.pressurePumpValue} MPa
                           </p>
                         </div>
                       </div>
@@ -368,7 +315,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <div className="bodyText fw-bold">
-                            {<DataPill data={operators} />}
+                            {<DataPill data={state.operators} />}
                           </div>
                         </div>
                       </div>
@@ -380,20 +327,20 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.mixDetails ? data?.mixDetails : "---"}
+                            {state?.mixDetails ? state?.mixDetails : "---"}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* <div className="mt-4 text-end">
+                    <div className="mt-4 text-end">
                       <p className="smallText">
-                        Added at {data?.timeStamp?.toDate().toLocaleString()}
+                        Added at {state?.timeStamp?.toDate().toLocaleString()}
                       </p>
-                      <p className="smallText text-capitalize">
-                        by {data?.addedBy?.displayName}
-                      </p>
-                    </div> */}
+                      {/* <p className="smallText text-capitalize">
+                        by {state?.addedBy?.displayName}
+                      </p> */}
+                    </div>
                   </div>
                   <div className="col d-xs-none"></div>
                 </div>

@@ -338,7 +338,8 @@ const UpdateCutter = () => {
                         disabled={state.status === "ongoing"}
                         className={`customInput ${
                           state.status === "ongoing" && "disabled"
-                        }`}
+                          }`}
+                        defaultValue={state.specialNotes}
                         onChange={handleChange}
                       />
                     </Form.Group>

@@ -82,7 +82,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
   // };
 
   const handleView = (data) => {
-    navigate(`${data.id}`);
+    navigate('view', {state: data});
   };
 
   const handleUpdate = (data) => {

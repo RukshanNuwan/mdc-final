@@ -221,9 +221,7 @@ const UpdateWet = () => {
                       controlId="reasonForUpdate"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">
-                        Reason for update
-                      </Form.Label>
+                      <Form.Label className="fw-bold">Remark</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}
