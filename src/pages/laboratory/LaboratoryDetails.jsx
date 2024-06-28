@@ -4,6 +4,8 @@ import { doc, getDoc } from "firebase/firestore";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import LoopIcon from "@mui/icons-material/Loop";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -11,14 +13,13 @@ import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
 import { db } from "../../config/firebase.config";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import LoopIcon from "@mui/icons-material/Loop";
 
 const LaboratoryDetails = () => {
   const [data, setData] = useState();
 
   const { id, location } = useParams();
 
+  // TODO: Remove this & get data from state
   useEffect(() => {
     const fetchDocument = async () => {
       try {
@@ -425,34 +426,32 @@ const LaboratoryDetails = () => {
                       </div>
                     </div>
 
-                    <div className="dataItemWrapper">
-                      {data?.isPowderHaveIssue && (
-                        <>
-                          <div className="row py-1">
-                            <div className="col-7">
-                              <p className="bodyText">Informed to</p>
-                            </div>
-                            <div className="col-5">
-                              <p className="bodyText fw-bold text-capitalize">
-                                {data?.informedToAboutPowder}
-                              </p>
-                            </div>
+                    {data?.isPowderHaveIssue && (
+                      <div className="dataItemWrapper">
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Informed to</p>
+                          </div>
+                          <div className="col-5">
+                            <p className="bodyText fw-bold text-capitalize">
+                              {data?.informedToAboutPowder}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Remarks</p>
                           </div>
 
-                          <div className="row py-1">
-                            <div className="col-7">
-                              <p className="bodyText">Remarks</p>
-                            </div>
-
-                            <div className="col-5">
-                              <p className="bodyText fw-bold text-capitalize">
-                                {data?.remarks ? data?.remarks : "---"}
-                              </p>
-                            </div>
+                          <div className="col-5">
+                            <p className="bodyText fw-bold text-capitalize">
+                              {data?.remarks ? data?.remarks : "---"}
+                            </p>
                           </div>
-                        </>
-                      )}
-                    </div>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="dataItemWrapper">
                       <div className="row py-1">
