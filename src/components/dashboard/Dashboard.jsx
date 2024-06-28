@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   collection,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -22,6 +23,8 @@ const Dashboard = () => {
   const [mdcStatus, setMdcStatus] = useState(false);
   const [araliyaKeleStatus, setAraliyaKeleStatus] = useState(false);
   const [breakdowns, setBreakdowns] = useState([]);
+  const [isMDCBreakdown, setIsMDCBreaksown] = useState(false);
+  const [isAraliyaKeleBreakdown, setIsAraliyaKeleBreaksown] = useState(false);
 
   const currentDate = useCurrentDate();
 
@@ -62,25 +65,27 @@ const Dashboard = () => {
 
   useEffect(() => {
     const handleStatus = () => {
-      if (sdData?.location === "mdc") {
-        setMdcStatus(true);
-      } else if (sdData?.location === "araliya_kele") {
-        setAraliyaKeleStatus(true);
-      } else {
-        setMdcStatus(false);
-        setAraliyaKeleStatus(false);
-      }
+      // eslint-disable-next-line array-callback-return
+      sdData.map((item) => {
+        if (item?.location === "mdc") {
+          setMdcStatus(true);
+        } else if (item?.location === "araliya_kele") {
+          setAraliyaKeleStatus(true);
+        }
+      });
     };
 
     handleStatus();
-  }, [sdData?.location]);
+  }, [sdData]);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
       try {
         const q = query(
           collection(db, "sd_section"),
-          where("status", "==", "updated")
+          where("status", "==", "updated"),
+          orderBy("timeStamp", "desc"),
+          limit(1)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const list = [];
@@ -108,7 +113,8 @@ const Dashboard = () => {
           collection(db, "lab_section"),
           where("status", "==", "updated"),
           where("date", "==", dailyProductionData.date),
-          orderBy("timeStamp", "desc")
+          orderBy("timeStamp", "desc"),
+          limit(2)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const list = [];
@@ -129,6 +135,7 @@ const Dashboard = () => {
     fetchLabData();
   }, [dailyProductionData.date]);
 
+  // TODO: get breakdown details and update the state in location-wise
   useEffect(() => {
     const fetchBreakdowns = async () => {
       try {
@@ -232,11 +239,20 @@ const Dashboard = () => {
                       SD 03
                     </span>
                     <span
-                      className={`status ${
-                        mdcStatus === true ? "running" : "stopped"
+                      className={`status ${mdcStatus && "running"} ${
+                        isMDCBreakdown && "stopped"
                       }`}
                     >
-                      {mdcStatus ? "Running" : "Stopped"}
+                      <p
+                        className={`${
+                          mdcStatus && !isMDCBreakdown ? "d-block" : "d-none"
+                        }`}
+                      >
+                        Running
+                      </p>
+                      <p className={`${isMDCBreakdown ? "d-block" : "d-none"}`}>
+                        Stopped
+                      </p>
                     </span>
                   </div>
 
@@ -283,13 +299,20 @@ const Dashboard = () => {
 
               <div className="col-md-7 pe-md-0 labDetailsContainer">
                 <div className="labDetailContainer">
-                  <span className="sectionTitle sectionTitleMaroon text-uppercase">
-                    Lab - SD 03
-                  </span>
+                  <div className="d-flex justify-content-between">
+                    <span className="sectionTitle sectionTitleMaroon text-uppercase">
+                      Lab - SD 03
+                    </span>
+
+                    <span className="smallText mb-2 ">
+                      Showing last 2 batches
+                    </span>
+                  </div>
 
                   <div className="row mt-3">
                     <div className="col-6 border-end">
                       <span className="subSectionHeading">Raw milk</span>
+
                       <div className="col-12 mt-2">
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
@@ -388,12 +411,34 @@ const Dashboard = () => {
                       SD 04
                     </span>
                     <span
-                      className={`status ${
-                        araliyaKeleStatus === true ? "running" : "stopped"
+                      className={`status ${araliyaKeleStatus && "running"} ${
+                        isAraliyaKeleBreakdown && "stopped"
                       }`}
                     >
-                      {araliyaKeleStatus ? "Running" : "Stopped"}
+                      <p
+                        className={`${
+                          araliyaKeleStatus && !isAraliyaKeleBreakdown
+                            ? "d-block"
+                            : "d-none"
+                        }`}
+                      >
+                        Running
+                      </p>
+                      <p
+                        className={`${
+                          isAraliyaKeleBreakdown ? "d-block" : "d-none"
+                        }`}
+                      >
+                        Stopped
+                      </p>
                     </span>
+                    {/* <span
+                      className={`status ${araliyaKeleStatus && "running"} ${
+                        isBreakdown && "stopped"
+                      }`}
+                    >
+                      {araliyaKeleStatus ? "Running" : isBreakdown && "Stopped"}
+                    </span> */}
                   </div>
 
                   <p className="batchNumber text-center display-1">
@@ -440,9 +485,15 @@ const Dashboard = () => {
 
               <div className="col-md-7 pe-md-0 mt-2 labDetailsContainer">
                 <div className="labDetailContainer">
-                  <span className="sectionTitle sectionTitleMaroon text-uppercase">
-                    Lab - SD 04
-                  </span>
+                  <div className="d-flex justify-content-between">
+                    <span className="sectionTitle sectionTitleMaroon text-uppercase">
+                      Lab - SD 04
+                    </span>
+
+                    <span className="smallText mb-2 ">
+                      Showing last 2 batches
+                    </span>
+                  </div>
 
                   <div className="row mt-3">
                     <div className="col-6 border-end">
