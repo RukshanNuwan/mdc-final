@@ -127,7 +127,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
             paginationModel: { page: 0, pageSize: 25 },
           },
           sorting: {
-            sortModel: [{ field: "batchNumber", sort: "desc" }],
+            sortModel: [{ field: "timeStamp", sort: "desc" }],
           },
         }}
         pageSizeOptions={[25, 50, 100]}
