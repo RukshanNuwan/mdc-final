@@ -54,14 +54,14 @@ function App() {
 
             <Route path="wet-section">
               <Route index element={<WetSection />} />
-              <Route path=":id" element={<WetDetails />} />
+              <Route path="view" element={<WetDetails />} />
               <Route path="new" element={<NewWet />} />
               <Route path="update" element={<UpdateWet />} />
             </Route>
 
             <Route path="cutter-section">
               <Route index element={<CutterSection />} />
-              <Route path=":id" element={<CutterDetails />} />
+              <Route path="view" element={<CutterDetails />} />
               <Route path="new" element={<NewCutter />} />
               <Route path="update" element={<UpdateCutter />} />
             </Route>
@@ -69,7 +69,7 @@ function App() {
             <Route path="mixing-section">
               <Route index element={<Index />} />
               <Route path=":location" element={<MixingSection />} />
-              <Route path=":location/:id" element={<MixingDetails />} />
+              <Route path=":location/view" element={<MixingDetails />} />
               <Route path=":location/new" element={<NewMixing />} />
               <Route path=":location/update" element={<UpdateMixing />} />
             </Route>
@@ -77,7 +77,7 @@ function App() {
             <Route path="sd-section">
               <Route index element={<Index />} />
               <Route path=":location" element={<SprayDryerSection />} />
-              <Route path=":location/:id" element={<SprayDryerDetails />} />
+              <Route path=":location/view" element={<SprayDryerDetails />} />
               <Route path=":location/new" element={<NewSprayDryer />} />
               <Route path=":location/update" element={<UpdateSprayDryer />} />
             </Route>

@@ -1,6 +1,6 @@
-import { Badge } from 'react-bootstrap';
+import { Badge } from "react-bootstrap";
 
-import './dataPill.css';
+import "./dataPill.css";
 
 const DataPill = ({ data }) => {
   return (

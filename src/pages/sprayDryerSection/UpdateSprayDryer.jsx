@@ -27,7 +27,7 @@ const UpdateSprayDryer = () => {
   const [data, setData] = useState({});
   const [validated, setValidated] = useState(false);
   const [expectedTime, setExpectedTime] = useState();
-  const [powderRecovery, setPowderRecovery] = useState();
+  const [powderRecovery, setPowderRecovery] = useState(state?.powderRecovery);
   const [expectedPowderQuantity, setExpectedPowderQuantity] = useState();
   const [dailyProductionData, setDailyProductionData] = useState({});
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
@@ -161,8 +161,6 @@ const UpdateSprayDryer = () => {
 
     getExpectedPowderQuantity();
   }, [location, state?.batchNumber]);
-
-  console.log("expected -> ", expectedPowderQuantity);
 
   // Fetch daily production data by selected object date
   useEffect(() => {
@@ -660,6 +658,7 @@ const UpdateSprayDryer = () => {
                         rows={4}
                         className="customInput"
                         onChange={handleChange}
+                        defaultValue={state.specialNotes}
                       />
                     </Form.Group>
                   </Row>

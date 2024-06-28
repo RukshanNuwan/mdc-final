@@ -1,40 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import LoopIcon from '@mui/icons-material/Loop';
-import { doc, getDoc } from 'firebase/firestore';
+import { Link, useLocation } from "react-router-dom";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import LoopIcon from "@mui/icons-material/Loop";
 
-import Breadcrumb from '../../components/breadcrumb/Breadcrumb';
-import Header from '../../components/header/Header';
-import SideBar from '../../components/sideBar/SideBar';
-import Footer from '../../components/footer/Footer';
-import BackToTop from '../../components/backToTop/BackToTop';
-import { db } from '../../config/firebase.config';
+import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
+import Header from "../../components/header/Header";
+import SideBar from "../../components/sideBar/SideBar";
+import Footer from "../../components/footer/Footer";
+import BackToTop from "../../components/backToTop/BackToTop";
 
 const CutterDetails = () => {
-  const [data, setData] = useState();
-
-  const { id } = useParams();
-
-  useEffect(() => {
-    const fetchDocument = async () => {
-      try {
-        const docRef = doc(db, 'cutter_section', id);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setData(docSnap.data());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchDocument();
-  }, [id]);
+  const { state } = useLocation();
 
   return (
     <>
@@ -72,7 +50,7 @@ const CutterDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">{data?.date}</p>
+                          <p className="bodyText fw-bold">{state?.date}</p>
                         </div>
                       </div>
                     </div>
@@ -85,7 +63,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.batchNumber}
+                            {state?.batchNumber}
                           </p>
                         </div>
                       </div>
@@ -97,7 +75,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.location === 'mdc' ? 'MDC' : 'Araliya Kele'}
+                            {state?.location === "mdc" ? "MDC" : "Araliya Kele"}
                           </p>
                         </div>
                       </div>
@@ -109,7 +87,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.status === 'completed' ? (
+                            {state?.status === "completed" ? (
                               <PublishedWithChangesIcon className="text-success" />
                             ) : (
                               <div>
@@ -129,7 +107,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.blancherStartTime}
+                            {state?.blancherStartTime}
                           </p>
                         </div>
                       </div>
@@ -153,7 +131,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.cutterFinishTime}
+                            {state?.cutterFinishTime}
                           </p>
                         </div>
                       </div>
@@ -165,7 +143,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.expellerStartTime}
+                            {state?.expellerStartTime}
                           </p>
                         </div>
                       </div>
@@ -177,7 +155,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.expellerFinishTime}
+                            {state?.expellerFinishTime}
                           </p>
                         </div>
                       </div>
@@ -190,13 +168,13 @@ const CutterDetails = () => {
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {`${
-                              data?.expellerProcessTime?.hours
-                                ? data?.expellerProcessTime?.hours
-                                : '-'
+                              state?.expellerProcessTime?.hours
+                                ? state?.expellerProcessTime?.hours
+                                : "-"
                             }hr ${
-                              data?.expellerProcessTime?.minutes
-                                ? data?.expellerProcessTime?.minutes
-                                : '-'
+                              state?.expellerProcessTime?.minutes
+                                ? state?.expellerProcessTime?.minutes
+                                : "-"
                             }min`}
                           </p>
                         </div>
@@ -209,7 +187,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-danger">
-                            {data?.expellerDelayTime}
+                            {state?.expellerDelayTime}
                           </p>
                         </div>
                       </div>
@@ -223,7 +201,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {data?.heatValve === true ? (
+                            {state?.heatValve === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <div>
@@ -241,7 +219,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {data?.specialNotes ? data?.specialNotes : '---'}
+                            {state?.specialNotes ? state?.specialNotes : "---"}
                           </p>
                         </div>
                       </div>
@@ -253,20 +231,20 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {data?.operator}
+                            {state?.operator}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* <div className="mt-4 text-end">
+                    <div className="mt-4 text-end">
                       <p className="smallText">
-                        Added at {data?.timeStamp?.toDate().toLocaleString()}
+                        Added at {state?.timeStamp?.toDate().toLocaleString()}
                       </p>
-                      <p className="smallText">
+                      {/* <p className="smallText">
                         by {data?.addedBy?.displayName}
-                      </p>
-                    </div> */}
+                      </p> */}
+                    </div>
                   </div>
 
                   <div className="col d-xs-none"></div>

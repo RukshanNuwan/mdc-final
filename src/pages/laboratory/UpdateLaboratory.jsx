@@ -895,7 +895,7 @@ const UpdateLaboratory = () => {
                           controlId="remarks"
                           className="mb-2"
                         >
-                          <Form.Label className="fw-bold">Remarks</Form.Label>
+                          <Form.Label className="fw-bold">Issue details</Form.Label>
                           <Form.Control
                             as="textarea"
                             rows={4}
@@ -936,7 +936,7 @@ const UpdateLaboratory = () => {
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        required={state.status === "completed"}
+                        required={state.status !== "ongoing"}
                         className="customInput"
                         defaultValue={state.reasonForUpdate}
                         onChange={handleChange}

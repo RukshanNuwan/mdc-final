@@ -19,7 +19,8 @@ import useCurrentDate from "../../hooks/useCurrentDate";
 const Dashboard = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
   const [sdData, setSdData] = useState([]);
-  const [labData, setLabData] = useState([]);
+  const [mdcLabData, setMDCLabData] = useState({});
+  const [araliyaKeleLabData, setAraliyaKeleLabData] = useState({});
   const [mdcStatus, setMdcStatus] = useState(false);
   const [araliyaKeleStatus, setAraliyaKeleStatus] = useState(false);
   const [breakdowns, setBreakdowns] = useState([]);
@@ -107,21 +108,22 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const fetchLabData = async () => {
+    const fetchMDCLabData = async () => {
       try {
         const q = query(
           collection(db, "lab_section"),
-          where("status", "==", "updated"),
+          where("status", "==", "completed"),
           where("date", "==", dailyProductionData.date),
+          where("location", "==", "mdc"),
           orderBy("timeStamp", "desc"),
-          limit(2)
+          limit(1)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const list = [];
           querySnapshot.forEach((doc) => {
             list.push(doc.data());
           });
-          setLabData(list);
+          setMDCLabData(list[0]);
         });
 
         return () => {
@@ -132,10 +134,36 @@ const Dashboard = () => {
       }
     };
 
-    fetchLabData();
+    const fetchAraliyaKeleLabData = async () => {
+      try {
+        const q = query(
+          collection(db, "lab_section"),
+          where("status", "==", "completed"),
+          where("date", "==", dailyProductionData.date),
+          where("location", "==", "araliya_kele"),
+          orderBy("timeStamp", "desc"),
+          limit(1)
+        );
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const list = [];
+          querySnapshot.forEach((doc) => {
+            list.push(doc.data());
+          });
+          setAraliyaKeleLabData(list[0]);
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchMDCLabData();
+    fetchAraliyaKeleLabData();
   }, [dailyProductionData.date]);
 
-  // TODO: get breakdown details and update the state in location-wise
   useEffect(() => {
     const fetchBreakdowns = async () => {
       try {
@@ -233,7 +261,7 @@ const Dashboard = () => {
           <div className="col-md-8">
             <div className="row">
               <div className="col-md-5 pe-md-0">
-                <div className="detailContainer mb-sm-2">
+                <div className="detailContainer">
                   <div className="d-flex justify-content-between">
                     <span className="sectionTitle sectionTitlePurple text-uppercase">
                       SD 03
@@ -268,11 +296,11 @@ const Dashboard = () => {
                       <p className="sectionSubHeading">
                         Last batch free flowing
                       </p>
+
                       <p className="sectionSubValue text-capitalize fw-bold">
-                        {labData[0]?.location === "mdc" &&
-                        labData[0]?.powderFreeFlowing ? (
+                        {mdcLabData?.powderFreeFlowing ? (
                           <CheckIcon className="text-success" />
-                        ) : labData[0]?.powderFreeFlowing === false ? (
+                        ) : mdcLabData?.powderFreeFlowing === false ? (
                           <CloseIcon className="text-danger" />
                         ) : (
                           <p>-</p>
@@ -282,11 +310,11 @@ const Dashboard = () => {
 
                     <div className="sectionSubHeadingContainer d-flex justify-content-between">
                       <p className="sectionSubHeading">Last batch solubility</p>
+
                       <p className="sectionSubValue text-capitalize fw-bold">
-                        {labData[0]?.location === "mdc" &&
-                        labData[0]?.powderSolubility ? (
+                        {mdcLabData?.powderSolubility ? (
                           <CheckIcon className="text-success" />
-                        ) : labData[0]?.powderSolubility === false ? (
+                        ) : mdcLabData?.powderSolubility === false ? (
                           <CloseIcon className="text-danger" />
                         ) : (
                           <p>-</p>
@@ -305,7 +333,7 @@ const Dashboard = () => {
                     </span>
 
                     <span className="smallText mb-2 ">
-                      Showing last 2 batches
+                      Showing last batch data
                     </span>
                   </div>
 
@@ -318,41 +346,36 @@ const Dashboard = () => {
                           <p className="subSectionKey sectionBodyTextMaroon">
                             pH
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item?.location === "mdc"
-                                  ? item?.rawMilkPh
-                                  : "-"}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {mdcLabData?.rawMilkPh
+                              ? mdcLabData?.rawMilkPh
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             TSS
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item?.location === "mdc" && item?.rawMilkTSS}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {mdcLabData?.rawMilkTSS
+                              ? mdcLabData?.rawMilkTSS
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             Fat
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item?.location === "mdc" && item?.rawMilkFat}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {mdcLabData?.rawMilkFat
+                              ? mdcLabData?.rawMilkFat
+                              : "-"}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -364,39 +387,36 @@ const Dashboard = () => {
                           <p className="subSectionKey sectionBodyTextMaroon">
                             pH
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item?.location === "mdc" && item?.mixMilkPh}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {mdcLabData?.mixMilkPh
+                              ? mdcLabData?.mixMilkPh
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             TSS
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item?.location === "mdc" && item?.mixMilkTSS}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {mdcLabData?.mixMilkTSS
+                              ? mdcLabData?.mixMilkTSS
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             Fat
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item?.location === "mdc" && item?.mixMilkFat}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {mdcLabData?.mixMilkFat
+                              ? mdcLabData?.mixMilkFat
+                              : "-"}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -454,11 +474,11 @@ const Dashboard = () => {
                       <p className="sectionSubHeading">
                         Last batch free flowing
                       </p>
+
                       <p className="sectionSubValue text-capitalize fw-bold">
-                        {labData[0]?.location === "araliya_kele" &&
-                        labData[0]?.powderFreeFlowing ? (
+                        {araliyaKeleLabData?.powderFreeFlowing ? (
                           <CheckIcon className="text-success" />
-                        ) : labData[0]?.powderFreeFlowing === false ? (
+                        ) : araliyaKeleLabData?.powderFreeFlowing === false ? (
                           <CloseIcon className="text-danger" />
                         ) : (
                           <p>-</p>
@@ -468,11 +488,11 @@ const Dashboard = () => {
 
                     <div className="sectionSubHeadingContainer d-flex justify-content-between">
                       <p className="sectionSubHeading">Last batch solubility</p>
+
                       <p className="sectionSubValue text-capitalize fw-bold">
-                        {labData[0]?.location === "araliya_kele" &&
-                        labData[0]?.powderSolubility ? (
+                        {araliyaKeleLabData?.powderFreeFlowing ? (
                           <CheckIcon className="text-success" />
-                        ) : labData[0]?.powderSolubility === false ? (
+                        ) : araliyaKeleLabData?.powderFreeFlowing === false ? (
                           <CloseIcon className="text-danger" />
                         ) : (
                           <p>-</p>
@@ -491,7 +511,7 @@ const Dashboard = () => {
                     </span>
 
                     <span className="smallText mb-2 ">
-                      Showing last 2 batches
+                      Showing last batch data
                     </span>
                   </div>
 
@@ -503,42 +523,36 @@ const Dashboard = () => {
                           <p className="subSectionKey sectionBodyTextMaroon">
                             pH
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item.location === "araliya_kele" &&
-                                  item?.rawMilkPh}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {araliyaKeleLabData?.rawMilkPh
+                              ? araliyaKeleLabData?.rawMilkPh
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             TSS
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item.location === "araliya_kele" &&
-                                  item?.rawMilkTSS}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {araliyaKeleLabData?.rawMilkTSS
+                              ? araliyaKeleLabData?.rawMilkTSS
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             Fat
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item.location === "araliya_kele" &&
-                                  item?.rawMilkFat}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {araliyaKeleLabData?.rawMilkFat
+                              ? araliyaKeleLabData?.rawMilkFat
+                              : "-"}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -550,42 +564,36 @@ const Dashboard = () => {
                           <p className="subSectionKey sectionBodyTextMaroon">
                             pH
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item.location === "araliya_kele" &&
-                                  item?.mixMilkPh}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {araliyaKeleLabData?.mixMilkPh
+                              ? araliyaKeleLabData?.mixMilkPh
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             TSS
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item.location === "araliya_kele" &&
-                                  item?.mixMilkTSS}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {araliyaKeleLabData?.mixMilkTSS
+                              ? araliyaKeleLabData?.mixMilkTSS
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="col d-flex align-items-center justify-content-around">
                           <p className="subSectionKey sectionBodyTextMaroon">
                             Fat
                           </p>
-                          {labData?.map((item, index) => {
-                            return (
-                              <p key={index} className="subSectionValue">
-                                {item.location === "araliya_kele" &&
-                                  item?.mixMilkFat}
-                              </p>
-                            );
-                          })}
+
+                          <p className="subSectionValue">
+                            {araliyaKeleLabData?.mixMilkFat
+                              ? araliyaKeleLabData?.mixMilkFat
+                              : "-"}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -596,7 +604,7 @@ const Dashboard = () => {
 
             <div className="row mt-2">
               <div className="col-md-5 pe-md-0">
-                <div className="cutterContainer mb-sm-2">
+                <div className="cutterContainer">
                   <div className="d-flex justify-content-between">
                     <span className="sectionTitle sectionTitleGreen text-uppercase">
                       Cutter section
@@ -634,7 +642,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="col-md-7 mb-xs-2 pe-md-0">
+              <div className="col-md-7 pe-md-0 mt-xs-2">
                 <div className="breakdownContainer">
                   <span className="sectionTitle sectionTitleRed text-uppercase">
                     Breakdowns
