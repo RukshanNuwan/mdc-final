@@ -104,7 +104,7 @@ const Dashboard = () => {
         const q = query(
           collection(db, "lab_section"),
           where("status", "==", "completed"),
-          orderBy("timeStamp", "desc")
+          where("date", "==", dailyProductionData.date)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const list = [];
@@ -123,7 +123,7 @@ const Dashboard = () => {
     };
 
     fetchLabData();
-  }, []);
+  }, [dailyProductionData.date]);
 
   useEffect(() => {
     const fetchBreakdowns = async () => {
@@ -252,8 +252,10 @@ const Dashboard = () => {
                         {labData[0]?.location === "mdc" &&
                         labData[0]?.powderFreeFlowing ? (
                           <CheckIcon className="text-success" />
-                        ) : (
+                        ) : labData[0]?.powderFreeFlowing === false ? (
                           <CloseIcon className="text-danger" />
+                        ) : (
+                          <p>-</p>
                         )}
                       </p>
                     </div>
@@ -264,8 +266,10 @@ const Dashboard = () => {
                         {labData[0]?.location === "mdc" &&
                         labData[0]?.powderSolubility ? (
                           <CheckIcon className="text-success" />
-                        ) : (
+                        ) : labData[0]?.powderSolubility === false ? (
                           <CloseIcon className="text-danger" />
+                        ) : (
+                          <p>-</p>
                         )}
                       </p>
                     </div>
@@ -290,7 +294,9 @@ const Dashboard = () => {
                           {labData?.map((item, index) => {
                             return (
                               <p key={index} className="subSectionValue">
-                                {item?.location === "mdc" && item?.rawMilkPh}
+                                {item?.location === "mdc"
+                                  ? item?.rawMilkPh
+                                  : "-"}
                               </p>
                             );
                           })}
@@ -403,8 +409,10 @@ const Dashboard = () => {
                         {labData[0]?.location === "araliya_kele" &&
                         labData[0]?.powderFreeFlowing ? (
                           <CheckIcon className="text-success" />
-                        ) : (
+                        ) : labData[0]?.powderFreeFlowing === false ? (
                           <CloseIcon className="text-danger" />
+                        ) : (
+                          <p>-</p>
                         )}
                       </p>
                     </div>
@@ -415,8 +423,10 @@ const Dashboard = () => {
                         {labData[0]?.location === "araliya_kele" &&
                         labData[0]?.powderSolubility ? (
                           <CheckIcon className="text-success" />
-                        ) : (
+                        ) : labData[0]?.powderSolubility === false ? (
                           <CloseIcon className="text-danger" />
+                        ) : (
+                          <p>-</p>
                         )}
                       </p>
                     </div>
@@ -538,8 +548,11 @@ const Dashboard = () => {
                     </span>
                   </div>
                   <p className="cutterBatchNumber text-center display-1">
-                    {dailyProductionData?.totalBatchCountInMdc +
-                      dailyProductionData.totalBatchCountInAraliyaKele}
+                    {dailyProductionData?.totalBatchCountInMdc &&
+                    dailyProductionData?.totalBatchCountInAraliyaKele
+                      ? dailyProductionData?.totalBatchCountInMdc +
+                        dailyProductionData?.totalBatchCountInAraliyaKele
+                      : 0}
                   </p>
 
                   <div className="col-12 sectionDetailsContainer">
