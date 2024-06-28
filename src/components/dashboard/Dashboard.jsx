@@ -233,7 +233,7 @@ const Dashboard = () => {
           <div className="col-md-8">
             <div className="row">
               <div className="col-md-5 pe-md-0">
-                <div className="detailContainer mb-sm-2">
+                <div className="detailContainer">
                   <div className="d-flex justify-content-between">
                     <span className="sectionTitle sectionTitlePurple text-uppercase">
                       SD 03
@@ -596,7 +596,7 @@ const Dashboard = () => {
 
             <div className="row mt-2">
               <div className="col-md-5 pe-md-0">
-                <div className="cutterContainer mb-sm-2">
+                <div className="cutterContainer">
                   <div className="d-flex justify-content-between">
                     <span className="sectionTitle sectionTitleGreen text-uppercase">
                       Cutter section
@@ -634,7 +634,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="col-md-7 mb-xs-2 pe-md-0">
+              <div className="col-md-7 pe-md-0 mt-xs-2">
                 <div className="breakdownContainer">
                   <span className="sectionTitle sectionTitleRed text-uppercase">
                     Breakdowns
