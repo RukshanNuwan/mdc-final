@@ -24,15 +24,11 @@ import BackToTop from "../../components/backToTop/BackToTop";
 const UpdateSprayDryer = () => {
   const { state } = useLocation();
 
-  console.log("========================");
-  console.log(state);
-  console.log("========================");
-
   const [data, setData] = useState({});
   const [validated, setValidated] = useState(false);
   const [expectedTime, setExpectedTime] = useState();
   const [powderRecovery, setPowderRecovery] = useState();
-  const [expectedPowderQuantity, setExpectedPowderQuantity] = useState(120);
+  const [expectedPowderQuantity, setExpectedPowderQuantity] = useState();
   const [dailyProductionData, setDailyProductionData] = useState({});
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [powderQuantity, setPowderQuantity] = useState();
@@ -53,10 +49,8 @@ const UpdateSprayDryer = () => {
   const handlePowderQuantity = (e) => {
     let recovery;
 
-    if (expectedPowderQuantity) {
-      recovery = ((e.target.value / expectedPowderQuantity) * 100).toFixed(2);
-      setPowderRecovery(recovery);
-    }
+    recovery = ((e.target.value / expectedPowderQuantity) * 100).toFixed(2);
+    setPowderRecovery(recovery);
 
     setPowderQuantity(e.target.value);
     setData({
@@ -156,7 +150,9 @@ const UpdateSprayDryer = () => {
 
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          setExpectedPowderQuantity(doc.data().expectedPowderQuantity);
+          doc.data().expectedPowderQuantity
+            ? setExpectedPowderQuantity(doc.data().expectedPowderQuantity)
+            : setExpectedPowderQuantity(120);
         });
       } catch (error) {
         console.log(error);
@@ -165,6 +161,8 @@ const UpdateSprayDryer = () => {
 
     getExpectedPowderQuantity();
   }, [location, state?.batchNumber]);
+
+  console.log("expected -> ", expectedPowderQuantity);
 
   // Fetch daily production data by selected object date
   useEffect(() => {
@@ -462,7 +460,7 @@ const UpdateSprayDryer = () => {
                           aria-describedby="addon"
                           disabled
                           className="customInput"
-                          value={expectedPowderQuantity || 120}
+                          defaultValue={expectedPowderQuantity}
                         />
                         <InputGroup.Text
                           id="addon"
@@ -524,8 +522,7 @@ const UpdateSprayDryer = () => {
                           aria-describedby="addon"
                           disabled
                           className="customInput"
-                          value={powderRecovery}
-                          defaultValue={state?.powderRecovery}
+                          defaultValue={powderRecovery}
                         />
                         <InputGroup.Text
                           id="addon"

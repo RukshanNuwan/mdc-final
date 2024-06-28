@@ -66,6 +66,9 @@ const Dashboard = () => {
         setMdcStatus(true);
       } else if (sdData?.location === "araliya_kele") {
         setAraliyaKeleStatus(true);
+      } else {
+        setMdcStatus(false);
+        setAraliyaKeleStatus(false);
       }
     };
 
@@ -103,8 +106,9 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "lab_section"),
-          where("status", "==", "completed"),
-          where("date", "==", dailyProductionData.date)
+          where("status", "==", "updated"),
+          where("date", "==", dailyProductionData.date),
+          orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const list = [];
