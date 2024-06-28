@@ -25,6 +25,10 @@ import BackToTop from "../../components/backToTop/BackToTop";
 const UpdateSprayDryer = () => {
   const { state } = useLocation();
 
+  console.log("========================");
+  console.log(state);
+  console.log("========================");
+
   const [data, setData] = useState({});
   const [validated, setValidated] = useState(false);
   const [expectedTime, setExpectedTime] = useState();
@@ -163,13 +167,13 @@ const UpdateSprayDryer = () => {
     getExpectedPowderQuantity();
   }, [location, state?.batchNumber]);
 
-  // Fetch daily production data
+  // Fetch daily production data by selected object date
   useEffect(() => {
     const fetchSubFormData = async () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          orderBy("timeStamp", "desc")
+          where("date", "==", state.date)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           let list = [];
@@ -189,7 +193,7 @@ const UpdateSprayDryer = () => {
     };
 
     fetchSubFormData();
-  }, []);
+  }, [state.date]);
 
   return (
     <>

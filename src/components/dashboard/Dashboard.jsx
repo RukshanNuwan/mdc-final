@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   collection,
-  doc,
   onSnapshot,
   orderBy,
   query,
@@ -17,9 +16,7 @@ import TotalCard from "../card/TotalCard";
 import useCurrentDate from "../../hooks/useCurrentDate";
 
 const Dashboard = () => {
-  const [id, setId] = useState();
   const [dailyProductionData, setDailyProductionData] = useState({});
-  const [cutterData, setCutterData] = useState([]);
   const [sdData, setSdData] = useState([]);
   const [labData, setLabData] = useState([]);
   const [mdcStatus, setMdcStatus] = useState(false);
@@ -49,7 +46,7 @@ const Dashboard = () => {
             list.push({ id: doc.id, ...doc.data() });
           });
 
-          setId(list[0].id);
+          setDailyProductionData(list[0]);
         });
 
         return () => {
@@ -74,54 +71,6 @@ const Dashboard = () => {
 
     handleStatus();
   }, [sdData?.location]);
-
-  useEffect(() => {
-    const fetchDailyProductionData = async () => {
-      try {
-        const unsubscribe = await onSnapshot(
-          doc(db, "daily_production", id),
-          (doc) => {
-            setDailyProductionData(doc.data());
-          }
-        );
-
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchDailyProductionData();
-  }, [id]);
-
-  useEffect(() => {
-    const fetchCutterData = async () => {
-      try {
-        const q = query(
-          collection(db, "cutter_section"),
-          where("status", "==", "completed")
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let list = [];
-          querySnapshot.forEach((doc) => {
-            list.push({ id: doc.id, ...doc.data() });
-          });
-
-          setCutterData(list);
-        });
-
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCutterData();
-  }, []);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
@@ -589,7 +538,8 @@ const Dashboard = () => {
                     </span>
                   </div>
                   <p className="cutterBatchNumber text-center display-1">
-                    {cutterData && cutterData.length}
+                    {dailyProductionData?.totalBatchCountInMdc +
+                      dailyProductionData.totalBatchCountInAraliyaKele}
                   </p>
 
                   <div className="col-12 sectionDetailsContainer">

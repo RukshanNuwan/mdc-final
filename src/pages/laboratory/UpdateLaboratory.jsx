@@ -23,7 +23,6 @@ import BackToTop from "../../components/backToTop/BackToTop";
 
 const UpdateLaboratory = () => {
   const { state } = useLocation();
-  console.log(state);
 
   const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
