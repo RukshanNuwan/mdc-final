@@ -25,7 +25,7 @@ const LaboratoryDetails = () => {
           <div className="col-md-12">
             <Breadcrumb
               title={`${
-                location === "mdc" ? "MDC" : "Araliya Kele"
+                location === "mdc" ? "SD 03" : "SD 04"
               } / Laboratory`}
             />
           </div>
@@ -424,7 +424,7 @@ const LaboratoryDetails = () => {
 
                           <div className="col-5">
                             <p className="bodyText fw-bold text-capitalize">
-                              {state?.remarks ? state?.remarks : "---"}
+                              {state?.remarks ? state?.remarks : "-"}
                             </p>
                           </div>
                         </div>

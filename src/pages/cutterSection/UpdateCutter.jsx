@@ -260,7 +260,7 @@ const UpdateCutter = () => {
                         <Form.Control
                             disabled
                             className="customInput disabled"
-                            defaultValue={state.location === 'mdc' ? 'MDC' : 'Araliya Kele'}
+                            defaultValue={state.location === 'mdc' ? 'SD 03' : 'SD 04'}
                         />
                       </Form.Group>
                     </Row>

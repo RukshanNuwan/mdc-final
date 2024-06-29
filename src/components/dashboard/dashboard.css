@@ -9,25 +9,25 @@
 }
 
 .sectionTitle {
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
   font-size: var(--smallText);
   font-weight: bold;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
 }
 
 .sectionTitleBlue {
-  background-color: #415f91;
-  color: #d6e3ff;
+  background-color: var(--dark-blue-1);
+  color: var(--white);
 }
 
-.sectionTitlePurple {
-  background-color: #6750a4;
-  color: #f7f2fa;
+.sectionTitlePink {
+  background-color: var(--pink);
+  color: var(--white);
 }
 
-.sectionTitleMaroon {
-  background-color: #8f4c38;
-  color: #fff8f6;
+.sectionTitleYellow {
+  background-color: var(--bright-yellow);
+  color: var(--dark-blue-1);
 }
 
 .sectionBodyTextMaroon {

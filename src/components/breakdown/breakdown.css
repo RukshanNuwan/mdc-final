@@ -1,0 +1,9 @@
+.dangerZone {
+  background: #360000;
+  border-radius: 0.25rem;
+}
+
+.redZoneBtn {
+  background: #a31818 !important;
+  color: var(--white);
+}

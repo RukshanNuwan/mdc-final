@@ -158,7 +158,7 @@ const Orders = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="card-body">
-                      <p className="display-6">MDC</p>
+                      <p className="display-6">SD 03</p>
 
                       <Form onSubmit={handleMdcSubmit}>
                         <Row>

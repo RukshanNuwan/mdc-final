@@ -24,7 +24,7 @@ const SprayDryerDetails = () => {
           <div className="col-md-12">
             <Breadcrumb
               title={`${
-                location === "mdc" ? "MDC" : "Araliya Kele"
+                location === "mdc" ? "SD 03" : "SD 04"
               } / Spray Dryer Section`}
             />
           </div>
@@ -276,7 +276,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.otherDetails ? state?.otherDetails : "---"}
+                            {state?.otherDetails ? state?.otherDetails : "-"}
                           </p>
                         </div>
                       </div>
@@ -288,7 +288,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.specialNotes ? state?.specialNotes : "---"}
+                            {state?.specialNotes ? state?.specialNotes : "-"}
                           </p>
                         </div>
                       </div>

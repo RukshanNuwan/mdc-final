@@ -334,8 +334,8 @@ const NewCutter = () => {
                               defaultValue={location}
                               onChange={(e) => setLocation(e.target.value)}
                           >
-                            <option value="mdc">MDC</option>
-                            <option value="araliya_kele">Araliya Kele</option>
+                            <option value="mdc">SD 03</option>
+                            <option value="araliya_kele">SD 04</option>
                           </Form.Select>
                         </Form.Group>
 

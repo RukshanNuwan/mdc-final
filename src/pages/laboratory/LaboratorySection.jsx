@@ -23,7 +23,7 @@ const LaboratorySection = () => {
           <div className="col-md-12">
             <Breadcrumb
               title={`${
-                location === "mdc" ? "MDC" : "Araliya Kele"
+                location === "mdc" ? "SD 03" : "SD 04"
               } / Laboratory`}
             />
           </div>

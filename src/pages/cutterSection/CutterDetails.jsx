@@ -75,7 +75,7 @@ const CutterDetails = () => {
                         <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.location === "mdc" ? "MDC" : "Araliya Kele"}
+                            {state?.location === "mdc" ? "SD 03" : "SD 04"}
                           </p>
                         </div>
                       </div>
@@ -219,7 +219,7 @@ const CutterDetails = () => {
                         <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.specialNotes ? state?.specialNotes : "---"}
+                            {state?.specialNotes ? state?.specialNotes : "-"}
                           </p>
                         </div>
                       </div>

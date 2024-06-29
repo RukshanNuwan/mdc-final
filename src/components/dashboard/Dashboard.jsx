@@ -208,7 +208,7 @@ const Dashboard = () => {
               <p className="sectionMainValue">
                 {dailyProductionData?.totalKernelWeight
                   ? dailyProductionData?.totalCoconut
-                  : "---"}
+                  : "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -217,7 +217,7 @@ const Dashboard = () => {
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.totalKernelWeight
                       ? dailyProductionData?.totalKernelWeight
-                      : "---"}
+                      : "-"}
                     kg
                   </p>
                 </div>
@@ -228,7 +228,7 @@ const Dashboard = () => {
                     {Math.round(
                       dailyProductionData?.totalKernelWeight
                         ? dailyProductionData?.totalKernelWeight / 300
-                        : "---"
+                        : "-"
                     )}
                   </p>
                 </div>
@@ -622,11 +622,11 @@ const Dashboard = () => {
 
                   <div className="col-12 sectionDetailsContainer">
                     <div className="sectionSubHeadingContainer d-flex justify-content-between mt-2">
-                      <p className="sectionSubHeading">MDC batch count</p>
+                      <p className="sectionSubHeading">SD 03 batch count</p>
                       <p className="sectionSubValue text-capitalize fw-bold">
                         {dailyProductionData?.totalBatchCountInMdc
                           ? dailyProductionData?.totalBatchCountInMdc
-                          : "---"}
+                          : "-"}
                       </p>
                     </div>
 
@@ -637,7 +637,7 @@ const Dashboard = () => {
                       <p className="sectionSubValue fw-bold">
                         {dailyProductionData?.totalBatchCountInAraliyaKele
                           ? dailyProductionData?.totalBatchCountInAraliyaKele
-                          : "---"}
+                          : "-"}
                       </p>
                     </div>
                   </div>
@@ -660,8 +660,8 @@ const Dashboard = () => {
                               {breakdown.location &&
                                 ` | ${
                                   breakdown.location === "mdc"
-                                    ? "MDC"
-                                    : "Araliya Kele"
+                                    ? "SD 03"
+                                    : "SD 04"
                                 }`}
                             </p>
                             <p
