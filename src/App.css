@@ -147,8 +147,8 @@
   }
 
   .disabled {
-    background-color: #f8f8f8 !important;
-    color: var(--primaryTextDark);
+    background-color: var(--dark-blue-1) !important;
+    color: var(--white);
   }
 }
 

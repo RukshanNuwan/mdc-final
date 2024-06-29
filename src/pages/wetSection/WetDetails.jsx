@@ -40,6 +40,7 @@ const WetDetails = () => {
 
                   <div className="col-md-8">
                     <p className="display-6 mb-4 text-white">Batch details</p>
+
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">

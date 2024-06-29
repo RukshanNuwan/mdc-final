@@ -201,88 +201,74 @@ const NewCutter = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                  to="/cutter-section"
-                  className="d-flex align-items-center customClearBtn"
+                    to="/cutter-section"
+                    className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small" /> Back
+                  <ArrowBackIosIcon fontSize="small"/> Back
                 </Link>
               </div>
 
               <div className="card-body formWrapper">
                 {batchNumberData && !batchNumberData.heatValve ? (
-                  <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={handleSubmit}
-                  >
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="date"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Date</Form.Label>
-                        <Form.Control
-                          type="date"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={batchNumberData.date}
-                        />
-                      </Form.Group>
+                    <Form
+                        noValidate
+                        validated={validated}
+                        onSubmit={handleSubmit}
+                    >
+                      <Row>
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="date"
+                            className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">Date</Form.Label>
+                          <Form.Control
+                              type="date"
+                              disabled
+                              className="customInput disabled"
+                              defaultValue={batchNumberData.date}
+                          />
+                        </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="batchNumber"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Batch number (Wet section)
-                        </Form.Label>
-                        <Form.Control
-                          type="number"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={batchNumberData.batchNumber}
-                        />
-                      </Form.Group>
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="batchNumber"
+                            className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Batch number (Wet section)
+                          </Form.Label>
+                          <Form.Control
+                              type="number"
+                              disabled
+                              className="customInput disabled"
+                              defaultValue={batchNumberData.batchNumber}
+                          />
+                        </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="blancherStartTime"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Blancher start time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={batchNumberData.blancherStartTime}
-                        />
-                      </Form.Group>
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="blancherStartTime"
+                            className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Blancher start time
+                          </Form.Label>
+                          <Form.Control
+                              type="time"
+                              disabled
+                              className="customInput disabled"
+                              defaultValue={batchNumberData.blancherStartTime}
+                          />
+                        </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="heatValve"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Heat Valve</Form.Label>
-                        <Form.Switch
-                          type="switch"
-                          id="heat_valve"
-                          label={heatValve === true ? "On" : "Off"}
-                          checked={heatValve}
-                          onChange={(e) => setHeatValve(e.target.checked)}
-                        />
-                      </Form.Group>
-                    </Row>
 
-                    {/* <Row>
+                      </Row>
+
+                      {/* <Row>
                       <Form.Group
                         as={Col}
                         md="3"
@@ -301,75 +287,91 @@ const NewCutter = () => {
                       </Form.Group>
                     </Row> */}
 
-                    <Row className="mb-5">
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="expellerStartTime"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Expeller start time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="location"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Location</Form.Label>
-                        <Form.Select
-                          required
-                          className="customInput"
-                          defaultValue={location}
-                          onChange={(e) => setLocation(e.target.value)}
+                      <Row>
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="heatValve"
+                            className="mb-2"
                         >
-                          <option value="mdc">MDC</option>
-                          <option value="araliya_kele">Araliya Kele</option>
-                        </Form.Select>
-                      </Form.Group>
+                          <Form.Label className="fw-bold">Heat Valve</Form.Label>
+                          <Form.Switch
+                              type="switch"
+                              id="heat_valve"
+                              label={heatValve === true ? "On" : "Off"}
+                              checked={heatValve}
+                              onChange={(e) => setHeatValve(e.target.checked)}
+                          />
+                        </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="operator"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Operator's name
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-                    </Row>
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="expellerStartTime"
+                            className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Expeller start time
+                          </Form.Label>
+                          <Form.Control
+                              type="time"
+                              required
+                              className="customInput"
+                              onChange={handleChange}
+                          />
+                        </Form.Group>
 
-                    <div>
-                      <button
-                        type="submit"
-                        className="btn-submit customBtn mt-md-4"
-                      >
-                        <CheckIcon className="me-2" />
-                        Submit
-                      </button>
-                      <button type="reset" className="customBtn customClearBtn">
-                        Cancel
-                      </button>
-                    </div>
-                  </Form>
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="location"
+                            className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">Location</Form.Label>
+                          <Form.Select
+                              required
+                              className="customInput"
+                              defaultValue={location}
+                              onChange={(e) => setLocation(e.target.value)}
+                          >
+                            <option value="mdc">MDC</option>
+                            <option value="araliya_kele">Araliya Kele</option>
+                          </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="operator"
+                            className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Operator name
+                          </Form.Label>
+                          <Form.Control
+                              type="text"
+                              required
+                              className="customInput"
+                              onChange={handleChange}
+                          />
+                        </Form.Group>
+                      </Row>
+
+                      <div className='mt-5'>
+                        <button
+                            type="submit"
+                            className="btn-submit customBtn"
+                        >
+                          <CheckIcon className="me-2"/>
+                          Continue
+                        </button>
+                        <button type="reset" className="customBtn customClearBtn">
+                          Clear
+                        </button>
+                      </div>
+                    </Form>
                 ) : (
-                  <ErrorMessage />
+                    <ErrorMessage/>
                 )}
               </div>
             </div>
@@ -377,8 +379,8 @@ const NewCutter = () => {
         </div>
       </main>
 
-      <Footer />
-      <BackToTop />
+      <Footer/>
+      <BackToTop/>
     </>
   );
 };

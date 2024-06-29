@@ -317,10 +317,10 @@ const NewWet = () => {
                       className="btn-submit customBtn"
                     >
                       <CheckIcon className="me-2" />
-                      Submit
+                      Continue
                     </button>
                     <button type="reset" className="customBtn customClearBtn">
-                      Cancel
+                      Clear
                     </button>
                   </div>
                 </Form>

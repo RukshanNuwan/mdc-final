@@ -57,12 +57,13 @@ label.form-label {
 }
 
 .errorMessageWrapper {
+  padding: 1rem 2rem;
   background-color: #ffdbd1;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .errorMessage {
-  color: #8f4c38;
+  color: #a31818;
   font-weight: bold;
   font-size: var(--smallText);
 }
@@ -83,6 +84,16 @@ label.form-label {
 .sectionTitleBlue {
   background-color: #415f91;
   color: #d6e3ff;
+}
+
+.dangerZone {
+  background: #360000;
+  border-radius: 0.25rem;
+}
+
+.redZoneBtn {
+  background: #a31818 !important;
+  color: var(--white);
 }
 
 @media only screen and (max-width: 600px) {

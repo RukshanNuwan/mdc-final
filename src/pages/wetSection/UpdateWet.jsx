@@ -110,9 +110,9 @@ const UpdateWet = () => {
                       <Form.Label className="fw-bold">Date</Form.Label>
                       <Form.Control
                           type="date"
-                          className="customInput"
+                          disabled
+                          className="customInput disabled"
                           defaultValue={state.date}
-                          onChange={handleChange}
                       />
                     </Form.Group>
 
