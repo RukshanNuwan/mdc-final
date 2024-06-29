@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CheckIcon from "@mui/icons-material/Check";
 import {
   addDoc,
   collection,
@@ -316,7 +315,6 @@ const NewWet = () => {
                       type="submit"
                       className="btn-submit customBtn"
                     >
-                      <CheckIcon className="me-2" />
                       Continue
                     </button>
                     <button type="reset" className="customBtn customClearBtn">

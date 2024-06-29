@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CheckIcon from "@mui/icons-material/Check";
 import {
   addDoc,
   collection,
@@ -265,6 +264,8 @@ const UpdateCutter = () => {
                       </Form.Group>
                     </Row>
 
+                    <hr className='custom-hr'/>
+
                     <Row>
                       <Form.Group
                           as={Col}
@@ -353,7 +354,6 @@ const UpdateCutter = () => {
                           type="submit"
                           className="btn-submit customBtn customBtnUpdate"
                       >
-                        <CheckIcon className="me-2"/>
                         Update
                       </button>
 

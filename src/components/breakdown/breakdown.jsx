@@ -6,7 +6,7 @@ import useCurrentDate from "../../hooks/useCurrentDate";
 import {useNavigate} from "react-router-dom";
 import './breakdown.css'
 
-const Breakdown = ({isBreakdown, ongoingBreakdown}) => {
+const Breakdown = ({section, location, isBreakdown, ongoingBreakdown}) => {
   const [data, setData] = useState({});
   const [updatedData, setUpdatedData] = useState({});
 
@@ -24,8 +24,8 @@ const Breakdown = ({isBreakdown, ongoingBreakdown}) => {
       ...data,
       date: currentDate,
       // addedBy: loggedInUser,
-      sectionName: "cutter",
-      location: "mdc",
+      sectionName: section,
+      location: location,
       status: "ongoing",
       [id]: value,
     });

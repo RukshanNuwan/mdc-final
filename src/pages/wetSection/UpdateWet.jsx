@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -255,7 +254,6 @@ const UpdateWet = () => {
                         type="submit"
                         className="btn-submit customBtn customBtnUpdate"
                     >
-                      <CheckIcon className="me-2"/>
                       Update
                     </button>
                     <button type="reset" className="customBtn customClearBtn">

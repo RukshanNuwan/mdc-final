@@ -258,7 +258,7 @@ const MixingDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Feed tank in time</p>
+                          <p className="bodyText">Feeding tank in time</p>
                         </div>
                         <div className="col-1"/>
                         <div className="col-4">
@@ -270,7 +270,7 @@ const MixingDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Feeding start time</p>
+                          <p className="bodyText">Feed start time</p>
                         </div>
                         <div className="col-1"/>
                         <div className="col-4">

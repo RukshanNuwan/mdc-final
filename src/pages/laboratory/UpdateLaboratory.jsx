@@ -630,7 +630,7 @@ const UpdateLaboratory = () => {
                     </Form.Group>
                   </Row>
 
-                  <hr />
+                  <hr  className='custom-hr'/>
 
                   <Row>
                     <Form.Group

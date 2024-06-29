@@ -8,7 +8,6 @@ import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
 import { laboratorySectionColumns } from "../../data/dataTableSource";
-import AddIcon from "@mui/icons-material/Add";
 
 const LaboratorySection = () => {
   const { location } = useParams();
@@ -44,7 +43,6 @@ const LaboratorySection = () => {
                     to="new"
                     className="addNewBtn customBtn"
                   >
-                    <AddIcon />
                     Add new
                   </Link>
                 </div>

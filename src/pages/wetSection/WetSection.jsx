@@ -14,7 +14,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
@@ -240,7 +239,6 @@ const WetSection = () => {
                     to="new"
                     className="addNewBtn customBtn"
                   >
-                    <AddIcon />
                     Add new
                   </Link>
                 </div>

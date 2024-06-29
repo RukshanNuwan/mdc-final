@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CheckIcon from "@mui/icons-material/Check";
 import {
   addDoc,
   collection,
@@ -112,7 +111,7 @@ const NewMixing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const confirmData = `Batch number: ${data?.batchNumber} | Order name: ${data?.recipeName} | Order type: ${data?.recipeType} | Milk quantity: ${milkQuantity} | Mixing tank in time: ${data?.mixingTankInTime} | Mixing start time: ${data?.mixingStartTime} | Mixing finish time: ${data?.mixingFinishTime} | Feed tank in time: ${data?.feedTankInTime} | Feeding start time: ${data?.feedingStartTime} | Operators: ${data?.operators} | Steam pressure: ${data?.steamBars} | Pressure pump value: ${data?.pressurePumpValue}`;
+    const confirmData = `Batch number: ${data?.batchNumber} | Order name: ${data?.recipeName} | Order type: ${data?.recipeType} | Milk quantity: ${milkQuantity} | Mixing tank in time: ${data?.mixingTankInTime} | Mix start time: ${data?.mixingStartTime} | Mix finish time: ${data?.mixingFinishTime} | Feeding tank in time: ${data?.feedTankInTime} | Feed start time: ${data?.feedingStartTime} | Operators: ${data?.operators} | Steam pressure: ${data?.steamBars} | Pressure pump value: ${data?.pressurePumpValue}`;
 
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -598,7 +597,7 @@ const NewMixing = () => {
                               className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Mixing start time
+                              Mix start time
                             </Form.Label>
                             <Form.Control
                                 type="time"
@@ -615,7 +614,7 @@ const NewMixing = () => {
                               className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Mixing finish time
+                              Mix finish time
                             </Form.Label>
                             <Form.Control
                                 type="time"
@@ -634,7 +633,7 @@ const NewMixing = () => {
                               className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Feed tank in time
+                              Feeding tank in time
                             </Form.Label>
                             <Form.Control
                                 type="time"
@@ -651,7 +650,7 @@ const NewMixing = () => {
                               className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Feeding start time
+                              Feed start time
                             </Form.Label>
                             <Form.Control
                                 type="time"
@@ -668,7 +667,7 @@ const NewMixing = () => {
                               className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Operator's name(s)
+                              Operator name
                             </Form.Label>
                             <Form.Control
                                 type="text"
@@ -762,7 +761,7 @@ const NewMixing = () => {
                               className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Pressure pump value
+                              Pressure pump
                             </Form.Label>
 
                             <Form.Control
@@ -795,7 +794,6 @@ const NewMixing = () => {
                               type="submit"
                               className="btn-submit customBtn"
                           >
-                            <CheckIcon className="me-2"/>
                             Continue
                           </button>
                           <button type="reset" className="customBtn customClearBtn">

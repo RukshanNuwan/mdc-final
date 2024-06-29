@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link,  useParams } from "react-router-dom";
 import {  Form} from "react-bootstrap";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import AddIcon from "@mui/icons-material/Add";
 import {
   collection,
   getDocs,
@@ -38,7 +37,7 @@ const MixingSection = () => {
         const q = query(
             collection(db, "breakdowns"),
             where("status", "==", "ongoing"),
-            where("sectionName", "==", "cutter")
+            where("sectionName", "==", "mixing")
         );
 
         const querySnapshot = await getDocs(q);
@@ -88,7 +87,6 @@ const MixingSection = () => {
                           to="new"
                           className="addNewBtn customBtn"
                       >
-                        <AddIcon/>
                         Add new
                       </Link>
                   )}
@@ -110,7 +108,7 @@ const MixingSection = () => {
                 </div>
 
                 {isBreakdown && (
-                    <Breakdown ongoingBreakdown={ongoingBreakdown} isBreakdown={isBreakdown}/>
+                    <Breakdown location={location} section='mixing' ongoingBreakdown={ongoingBreakdown} isBreakdown={isBreakdown}/>
                 )}
 
                 <DataTable

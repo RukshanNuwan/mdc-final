@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Col, Form} from "react-bootstrap";
-import AddIcon from "@mui/icons-material/Add";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import DataTable from "../../components/dataTable/DataTable";
@@ -67,7 +66,6 @@ const CutterSection = () => {
                             to="new"
                             className="addNewBtn customBtn"
                         >
-                          <AddIcon/>
                           Add new
                         </Link>
                     )}
@@ -89,7 +87,7 @@ const CutterSection = () => {
                   </div>
 
                   {isBreakdown && (
-                      <Breakdown isBreakdown={isBreakdown} ongoingBreakdown={ongoingBreakdown}/>
+                      <Breakdown section='cutter' location='mdc' isBreakdown={isBreakdown} ongoingBreakdown={ongoingBreakdown}/>
                   )}
 
                   <DataTable
