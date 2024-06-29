@@ -261,7 +261,7 @@ const Orders = () => {
                           <div>
                             <button
                               type="submit"
-                              className="btn-submit customBtn customBtnSecondary"
+                              className="btn-submit customBtn"
                             >
                               <CheckIcon className="me-2" />
                               Submit
@@ -386,7 +386,7 @@ const Orders = () => {
                           <div>
                             <button
                               type="submit"
-                              className="btn-submit customBtn customBtnSecondary"
+                              className="btn-submit customBtn"
                             >
                               <CheckIcon className="me-2" />
                               Submit

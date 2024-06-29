@@ -154,7 +154,7 @@ const NewWet = () => {
               <div className="mb-2">
                 <Link
                   to="/wet-section"
-                  className="d-flex align-items-center customClearBtn"
+                  className="d-flex align-items-center customBackBtn"
                 >
                   <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
@@ -180,7 +180,7 @@ const NewWet = () => {
 
                     <Form.Group
                       as={Col}
-                      md="2"
+                      md="4"
                       controlId="batchNumber"
                       className="mb-2"
                     >
@@ -193,26 +193,26 @@ const NewWet = () => {
                         onChange={(e) => setNextBatchNumber(e.target.value)}
                       />
                     </Form.Group>
+
+                    <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="tankNumber"
+                        className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Tank number</Form.Label>
+                      <Form.Control
+                          type="number"
+                          className="customInput"
+                          onChange={handleChange}
+                      />
+                    </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
                       as={Col}
-                      md="3"
-                      controlId="tankNumber"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Tank number</Form.Label>
-                      <Form.Control
-                        type="number"
-                        className="customInput"
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
+                      md="4"
                       controlId="kernelWeight"
                       className="mb-2"
                     >
@@ -230,9 +230,9 @@ const NewWet = () => {
                         <InputGroup.Text
                           id="addon"
                           style={{
-                            borderTopRightRadius: "0.5rem",
-                            borderBottomRightRadius: "0.5rem",
-                            fontWeight: "bold",
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: '#0d1b2a'
                           }}
                         >
                           kg
@@ -242,7 +242,7 @@ const NewWet = () => {
 
                     <Form.Group
                       as={Col}
-                      md="3"
+                      md="4"
                       controlId="blancherInTime"
                       className="mb-2"
                     >
@@ -256,31 +256,48 @@ const NewWet = () => {
                         onChange={handleChange}
                       />
                     </Form.Group>
-                  </Row>
 
-                  <Row className="mb-5">
                     <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="kernelQuality"
-                      className="mb-2"
+                        as={Col}
+                        md="4"
+                        controlId="kernelQuality"
+                        className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Kernel quality
                       </Form.Label>
 
                       <Form.Switch
-                        type="switch"
-                        id="kernel_quality"
-                        label={quality === true ? "Good" : "Spoiled"}
-                        checked={quality}
-                        onChange={(e) => setQuality(e.target.checked)}
+                          type="switch"
+                          id="kernel_quality"
+                          label={quality === true ? "Good" : "Spoiled"}
+                          checked={quality}
+                          onChange={(e) => setQuality(e.target.checked)}
+                      />
+                    </Form.Group>
+                  </Row>
+
+                  <Row>
+                    <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="operator"
+                        className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Operator name
+                      </Form.Label>
+                      <Form.Control
+                          type="text"
+                          required
+                          className="customInput"
+                          onChange={handleChange}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
-                      md="6"
+                      md="8"
                       controlId="kernelQualityRemark"
                       className="mb-2"
                     >
@@ -292,29 +309,12 @@ const NewWet = () => {
                         onChange={handleChange}
                       />
                     </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="operator"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Operator's name
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        required
-                        className="customInput"
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
                   </Row>
 
-                  <div>
+                  <div className='mt-5'>
                     <button
                       type="submit"
-                      className="btn-submit customBtn customBtnSecondary mt-md-4"
+                      className="btn-submit customBtn"
                     >
                       <CheckIcon className="me-2" />
                       Submit

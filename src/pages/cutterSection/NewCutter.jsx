@@ -358,7 +358,7 @@ const NewCutter = () => {
                     <div>
                       <button
                         type="submit"
-                        className="btn-submit customBtn customBtnSecondary mt-md-4"
+                        className="btn-submit customBtn mt-md-4"
                       >
                         <CheckIcon className="me-2" />
                         Submit

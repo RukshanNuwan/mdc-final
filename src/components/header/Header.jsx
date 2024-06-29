@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <Logo />
-      <Nav />
+      {/*<Nav />*/}
     </header>
   );
 };

@@ -29,6 +29,8 @@ const Dashboard = () => {
 
   const currentDate = useCurrentDate();
 
+  // TODO: handle breakdowns
+
   const calculateRemainingBatches = (totalBatches) => {
     const currentTotalBatchCount =
       dailyProductionData.totalBatchCountInMdc +

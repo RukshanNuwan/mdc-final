@@ -155,7 +155,7 @@ const SprayDryerSection = () => {
                   {!isBreakdown && (
                     <Link
                       to="new"
-                      className="addNewBtn customBtn customBtnPrimary"
+                      className="addNewBtn customBtn"
                     >
                       <AddIcon />
                       Add new
