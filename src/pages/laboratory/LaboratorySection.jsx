@@ -22,9 +22,7 @@ const LaboratorySection = () => {
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
           <div className="col-md-12">
             <Breadcrumb
-              title={`${
-                location === "mdc" ? "SD 03" : "SD 04"
-              } / Laboratory`}
+              title={`${location === "mdc" ? "SD 03" : "SD 04"} / Laboratory`}
             />
           </div>
 
@@ -32,28 +30,25 @@ const LaboratorySection = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/lab-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/lab-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
               <div className="card-body p-0">
                 <div className="addNewBtnWrapper">
                   {/* print button */}
-                  <Link
-                      to="new"
-                      className="addNewBtn customBtn"
-                  >
+                  <Link to="new" className="addNewBtn customBtn">
                     Add new
                   </Link>
                 </div>
 
                 <DataTable
-                    collectionName="lab_section"
-                    columnName={laboratorySectionColumns}
-                    location={location}
+                  collectionName="lab_section"
+                  columnName={laboratorySectionColumns}
+                  location={location}
                 />
               </div>
             </div>
@@ -61,8 +56,8 @@ const LaboratorySection = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };

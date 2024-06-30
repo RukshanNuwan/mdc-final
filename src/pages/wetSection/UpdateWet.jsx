@@ -90,10 +90,10 @@ const UpdateWet = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/wet-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/wet-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
@@ -101,75 +101,75 @@ const UpdateWet = () => {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="date"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="date"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Date</Form.Label>
                       <Form.Control
-                          type="date"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={state.date}
+                        type="date"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.date}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="batchNumber"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="batchNumber"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
                       <Form.Control
-                          type="number"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={state.batchNumber}
+                        type="number"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.batchNumber}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="tankNumber"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="tankNumber"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Tank number</Form.Label>
                       <Form.Control
-                          type="number"
-                          className="customInput"
-                          defaultValue={state.tankNumber}
-                          onChange={handleChange}
+                        type="number"
+                        className="customInput"
+                        defaultValue={state.tankNumber}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="kernelWeight"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="kernelWeight"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Kernel weight</Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="number"
-                            aria-label="kernel weight"
-                            aria-describedby="addon"
-                            className="customInput"
-                            defaultValue={state.kernelWeight}
-                            onChange={handleChange}
+                          type="number"
+                          aria-label="kernel weight"
+                          aria-describedby="addon"
+                          className="customInput"
+                          defaultValue={state.kernelWeight}
+                          onChange={handleChange}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           kg
                         </InputGroup.Text>
@@ -177,82 +177,80 @@ const UpdateWet = () => {
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="blancherInTime"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="blancherInTime"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Blancher in time
                       </Form.Label>
                       <Form.Control
-                          type="time"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={state.blancherInTime}
+                        type="time"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.blancherInTime}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="kernelQuality"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="kernelQuality"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Kernel quality
                       </Form.Label>
 
                       <Form.Switch
-                          type="switch"
-                          id="kernel_quality"
-                          label={quality === true ? "Good" : "Spoiled"}
-                          checked={quality}
-                          onChange={(e) => setQuality(e.target.checked)}
+                        type="switch"
+                        id="kernel_quality"
+                        label={quality === true ? "Good" : "Spoiled"}
+                        checked={quality}
+                        onChange={(e) => setQuality(e.target.checked)}
                       />
                     </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="operator"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="operator"
+                      className="mb-2"
                     >
-                      <Form.Label className="fw-bold">
-                        Operator name
-                      </Form.Label>
+                      <Form.Label className="fw-bold">Operator name</Form.Label>
                       <Form.Control
-                          type="text"
-                          className="customInput"
-                          defaultValue={state.operator}
-                          onChange={handleChange}
+                        type="text"
+                        className="customInput"
+                        defaultValue={state.operator}
+                        onChange={handleChange}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="8"
-                        controlId="reasonForUpdate"
-                        className="mb-2"
+                      as={Col}
+                      md="8"
+                      controlId="reasonForUpdate"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Remark</Form.Label>
                       <Form.Control
-                          as="textarea"
-                          rows={4}
-                          required
-                          className="customInput"
-                          defaultValue={state.kernelQualityRemark}
-                          onChange={handleChange}
+                        as="textarea"
+                        rows={4}
+                        required
+                        className="customInput"
+                        defaultValue={state.kernelQualityRemark}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                   </Row>
 
-                  <div className='mt-5'>
+                  <div className="mt-5">
                     <button
-                        type="submit"
-                        className="btn-submit customBtn customBtnUpdate"
+                      type="submit"
+                      className="btn-submit customBtn customBtnUpdate"
                     >
                       Update
                     </button>
@@ -267,8 +265,8 @@ const UpdateWet = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };

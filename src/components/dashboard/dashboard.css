@@ -33,32 +33,10 @@
   color: var(--dark-blue-1);
 }
 
-.sectionBodyTextMaroon {
-  color: #8f4c38;
-}
-
-.sectionTitleRed {
-  background-color: #a33232;
-  color: #eeefe3;
-}
-
-.sectionTitleGreen {
-  background-color: #386663;
-  color: #eeefe3;
-}
-
 .sectionHeading {
   margin-top: 1rem;
   font-size: var(--heading);
   font-weight: 300;
-}
-
-.sectionHeadingTextBlue {
-  color: var(--buttonDefaultTextColor);
-}
-
-.sectionHeadingTextGreen {
-  color: #00210f;
 }
 
 .sectionMainValue {
@@ -75,7 +53,6 @@
   color: var(--white);
 }
 
-
 .sectionSubValue {
   font-weight: 500;
   color: var(--success-green);
@@ -91,19 +68,7 @@
 }
 
 .stopped {
-  color: #D2042D;
-}
-
-.detailContainer {
-  padding: 0.5rem;
-  border-radius: 1rem;
-  background-color: #f7f2fa;
-}
-
-.labDetailContainer {
-  padding: 0.5rem;
-  border-radius: 1rem;
-  background-color: #fff8f6;
+  color: #d2042d;
 }
 
 .subSectionHeading {
@@ -114,12 +79,6 @@
 
 .subSectionValue {
   color: var(--success-green);
-}
-
-.cutterContainer {
-  padding: 0.5rem;
-  border-radius: 1rem;
-  background-color: #eeefe3;
 }
 
 .breakdownItemWrapper {
@@ -133,10 +92,6 @@
 @media only screen and (max-width: 600px) {
   .sectionContainer {
     min-width: 100%;
-  }
-
-  .labDetailsContainer {
-    margin-top: 0.5rem;
   }
 
   .mt-xs-2 {

@@ -1,17 +1,17 @@
-import { Link } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
+import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
-import { auth } from '../../config/firebase.config';
+import { auth } from "../../config/firebase.config";
 
 const NavAvatar = () => {
-  const loggedInUser = JSON.parse(localStorage.getItem('user'));
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        window.location.replace('/login');
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        window.location.replace("/login");
       })
       .catch((error) => {
         console.log(error);
@@ -33,7 +33,7 @@ const NavAvatar = () => {
           />
         )}
         <span className="d-none d-md-block dropdown-toggle ps-2">
-          {loggedInUser?.displayName.split(' ')[0]}
+          {loggedInUser?.displayName.split(" ")[0]}
         </span>
       </Link>
 

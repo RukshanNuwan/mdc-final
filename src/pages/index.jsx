@@ -1,10 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import './common.css';
-import Header from '../components/header/Header';
-import SideBar from '../components/sideBar/SideBar';
-import Footer from '../components/footer/Footer';
-import BackToTop from '../components/backToTop/BackToTop';
+import "./common.css";
+import Header from "../components/header/Header";
+import SideBar from "../components/sideBar/SideBar";
+import Footer from "../components/footer/Footer";
 
 const Index = () => {
   return (
@@ -20,7 +19,7 @@ const Index = () => {
                 to="mdc"
                 className="p-5 d-flex align-items-center justify-content-center touchable-card"
               >
-                <p className='text-center'>Spray Dryer 03</p>
+                <p className="text-center">Spray Dryer 03</p>
               </Link>
             </div>
 
@@ -31,7 +30,7 @@ const Index = () => {
                 to="araliya_kele"
                 className="p-5 d-flex align-items-center justify-content-center touchable-card"
               >
-                <p className='text-center'>Spray Dryer 04</p>
+                <p className="text-center">Spray Dryer 04</p>
               </Link>
             </div>
           </div>

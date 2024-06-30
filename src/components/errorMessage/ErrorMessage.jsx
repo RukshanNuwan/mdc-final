@@ -1,4 +1,4 @@
-import '../../pages/common.css';
+import "../../pages/common.css";
 
 const ErrorMessage = () => {
   return (

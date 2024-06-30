@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import {  Form } from "react-bootstrap";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { Form } from "react-bootstrap";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import DataTable from "../../components/dataTable/DataTable";
@@ -74,22 +69,19 @@ const SprayDryerSection = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/sd-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/sd-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
               <div className="card-body p-0">
                 <div className="addNewBtnWrapper d-flex justify-content-between align-items-center">
                   {!isBreakdown && (
-                      <Link
-                          to="new"
-                          className="addNewBtn customBtn"
-                      >
-                        Add new
-                      </Link>
+                    <Link to="new" className="addNewBtn customBtn">
+                      Add new
+                    </Link>
                   )}
 
                   <Form>
@@ -99,23 +91,28 @@ const SprayDryerSection = () => {
                       </Form.Label>
 
                       <Form.Switch
-                          type="switch"
-                          id="breakdown-switch"
-                          checked={isBreakdown}
-                          onChange={handleBreakdownToggle}
+                        type="switch"
+                        id="breakdown-switch"
+                        checked={isBreakdown}
+                        onChange={handleBreakdownToggle}
                       />
                     </Form.Group>
                   </Form>
                 </div>
 
                 {isBreakdown && (
-                    <Breakdown section='sd' location={location} ongoingBreakdown={ongoingBreakdown} isBreakdown={isBreakdown}/>
+                  <Breakdown
+                    section="sd"
+                    location={location}
+                    ongoingBreakdown={ongoingBreakdown}
+                    isBreakdown={isBreakdown}
+                  />
                 )}
 
                 <DataTable
-                    collectionName="sd_section"
-                    location={location}
-                    columnName={sprayDryerSectionColumns}
+                  collectionName="sd_section"
+                  location={location}
+                  columnName={sprayDryerSectionColumns}
                 />
               </div>
             </div>
@@ -123,8 +120,8 @@ const SprayDryerSection = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };

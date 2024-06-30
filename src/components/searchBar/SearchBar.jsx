@@ -1,9 +1,9 @@
-import './searchBar.css';
+import "./searchBar.css";
 
 const SearchBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('...');
+    alert("...");
   };
 
   return (

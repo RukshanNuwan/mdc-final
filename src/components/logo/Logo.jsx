@@ -1,11 +1,11 @@
-import { Box } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
-import './logo.css';
+import "./logo.css";
 
 const Logo = () => {
   const handleToggleSideBar = () => {
-    document.body.classList.toggle('toggle-sidebar');
+    document.body.classList.toggle("toggle-sidebar");
   };
 
   return (

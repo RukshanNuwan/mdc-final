@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { signInWithPopup } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { GoogleLoginButton } from 'react-social-login-buttons';
+import { useState } from "react";
+import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { GoogleLoginButton } from "react-social-login-buttons";
 
-import { auth, googleAuthProvider } from '../../config/firebase.config';
+import { auth, googleAuthProvider } from "../../config/firebase.config";
 
 const Login = () => {
   const [error, setError] = useState();
@@ -13,9 +13,9 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleAuthProvider);
-      localStorage.setItem('token', result.user.accessToken);
-      localStorage.setItem('user', JSON.stringify(result.user));
-      navigate('/');
+      localStorage.setItem("token", result.user.accessToken);
+      localStorage.setItem("user", JSON.stringify(result.user));
+      navigate("/");
     } catch (error) {
       setError(error);
     }
@@ -24,11 +24,11 @@ const Login = () => {
   return (
     <div
       style={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        textAlign: 'center',
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        textAlign: "center",
       }}
     >
       <div className="row justify-content-center">
@@ -42,7 +42,7 @@ const Login = () => {
                 {error && <span variant="danger">{error}</span>}
                 <GoogleLoginButton
                   onClick={handleGoogleSignIn}
-                  style={{ fontSize: '1rem' }}
+                  style={{ fontSize: "1rem" }}
                   className="d-flex justify-content-center"
                 >
                   <span>Login with Google</span>

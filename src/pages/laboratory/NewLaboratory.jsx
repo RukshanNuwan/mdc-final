@@ -165,9 +165,7 @@ const NewLaboratory = () => {
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
           <div className="col-md-12">
             <Breadcrumb
-              title={`${
-                location === "mdc" ? "SD 03" : "SD 04"
-              } / Laboratory`}
+              title={`${location === "mdc" ? "SD 03" : "SD 04"} / Laboratory`}
             />
           </div>
 
@@ -175,10 +173,10 @@ const NewLaboratory = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/lab-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/lab-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
@@ -186,471 +184,494 @@ const NewLaboratory = () => {
                 {batchNumberData &&
                 !batchNumberData.rawMilkColor &&
                 batchNumberData?.location === location ? (
-                    <Form
-                        noValidate
-                        validated={validated}
-                        onSubmit={handleSubmit}
+                  <Form
+                    noValidate
+                    validated={validated}
+                    onSubmit={handleSubmit}
+                  >
+                    <Row>
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="date"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Date</Form.Label>
+                        <Form.Control
+                          type="date"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={batchNumberData.date}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="batchNumber"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Batch number
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={batchNumberData.batchNumber}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="recipeName"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Recipe name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          disabled
+                          className="customInput text-capitalize disabled"
+                          defaultValue={batchNumberData.recipeName}
+                        />
+                      </Form.Group>
+                    </Row>
+
+                    <Row>
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="type"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Recipe type</Form.Label>
+                        <Form.Control
+                          disabled
+                          className="customInput text-capitalize disabled"
+                          defaultValue={batchNumberData.recipeType}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="sampleInTime"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Sample in time
+                        </Form.Label>
+                        <Form.Control
+                          type="time"
+                          required
+                          className="customInput"
+                          onChange={handleChange}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="testStartTime"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Test start time
+                        </Form.Label>
+                        <Form.Control
+                          type="time"
+                          required
+                          className="customInput"
+                          onChange={handleChange}
+                        />
+                      </Form.Group>
+                    </Row>
+
+                    <div
+                      className="p-3 mb-3"
+                      style={{
+                        width: "auto",
+                        backgroundColor: "#ffd800",
+                        borderRadius: "0.25rem",
+                      }}
                     >
-                      <Row>
-                        <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="date"
-                            className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">Date</Form.Label>
-                          <Form.Control
-                              type="date"
-                              disabled
-                              className="customInput disabled"
-                              defaultValue={batchNumberData.date}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="batchNumber"
-                            className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">
-                            Batch number
-                          </Form.Label>
-                          <Form.Control
-                              type="number"
-                              disabled
-                              className="customInput disabled"
-                              defaultValue={batchNumberData.batchNumber}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="recipeName"
-                            className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">Recipe name</Form.Label>
-                          <Form.Control
-                              type="text"
-                              disabled
-                              className="customInput text-capitalize disabled"
-                              defaultValue={batchNumberData.recipeName}
-                          />
-                        </Form.Group>
-                      </Row>
-
-                      <Row>
-                        <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="type"
-                            className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">Recipe type</Form.Label>
-                          <Form.Control
-                              disabled
-                              className="customInput text-capitalize disabled"
-                              defaultValue={batchNumberData.recipeType}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="sampleInTime"
-                            className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">
-                            Sample in time
-                          </Form.Label>
-                          <Form.Control
-                              type="time"
-                              required
-                              className="customInput"
-                              onChange={handleChange}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="testStartTime"
-                            className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">
-                            Test start time
-                          </Form.Label>
-                          <Form.Control
-                              type="time"
-                              required
-                              className="customInput"
-                              onChange={handleChange}
-                          />
-                        </Form.Group>
-                      </Row>
-
-                      <div className="p-3 mb-3"
-                           style={{
-                             width: "auto",
-                             backgroundColor: "#ffd800",
-                             borderRadius: "0.25rem",
-                           }}>
                       <span className="sectionTitle sectionTitlePink text-uppercase">
                         Raw milk
                       </span>
 
-                        <Row className="mt-3">
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="rawMilkPh"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
-                              <p>pH value</p>
-                              <p className="text-primary">
-                                {prevBatchData && prevBatchData?.rawMilkPh}
-                              </p>
-                            </Form.Label>
-
-                            <Form.Control
-                                type="number"
-                                required
-                                step=".01"
-                                onChange={handleChange}
-                            />
-                            <Figure.Caption className='tooltipTextPink'>5.7-5.9</Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="rawMilkTSS"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
-                              <p>TSS</p>
-                              <p className="text-primary">
-                                {prevBatchData && prevBatchData?.rawMilkTSS}
-                              </p>
-                            </Form.Label>
-
-                            <Form.Control
-                                type="number"
-                                step=".01"
-                                onChange={handleChange}
-                            />
-                            <Figure.Caption className='tooltipTextPink'>(42-50)%</Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="rawMilkFat"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
-                              <p>Fat</p>
-                              <p className="text-primary">
-                                {prevBatchData && prevBatchData?.rawMilkFat}
-                              </p>
-                            </Form.Label>
-
-                            <Form.Control
-                                type="number"
-                                required
-                                onChange={handleChange}
-                            />
-                            <Figure.Caption className='tooltipTextPink'>33-34</Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="rawMilkTaste"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">Taste</Form.Label>
-                            <Form.Switch
-                                type="switch"
-                                id="raw_milk_taste"
-                                label={rawMilkTaste === true ? "Good" : "Not good"}
-                                checked={rawMilkTaste}
-                                onChange={(e) => setRawMilkTaste(e.target.checked)}
-                            />
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="rawMilkColor"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">Color</Form.Label>
-                            <Form.Switch
-                                type="switch"
-                                id="raw_milk_color"
-                                label={rawMilkColor === true ? "Good" : "Not good"}
-                                checked={rawMilkColor}
-                                onChange={(e) => setRawMilkColor(e.target.checked)}
-                            />
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="rawMilkOdor"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">Odor</Form.Label>
-                            <Form.Switch
-                                type="switch"
-                                id="raw_milk_odor"
-                                label={rawMilkOdor === true ? "Good" : "Not good"}
-                                checked={rawMilkOdor}
-                                onChange={(e) => setRawMilkOdor(e.target.checked)}
-                            />
-                          </Form.Group>
-                        </Row>
-
-                        <hr className='custom-hr-blue'/>
-
-                        <span className="sectionTitle sectionTitlePink text-uppercase">
-                        Mix milk
-                      </span>
-                        <Row className="mt-3">
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="mixMilkPh"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
-                              <p>pH value</p>
-                              <p className="text-primary">
-                                {prevBatchData && prevBatchData?.mixMilkPh}
-                              </p>
-                            </Form.Label>
-
-                            <Form.Control
-                                type="number"
-                                required
-                                step=".01"
-                                onChange={handleChange}
-                            />
-                            <Figure.Caption className='tooltipTextPink'>(6.2-6.5)</Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="mixMilkTSS"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
-                              <p>TSS</p>
-                              <p className="text-primary">
-                                {prevBatchData && prevBatchData?.mixMilkTSS}
-                              </p>
-                            </Form.Label>
-
-                            <Form.Control
-                                type="number"
-                                step=".01"
-                                onChange={handleChange}
-                            />
-                            <Figure.Caption className='tooltipTextPink'>(52-58)%</Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="mixMilkFat"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
-                              <p>Fat</p>
-                              <p className="text-primary">
-                                {prevBatchData && prevBatchData?.rawMilkFat}
-                              </p>
-                            </Form.Label>
-
-                            <Form.Control
-                                type="number"
-                                required
-                                onChange={handleChange}
-                            />
-                            <Figure.Caption className='tooltipTextPink'>Organic - (28-29)</Figure.Caption>
-
-                            <Figure.Caption className='tooltipTextPink'>
-                              Conventional - (33-34)
-                            </Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="mixMilkTaste"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">Taste</Form.Label>
-                            <Form.Switch
-                                type="switch"
-                                id="mix_milk_taste"
-                                label={mixMilkTaste === true ? "Good" : "Not good"}
-                                checked={mixMilkTaste}
-                                onChange={(e) => setMixMilkTaste(e.target.checked)}
-                            />
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="mixMilkColor"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">Color</Form.Label>
-                            <Form.Switch
-                                type="switch"
-                                id="mix_milk_color"
-                                label={mixMilkColor === true ? "Good" : "Not good"}
-                                checked={mixMilkColor}
-                                onChange={(e) => setMixMilkColor(e.target.checked)}
-                            />
-                          </Form.Group>
-
-                          <Form.Group
-                              as={Col}
-                              md="2"
-                              xs="4"
-                              controlId="mixMilkOdor"
-                              className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">Odor</Form.Label>
-                            <Form.Switch
-                                type="switch"
-                                id="mix_milk_odor"
-                                label={mixMilkOdor === true ? "Good" : "Not good"}
-                                checked={mixMilkOdor}
-                                onChange={(e) => setMixMilkOdor(e.target.checked)}
-                            />
-                          </Form.Group>
-                        </Row>
-                      </div>
-
-                      <Row className="mb-5">
+                      <Row className="mt-3">
                         <Form.Group
-                            as={Col}
-                            md="4"
-                            xs="4"
-                            controlId="isAnyIssue"
-                            className="mb-2"
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="rawMilkPh"
+                          className="mb-2"
                         >
-                          <Form.Label className="fw-bold">Any issue?</Form.Label>
+                          <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
+                            <p>pH value</p>
+                            <p className="text-primary">
+                              {prevBatchData && prevBatchData?.rawMilkPh}
+                            </p>
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            required
+                            step=".01"
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            5.7-5.9
+                          </Figure.Caption>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="rawMilkTSS"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
+                            <p>TSS</p>
+                            <p className="text-primary">
+                              {prevBatchData && prevBatchData?.rawMilkTSS}
+                            </p>
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            step=".01"
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            (42-50)%
+                          </Figure.Caption>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="rawMilkFat"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
+                            <p>Fat</p>
+                            <p className="text-primary">
+                              {prevBatchData && prevBatchData?.rawMilkFat}
+                            </p>
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            required
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            33-34
+                          </Figure.Caption>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="rawMilkTaste"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            Taste
+                          </Form.Label>
                           <Form.Switch
-                              type="switch"
-                              id="mix_issue"
-                              label={isMixHaveIssue === true ? "Yes" : "No"}
-                              checked={isMixHaveIssue}
-                              onChange={(e) => setIsMixHaveIssue(e.target.checked)}
+                            type="switch"
+                            id="raw_milk_taste"
+                            label={rawMilkTaste === true ? "Good" : "Not good"}
+                            checked={rawMilkTaste}
+                            onChange={(e) => setRawMilkTaste(e.target.checked)}
                           />
                         </Form.Group>
 
-                        {isMixHaveIssue && (
-                            <>
-                              <Form.Group
-                                  as={Col}
-                                  md="4"
-                                  controlId="informedToAboutMix"
-                                  className="mb-2"
-                              >
-                                <Form.Label className="fw-bold">
-                                  Informed to
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    className="customInput"
-                                    onChange={handleChange}
-                                />
-                              </Form.Group>
-
-                              <Form.Group
-                                  as={Col}
-                                  md="4"
-                                  controlId="remarkAboutMixIssue"
-                                  className="mb-2"
-                              >
-                                <Form.Label className="fw-bold">
-                                  Issue details
-                                </Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    rows={2}
-                                    className="customInput"
-                                    onChange={handleChange}
-                                />
-                              </Form.Group>
-                            </>
-                        )}
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="rawMilkColor"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            Color
+                          </Form.Label>
+                          <Form.Switch
+                            type="switch"
+                            id="raw_milk_color"
+                            label={rawMilkColor === true ? "Good" : "Not good"}
+                            checked={rawMilkColor}
+                            onChange={(e) => setRawMilkColor(e.target.checked)}
+                          />
+                        </Form.Group>
 
                         <Form.Group
-                            as={Col}
-                            md="4"
-                            controlId="expectedPowderQuantity"
-                            className="mb-2"
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="rawMilkOdor"
+                          className="mb-2"
                         >
-                          <Form.Label className="fw-bold">
-                            Expected powder quantity
+                          <Form.Label className="fw-bold textDarkBlue">
+                            Odor
                           </Form.Label>
-                          <InputGroup>
-                            <Form.Control
-                                type="number"
-                                aria-label="expected powder quantity"
-                                aria-describedby="addon"
-                                required
-                                className="customInput"
-                                onChange={handleChange}
-                            />
-                            <InputGroup.Text
-                                id="addon"
-                                style={{
-                                  borderTopRightRadius: "0.25rem",
-                                  borderBottomRightRadius: "0.25rem",
-                                  color: '#0d1b2a'
-                                }}
-                            >
-                              kg
-                            </InputGroup.Text>
-                          </InputGroup>
+                          <Form.Switch
+                            type="switch"
+                            id="raw_milk_odor"
+                            label={rawMilkOdor === true ? "Good" : "Not good"}
+                            checked={rawMilkOdor}
+                            onChange={(e) => setRawMilkOdor(e.target.checked)}
+                          />
                         </Form.Group>
                       </Row>
 
-                      <div className='mt-5'>
-                        <button
-                            type="submit"
-                            className="btn-submit customBtn"
+                      <hr className="custom-hr-blue" />
+
+                      <span className="sectionTitle sectionTitlePink text-uppercase">
+                        Mix milk
+                      </span>
+                      <Row className="mt-3">
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="mixMilkPh"
+                          className="mb-2"
                         >
-                          Continue
-                        </button>
-                        <button type="reset" className="customBtn customClearBtn">
-                          Clear
-                        </button>
-                      </div>
-                    </Form>
+                          <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
+                            <p>pH value</p>
+                            <p className="text-primary">
+                              {prevBatchData && prevBatchData?.mixMilkPh}
+                            </p>
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            required
+                            step=".01"
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            (6.2-6.5)
+                          </Figure.Caption>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="mixMilkTSS"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
+                            <p>TSS</p>
+                            <p className="text-primary">
+                              {prevBatchData && prevBatchData?.mixMilkTSS}
+                            </p>
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            step=".01"
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            (52-58)%
+                          </Figure.Caption>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="mixMilkFat"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
+                            <p>Fat</p>
+                            <p className="text-primary">
+                              {prevBatchData && prevBatchData?.rawMilkFat}
+                            </p>
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            required
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            Organic - (28-29)
+                          </Figure.Caption>
+
+                          <Figure.Caption className="tooltipTextPink">
+                            Conventional - (33-34)
+                          </Figure.Caption>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="mixMilkTaste"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            Taste
+                          </Form.Label>
+                          <Form.Switch
+                            type="switch"
+                            id="mix_milk_taste"
+                            label={mixMilkTaste === true ? "Good" : "Not good"}
+                            checked={mixMilkTaste}
+                            onChange={(e) => setMixMilkTaste(e.target.checked)}
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="mixMilkColor"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            Color
+                          </Form.Label>
+                          <Form.Switch
+                            type="switch"
+                            id="mix_milk_color"
+                            label={mixMilkColor === true ? "Good" : "Not good"}
+                            checked={mixMilkColor}
+                            onChange={(e) => setMixMilkColor(e.target.checked)}
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="2"
+                          xs="4"
+                          controlId="mixMilkOdor"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            Odor
+                          </Form.Label>
+                          <Form.Switch
+                            type="switch"
+                            id="mix_milk_odor"
+                            label={mixMilkOdor === true ? "Good" : "Not good"}
+                            checked={mixMilkOdor}
+                            onChange={(e) => setMixMilkOdor(e.target.checked)}
+                          />
+                        </Form.Group>
+                      </Row>
+                    </div>
+
+                    <Row className="mb-5">
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        xs="4"
+                        controlId="isAnyIssue"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Any issue?</Form.Label>
+                        <Form.Switch
+                          type="switch"
+                          id="mix_issue"
+                          label={isMixHaveIssue === true ? "Yes" : "No"}
+                          checked={isMixHaveIssue}
+                          onChange={(e) => setIsMixHaveIssue(e.target.checked)}
+                        />
+                      </Form.Group>
+
+                      {isMixHaveIssue && (
+                        <>
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="informedToAboutMix"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Informed to
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="remarkAboutMixIssue"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Issue details
+                            </Form.Label>
+                            <Form.Control
+                              as="textarea"
+                              rows={2}
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+                        </>
+                      )}
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="expectedPowderQuantity"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Expected powder quantity
+                        </Form.Label>
+                        <InputGroup>
+                          <Form.Control
+                            type="number"
+                            aria-label="expected powder quantity"
+                            aria-describedby="addon"
+                            required
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                          <InputGroup.Text
+                            id="addon"
+                            style={{
+                              borderTopRightRadius: "0.25rem",
+                              borderBottomRightRadius: "0.25rem",
+                              color: "#0d1b2a",
+                            }}
+                          >
+                            kg
+                          </InputGroup.Text>
+                        </InputGroup>
+                      </Form.Group>
+                    </Row>
+
+                    <div className="mt-5">
+                      <button type="submit" className="btn-submit customBtn">
+                        Continue
+                      </button>
+                      <button type="reset" className="customBtn customClearBtn">
+                        Clear
+                      </button>
+                    </div>
+                  </Form>
                 ) : (
-                    <ErrorMessage/>
+                  <ErrorMessage />
                 )}
               </div>
             </div>
@@ -658,8 +679,8 @@ const NewLaboratory = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };
