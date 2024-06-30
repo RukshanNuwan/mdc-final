@@ -21,10 +21,6 @@ label.form-label {
 }
 
 .form-check-label {
-  color: var(--white);
-}
-
-.form-check-label {
   color: var(--dark-blue-1) !important;
 }
 

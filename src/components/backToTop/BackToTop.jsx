@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Fab } from '@mui/material';
+import { useEffect, useState } from "react";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Fab } from "@mui/material";
 
-import './backToTop.css';
+import "./backToTop.css";
 
 const BackToTop = () => {
   const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       setScroll(window.scrollY);
     });
 
     return () => {
-      window.removeEventListener('scroll', () => {
+      window.removeEventListener("scroll", () => {
         setScroll(window.scrollY);
       });
     };
@@ -28,7 +28,7 @@ const BackToTop = () => {
       variant="circular"
       size="small"
       color="primary"
-      className={`back-to-top ${scroll > 100 ? 'active' : undefined}`}
+      className={`back-to-top ${scroll > 100 ? "active" : undefined}`}
       onClick={handleBackToTop}
     >
       <KeyboardArrowUpIcon />

@@ -235,10 +235,7 @@ const WetSection = () => {
 
                 <div className="addNewBtnWrapper">
                   {/*  /!* print button *!/*/}
-                  <Link
-                    to="new"
-                    className="addNewBtn customBtn"
-                  >
+                  <Link to="new" className="addNewBtn customBtn">
                     Add new
                   </Link>
                 </div>

@@ -1,11 +1,11 @@
-import './footer.css';
+import "./footer.css";
 
 const Footer = () => {
   return (
     <footer id="footer" className="footer">
       <div className="copyright pb-md-2">
-        <p className='text-white'>
-          &copy; 2024{' '}
+        <p className="text-white">
+          &copy; 2024{" "}
           <strong>
             <span>Manchiee De Coco Products. </span>
           </strong>

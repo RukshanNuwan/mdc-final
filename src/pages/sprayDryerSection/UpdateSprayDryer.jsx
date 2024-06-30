@@ -208,10 +208,10 @@ const UpdateSprayDryer = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/sd-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/sd-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
@@ -219,271 +219,273 @@ const UpdateSprayDryer = () => {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="date"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="date"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Date</Form.Label>
                       <Form.Control
-                          type="date"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={state.date}
+                        type="date"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.date}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="batchNumber"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="batchNumber"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Wet batch number
                       </Form.Label>
                       <Form.Control
-                          type="number"
-                          disabled
-                          min={1}
-                          value={state.wetBatchNumber}
-                          className="customInput disabled"
+                        type="number"
+                        disabled
+                        min={1}
+                        value={state.wetBatchNumber}
+                        className="customInput disabled"
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="batchNumber"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="batchNumber"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
                       <Form.Control
-                          type="number"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={state.batchNumber}
+                        type="number"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.batchNumber}
                       />
                     </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="type"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="type"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Recipe type</Form.Label>
                       <Form.Control
-                          disabled
-                          className="customInput text-capitalize disabled"
-                          defaultValue={state.recipeType}
+                        disabled
+                        className="customInput text-capitalize disabled"
+                        defaultValue={state.recipeType}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="recipeName"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="recipeName"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Recipe name</Form.Label>
                       <Form.Control
-                          type="text"
-                          disabled
-                          className="customInput text-capitalize disabled"
-                          defaultValue={state.recipeName}
+                        type="text"
+                        disabled
+                        className="customInput text-capitalize disabled"
+                        defaultValue={state.recipeName}
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="powderSprayStartTime"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="powderSprayStartTime"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Powder spray start time
                       </Form.Label>
                       <Form.Control
-                          type="time"
-                          disabled
-                          defaultValue={state.powderSprayStartTime}
-                          className="customInput disabled"
+                        type="time"
+                        disabled
+                        defaultValue={state.powderSprayStartTime}
+                        className="customInput disabled"
                       />
                     </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="atomizerSize"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="atomizerSize"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Atomizer size</Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="text"
-                            aria-label="atomizer size"
-                            aria-describedby="addon"
-                            className="customInput"
-                            defaultValue={state.atomizerSize}
-                            onChange={handleChangeAtomizerSize}
+                          type="text"
+                          aria-label="atomizer size"
+                          aria-describedby="addon"
+                          className="customInput"
+                          defaultValue={state.atomizerSize}
+                          onChange={handleChangeAtomizerSize}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           mm
                         </InputGroup.Text>
                       </InputGroup>
 
                       {expectedTime && (
-                          <Figure.Caption className='tooltipText'>
-                            Expected finish time ~ approx.{" "}
-                            <span className="fw-bold text-primary">
+                        <Figure.Caption className="tooltipText">
+                          Expected finish time ~ approx.{" "}
+                          <span className="fw-bold text-primary">
                             {expectedTime}
                           </span>
-                          </Figure.Caption>
+                        </Figure.Caption>
                       )}
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="inletTemp"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="inletTemp"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Inlet temperature
                       </Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="text"
-                            aria-label="inlet temperature"
-                            aria-describedby="addon"
-                            className="customInput"
-                            defaultValue={state.inletTemp}
-                            onChange={handleChange}
+                          type="text"
+                          aria-label="inlet temperature"
+                          aria-describedby="addon"
+                          className="customInput"
+                          defaultValue={state.inletTemp}
+                          onChange={handleChange}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           &deg;C
                         </InputGroup.Text>
                       </InputGroup>
-                      <Figure.Caption className='tooltipText'>(230-240)&deg;C</Figure.Caption>
+                      <Figure.Caption className="tooltipText">
+                        (230-240)&deg;C
+                      </Figure.Caption>
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="outletTemp"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="outletTemp"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Outlet temperature
                       </Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="text"
-                            aria-label="outlet temperature"
-                            aria-describedby="addon"
-                            defaultValue={state.outletTemp}
-                            className="customInput"
-                            onChange={handleChange}
+                          type="text"
+                          aria-label="outlet temperature"
+                          aria-describedby="addon"
+                          defaultValue={state.outletTemp}
+                          className="customInput"
+                          onChange={handleChange}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           &deg;C
                         </InputGroup.Text>
                       </InputGroup>
-                      <Figure.Caption className='tooltipText'>(90-95)&deg;C</Figure.Caption>
+                      <Figure.Caption className="tooltipText">
+                        (90-95)&deg;C
+                      </Figure.Caption>
                     </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="operators"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="operators"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Operator name(s)
                       </Form.Label>
                       <Form.Control
-                          type="text"
-                          disabled
-                          defaultValue={state.operators}
-                          className="customInput disabled"
+                        type="text"
+                        disabled
+                        defaultValue={state.operators}
+                        className="customInput disabled"
                       />
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="8"
-                        controlId="otherDetails"
-                        className="mb-2"
+                      as={Col}
+                      md="8"
+                      controlId="otherDetails"
+                      className="mb-2"
                     >
-                      <Form.Label className="fw-bold">
-                        Other details
-                      </Form.Label>
+                      <Form.Label className="fw-bold">Other details</Form.Label>
                       <Form.Control
-                          as="textarea"
-                          rows={4}
-                          className="customInput"
-                          defaultValue={state.otherDetails}
-                          onChange={handleChange}
+                        as="textarea"
+                        rows={4}
+                        className="customInput"
+                        defaultValue={state.otherDetails}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                   </Row>
 
-                  <hr className='custom-hr-yellow'/>
+                  <hr className="custom-hr-yellow" />
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="expectedPowderQuantity"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="expectedPowderQuantity"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Expected quantity
                       </Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="number"
-                            aria-label="expected powder quantity"
-                            aria-describedby="addon"
-                            disabled
-                            className="customInput"
-                            defaultValue={expectedPowderQuantity}
+                          type="number"
+                          aria-label="expected powder quantity"
+                          aria-describedby="addon"
+                          disabled
+                          className="customInput"
+                          defaultValue={expectedPowderQuantity}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           kg
                         </InputGroup.Text>
@@ -491,32 +493,32 @@ const UpdateSprayDryer = () => {
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="powderQuantity"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="powderQuantity"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Total quantity
                       </Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="number"
-                            aria-label="powder quantity"
-                            aria-describedby="addon"
-                            value={state?.powderQuantity}
-                            required={state.status === "updated"}
-                            className="customInput"
-                            disabled={state.status === "completed"}
-                            onChange={handlePowderQuantity}
+                          type="number"
+                          aria-label="powder quantity"
+                          aria-describedby="addon"
+                          value={state?.powderQuantity}
+                          required={state.status === "updated"}
+                          className="customInput"
+                          disabled={state.status === "completed"}
+                          onChange={handlePowderQuantity}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           kg
                         </InputGroup.Text>
@@ -524,28 +526,28 @@ const UpdateSprayDryer = () => {
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="powderRecovery"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="powderRecovery"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Recovery</Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="number"
-                            aria-label="powder recovery"
-                            aria-describedby="addon"
-                            disabled
-                            className="customInput"
-                            defaultValue={powderRecovery}
+                          type="number"
+                          aria-label="powder recovery"
+                          aria-describedby="addon"
+                          disabled
+                          className="customInput"
+                          defaultValue={powderRecovery}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           %
                         </InputGroup.Text>
@@ -619,21 +621,21 @@ const UpdateSprayDryer = () => {
                       <Form.Label className="fw-bold">RP</Form.Label>
                       <InputGroup>
                         <Form.Control
-                            type="number"
-                            aria-label="rp"
-                            aria-describedby="addon"
-                            className="customInput"
-                            disabled={state.status === "completed"}
-                            defaultValue={state.rp}
-                            onChange={handleChange}
+                          type="number"
+                          aria-label="rp"
+                          aria-describedby="addon"
+                          className="customInput"
+                          disabled={state.status === "completed"}
+                          defaultValue={state.rp}
+                          onChange={handleChange}
                         />
                         <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: '#0d1b2a'
-                            }}
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
                         >
                           kg
                         </InputGroup.Text>
@@ -641,49 +643,49 @@ const UpdateSprayDryer = () => {
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="powderSprayFinishTime"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="powderSprayFinishTime"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Batch finish time
                       </Form.Label>
                       <Form.Control
-                          type="time"
-                          required={state.status === "updated"}
-                          disabled={state.status === "completed"}
-                          defaultValue={state?.powderSprayFinishTime}
-                          className={`customInput ${
-                              state.status === "completed" && "disabled"
-                          }`}
-                          onChange={handleChange}
+                        type="time"
+                        required={state.status === "updated"}
+                        disabled={state.status === "completed"}
+                        defaultValue={state?.powderSprayFinishTime}
+                        className={`customInput ${
+                          state.status === "completed" && "disabled"
+                        }`}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                   </Row>
 
                   <Row className="mb-5">
                     <Form.Group
-                        as={Col}
-                        md="12"
-                        controlId="specialNotes"
-                        className="mb-2"
+                      as={Col}
+                      md="12"
+                      controlId="specialNotes"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Special notes</Form.Label>
                       <Form.Control
-                          as="textarea"
-                          rows={4}
-                          className="customInput"
-                          onChange={handleChange}
-                          defaultValue={state.specialNotes}
+                        as="textarea"
+                        rows={4}
+                        className="customInput"
+                        onChange={handleChange}
+                        defaultValue={state.specialNotes}
                       />
                     </Form.Group>
                   </Row>
 
-                  <div className='mt-5'>
+                  <div className="mt-5">
                     <button
-                        type="submit"
-                        className="btn-submit customBtn customBtnUpdate"
+                      type="submit"
+                      className="btn-submit customBtn customBtnUpdate"
                     >
                       Update
                     </button>
@@ -699,8 +701,8 @@ const UpdateSprayDryer = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };

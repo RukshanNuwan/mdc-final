@@ -3,6 +3,6 @@
   border-radius: 0.25rem;
 }
 
-.breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb-item + .breadcrumb-item::before {
   color: var(--white);
 }

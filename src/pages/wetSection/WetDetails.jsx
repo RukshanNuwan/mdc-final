@@ -27,10 +27,10 @@ const WetDetails = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/wet-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/wet-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
@@ -46,7 +46,7 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Production date</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">{state?.date}</p>
                         </div>
@@ -58,7 +58,7 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Batch number</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.batchNumber}
@@ -70,7 +70,7 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Tank number</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.tankNumber}
@@ -82,7 +82,7 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Coconut kernel weight</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.kernelWeight}kg
@@ -94,13 +94,13 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Coconut kernel quality</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.quality === true ? (
-                                <CheckIcon className="text-success"/>
+                              <CheckIcon className="text-success" />
                             ) : (
-                                <CloseIcon className="text-danger"/>
+                              <CloseIcon className="text-danger" />
                             )}
                           </p>
                         </div>
@@ -112,12 +112,12 @@ const WetDetails = () => {
                             Coconut kernel quality remark
                           </p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
                             {state?.kernelQualityRemark
-                                ? state?.kernelQualityRemark
-                                : "-"}
+                              ? state?.kernelQualityRemark
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -128,7 +128,7 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Blancher in time</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.blancherInTime}
@@ -142,7 +142,7 @@ const WetDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Operator's name</p>
                         </div>
-                        <div className="col-1"/>
+                        <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
                             {state?.operator}
@@ -169,8 +169,8 @@ const WetDetails = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };

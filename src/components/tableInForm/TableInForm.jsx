@@ -1,34 +1,34 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const TableInForm = ({ id }) => {
   const handleAddNew = () => {
     const tableBody = document.getElementById(id);
 
-    const newRow = document.createElement('tr');
-    const newBagNumber = document.createElement('td');
-    const newBagWeight = document.createElement('td');
-    const newInletTemp = document.createElement('td');
-    const newOutletTemp = document.createElement('td');
-    const newAtomizer = document.createElement('td');
-    const newSpecialNote = document.createElement('td');
+    const newRow = document.createElement("tr");
+    const newBagNumber = document.createElement("td");
+    const newBagWeight = document.createElement("td");
+    const newInletTemp = document.createElement("td");
+    const newOutletTemp = document.createElement("td");
+    const newAtomizer = document.createElement("td");
+    const newSpecialNote = document.createElement("td");
 
-    const newBagNumberInput = document.createElement('input');
-    newBagNumberInput.type = 'number';
+    const newBagNumberInput = document.createElement("input");
+    newBagNumberInput.type = "number";
 
-    const newBagWeightInput = document.createElement('input');
-    newBagWeightInput.type = 'number';
+    const newBagWeightInput = document.createElement("input");
+    newBagWeightInput.type = "number";
 
-    const newInletInput = document.createElement('input');
-    newInletInput.type = 'number';
+    const newInletInput = document.createElement("input");
+    newInletInput.type = "number";
 
-    const newOutletInput = document.createElement('input');
-    newOutletInput.type = 'number';
+    const newOutletInput = document.createElement("input");
+    newOutletInput.type = "number";
 
-    const newAtomizerInput = document.createElement('input');
-    newAtomizerInput.type = 'number';
+    const newAtomizerInput = document.createElement("input");
+    newAtomizerInput.type = "number";
 
-    const newSpecialNoteInput = document.createElement('input');
-    newSpecialNoteInput.type = 'text';
+    const newSpecialNoteInput = document.createElement("input");
+    newSpecialNoteInput.type = "text";
 
     newBagNumber.appendChild(newBagNumberInput);
     newBagWeight.appendChild(newBagWeightInput);

@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link,  useParams } from "react-router-dom";
-import {  Form} from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import { Form } from "react-bootstrap";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import DataTable from "../../components/dataTable/DataTable";
@@ -35,14 +30,14 @@ const MixingSection = () => {
     const fetchLatestData = async () => {
       try {
         const q = query(
-            collection(db, "breakdowns"),
-            where("status", "==", "ongoing"),
-            where("sectionName", "==", "mixing")
+          collection(db, "breakdowns"),
+          where("status", "==", "ongoing"),
+          where("sectionName", "==", "mixing")
         );
 
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          setOngoingBreakdown({id: doc.id, ...doc.data()});
+          setOngoingBreakdown({ id: doc.id, ...doc.data() });
         });
       } catch (error) {
         console.log(error);
@@ -73,22 +68,19 @@ const MixingSection = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                    to="/mixing-section"
-                    className="d-flex align-items-center customBackBtn"
+                  to="/mixing-section"
+                  className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small"/> Back
+                  <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
               </div>
 
               <div className="card-body p-0">
                 <div className="addNewBtnWrapper d-flex justify-content-between align-items-center">
                   {!isBreakdown && (
-                      <Link
-                          to="new"
-                          className="addNewBtn customBtn"
-                      >
-                        Add new
-                      </Link>
+                    <Link to="new" className="addNewBtn customBtn">
+                      Add new
+                    </Link>
                   )}
 
                   <Form>
@@ -98,23 +90,28 @@ const MixingSection = () => {
                       </Form.Label>
 
                       <Form.Switch
-                          type="switch"
-                          id="breakdown-switch"
-                          checked={isBreakdown}
-                          onChange={handleBreakdownToggle}
+                        type="switch"
+                        id="breakdown-switch"
+                        checked={isBreakdown}
+                        onChange={handleBreakdownToggle}
                       />
                     </Form.Group>
                   </Form>
                 </div>
 
                 {isBreakdown && (
-                    <Breakdown location={location} section='mixing' ongoingBreakdown={ongoingBreakdown} isBreakdown={isBreakdown}/>
+                  <Breakdown
+                    location={location}
+                    section="mixing"
+                    ongoingBreakdown={ongoingBreakdown}
+                    isBreakdown={isBreakdown}
+                  />
                 )}
 
                 <DataTable
-                    collectionName="mixing_section"
-                    location={location}
-                    columnName={mixingSectionColumns}
+                  collectionName="mixing_section"
+                  location={location}
+                  columnName={mixingSectionColumns}
                 />
               </div>
             </div>
@@ -122,8 +119,8 @@ const MixingSection = () => {
         </div>
       </main>
 
-      <Footer/>
-      <BackToTop/>
+      <Footer />
+      <BackToTop />
     </>
   );
 };

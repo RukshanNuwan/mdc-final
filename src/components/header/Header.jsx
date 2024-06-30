@@ -1,6 +1,6 @@
-import './header.css';
-import Logo from '../logo/Logo';
-import Nav from '../nav/Nav';
+import "./header.css";
+import Logo from "../logo/Logo";
+import Nav from "../nav/Nav";
 
 const Header = () => {
   return (

@@ -136,7 +136,7 @@ const NewWet = () => {
       console.log(error);
     }
   };
-  
+
   return (
     <>
       <Header />
@@ -194,16 +194,16 @@ const NewWet = () => {
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="tankNumber"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="tankNumber"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">Tank number</Form.Label>
                       <Form.Control
-                          type="number"
-                          className="customInput"
-                          onChange={handleChange}
+                        type="number"
+                        className="customInput"
+                        onChange={handleChange}
                       />
                     </Form.Group>
                   </Row>
@@ -231,7 +231,7 @@ const NewWet = () => {
                           style={{
                             borderTopRightRadius: "0.25rem",
                             borderBottomRightRadius: "0.25rem",
-                            color: '#0d1b2a'
+                            color: "#0d1b2a",
                           }}
                         >
                           kg
@@ -257,40 +257,38 @@ const NewWet = () => {
                     </Form.Group>
 
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="kernelQuality"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="kernelQuality"
+                      className="mb-2"
                     >
                       <Form.Label className="fw-bold">
                         Kernel quality
                       </Form.Label>
 
                       <Form.Switch
-                          type="switch"
-                          id="kernel_quality"
-                          label={quality === true ? "Good" : "Spoiled"}
-                          checked={quality}
-                          onChange={(e) => setQuality(e.target.checked)}
+                        type="switch"
+                        id="kernel_quality"
+                        label={quality === true ? "Good" : "Spoiled"}
+                        checked={quality}
+                        onChange={(e) => setQuality(e.target.checked)}
                       />
                     </Form.Group>
                   </Row>
 
                   <Row>
                     <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="operator"
-                        className="mb-2"
+                      as={Col}
+                      md="4"
+                      controlId="operator"
+                      className="mb-2"
                     >
-                      <Form.Label className="fw-bold">
-                        Operator name
-                      </Form.Label>
+                      <Form.Label className="fw-bold">Operator name</Form.Label>
                       <Form.Control
-                          type="text"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
+                        type="text"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
                       />
                     </Form.Group>
 
@@ -310,11 +308,8 @@ const NewWet = () => {
                     </Form.Group>
                   </Row>
 
-                  <div className='mt-5'>
-                    <button
-                      type="submit"
-                      className="btn-submit customBtn"
-                    >
+                  <div className="mt-5">
+                    <button type="submit" className="btn-submit customBtn">
                       Continue
                     </button>
                     <button type="reset" className="customBtn customClearBtn">

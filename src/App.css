@@ -14,18 +14,11 @@
   --bgColor: #fff;
   --primaryTextDark: #444746;
   --primaryTextGray: #5f6368;
-  --secondaryText: #969696;
-
-  /* navbar */
-  --navbarBgColor: #eef2f6;
 
   /* buttons */
   --buttonPrimaryBgColor: #001d35;
   --buttonPrimaryTextColor: #c2e7ff;
-  --buttonSecondaryBgColor: #415f91;
   --buttonSecondaryTextColor: #eff1f6;
-  --buttonDefaultBgColor: transparent;
-  --buttonDefaultTextColor: #001d35;
 
   /* inputs */
   /*--inputBgColor: #dfe2ee;*/
@@ -33,9 +26,6 @@
 
   /* links */
   --linksTextColor: #0065b3;
-
-  /* cards */
-  --cardBodyBgColor: #ecedf6;
 
   /* search bar */
   --searchBarBgColor: #eaf1fb;
@@ -52,8 +42,6 @@
   --buttonPaddingVertical: 1rem;
 
   * {
-    /* margin: 0; */
-    /* padding: 0; */
     box-sizing: border-box;
   }
 
@@ -140,10 +128,6 @@
   .customSearchInput:focus {
     outline: none;
     border: none;
-  }
-
-  .fs-xs {
-    font-size: 0.6rem;
   }
 
   .disabled {

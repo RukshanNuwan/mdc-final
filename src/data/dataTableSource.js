@@ -42,9 +42,7 @@ export const cutterSectionColumns = [
     headerName: "Location",
     width: 130,
     renderCell: (params) => {
-      return (
-        <div>{params.row.location === "mdc" ? "SD 03" : "SD 04"}</div>
-      );
+      return <div>{params.row.location === "mdc" ? "SD 03" : "SD 04"}</div>;
     },
   },
 ];

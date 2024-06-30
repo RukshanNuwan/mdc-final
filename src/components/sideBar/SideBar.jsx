@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import './sideBar.css';
-import { firstNavList, secondNavList } from '../../data/navItem';
-import NavItem from '../nav/NavItem';
+import "./sideBar.css";
+import { firstNavList, secondNavList } from "../../data/navItem";
+import NavItem from "../nav/NavItem";
 
 const SideBar = () => {
   return (

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import InputGroup from 'react-bootstrap/InputGroup';
-import CheckIcon from '@mui/icons-material/Check';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { useEffect, useState } from "react";
+import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import InputGroup from "react-bootstrap/InputGroup";
+import CheckIcon from "@mui/icons-material/Check";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {
   collection,
   doc,
@@ -13,32 +13,32 @@ import {
   query,
   serverTimestamp,
   setDoc,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
-import '../common.css';
-import Header from '../../components/header/Header';
-import SideBar from '../../components/sideBar/SideBar';
-import Breadcrumb from '../../components/breadcrumb/Breadcrumb';
-import Footer from '../../components/footer/Footer';
-import BackToTop from '../../components/backToTop/BackToTop';
-import useGetCurrentDate from '../../hooks/useCurrentDate';
-import { db } from '../../config/firebase.config';
+import "../common.css";
+import Header from "../../components/header/Header";
+import SideBar from "../../components/sideBar/SideBar";
+import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
+import Footer from "../../components/footer/Footer";
+import BackToTop from "../../components/backToTop/BackToTop";
+import useGetCurrentDate from "../../hooks/useCurrentDate";
+import { db } from "../../config/firebase.config";
 
 const Orders = () => {
   const [mdcData, setMdcData] = useState({});
   const [araliyaKeleData, setAraliyaKeleData] = useState({});
-  const [mdcRecipeType, setMdcRecipeType] = useState('conventional');
+  const [mdcRecipeType, setMdcRecipeType] = useState("conventional");
   const [mdcOrderId, setMdcOrderId] = useState();
   const [araliyaKeleOrderId, setAraliyaKeleOrderId] = useState();
   const [retrieveData, setRetrieveData] = useState([]);
 
-  const loggedInUser = JSON.parse(localStorage.getItem('user'));
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
   const currentDate = useGetCurrentDate();
 
-  const araliyaKeleLocation = 'araliya_kele';
-  const mdcLocation = 'mdc';
-  const status = 'ongoing';
-  const araliyaKeleRecipeType = 'organic';
+  const araliyaKeleLocation = "araliya_kele";
+  const mdcLocation = "mdc";
+  const status = "ongoing";
+  const araliyaKeleRecipeType = "organic";
 
   const mdcUpdateAt = retrieveData[1]?.updatedAt?.toDate().toLocaleString();
   const mdcUpdateBy = retrieveData[1]?.updatedBy?.displayName;
@@ -81,7 +81,7 @@ const Orders = () => {
     e.preventDefault();
 
     try {
-      await setDoc(doc(db, 'orders', mdcOrderId), {
+      await setDoc(doc(db, "orders", mdcOrderId), {
         ...mdcData,
         updatedAt: serverTimestamp(),
       });
@@ -96,7 +96,7 @@ const Orders = () => {
     e.preventDefault();
 
     try {
-      await setDoc(doc(db, 'orders', araliyaKeleOrderId), {
+      await setDoc(doc(db, "orders", araliyaKeleOrderId), {
         ...araliyaKeleData,
         updatedAt: serverTimestamp(),
       });
@@ -110,7 +110,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchDataFromCollection = async () => {
       try {
-        const q = query(collection(db, 'orders'));
+        const q = query(collection(db, "orders"));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           let list = [];
           querySnapshot.forEach((doc) => {
@@ -224,9 +224,9 @@ const Orders = () => {
                               <InputGroup.Text
                                 id="addon"
                                 style={{
-                                  borderTopRightRadius: '0.5rem',
-                                  borderBottomRightRadius: '0.5rem',
-                                  fontWeight: 'bold',
+                                  borderTopRightRadius: "0.5rem",
+                                  borderBottomRightRadius: "0.5rem",
+                                  fontWeight: "bold",
                                 }}
                               >
                                 kg
@@ -349,9 +349,9 @@ const Orders = () => {
                               <InputGroup.Text
                                 id="addon"
                                 style={{
-                                  borderTopRightRadius: '0.5rem',
-                                  borderBottomRightRadius: '0.5rem',
-                                  fontWeight: 'bold',
+                                  borderTopRightRadius: "0.5rem",
+                                  borderBottomRightRadius: "0.5rem",
+                                  fontWeight: "bold",
                                 }}
                               >
                                 kg
