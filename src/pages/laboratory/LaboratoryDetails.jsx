@@ -32,12 +32,12 @@ const LaboratoryDetails = () => {
 
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
-              <div className="col-md-12 d-flex justify-content-between mb-2">
+              <div className="mb-2">
                 <Link
-                  to={`/lab-section/${location}`}
-                  className="d-flex align-items-center customClearBtn"
+                    to={`/lab-section/${location}`}
+                    className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small" /> Back
+                  <ArrowBackIosIcon fontSize="small"/> Back
                 </Link>
               </div>
 
@@ -45,8 +45,8 @@ const LaboratoryDetails = () => {
                 <div className="row">
                   <div className="col d-xs-none"></div>
 
-                  <div className="col-md-6">
-                    <p className="display-6 mb-2">Batch details</p>
+                  <div className="col-md-8">
+                    <p className="display-6 mb-4 text-white">Batch details</p>
 
                     <div className="dataItemWrapper">
                       <div className="row py-1">
@@ -89,11 +89,11 @@ const LaboratoryDetails = () => {
                         <div className="col-5">
                           <p className="bodyText fw-bold">
                             {state?.status === "completed" ? (
-                              <PublishedWithChangesIcon className="text-success" />
+                                <PublishedWithChangesIcon className="text-success"/>
                             ) : (
-                              <div>
-                                <LoopIcon className="text-primary" />
-                              </div>
+                                <div>
+                                  <LoopIcon className="text-primary"/>
+                                </div>
                             )}
                           </p>
                         </div>
@@ -181,9 +181,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Taste</p>
                           <p className="subSectionValue bodyText">
                             {state?.rawMilkTaste === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -192,9 +192,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Color</p>
                           <p className="subSectionValue bodyText">
                             {state?.rawMilkColor === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -203,9 +203,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Odor</p>
                           <p className="subSectionValue bodyText">
                             {state?.rawMilkOdor === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -245,9 +245,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Taste</p>
                           <p className="subSectionValue bodyText">
                             {state?.mixMilkTaste === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -256,9 +256,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Color</p>
                           <p className="subSectionValue bodyText">
                             {state?.mixMilkColor === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -267,9 +267,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Odor</p>
                           <p className="subSectionValue bodyText">
                             {state?.mixMilkOdor === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -277,31 +277,31 @@ const LaboratoryDetails = () => {
                     </div>
 
                     {state?.isMixHaveIssue && (
-                      <div className="dataItemWrapper">
-                        <>
-                          <div className="row py-1">
-                            <div className="col-7">
-                              <p className="bodyText">Informed to</p>
+                        <div className="dataItemWrapper">
+                          <>
+                            <div className="row py-1">
+                              <div className="col-7">
+                                <p className="bodyText">Informed to</p>
+                              </div>
+                              <div className="col-5">
+                                <p className="bodyText fw-bold text-capitalize">
+                                  {state?.informedToAboutMix}
+                                </p>
+                              </div>
                             </div>
-                            <div className="col-5">
-                              <p className="bodyText fw-bold text-capitalize">
-                                {state?.informedToAboutMix}
-                              </p>
-                            </div>
-                          </div>
 
-                          <div className="row py-1">
-                            <div className="col-7">
-                              <p className="bodyText">Issue details</p>
+                            <div className="row py-1">
+                              <div className="col-7">
+                                <p className="bodyText">Issue details</p>
+                              </div>
+                              <div className="col-5">
+                                <p className="bodyText fw-bold text-danger">
+                                  {state?.remarkAboutMixIssue}
+                                </p>
+                              </div>
                             </div>
-                            <div className="col-5">
-                              <p className="bodyText fw-bold text-danger">
-                                {state?.remarkAboutMixIssue}
-                              </p>
-                            </div>
-                          </div>
-                        </>
-                      </div>
+                          </>
+                        </div>
                     )}
 
                     <div className="dataItemWrapper">
@@ -351,9 +351,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Taste</p>
                           <p className="subSectionValue bodyText">
                             {state?.powderTaste === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -362,9 +362,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Color</p>
                           <p className="subSectionValue bodyText">
                             {state?.powderColor === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -373,9 +373,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Odor</p>
                           <p className="subSectionValue bodyText">
                             {state?.powderOdor === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -384,9 +384,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Solubility</p>
                           <p className="subSectionValue bodyText">
                             {state?.powderSolubility === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -395,9 +395,9 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Free flowing</p>
                           <p className="subSectionValue bodyText">
                             {state?.powderFreeFlowing === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <CloseIcon className="text-danger" />
+                                <CloseIcon className="text-danger"/>
                             )}
                           </p>
                         </div>
@@ -405,30 +405,30 @@ const LaboratoryDetails = () => {
                     </div>
 
                     {state?.isPowderHaveIssue && (
-                      <div className="dataItemWrapper">
-                        <div className="row py-1">
-                          <div className="col-7">
-                            <p className="bodyText">Informed to</p>
-                          </div>
-                          <div className="col-5">
-                            <p className="bodyText fw-bold text-capitalize">
-                              {state?.informedToAboutPowder}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="row py-1">
-                          <div className="col-7">
-                            <p className="bodyText">Remarks</p>
+                        <div className="dataItemWrapper">
+                          <div className="row py-1">
+                            <div className="col-7">
+                              <p className="bodyText">Informed to</p>
+                            </div>
+                            <div className="col-5">
+                              <p className="bodyText fw-bold text-capitalize">
+                                {state?.informedToAboutPowder}
+                              </p>
+                            </div>
                           </div>
 
-                          <div className="col-5">
-                            <p className="bodyText fw-bold text-capitalize">
-                              {state?.remarks ? state?.remarks : "-"}
-                            </p>
+                          <div className="row py-1">
+                            <div className="col-7">
+                              <p className="bodyText">Remarks</p>
+                            </div>
+
+                            <div className="col-5">
+                              <p className="bodyText fw-bold text-capitalize">
+                                {state?.remarks ? state?.remarks : "-"}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
                     )}
 
                     <div className="dataItemWrapper">
@@ -446,7 +446,7 @@ const LaboratoryDetails = () => {
                     </div>
 
                     <div className="mt-4 text-end">
-                      <p className="smallText">
+                      <p className="smallText text-white">
                         Added at {state?.timeStamp?.toDate().toLocaleString()}
                       </p>
                     </div>
@@ -460,8 +460,8 @@ const LaboratoryDetails = () => {
         </div>
       </main>
 
-      <Footer />
-      <BackToTop />
+      <Footer/>
+      <BackToTop/>
     </>
   );
 };

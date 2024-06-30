@@ -24,6 +24,10 @@ label.form-label {
   color: var(--white);
 }
 
+.form-check-label {
+  color: var(--dark-blue-1) !important;
+}
+
 .addNewBtnWrapper {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
@@ -87,8 +91,12 @@ label.form-label {
   color: var(--dark-blue-1) !important;
 }
 
-.custom-hr {
+.custom-hr-yellow {
   border-top: 1px solid var(--bright-yellow);
+}
+
+.custom-hr-blue {
+  border-bottom: 1px solid var(--dark-blue-1);
 }
 
 @media only screen and (max-width: 600px) {

@@ -8,6 +8,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
 import { laboratorySectionColumns } from "../../data/dataTableSource";
+import React from "react";
 
 const LaboratorySection = () => {
   const { location } = useParams();
@@ -29,28 +30,30 @@ const LaboratorySection = () => {
 
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
-              <div className="card-body p-0">
+              <div className="mb-2">
                 <Link
-                  to="/lab-section"
-                  className="d-flex align-items-center customClearBtn"
+                    to="/lab-section"
+                    className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small" /> Back
+                  <ArrowBackIosIcon fontSize="small"/> Back
                 </Link>
+              </div>
 
+              <div className="card-body p-0">
                 <div className="addNewBtnWrapper">
                   {/* print button */}
                   <Link
-                    to="new"
-                    className="addNewBtn customBtn"
+                      to="new"
+                      className="addNewBtn customBtn"
                   >
                     Add new
                   </Link>
                 </div>
 
                 <DataTable
-                  collectionName="lab_section"
-                  columnName={laboratorySectionColumns}
-                  location={location}
+                    collectionName="lab_section"
+                    columnName={laboratorySectionColumns}
+                    location={location}
                 />
               </div>
             </div>
@@ -58,8 +61,8 @@ const LaboratorySection = () => {
         </div>
       </main>
 
-      <Footer />
-      <BackToTop />
+      <Footer/>
+      <BackToTop/>
     </>
   );
 };

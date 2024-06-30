@@ -264,7 +264,7 @@ const UpdateCutter = () => {
                       </Form.Group>
                     </Row>
 
-                    <hr className='custom-hr'/>
+                    <hr className='custom-hr-yellow'/>
 
                     <Row>
                       <Form.Group
