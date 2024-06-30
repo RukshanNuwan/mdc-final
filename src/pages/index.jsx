@@ -14,13 +14,13 @@ const Index = () => {
 
       <main id="main" className="main">
         <div className="d-flex justify-content-center align-items-center m-md-5">
-          <div className="row touchable-card-parent mt-2">
+          <div className="row mt-2 d-flex justify-content-center align-items-center">
             <div className="col-md d-flex align-items-center justify-content-center">
               <Link
                 to="mdc"
                 className="p-5 d-flex align-items-center justify-content-center touchable-card"
               >
-                MDC
+                <p className='text-center'>Spray Dryer 03</p>
               </Link>
             </div>
 
@@ -31,7 +31,7 @@ const Index = () => {
                 to="araliya_kele"
                 className="p-5 d-flex align-items-center justify-content-center touchable-card"
               >
-                Araliya Kele
+                <p className='text-center'>Spray Dryer 04</p>
               </Link>
             </div>
           </div>
@@ -39,7 +39,6 @@ const Index = () => {
       </main>
 
       <Footer />
-      <BackToTop />
     </>
   );
 };

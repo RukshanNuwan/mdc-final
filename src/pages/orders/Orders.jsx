@@ -158,7 +158,7 @@ const Orders = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="card-body">
-                      <p className="display-6">MDC</p>
+                      <p className="display-6">SD 03</p>
 
                       <Form onSubmit={handleMdcSubmit}>
                         <Row>
@@ -261,7 +261,7 @@ const Orders = () => {
                           <div>
                             <button
                               type="submit"
-                              className="btn-submit customBtn customBtnSecondary"
+                              className="btn-submit customBtn"
                             >
                               <CheckIcon className="me-2" />
                               Submit
@@ -386,7 +386,7 @@ const Orders = () => {
                           <div>
                             <button
                               type="submit"
-                              className="btn-submit customBtn customBtnSecondary"
+                              className="btn-submit customBtn"
                             >
                               <CheckIcon className="me-2" />
                               Submit

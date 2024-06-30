@@ -10,8 +10,52 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
-  box-shadow: 0 0 0.4rem rgba(1, 41, 112, 0.1);
-  background-color: var(--navbarBgColor);
+  background-color: var(--dark-blue-1);
+}
+
+.sidebar-nav li {
+  list-style: none;
+}
+
+.sidebar-nav .nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-nav .nav-heading {
+  margin: 0.75rem 0.75rem 0.75rem 0;
+  font-size: var(--smallText);
+  text-transform: capitalize;
+  color: var(--white);
+}
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-size: var(--mediumText);
+  font-weight: 600;
+  color: var(--white);
+  transition: 0.3s;
+  border-radius: 0.25rem;
+}
+
+.sidebar-nav .nav-link i {
+  font-size: 1rem;
+  margin-right: 0.75rem;
+  color: var(--white);
+}
+
+.sidebar-nav .nav-link.collapsed {
+  color: var(--white);
+  background: var(--pink);
+}
+
+.sidebar-nav .nav-link:hover {
+  background: var(--light-blue);
+}
+
+.sidebar-nav .nav-link.collapsed i {
+  color: var(--white);
 }
 
 @media (max-width: 1199px) {
@@ -42,51 +86,4 @@
   .toggle-sidebar .sidebar {
     left: -15.625rem;
   }
-}
-
-.sidebar-nav li {
-  list-style: none;
-}
-
-.sidebar-nav .nav-item {
-  margin-bottom: 0.25rem;
-}
-
-.sidebar-nav .nav-heading {
-  margin: 0.75rem 0.75rem 0.75rem 0;
-  font-size: var(--smallText);
-  text-transform: capitalize;
-  color: var(--primaryTextGray);
-}
-
-.sidebar-nav .nav-link {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  font-size: var(--mediumText);
-  font-weight: 600;
-  color: var(--primaryTextDark);
-  transition: 0.3s;
-  background: var(--buttonPrimaryTextColor);
-  border-radius: 1rem;
-}
-
-.sidebar-nav .nav-link i {
-  font-size: 1rem;
-  margin-right: 0.75rem;
-  color: var(--secondaryText);
-}
-
-.sidebar-nav .nav-link.collapsed {
-  color: var(--primaryTextDark);
-  background: #fff;
-}
-
-.sidebar-nav .nav-link:hover {
-  color: var(--primaryTextDark);
-  background: var(--buttonPrimaryTextColor);
-}
-
-.sidebar-nav .nav-link.collapsed i {
-  color: var(--secondaryText);
 }

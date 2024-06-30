@@ -1,7 +1,7 @@
 .footer {
   padding: 1.25rem 0 0.625rem;
   font-size: var(--smallText);
-  background-color: var(--cardBodyBgColor);
+  background-color: var(--dark-blue-2);
   transition: all 0.3s;
 }
 

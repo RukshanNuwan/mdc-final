@@ -7,11 +7,11 @@ const Breadcrumb = ({ title }) => {
     <nav className="p-2 mb-3 breadcrumb-container">
       <ol className="breadcrumb m-0">
         <li className="breadcrumb-item d-flex align-items-center">
-          <Link to="/" className="bodyText">
+          <Link to="/" className="bodyText text-white">
             <i className="bi bi-house-door" />
           </Link>
         </li>
-        <li className="breadcrumb-item active bodyText">{title}</li>
+        <li className="breadcrumb-item active bodyText text-white">{title}</li>
       </ol>
     </nav>
   );

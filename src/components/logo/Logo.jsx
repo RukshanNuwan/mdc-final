@@ -10,7 +10,7 @@ const Logo = () => {
 
   return (
     <Box>
-      <button onClick={handleToggleSideBar} className="customBtn sidebarToggle">
+      <button onClick={handleToggleSideBar} className="sidebarToggle">
         <MenuIcon />
       </button>
     </Box>

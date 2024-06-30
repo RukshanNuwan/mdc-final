@@ -27,12 +27,12 @@ const CutterDetails = () => {
 
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
-              <div className="col-md-12 d-flex justify-content-between mb-2">
+              <div className="mb-2">
                 <Link
-                  to="/cutter-section"
-                  className="d-flex align-items-center customClearBtn"
+                    to="/cutter-section"
+                    className="d-flex align-items-center customBackBtn"
                 >
-                  <ArrowBackIosIcon fontSize="small" /> Back
+                  <ArrowBackIosIcon fontSize="small"/> Back
                 </Link>
               </div>
 
@@ -40,15 +40,15 @@ const CutterDetails = () => {
                 <div className="row">
                   <div className="col d-xs-none"></div>
 
-                  <div className="col-md-6">
-                    <p className="display-6 mb-2">Batch details</p>
+                  <div className="col-md-8">
+                    <p className="display-6 mb-4 text-white">Batch details</p>
 
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
                           <p className="bodyText">Production date</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">{state?.date}</p>
                         </div>
@@ -60,7 +60,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Batch number</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.batchNumber}
@@ -72,10 +72,10 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Location</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.location === "mdc" ? "MDC" : "Araliya Kele"}
+                            {state?.location === "mdc" ? "SD 03" : "SD 04"}
                           </p>
                         </div>
                       </div>
@@ -84,15 +84,15 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Status</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.status === "completed" ? (
-                              <PublishedWithChangesIcon className="text-success" />
+                                <PublishedWithChangesIcon className="text-success"/>
                             ) : (
-                              <div>
-                                <LoopIcon className="text-primary" />
-                              </div>
+                                <div>
+                                  <LoopIcon className="text-primary"/>
+                                </div>
                             )}
                           </p>
                         </div>
@@ -104,7 +104,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Blancher start time</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.blancherStartTime}
@@ -128,7 +128,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Cutter finish time</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.cutterFinishTime}
@@ -140,7 +140,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Expeller start time</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.expellerStartTime}
@@ -152,7 +152,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Expeller finish time</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.expellerFinishTime}
@@ -164,17 +164,17 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Process time</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {`${
-                              state?.expellerProcessTime?.hours
-                                ? state?.expellerProcessTime?.hours
-                                : "-"
+                                state?.expellerProcessTime?.hours
+                                    ? state?.expellerProcessTime?.hours
+                                    : "-"
                             }hr ${
-                              state?.expellerProcessTime?.minutes
-                                ? state?.expellerProcessTime?.minutes
-                                : "-"
+                                state?.expellerProcessTime?.minutes
+                                    ? state?.expellerProcessTime?.minutes
+                                    : "-"
                             }min`}
                           </p>
                         </div>
@@ -184,7 +184,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Delay time</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold text-danger">
                             {state?.expellerDelayTime}
@@ -198,15 +198,15 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Heat valve</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.heatValve === true ? (
-                              <CheckIcon className="text-success" />
+                                <CheckIcon className="text-success"/>
                             ) : (
-                              <div>
-                                <CloseIcon className="text-danger" />
-                              </div>
+                                <div>
+                                  <CloseIcon className="text-danger"/>
+                                </div>
                             )}
                           </p>
                         </div>
@@ -216,10 +216,10 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Special notes</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.specialNotes ? state?.specialNotes : "---"}
+                            {state?.specialNotes ? state?.specialNotes : "-"}
                           </p>
                         </div>
                       </div>
@@ -228,7 +228,7 @@ const CutterDetails = () => {
                         <div className="col-7">
                           <p className="bodyText">Operator's name</p>
                         </div>
-                        <div className="col-1" />
+                        <div className="col-1"/>
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
                             {state?.operator}
@@ -238,7 +238,7 @@ const CutterDetails = () => {
                     </div>
 
                     <div className="mt-4 text-end">
-                      <p className="smallText">
+                      <p className="smallText text-white">
                         Added at {state?.timeStamp?.toDate().toLocaleString()}
                       </p>
                       {/* <p className="smallText">
@@ -255,8 +255,8 @@ const CutterDetails = () => {
         </div>
       </main>
 
-      <Footer />
-      <BackToTop />
+      <Footer/>
+      <BackToTop/>
     </>
   );
 };

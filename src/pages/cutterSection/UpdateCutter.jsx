@@ -1,10 +1,9 @@
-import { useState } from "react";
+import {useState} from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CheckIcon from "@mui/icons-material/Check";
 import {
   addDoc,
   collection,
@@ -20,10 +19,10 @@ import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
-import { db } from "../../config/firebase.config";
+import {db} from "../../config/firebase.config";
 
 const UpdateCutter = () => {
-  const { state } = useLocation();
+  const {state} = useLocation();
 
   const [data, setData] = useState({});
   const [validated, setValidated] = useState(false);
@@ -60,8 +59,8 @@ const UpdateCutter = () => {
 
   const handleExpellerEndTime = (e) => {
     const processTime = calculateTimeDifference(
-      state?.expellerStartTime,
-      e.target.value
+        state?.expellerStartTime,
+        e.target.value
     );
 
     const averageTime = 20;
@@ -113,20 +112,20 @@ const UpdateCutter = () => {
                   status: "ongoing",
                   timeStamp: serverTimestamp(),
                 })
-                  .then(() => {
-                    Swal.fire({
-                      title: "Changes saved",
-                      icon: "success",
-                      showConfirmButton: false,
-                      timer: 1500,
-                    });
+                    .then(() => {
+                      Swal.fire({
+                        title: "Changes saved",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
 
-                    e.target.reset();
-                    navigate("/cutter-section");
-                  })
-                  .catch((error) => {
-                    console.log("Error updating document:", error);
-                  });
+                      e.target.reset();
+                      navigate("/cutter-section");
+                    })
+                    .catch((error) => {
+                      console.log("Error updating document:", error);
+                    });
               } catch (error) {
                 console.log(error);
               }
@@ -142,231 +141,236 @@ const UpdateCutter = () => {
   };
 
   return (
-    <>
-      <Header />
-      <SideBar />
+      <>
+        <Header/>
+        <SideBar/>
 
-      <main id="main" className="main">
-        <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Cutter Section" />
-          </div>
+        <main id="main" className="main">
+          <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
+            <div className="col-md-12">
+              <Breadcrumb title="Cutter Section"/>
+            </div>
 
-          <div className="pe-0 px-xs-0">
-            <div className="card border-0">
-              <div className="mb-2">
-                <Link
-                  to="/cutter-section"
-                  className="d-flex align-items-center customClearBtn"
-                >
-                  <ArrowBackIosIcon fontSize="small" /> Back
-                </Link>
-              </div>
+            <div className="pe-0 px-xs-0">
+              <div className="card border-0">
+                <div className="mb-2">
+                  <Link
+                      to="/cutter-section"
+                      className="d-flex align-items-center customBackBtn"
+                  >
+                    <ArrowBackIosIcon fontSize="small"/> Back
+                  </Link>
+                </div>
 
-              <div className="card-body formWrapper">
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                  <Row>
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="date"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={state.date}
-                      />
-                    </Form.Group>
+                <div className="card-body formWrapper">
+                  <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Row>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="date"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Date</Form.Label>
+                        <Form.Control
+                            type="date"
+                            disabled
+                            className="customInput disabled"
+                            defaultValue={state.date}
+                        />
+                      </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="batchNumber"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Batch number (Wet section)
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={state.batchNumber}
-                      />
-                    </Form.Group>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="batchNumber"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Batch number (Wet section)
+                        </Form.Label>
+                        <Form.Control
+                            type="number"
+                            disabled
+                            className="customInput disabled"
+                            defaultValue={state.batchNumber}
+                        />
+                      </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="blancherStartTime"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Blancher start time
-                      </Form.Label>
-                      <Form.Control
-                        type="time"
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={state.blancherStartTime}
-                      />
-                    </Form.Group>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="blancherStartTime"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Blancher start time
+                        </Form.Label>
+                        <Form.Control
+                            type="time"
+                            disabled
+                            className="customInput disabled"
+                            defaultValue={state.blancherStartTime}
+                        />
+                      </Form.Group>
+                    </Row>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="heatValve"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Heat Valve</Form.Label>
-                      <Form.Switch
-                        type="switch"
-                        id="heat_valve"
-                        label={heatValve === true ? "On" : "Off"}
-                        checked={heatValve}
-                        onChange={(e) => setHeatValve(e.target.checked)}
-                      />
-                    </Form.Group>
-                  </Row>
+                    <Row>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="heatValve"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Heat Valve</Form.Label>
+                        <Form.Switch
+                            type="switch"
+                            id="heat_valve"
+                            label={heatValve === true ? "On" : "Off"}
+                            checked={heatValve}
+                            onChange={(e) => setHeatValve(e.target.checked)}
+                        />
+                      </Form.Group>
 
-                  <Row>
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="expellerStartTime"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Expeller start time
-                      </Form.Label>
-                      <Form.Control
-                        type="time"
-                        className="customInput"
-                        defaultValue={state.expellerStartTime}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="expellerStartTime"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Expeller start time
+                        </Form.Label>
+                        <Form.Control
+                            type="time"
+                            className="customInput"
+                            defaultValue={state.expellerStartTime}
+                            onChange={handleChange}
+                        />
+                      </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="location"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Location</Form.Label>
-                      <Form.Control
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={state.location}
-                      ></Form.Control>
-                    </Form.Group>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="location"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Location</Form.Label>
+                        <Form.Control
+                            disabled
+                            className="customInput disabled"
+                            defaultValue={state.location === 'mdc' ? 'SD 03' : 'SD 04'}
+                        />
+                      </Form.Group>
+                    </Row>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="operator"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Operator's name
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        defaultValue={state.operator}
-                        className="customInput"
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                  </Row>
+                    <hr className='custom-hr-yellow'/>
 
-                  <Row className="mb-5">
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="cutterFinishTime"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Cutter finish time
-                      </Form.Label>
-                      <Form.Control
-                        type="time"
-                        defaultValue={state.cutterFinishTime}
-                        required={state.status === "updated"}
-                        disabled={state.status === "ongoing"}
-                        className={`customInput ${
-                          state.status === "ongoing" && "disabled"
-                        }`}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
+                    <Row>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="operator"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Operator name
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            defaultValue={state.operator}
+                            className="customInput"
+                            onChange={handleChange}
+                        />
+                      </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      controlId="expellerFinishTime"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Expeller finish time
-                      </Form.Label>
-                      <Form.Control
-                        type="time"
-                        defaultValue={state.expellerFinishTime}
-                        required={state.status === "updated"}
-                        disabled={state.status === "ongoing"}
-                        className={`customInput ${
-                          state.status === "ongoing" && "disabled"
-                        }`}
-                        onChange={handleExpellerEndTime}
-                      />
-                    </Form.Group>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="cutterFinishTime"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Cutter finish time
+                        </Form.Label>
+                        <Form.Control
+                            type="time"
+                            defaultValue={state.cutterFinishTime}
+                            required={state.status === "updated"}
+                            disabled={state.status === "ongoing"}
+                            className={`customInput ${
+                                state.status === "ongoing" && "disabled"
+                            }`}
+                            onChange={handleChange}
+                        />
+                      </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="10"
-                      controlId="specialNotes"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Special notes</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={4}
-                        disabled={state.status === "ongoing"}
-                        className={`customInput ${
-                          state.status === "ongoing" && "disabled"
-                          }`}
-                        defaultValue={state.specialNotes}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                  </Row>
+                      <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="expellerFinishTime"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Expeller finish time
+                        </Form.Label>
 
-                  <div>
-                    <button
-                      type="submit"
-                      className="btn-submit customBtn customBtnUpdate mt-md-4"
-                    >
-                      <CheckIcon className="me-2" />
-                      Update
-                    </button>
-                    <button type="reset" className="customBtn customClearBtn">
-                      Cancel
-                    </button>
-                  </div>
-                </Form>
+                        <Form.Control
+                            type="time"
+                            defaultValue={state.expellerFinishTime}
+                            required={state.status === "updated"}
+                            disabled={state.status === "ongoing"}
+                            className={`customInput ${
+                                state.status === "ongoing" && "disabled"
+                            }`}
+                            onChange={handleExpellerEndTime}
+                        />
+                      </Form.Group>
+                    </Row>
+
+                    <Row>
+                      <Form.Group
+                          as={Col}
+                          md="12"
+                          controlId="specialNotes"
+                          className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Special notes</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={4}
+                            disabled={state.status === "ongoing"}
+                            className={`customInput ${
+                                state.status === "ongoing" && "disabled"
+                            }`}
+                            defaultValue={state.specialNotes}
+                            onChange={handleChange}
+                        />
+                      </Form.Group>
+                    </Row>
+
+                    <div className='mt-5'>
+                      <button
+                          type="submit"
+                          className="btn-submit customBtn customBtnUpdate"
+                      >
+                        Update
+                      </button>
+
+                      <button type="reset" className="customBtn customClearBtn">
+                        Clear
+                      </button>
+                    </div>
+                  </Form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer />
-      <BackToTop />
-    </>
+        <Footer/>
+        <BackToTop/>
+      </>
   );
 };
 

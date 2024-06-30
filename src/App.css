@@ -1,6 +1,15 @@
 :root {
   scroll-behavior: smooth;
 
+  --dark-blue-2: #0d1b2a;
+  --dark-blue-1: #101530;
+  --light-blue: #00a9ff;
+  --bright-blue: #3d25ff;
+  --pink: #ff007f;
+  --white: #fff;
+  --bright-yellow: #ffd800;
+  --success-green: #02fd9e;
+
   /* body */
   --bgColor: #fff;
   --primaryTextDark: #444746;
@@ -39,8 +48,8 @@
   --smallText: 0.75rem;
 
   /* paddings */
-  --buttonPaddingHorizontal: 1rem;
-  --buttonPaddingVertical: 0.75rem;
+  --buttonPaddingHorizontal: 2rem;
+  --buttonPaddingVertical: 1rem;
 
   * {
     /* margin: 0; */
@@ -76,6 +85,7 @@
 
   .bodyText {
     font-size: var(--mediumText);
+    color: var(--white);
   }
 
   .smallText {
@@ -84,34 +94,26 @@
 
   .customBtn {
     padding: var(--buttonPaddingVertical) var(--buttonPaddingHorizontal);
-    background: var(--buttonDefaultBgColor);
-    color: var(--buttonDefaultTextColor);
     font-size: var(--mediumText);
     border: none;
     outline: none;
-    border-radius: 0.75rem;
+    border-radius: 0.25rem;
+    background: var(--pink);
+    color: var(--white);
+    text-transform: uppercase;
   }
 
-  .customBtnPrimary {
-    background: var(--buttonPrimaryBgColor);
-    color: var(--buttonPrimaryTextColor);
-  }
-
-  .customBtnPrimary:hover {
-    background: #0a3354;
-  }
-
-  .customBtnSecondary {
-    background: var(--buttonSecondaryBgColor);
-    color: var(--buttonSecondaryTextColor);
-  }
-
-  .customBtnSecondary:hover {
-    background: #2d4875;
+  .customBackBtn {
+    padding: 1rem 2rem 1rem 0;
+    font-size: var(--mediumText);
+    border: none;
+    outline: none;
+    color: var(--dark-blue-2);
+    text-transform: uppercase;
   }
 
   .customBtnUpdate {
-    background-color: #566e00;
+    background: #566e00;
     color: var(--buttonSecondaryTextColor);
   }
 
@@ -120,8 +122,8 @@
   }
 
   .customClearBtn {
-    background: var(--buttonDefaultBgColor);
-    color: var(--linksTextColor);
+    background: var(--dark-blue-1);
+    color: var(--white);
     font-size: var(--mediumText);
   }
 
@@ -145,8 +147,8 @@
   }
 
   .disabled {
-    background-color: #f8f8f8 !important;
-    color: var(--primaryTextDark);
+    background-color: var(--dark-blue-1) !important;
+    color: var(--white);
   }
 }
 

@@ -1,28 +1,31 @@
 label.form-label {
   font-size: var(--mediumText);
   margin-bottom: 0.25rem;
+  color: var(--white);
 }
 
-.subFormWrapper {
-  padding: 0.5rem 0.75rem !important;
-  background-color: #f8f8f8;
-  border-radius: 1rem;
-}
-
+.subFormWrapper,
 .formWrapper {
-  padding: 0.75rem !important;
-  background-color: #f8f8f8;
-  border-radius: 1rem;
+  padding: 2rem !important;
+  background-color: var(--dark-blue-1);
+  border-radius: 0.25rem;
 }
 
 .customInput {
   padding: 0.75rem 1.25rem;
   outline: none;
   border: none;
-  border-radius: 0.5rem;
-  background-color: var(--inputBgColor);
+  border-radius: 0.25rem;
   font-size: var(--mediumText);
-  color: var(--primaryTextDark);
+  color: var(--dark-blue-1);
+}
+
+.form-check-label {
+  color: var(--white);
+}
+
+.form-check-label {
+  color: var(--dark-blue-1) !important;
 }
 
 .addNewBtnWrapper {
@@ -32,58 +35,70 @@ label.form-label {
 
 .dataItemWrapper {
   margin-bottom: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
-  background-color: var(--cardBodyBgColor);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--bright-yellow);
+}
+
+.dataItemWrapper p.bodyText {
+  color: var(--dark-blue-1);
 }
 
 .touchable-card {
   height: 100%;
   width: 100%;
-  background-color: #705575;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   font-weight: bold;
   font-size: var(--subHeading);
   text-decoration: none;
-  color: #fff !important;
-}
-
-.touchable-card:hover {
-  background-color: #623a69;
-  cursor: pointer;
-}
-
-.css-yrdy0g-MuiDataGrid-columnHeaderRow {
-  background-color: #dae2f9 !important;
+  background-color: var(--pink);
+  color: var(--white) !important;
 }
 
 .errorMessageWrapper {
+  padding: 1rem 2rem;
   background-color: #ffdbd1;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .errorMessage {
-  color: #8f4c38;
+  color: #a31818;
   font-weight: bold;
   font-size: var(--smallText);
 }
 
-.sectionContainer {
-  padding: 0.5rem;
-  background-color: #ecedf5;
-  border-radius: 1rem;
+.breakdownToggle {
+  color: var(--dark-blue-1) !important;
 }
 
-.sectionTitle {
-  padding: 0.25rem 0.5rem;
-  font-size: var(--smallText);
-  font-weight: bold;
-  border-radius: 1rem;
+.tooltipText {
+  font-size: 0.75rem;
+  color: var(--bright-yellow);
 }
 
-.sectionTitleBlue {
-  background-color: #415f91;
-  color: #d6e3ff;
+.tooltipTextPink {
+  font-size: 0.75rem;
+  color: var(--pink);
+}
+
+.textDarkBlue {
+  color: var(--dark-blue-1) !important;
+}
+
+.textSuccessGreen {
+  color: var(--success-green);
+}
+
+.textLightBlue {
+  color: var(--light-blue);
+}
+
+.custom-hr-yellow {
+  border-top: 1px solid var(--bright-yellow);
+}
+
+.custom-hr-blue {
+  border-bottom: 1px solid var(--dark-blue-1);
 }
 
 @media only screen and (max-width: 600px) {
@@ -111,12 +126,6 @@ label.form-label {
   .MuiDataGrid-cell,
   .MuiDataGrid-columnHeader {
     font-size: var(--smallText) !important;
-  }
-
-  .touchable-card-parent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .touchable-card {

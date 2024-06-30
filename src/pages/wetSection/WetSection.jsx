@@ -14,7 +14,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
@@ -171,10 +170,10 @@ const WetSection = () => {
                 <div className="row d-flex justify-content-between align-items-start mb-2">
                   <div className="d-md-flex flex-md-row-reverse align-items-center subFormWrapper">
                     <div className="col-md-4">
-                      <p className="bodyText fw-bold">
+                      <p className="bodyText fw-bold text-white">
                         {`${receivedData?.totalKernelWeight} kg`}
                       </p>
-                      <p className="bodyText">
+                      <p className="bodyText text-white">
                         Last updated at{" "}
                         {receivedData?.updatedAt
                           ? receivedData?.updatedAt?.toDate().toLocaleString()
@@ -215,14 +214,14 @@ const WetSection = () => {
                             {receivedData?.date !== currentDate ? (
                               <button
                                 type="submit"
-                                className="subform-btn-submit customBtn customBtnSecondary mt-md-4"
+                                className="subform-btn-submit customBtn mt-md-4"
                               >
                                 Add
                               </button>
                             ) : (
                               <button
                                 type="submit"
-                                className="subform-btn-submit customBtn customBtnSecondary mt-md-4"
+                                className="subform-btn-submit customBtn mt-md-4"
                               >
                                 Update
                               </button>
@@ -238,9 +237,8 @@ const WetSection = () => {
                   {/*  /!* print button *!/*/}
                   <Link
                     to="new"
-                    className="addNewBtn customBtn customBtnPrimary"
+                    className="addNewBtn customBtn"
                   >
-                    <AddIcon />
                     Add new
                   </Link>
                 </div>

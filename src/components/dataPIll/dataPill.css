@@ -1,4 +1,7 @@
 .data-pill {
-  background-color: var(--buttonSecondaryBgColor) !important;
-  color: #ecedf6 !important;
+  padding: 0.5rem 1rem !important;
+  background-color: var(--dark-blue-2) !important;
+  color: var(--white) !important;
+  font-weight: normal;
+  border-radius: 0.25rem !important;
 }
