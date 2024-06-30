@@ -12,7 +12,6 @@ import { Col, Figure, Form, InputGroup, Row } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CheckIcon from "@mui/icons-material/Check";
 
 import { db } from "../../config/firebase.config";
 import Header from "../../components/header/Header";

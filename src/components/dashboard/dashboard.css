@@ -3,9 +3,12 @@
 }
 
 .sectionContainer {
-  padding: 0.5rem;
-  background-color: #d6e3ff;
-  border-radius: 1rem;
+  min-height: 14.5rem;
+  max-height: 14.5rem;
+  max-width: 31vw;
+  padding: 1rem;
+  background-color: var(--dark-blue-1);
+  border-radius: 0.25rem;
 }
 
 .sectionTitle {
@@ -61,48 +64,40 @@
 .sectionMainValue {
   font-size: 2rem;
   font-weight: 600;
-  color: var(--buttonDefaultTextColor);
+  color: var(--pink);
 }
 
 .sectionSubHeadingContainer {
-  font-size: var(--mediumText);
+  font-size: var(--smallText);
 }
+
+.sectionSubHeading {
+  color: var(--white);
+}
+
 
 .sectionSubValue {
   font-weight: 500;
+  color: var(--success-green);
 }
 
 .status {
-  font-size: var(--mediumText);
-  font-weight: 600;
+  font-size: var(--smallText);
+  font-weight: 400;
 }
 
 .running {
-  padding: 0.125rem 0.75rem;
-  background-color: #cdeda3;
-  color: #4c662b;
-  border-radius: 1rem;
+  color: var(--success-green);
 }
 
 .stopped {
-  padding: 0.125rem 0.75rem;
-  background-color: #ffdbd1;
-  color: #8f4c38;
-  border-radius: 1rem;
+  color: #D2042D;
 }
 
 .detailContainer {
   padding: 0.5rem;
   border-radius: 1rem;
   background-color: #f7f2fa;
-}
-
-.batchNumber {
-  color: #3e0249;
-}
-
-.cutterBatchNumber {
-  color: #102000;
 }
 
 .labDetailContainer {
@@ -113,22 +108,12 @@
 
 .subSectionHeading {
   font-size: var(--subHeading);
-  font-weight: 500;
-}
-
-.subSectionKey {
-  font-size: 1rem;
+  font-weight: 300;
+  color: var(--light-blue);
 }
 
 .subSectionValue {
-  font-size: var(--mediumText);
-  color: var(--primaryTextDark);
-}
-
-.breakdownContainer {
-  padding: 0.5rem;
-  border-radius: 1rem;
-  border: 1px solid #a33232;
+  color: var(--success-green);
 }
 
 .cutterContainer {
@@ -137,7 +122,19 @@
   background-color: #eeefe3;
 }
 
+.breakdownItemWrapper {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.125rem;
+  background: var(--dark-blue-2);
+  border: none;
+}
+
 @media only screen and (max-width: 600px) {
+  .sectionContainer {
+    min-width: 100%;
+  }
+
   .labDetailsContainer {
     margin-top: 0.5rem;
   }

@@ -67,12 +67,6 @@ label.form-label {
   font-size: var(--smallText);
 }
 
-.sectionContainer {
-  padding: 0.5rem;
-  background-color: #ecedf5;
-  border-radius: 1rem;
-}
-
 .breakdownToggle {
   color: var(--dark-blue-1) !important;
 }
@@ -89,6 +83,14 @@ label.form-label {
 
 .textDarkBlue {
   color: var(--dark-blue-1) !important;
+}
+
+.textSuccessGreen {
+  color: var(--success-green);
+}
+
+.textLightBlue {
+  color: var(--light-blue);
 }
 
 .custom-hr-yellow {

@@ -7,8 +7,8 @@ const TotalCard = ({ value_1, value_2, text }) => {
 
   return (
     <div className="col mb-2 sectionContainer">
-      <p className="sectionHeading">Total {text}</p>
-      <p className="sectionMainValue">
+      <p className="sectionHeading text-white">Total {text}</p>
+      <p className="sectionMainValue text-center">
         {value_1 || value_2 ? calculateTotalAmount(value_1, value_2) : '-'}kg
       </p>
 
