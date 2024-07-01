@@ -13,7 +13,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
@@ -32,6 +32,7 @@ const WetSection = () => {
   const [totalKernelWeight, setTotalKernelWeight] = useState(0);
   const [totalCoconut, setTotalCoconut] = useState();
 
+  const navigate = useNavigate();
   const currentDate = useCurrentDate();
 
   const calculateKernelWeight = (e) => {
@@ -67,8 +68,9 @@ const WetSection = () => {
           text: confirmData,
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then((result) => {
           if (result.isConfirmed) {
             addDoc(collection(db, "daily_production"), {
@@ -98,8 +100,9 @@ const WetSection = () => {
           text: confirmData,
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "daily_production", receivedData.id);
@@ -123,6 +126,8 @@ const WetSection = () => {
         console.log(error);
       }
     }
+
+    navigate("/");
   };
 
   useEffect(() => {

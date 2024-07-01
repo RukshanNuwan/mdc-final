@@ -147,7 +147,7 @@ const LaboratoryDetails = () => {
                     </div>
 
                     <div className="dataItemWrapper">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
+                      <span className="sectionTitle sectionTitlePink text-uppercase">
                         Raw milk
                       </span>
 
@@ -211,7 +211,7 @@ const LaboratoryDetails = () => {
                     </div>
 
                     <div className="dataItemWrapper">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
+                      <span className="sectionTitle sectionTitlePink text-uppercase">
                         Mix milk
                       </span>
 
@@ -303,7 +303,7 @@ const LaboratoryDetails = () => {
                     )}
 
                     <div className="dataItemWrapper">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
+                      <span className="sectionTitle sectionTitlePink text-uppercase">
                         Milk powder
                       </span>
 

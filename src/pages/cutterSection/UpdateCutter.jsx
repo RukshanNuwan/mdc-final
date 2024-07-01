@@ -96,8 +96,9 @@ const UpdateCutter = () => {
           title: "Do you want to save the changes?",
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "cutter_section", state.id);
@@ -243,12 +244,16 @@ const UpdateCutter = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         defaultValue={state.expellerStartTime}
                         onChange={handleChange}
                       />
                     </Form.Group>
 
+                    {/* TODO: this field can be updated after added (status = completed) */}
                     <Form.Group
                       as={Col}
                       md="4"
@@ -279,11 +284,15 @@ const UpdateCutter = () => {
                       <Form.Control
                         type="text"
                         defaultValue={state.operator}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                     </Form.Group>
 
+                    {/* TODO: mewa status = complete unata passe update wenawanm meke depend wena mixing data update karanna wenw */}
                     <Form.Group
                       as={Col}
                       md="4"
@@ -305,6 +314,7 @@ const UpdateCutter = () => {
                       />
                     </Form.Group>
 
+                    {/* TODO: mewa status = complete unata passe update wenawanm meke depend wena mixing data update karanna wenw */}
                     <Form.Group
                       as={Col}
                       md="4"
