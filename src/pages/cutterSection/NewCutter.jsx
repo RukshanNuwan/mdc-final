@@ -76,8 +76,9 @@ const NewCutter = () => {
           text: confirmData,
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "cutter_section", batchNumberData.id);

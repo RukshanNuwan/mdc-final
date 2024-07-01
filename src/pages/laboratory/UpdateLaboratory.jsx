@@ -98,8 +98,9 @@ const UpdateLaboratory = () => {
           title: "Do you want to save the changes?",
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "lab_section", state.id);
@@ -252,9 +253,9 @@ const UpdateLaboratory = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled={state.status === "completed"}
+                        disabled={state.status !== "updated"}
                         className={`customInput ${
-                          state.status === "completed" && "disabled"
+                          state.status !== "updated" && "disabled"
                         }`}
                         defaultValue={state.sampleInTime}
                         onChange={handleChange}
@@ -272,9 +273,9 @@ const UpdateLaboratory = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled={state.status === "completed"}
+                        disabled={state.status !== "updated"}
                         className={`customInput ${
-                          state.status === "completed" && "disabled"
+                          state.status !== "updated" && "disabled"
                         }`}
                         defaultValue={state.testStartTime}
                         onChange={handleChange}
@@ -312,6 +313,7 @@ const UpdateLaboratory = () => {
                         <Form.Control
                           type="number"
                           step=".01"
+                          disabled={state.status === "ongoing"}
                           defaultValue={state.rawMilkPh}
                           onChange={handleChange}
                         />
@@ -337,6 +339,7 @@ const UpdateLaboratory = () => {
                         <Form.Control
                           type="number"
                           step=".01"
+                          disabled={state.status === "ongoing"}
                           defaultValue={state.rawMilkTSS}
                           onChange={handleChange}
                         />
@@ -361,6 +364,7 @@ const UpdateLaboratory = () => {
 
                         <Form.Control
                           type="number"
+                          disabled={state.status === "ongoing"}
                           defaultValue={state.rawMilkFat}
                           onChange={handleChange}
                         />
@@ -382,6 +386,7 @@ const UpdateLaboratory = () => {
                         <Form.Switch
                           type="switch"
                           id="raw_milk_taste"
+                          disabled={state.status === "ongoing"}
                           label={rawMilkTaste === true ? "Good" : "Not good"}
                           checked={rawMilkTaste}
                           onChange={(e) => setRawMilkTaste(e.target.checked)}
@@ -401,6 +406,7 @@ const UpdateLaboratory = () => {
                         <Form.Switch
                           type="switch"
                           id="raw_milk_color"
+                          disabled={state.status === "ongoing"}
                           label={rawMilkColor === true ? "Good" : "Not good"}
                           checked={rawMilkColor}
                           onChange={(e) => setRawMilkColor(e.target.checked)}
@@ -420,6 +426,7 @@ const UpdateLaboratory = () => {
                         <Form.Switch
                           type="switch"
                           id="raw_milk_odor"
+                          disabled={state.status === "ongoing"}
                           label={rawMilkOdor === true ? "Good" : "Not good"}
                           checked={rawMilkOdor}
                           onChange={(e) => setRawMilkOdor(e.target.checked)}
@@ -450,6 +457,7 @@ const UpdateLaboratory = () => {
                         <Form.Control
                           type="number"
                           step=".01"
+                          disabled={state.status === "ongoing"}
                           defaultValue={state.mixMilkPh}
                           onChange={handleChange}
                         />
@@ -475,6 +483,7 @@ const UpdateLaboratory = () => {
                         <Form.Control
                           type="number"
                           step=".01"
+                          disabled={state.status === "ongoing"}
                           defaultValue={state.mixMilkTSS}
                           onChange={handleChange}
                         />
@@ -499,6 +508,7 @@ const UpdateLaboratory = () => {
 
                         <Form.Control
                           type="number"
+                          disabled={state.status === "ongoing"}
                           defaultValue={state.mixMilkFat}
                           onChange={handleChange}
                         />
@@ -523,6 +533,7 @@ const UpdateLaboratory = () => {
                         <Form.Switch
                           type="switch"
                           id="mix_milk_taste"
+                          disabled={state.status === "ongoing"}
                           label={mixMilkTaste === true ? "Good" : "Not good"}
                           checked={mixMilkTaste}
                           onChange={(e) => setMixMilkTaste(e.target.checked)}
@@ -542,6 +553,7 @@ const UpdateLaboratory = () => {
                         <Form.Switch
                           type="switch"
                           id="mix_milk_color"
+                          disabled={state.status === "ongoing"}
                           label={mixMilkColor === true ? "Good" : "Not good"}
                           checked={mixMilkColor}
                           onChange={(e) => setMixMilkColor(e.target.checked)}
@@ -561,6 +573,7 @@ const UpdateLaboratory = () => {
                         <Form.Switch
                           type="switch"
                           id="mix_milk_odor"
+                          disabled={state.status === "ongoing"}
                           label={mixMilkOdor === true ? "Good" : "Not good"}
                           checked={mixMilkOdor}
                           onChange={(e) => setMixMilkOdor(e.target.checked)}
@@ -581,6 +594,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="mix_issue"
+                        disabled={state.status === "ongoing"}
                         label={isMixHaveIssue === true ? "Yes" : "No"}
                         checked={isMixHaveIssue}
                         onChange={(e) => setIsMixHaveIssue(e.target.checked)}
@@ -640,7 +654,7 @@ const UpdateLaboratory = () => {
                           type="number"
                           aria-label="expected powder quantity"
                           aria-describedby="addon"
-                          disabled={state.status === "completed"}
+                          disabled={state.status !== "updated"}
                           className="customInput"
                           defaultValue={state.expectedPowderQuantity}
                           onChange={handleChange}
@@ -674,6 +688,7 @@ const UpdateLaboratory = () => {
                           type="number"
                           aria-label="moisture"
                           aria-describedby="addon"
+                          disabled={state.status === "ongoing"}
                           className="customInput"
                           step=".01"
                           defaultValue={state.milkPowderMoisture}
@@ -704,7 +719,10 @@ const UpdateLaboratory = () => {
                       <Form.Label className="fw-bold">Fat</Form.Label>
                       <Form.Control
                         type="number"
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status !== "updated" && "disabled"
+                        }`}
                         defaultValue={state.milkPowderFat}
                         onChange={handleChange}
                       />
@@ -729,6 +747,7 @@ const UpdateLaboratory = () => {
                           aria-label="fat layer"
                           aria-describedby="addon"
                           step=".01"
+                          disabled={state.status === "ongoing"}
                           className="customInput"
                           defaultValue={state.milkPowderFatLayer}
                           onChange={handleChange}
@@ -764,6 +783,7 @@ const UpdateLaboratory = () => {
                           type="number"
                           aria-label="time"
                           aria-describedby="addon"
+                          disabled={state.status === "ongoing"}
                           className="customInput"
                           defaultValue={state.milkPowderTime}
                           onChange={handleChange}
@@ -797,6 +817,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="powder_taste"
+                        disabled={state.status === "ongoing"}
                         label={powderTaste === true ? "Good" : "Not good"}
                         checked={powderTaste}
                         onChange={(e) => setPowderTaste(e.target.checked)}
@@ -814,6 +835,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="powder_color"
+                        disabled={state.status === "ongoing"}
                         label={powderColor === true ? "Good" : "Not good"}
                         checked={powderColor}
                         onChange={(e) => setPowderColor(e.target.checked)}
@@ -831,6 +853,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="powder_odor"
+                        disabled={state.status === "ongoing"}
                         label={powderOdor === true ? "Good" : "Not good"}
                         checked={powderOdor}
                         onChange={(e) => setPowderOdor(e.target.checked)}
@@ -848,6 +871,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="powder_soluibilty"
+                        disabled={state.status === "ongoing"}
                         label={powderSolubility === true ? "Good" : "Not good"}
                         checked={powderSolubility}
                         onChange={(e) => setPowderSolubility(e.target.checked)}
@@ -865,6 +889,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="powder_free_flowing"
+                        disabled={state.status === "ongoing"}
                         label={powderFreeFlowing === true ? "Good" : "Not good"}
                         checked={powderFreeFlowing}
                         onChange={(e) => setPowderFreeFlowing(e.target.checked)}
@@ -884,7 +909,10 @@ const UpdateLaboratory = () => {
                         type="number"
                         step=".01"
                         defaultValue={state.bulkDensity}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                       <Figure.Caption className="tooltipText">
@@ -906,6 +934,7 @@ const UpdateLaboratory = () => {
                       <Form.Switch
                         type="switch"
                         id="mix_issue"
+                        disabled={state.status === "ongoing"}
                         label={isPowderHaveIssue === true ? "Yes" : "No"}
                         checked={isPowderHaveIssue}
                         onChange={(e) => setIsPowderHaveIssue(e.target.checked)}
@@ -962,7 +991,10 @@ const UpdateLaboratory = () => {
                       <Form.Label className="fw-bold">Checked by</Form.Label>
                       <Form.Control
                         type="text"
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         defaultValue={state.laboratoryTechnician}
                         onChange={handleChange}
                       />

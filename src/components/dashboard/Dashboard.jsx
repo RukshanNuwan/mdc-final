@@ -427,16 +427,16 @@ const Dashboard = () => {
                   <p className="sectionSubValue text-capitalize fw-bold">
                     {dailyProductionData?.totalBatchCountInMdc
                       ? dailyProductionData?.totalBatchCountInMdc
-                      : "-"}
+                      : 0}
                   </p>
                 </div>
 
                 <div className="sectionSubHeadingContainer d-flex justify-content-between">
-                  <p className="sectionSubHeading">Araliya kele batch count</p>
+                  <p className="sectionSubHeading">SD 04 batch count</p>
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.totalBatchCountInAraliyaKele
                       ? dailyProductionData?.totalBatchCountInAraliyaKele
-                      : "-"}
+                      : 0}
                   </p>
                 </div>
               </div>

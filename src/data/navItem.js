@@ -38,6 +38,12 @@ const secondNavList = [
   //   icon: 'bi bi-truck',
   //   path: '/orders',
   // },
+  {
+    _id: 2,
+    name: "Reports",
+    icon: "bi bi-file-text",
+    path: "/reports",
+  },
 ];
 
 export { firstNavList, secondNavList };

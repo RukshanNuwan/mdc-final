@@ -43,8 +43,9 @@ const UpdateMixing = () => {
           title: "Do you want to save the changes?",
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "mixing_section", state.id);
@@ -338,7 +339,10 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixingTankInTime}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -355,7 +359,10 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixingStartTime}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -372,7 +379,10 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixingFinishTime}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -391,7 +401,10 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.feedTankInTime}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -507,7 +520,10 @@ const UpdateMixing = () => {
                         type="number"
                         step=".01"
                         defaultValue={state.steamBars}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                       <Figure.Caption className="tooltipText">
@@ -526,7 +542,10 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="number"
                         defaultValue={state.pressurePumpValue}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                       />
                       <Figure.Caption className="tooltipText">

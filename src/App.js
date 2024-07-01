@@ -32,6 +32,7 @@ import UpdateCutter from "./pages/cutterSection/UpdateCutter";
 import UpdateMixing from "./pages/mixingSection/UpdateMixing";
 import UpdateLaboratory from "./pages/laboratory/UpdateLaboratory";
 import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
+import Reports from "./pages/Reports";
 
 function App() {
   const Layout = () => {
@@ -92,6 +93,10 @@ function App() {
 
             <Route path="orders">
               <Route index element={<Orders />} />
+            </Route>
+
+            <Route path="reports">
+              <Route index element={<Reports />} />
             </Route>
           </Route>
         </Route>

@@ -20,10 +20,10 @@ const SideBar = () => {
           <NavItem data={nav} key={index} />
         ))}
 
-        {/*<li className="nav-heading">Other</li>*/}
-        {/*{secondNavList.map((nav, index) => (*/}
-        {/*  <NavItem data={nav} key={index} />*/}
-        {/*))}*/}
+        <li className="nav-heading">Other</li>
+        {secondNavList.map((nav, index) => (
+          <NavItem data={nav} key={index} />
+        ))}
       </ul>
     </aside>
   );

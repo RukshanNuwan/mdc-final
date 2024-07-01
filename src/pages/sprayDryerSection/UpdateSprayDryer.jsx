@@ -99,8 +99,9 @@ const UpdateSprayDryer = () => {
           title: "Do you want to save the changes?",
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#415f91",
+          confirmButtonColor: "#0d1b2a",
           confirmButtonText: "Yes",
+          cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "sd_section", state.id);
@@ -328,7 +329,10 @@ const UpdateSprayDryer = () => {
                           type="text"
                           aria-label="atomizer size"
                           aria-describedby="addon"
-                          className="customInput"
+                          disabled={state.status === "ongoing"}
+                          className={`customInput ${
+                            state.status === "ongoing" && "disabled"
+                          }`}
                           defaultValue={state.atomizerSize}
                           onChange={handleChangeAtomizerSize}
                         />
@@ -368,7 +372,10 @@ const UpdateSprayDryer = () => {
                           type="text"
                           aria-label="inlet temperature"
                           aria-describedby="addon"
-                          className="customInput"
+                          disabled={state.status === "ongoing"}
+                          className={`customInput ${
+                            state.status === "ongoing" && "disabled"
+                          }`}
                           defaultValue={state.inletTemp}
                           onChange={handleChange}
                         />
@@ -403,7 +410,10 @@ const UpdateSprayDryer = () => {
                           aria-label="outlet temperature"
                           aria-describedby="addon"
                           defaultValue={state.outletTemp}
-                          className="customInput"
+                          disabled={state.status === "ongoing"}
+                          className={`customInput ${
+                            state.status === "ongoing" && "disabled"
+                          }`}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -451,7 +461,10 @@ const UpdateSprayDryer = () => {
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         defaultValue={state.otherDetails}
                         onChange={handleChange}
                       />
@@ -675,7 +688,10 @@ const UpdateSprayDryer = () => {
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        className="customInput"
+                        disabled={state.status === "ongoing"}
+                        className={`customInput ${
+                          state.status === "ongoing" && "disabled"
+                        }`}
                         onChange={handleChange}
                         defaultValue={state.specialNotes}
                       />
