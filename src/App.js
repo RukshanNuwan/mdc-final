@@ -32,7 +32,8 @@ import UpdateCutter from "./pages/cutterSection/UpdateCutter";
 import UpdateMixing from "./pages/mixingSection/UpdateMixing";
 import UpdateLaboratory from "./pages/laboratory/UpdateLaboratory";
 import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
-import Reports from "./pages/Reports";
+import Reports from "./pages/reports/Reports";
+import DailySummery from "./pages/reports/DailySummery";
 
 function App() {
   const Layout = () => {
@@ -97,6 +98,7 @@ function App() {
 
             <Route path="reports">
               <Route index element={<Reports />} />
+              <Route path="daily-summery" element={<DailySummery />} />
             </Route>
           </Route>
         </Route>

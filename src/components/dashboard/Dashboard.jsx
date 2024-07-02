@@ -44,7 +44,7 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          orderBy("timeStamp", "desc")
+          where("date", "==", currentDate)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           let list = [];
@@ -64,7 +64,7 @@ const Dashboard = () => {
     };
 
     fetchId();
-  }, []);
+  }, [currentDate]);
 
   useEffect(() => {
     const handleStatus = () => {
@@ -414,7 +414,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Total batch count</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.totalBatchCountInMdc &&
+                {dailyProductionData?.totalBatchCountInMdc ||
                 dailyProductionData?.totalBatchCountInAraliyaKele
                   ? dailyProductionData?.totalBatchCountInMdc +
                     dailyProductionData?.totalBatchCountInAraliyaKele
