@@ -105,6 +105,10 @@
     color: var(--buttonSecondaryTextColor);
   }
 
+  .customBtnPrint {
+    background: var(--light-blue);
+  }
+
   .customBtnUpdate:hover {
     background-color: #7b8f00;
   }
