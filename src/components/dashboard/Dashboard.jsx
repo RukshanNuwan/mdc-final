@@ -32,11 +32,18 @@ const Dashboard = () => {
   // TODO: handle breakdowns
 
   const calculateRemainingBatches = (totalBatches) => {
-    const currentTotalBatchCount =
-      dailyProductionData.totalBatchCountInMdc +
-      dailyProductionData.totalBatchCountInAraliyaKele;
-    const res = totalBatches - currentTotalBatchCount;
-    return res.toString();
+    if (
+      dailyProductionData?.totalBatchCountInMdc ||
+      dailyProductionData?.totalBatchCountInAraliyaKele
+    ) {
+      const currentTotalBatchCount =
+        dailyProductionData?.totalBatchCountInMdc +
+        dailyProductionData?.totalBatchCountInAraliyaKele;
+      const res = totalBatches - currentTotalBatchCount;
+      return res.toString();
+    } else {
+      return "-";
+    }
   };
 
   useEffect(() => {
@@ -44,6 +51,7 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
+          // where("date", "==", currentDate)
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -64,7 +72,7 @@ const Dashboard = () => {
     };
 
     fetchId();
-  }, []);
+  }, [currentDate]);
 
   useEffect(() => {
     const handleStatus = () => {
@@ -164,7 +172,7 @@ const Dashboard = () => {
 
     fetchMDCLabData();
     fetchAraliyaKeleLabData();
-  }, [dailyProductionData.date]);
+  }, [dailyProductionData?.date]);
 
   useEffect(() => {
     const fetchBreakdowns = async () => {
@@ -222,7 +230,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Total coconut</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.totalKernelWeight
+                {dailyProductionData?.totalCoconut
                   ? dailyProductionData?.totalCoconut
                   : "-"}
               </p>
@@ -241,11 +249,9 @@ const Dashboard = () => {
                 <div className="sectionSubHeadingContainer d-flex justify-content-between">
                   <p className="sectionSubHeading">Total batch count</p>
                   <p className="sectionSubValue fw-bold">
-                    {Math.round(
-                      dailyProductionData?.totalKernelWeight
-                        ? dailyProductionData?.totalKernelWeight / 300
-                        : "-"
-                    )}
+                    {dailyProductionData?.totalKernelWeight
+                      ? Math.round(dailyProductionData?.totalKernelWeight / 300)
+                      : "-"}
                   </p>
                 </div>
 
@@ -253,10 +259,8 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Remaining batches</p>
                   <p className="sectionSubValue fw-bold">
                     {calculateRemainingBatches(
-                      Math.round(
-                        dailyProductionData?.totalKernelWeight &&
-                          dailyProductionData?.totalKernelWeight / 300
-                      )
+                      dailyProductionData?.totalKernelWeight &&
+                        Math.round(dailyProductionData?.totalKernelWeight / 300)
                     )}
                   </p>
                 </div>
@@ -414,7 +418,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Total batch count</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.totalBatchCountInMdc &&
+                {dailyProductionData?.totalBatchCountInMdc ||
                 dailyProductionData?.totalBatchCountInAraliyaKele
                   ? dailyProductionData?.totalBatchCountInMdc +
                     dailyProductionData?.totalBatchCountInAraliyaKele
