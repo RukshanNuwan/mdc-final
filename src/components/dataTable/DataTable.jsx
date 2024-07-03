@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import {
   collection,
@@ -86,8 +86,6 @@ const DataTable = ({ collectionName, columnName, location }) => {
   };
 
   const handleDelete = async (data) => {
-    console.log("CUTTER -> ", data.id);
-
     try {
       Swal.fire({
         title: "Do you want to delete?",
@@ -110,7 +108,6 @@ const DataTable = ({ collectionName, columnName, location }) => {
               // Delete data from cutter section
               await deleteDoc(doc(db, "cutter_section", data.id)).then(
                 async () => {
-                  console.log("WET -> ", data.wet_batch_id);
                   await deleteDoc(
                     doc(db, "wet_section", data.wet_batch_id)
                   ).then(async () => {});
@@ -123,7 +120,6 @@ const DataTable = ({ collectionName, columnName, location }) => {
                   const querySnapshot = await getDocs(q);
                   querySnapshot.forEach((item) => {
                     // Delete data from wet section
-                    console.log("MIXING -> ", item.id);
                     deleteDoc(doc(db, "mixing_section", item.id)).then(() => {
                       Swal.fire(
                         "Deleted!",
@@ -184,6 +180,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
       <DataGrid
         rows={data}
         columns={columnName.concat(actionColumn)}
+        slots={{ toolbar: GridToolbar }}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 25 },
