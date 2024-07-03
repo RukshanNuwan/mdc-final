@@ -11,11 +11,11 @@ const TotalCard = ({ value_1, value_2, text }) => {
   return (
     <div className="col mb-2 sectionContainer">
       <p className="sectionHeading text-white">Total {text}</p>
-      <p className="sectionMainValue text-center">
+      <p className="sectionMainValue text-center mt-3">
         {value_1 || value_2 ? calculateTotalAmount(value_1, value_2) : 0}kg
       </p>
 
-      <div className="col-12 mt-5 sectionDetailsContainer">
+      <div className="col-12 mt-4 sectionDetailsContainer">
         <div className="sectionSubHeadingContainer d-flex justify-content-between mt-2">
           <p className="sectionSubHeading">SD 03 {text}</p>
           <p className="sectionSubValue fw-bold">{value_1 ? value_1 : 0}kg</p>
