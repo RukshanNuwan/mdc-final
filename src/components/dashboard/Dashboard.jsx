@@ -425,7 +425,7 @@ const Dashboard = () => {
                   : 0}
               </p>
 
-              <div className="col-12 sectionDetailsContainer">
+              <div className="col-12 mt-4 sectionDetailsContainer">
                 <div className="sectionSubHeadingContainer d-flex justify-content-between mt-2">
                   <p className="sectionSubHeading">SD 03 batch count</p>
                   <p className="sectionSubValue text-capitalize fw-bold">

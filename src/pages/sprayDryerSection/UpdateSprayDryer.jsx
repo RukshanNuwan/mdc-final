@@ -12,6 +12,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Col, Figure, Form, InputGroup, Row } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
 import { db } from "../../config/firebase.config";
 import Header from "../../components/header/Header";
@@ -31,6 +32,7 @@ const UpdateSprayDryer = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [powderQuantity, setPowderQuantity] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -90,6 +92,8 @@ const UpdateSprayDryer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(false);
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -104,6 +108,8 @@ const UpdateSprayDryer = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "sd_section", state.id);
             await updateDoc(docRef, { ...data })
               .then(() => {
@@ -114,6 +120,7 @@ const UpdateSprayDryer = () => {
                   timer: 1500,
                 });
                 e.target.reset();
+                setIsLoading(false);
                 navigate(`/sd-section/${location}`);
               })
               .catch((error) => {
@@ -702,8 +709,12 @@ const UpdateSprayDryer = () => {
                     <button
                       type="submit"
                       className="btn-submit customBtn customBtnUpdate"
+                      disabled={isLoading}
                     >
-                      Update
+                      <div className="d-flex align-items-center gap-2">
+                        {isLoading && <Spinner animation="border" size="sm" />}
+                        <p className="text-uppercase">Update</p>
+                      </div>
                     </button>
 
                     <button type="reset" className="customBtn customClearBtn">

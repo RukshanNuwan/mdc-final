@@ -8,10 +8,14 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 import "../common.css";
 import BackToTop from "../../components/backToTop/BackToTop";
@@ -27,6 +31,7 @@ const UpdateCutter = () => {
   const [data, setData] = useState({});
   const [validated, setValidated] = useState(false);
   const [heatValve, setHeatValve] = useState(state.heatValve);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -87,6 +92,8 @@ const UpdateCutter = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(false);
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -101,32 +108,56 @@ const UpdateCutter = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "cutter_section", state.id);
             await updateDoc(docRef, data).then(async () => {
               try {
-                await addDoc(collection(db, "mixing_section"), {
-                  cutter_batch_id: state.id,
-                  wet_batch_id: state.wet_batch_id,
-                  wet_batch_number: state.batchNumber,
-                  date: state.date,
-                  location: state.location,
-                  status: "ongoing",
-                  timeStamp: serverTimestamp(),
-                })
-                  .then(() => {
-                    Swal.fire({
-                      title: "Changes saved",
-                      icon: "success",
-                      showConfirmButton: false,
-                      timer: 1500,
-                    });
+                const q = query(
+                  collection(db, "mixing_section"),
+                  where("cutter_batch_id", "==", state.id)
+                );
+                const querySnapshot = await getDocs(q);
 
-                    e.target.reset();
-                    navigate("/cutter-section");
+                if (querySnapshot.empty) {
+                  console.log("inside");
+
+                  await addDoc(collection(db, "mixing_section"), {
+                    cutter_batch_id: state.id,
+                    wet_batch_id: state.wet_batch_id,
+                    wet_batch_number: state.batchNumber,
+                    date: state.date,
+                    location: state.location,
+                    status: "ongoing",
+                    timeStamp: serverTimestamp(),
                   })
-                  .catch((error) => {
-                    console.log("Error updating document:", error);
+                    .then(() => {
+                      Swal.fire({
+                        title: "Changes saved",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+
+                      e.target.reset();
+                      setIsLoading(false);
+                      navigate("/cutter-section");
+                    })
+                    .catch((error) => {
+                      console.log("Error updating document:", error);
+                    });
+                } else {
+                  Swal.fire({
+                    title: "Changes saved",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
                   });
+
+                  e.target.reset();
+                  setIsLoading(false);
+                  navigate("/cutter-section");
+                }
               } catch (error) {
                 console.log(error);
               }
@@ -363,10 +394,13 @@ const UpdateCutter = () => {
                     <button
                       type="submit"
                       className="btn-submit customBtn customBtnUpdate"
+                      disabled={isLoading}
                     >
-                      Update
+                      <div className="d-flex align-items-center gap-2">
+                        {isLoading && <Spinner animation="border" size="sm" />}
+                        <p className="text-uppercase">Update</p>
+                      </div>
                     </button>
-
                     <button type="reset" className="customBtn customClearBtn">
                       Clear
                     </button>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link } from "react-router-dom";
 import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
@@ -15,25 +15,32 @@ import BackToTop from "../../components/backToTop/BackToTop";
 
 import {
   cutterSectionColumns,
+  generalReportColumns,
   laboratorySectionColumns,
   mixingSectionColumns,
   sprayDryerSectionColumns,
   wetSectionColumns,
 } from "../../data/reportDataTableSource";
 
-const DailySummery = () => {
+const DailySummary = () => {
   const [date, setDate] = useState();
-  const [location, setLocation] = useState();
+  // const [location, setLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [dailyProductionDataByDate, setDailyProductionDataByDate] = useState(
     {}
   );
   const [wetDataByDate, setWetDataByDate] = useState([]);
   const [cutterDataByDate, setCutterDataByDate] = useState([]);
-  const [mixingDataByDateAndLocation, setMixingDataByDateAndLocation] =
-    useState([]);
-  const [labDataByDateAndLocation, setLabDataByDateAndLocation] = useState([]);
-  const [sdDataByDateAndLocation, setSdDataByDateAndLocation] = useState([]);
+  // const [mixingDataByDateAndLocation, setMixingDataByDateAndLocation] =
+  // useState([]);
+  // const [labDataByDateAndLocation, setLabDataByDateAndLocation] = useState([]);
+  // const [sdDataByDateAndLocation, setSdDataByDateAndLocation] = useState([]);
+  const [mixingDataByDate, setMixingDataByDate] = useState([]);
+  const [labDataByDate, setLabDataByDate] = useState([]);
+  const [sdDataByDate, setSdDataByDate] = useState([]);
+
+  // const generalDataByDateAndLocation = [];
+  const generalDataByDate = {};
 
   // Fetch daily production data by date
   const fetchDailyProductionDataByDate = async () => {
@@ -59,11 +66,15 @@ const DailySummery = () => {
     }
   };
 
-  // Fetch wet data by date and location
+  // Fetch wet data by date
   const fetchWetDataByDate = async () => {
     try {
       const list = [];
-      const q = query(collection(db, "wet_section"), where("date", "==", date));
+      const q = query(
+        collection(db, "wet_section"),
+        where("date", "==", date),
+        orderBy("timeStamp", "asc")
+      );
 
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -76,13 +87,14 @@ const DailySummery = () => {
     }
   };
 
-  // Fetch cutter data by date and location
+  // Fetch cutter data by date
   const fetchCutterDataByDate = async () => {
     try {
       const list = [];
       const q = query(
         collection(db, "cutter_section"),
-        where("date", "==", date)
+        where("date", "==", date),
+        orderBy("timeStamp", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -97,13 +109,33 @@ const DailySummery = () => {
   };
 
   // Fetch mixing data by date and location
-  const fetchMixingDataByDateAndLocation = async () => {
+  // const fetchMixingDataByDateAndLocation = async () => {
+  //   try {
+  //     const list = [];
+  //     const q = query(
+  //       collection(db, "mixing_section"),
+  //       where("date", "==", date)
+  //       // where("location", "==", location)
+  //     );
+
+  //     const querySnapshot = await getDocs(q);
+  //     querySnapshot.forEach((doc) => {
+  //       if (doc.data()) list.push({ id: doc.id, ...doc.data() });
+  //     });
+
+  //     setMixingDataByDateAndLocation(list);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const fetchMixingDataByDate = async () => {
     try {
       const list = [];
       const q = query(
         collection(db, "mixing_section"),
         where("date", "==", date),
-        where("location", "==", location)
+        orderBy("timeStamp", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -111,20 +143,40 @@ const DailySummery = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setMixingDataByDateAndLocation(list);
+      setMixingDataByDate(list);
     } catch (error) {
       console.log(error);
     }
   };
 
   // Fetch lab data by date and location
-  const fetchLabDataByDateAndLocation = async () => {
+  // const fetchLabDataByDateAndLocation = async () => {
+  //   try {
+  //     const list = [];
+  //     const q = query(
+  //       collection(db, "lab_section"),
+  //       where("date", "==", date)
+  //       // where("location", "==", location)
+  //     );
+
+  //     const querySnapshot = await getDocs(q);
+  //     querySnapshot.forEach((doc) => {
+  //       if (doc.data()) list.push({ id: doc.id, ...doc.data() });
+  //     });
+
+  //     setLabDataByDateAndLocation(list);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const fetchLabDataByDate = async () => {
     try {
       const list = [];
       const q = query(
         collection(db, "lab_section"),
         where("date", "==", date),
-        where("location", "==", location)
+        orderBy("timeStamp", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -132,20 +184,40 @@ const DailySummery = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setLabDataByDateAndLocation(list);
+      setLabDataByDate(list);
     } catch (error) {
       console.log(error);
     }
   };
 
   // Fetch sd data by date and location
-  const fetchSdDataByDateAndLocation = async () => {
+  // const fetchSdDataByDateAndLocation = async () => {
+  //   try {
+  //     const list = [];
+  //     const q = query(
+  //       collection(db, "sd_section"),
+  //       where("date", "==", date)
+  //       // where("location", "==", location)
+  //     );
+
+  //     const querySnapshot = await getDocs(q);
+  //     querySnapshot.forEach((doc) => {
+  //       if (doc.data()) list.push({ id: doc.id, ...doc.data() });
+  //     });
+
+  //     setSdDataByDateAndLocation(list);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const fetchSdDataByDate = async () => {
     try {
       const list = [];
       const q = query(
         collection(db, "sd_section"),
         where("date", "==", date),
-        where("location", "==", location)
+        orderBy("timeStamp", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -153,7 +225,7 @@ const DailySummery = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setSdDataByDateAndLocation(list);
+      setSdDataByDate(list);
     } catch (error) {
       console.log(error);
     }
@@ -174,6 +246,11 @@ const DailySummery = () => {
     );
   };
 
+  // TODO: Get sd data (sd status = completed)
+  // Get sdData.wet_mixing_batch_id -> mixing object
+  // Get sdData.lab_batch_id -> lab object
+  // Get mixing.cutter_batch_id -> cutter object
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -183,21 +260,54 @@ const DailySummery = () => {
       fetchDailyProductionDataByDate().then(() => setIsLoading(false));
       fetchWetDataByDate().then(() => setIsLoading(false));
       fetchCutterDataByDate().then(() => setIsLoading(false));
+      fetchMixingDataByDate().then(() => setIsLoading(false));
+      fetchLabDataByDate().then(() => setIsLoading(false));
+      fetchSdDataByDate().then(() => setIsLoading(false));
+      // fetchMixingDataByDateAndLocation().then(() => setIsLoading(false));
+      // fetchLabDataByDateAndLocation().then(() => setIsLoading(false));
+      // fetchSdDataByDateAndLocation().then(() => setIsLoading(false));
     }
 
-    if (date && location) {
-      fetchMixingDataByDateAndLocation().then(() => setIsLoading(false));
-      fetchLabDataByDateAndLocation().then(() => setIsLoading(false));
-      fetchSdDataByDateAndLocation().then(() => setIsLoading(false));
-    }
+    // if (date && location) {
+    // fetchMixingDataByDateAndLocation().then(() => setIsLoading(false));
+    // fetchLabDataByDateAndLocation().then(() => setIsLoading(false));
+    // fetchSdDataByDateAndLocation().then(() => setIsLoading(false));
+    // }
   };
 
-  const handlePrint = () => {
-    alert("Not implemented yet");
-  };
+  if (
+    wetDataByDate.length > 0 &&
+    cutterDataByDate.length > 0 &&
+    // mixingDataByDateAndLocation.length > 0 &&
+    // labDataByDateAndLocation.length > 0 &&
+    // sdDataByDateAndLocation.length > 0
+    mixingDataByDate.length > 0 &&
+    labDataByDate.length > 0 &&
+    sdDataByDate.length > 0
+  ) {
+    // generalDataByDateAndLocation.push(
+    //   { id: 1, daily_production_data: dailyProductionDataByDate },
+    //   { id: 2, wet_data: wetDataByDate },
+    //   { id: 3, cutter_data: cutterDataByDate },
+    //   { id: 4, mixing_data: mixingDataByDateAndLocation },
+    //   { id: 5, lab_data: labDataByDateAndLocation },
+    //   { id: 6, sd_data: sdDataByDateAndLocation }
+    // );
+
+    generalDataByDate.daily_production_data = dailyProductionDataByDate;
+    generalDataByDate.wet_data = wetDataByDate;
+    generalDataByDate.cutter_data = cutterDataByDate;
+    generalDataByDate.mixing_data = mixingDataByDate;
+    generalDataByDate.lab_data = labDataByDate;
+    generalDataByDate.sd_data = sdDataByDate;
+  }
+  console.log("general -> ", generalDataByDate);
+
+  // const handlePrint = () => {
+  //   alert("Not implemented yet");
+  // };
 
   return (
-    // TODO: Create daily summery report view and implement to download that report as pdf / excel formats
     <>
       <Header />
       <SideBar />
@@ -205,7 +315,7 @@ const DailySummery = () => {
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
           <div className="col-md-12">
-            <Breadcrumb title="Reports / Daily summery" />
+            <Breadcrumb title="Reports / Daily summary" />
           </div>
 
           <div className="pe-0 px-xs-0">
@@ -221,7 +331,7 @@ const DailySummery = () => {
 
               <div className="card-body formWrapper">
                 {/* <div className="d-flex justify-content-between"> */}
-                <p className="display-6 mb-4 text-white">Daily summery</p>
+                <p className="display-6 mb-4 text-white">Daily summary</p>
 
                 {/* <div>
                     <button
@@ -250,7 +360,7 @@ const DailySummery = () => {
                       />
                     </Form.Group>
 
-                    <Form.Group
+                    {/* <Form.Group
                       as={Col}
                       md="4"
                       controlId="type"
@@ -268,7 +378,7 @@ const DailySummery = () => {
                         <option value="mdc">SD - 03</option>
                         <option value="araliya_kele">SD - 04</option>
                       </Form.Select>
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group as={Col} className="d-flex align-items-end">
                       <button type="submit" className="btn-submit customBtn">
@@ -289,7 +399,7 @@ const DailySummery = () => {
 
                 <div className="report-container">
                   {dailyProductionDataByDate && (
-                    <div className="summery-container">
+                    <div className="summary-container">
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
                           <p className="fw-bold">Date</p>
@@ -299,7 +409,7 @@ const DailySummery = () => {
                         </div>
                       </div>
 
-                      {location && (
+                      {/* {location && (
                         <div className="row">
                           <div className="col-6 d-flex justify-content-end">
                             <p className="fw-bold">Location</p>
@@ -308,7 +418,7 @@ const DailySummery = () => {
                             <p>{location === "mdc" ? "SD - 03" : "SD - 04"}</p>
                           </div>
                         </div>
-                      )}
+                      )} */}
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
@@ -381,6 +491,13 @@ const DailySummery = () => {
 
                   <div className="table-container">
                     <Card body className="mb-2">
+                      <ReportDataTable
+                        dataSet={""}
+                        columnName={generalReportColumns}
+                      />
+                    </Card>
+
+                    {/* <Card body className="mb-2">
                       <span className="sectionTitle sectionTitleBlue text-uppercase">
                         Wet section
                       </span>
@@ -433,7 +550,7 @@ const DailySummery = () => {
                         dataSet={labDataByDateAndLocation}
                         columnName={laboratorySectionColumns}
                       />
-                    </Card>
+                    </Card> */}
                   </div>
                 </div>
               </div>
@@ -448,4 +565,4 @@ const DailySummery = () => {
   );
 };
 
-export default DailySummery;
+export default DailySummary;

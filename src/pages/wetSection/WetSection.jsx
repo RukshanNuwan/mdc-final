@@ -195,6 +195,9 @@ const WetSection = () => {
                               type="date"
                               required
                               className="customInput"
+                              defaultValue={
+                                receivedData?.date && receivedData?.date
+                              }
                               onChange={handleSubFormChange}
                             />
                           </Form.Group>
@@ -216,21 +219,14 @@ const WetSection = () => {
                           </Form.Group>
 
                           <div className="col">
-                            {receivedData?.date !== currentDate ? (
-                              <button
-                                type="submit"
-                                className="subform-btn-submit customBtn mt-md-4"
-                              >
-                                Add
-                              </button>
-                            ) : (
-                              <button
-                                type="submit"
-                                className="subform-btn-submit customBtn mt-md-4"
-                              >
-                                Update
-                              </button>
-                            )}
+                            <button
+                              type="submit"
+                              className="subform-btn-submit customBtn mt-md-4"
+                            >
+                              {receivedData?.date !== currentDate
+                                ? "Add"
+                                : "Update"}
+                            </button>
                           </div>
                         </Row>
                       </Form>

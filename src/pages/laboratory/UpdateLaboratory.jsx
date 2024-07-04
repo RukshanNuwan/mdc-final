@@ -12,6 +12,7 @@ import { Col, Figure, Form, InputGroup, Row } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { Spinner } from "react-bootstrap";
 
 import { db } from "../../config/firebase.config";
 import Header from "../../components/header/Header";
@@ -65,6 +66,7 @@ const UpdateLaboratory = () => {
   const [powderFreeFlowing, setPowderFreeFlowing] = useState(
     state.powderFreeFlowing ? state.powderFreeFlowing : false
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -89,6 +91,8 @@ const UpdateLaboratory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(false);
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -103,6 +107,8 @@ const UpdateLaboratory = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "lab_section", state.id);
             await updateDoc(docRef, {
               ...data,
@@ -115,6 +121,7 @@ const UpdateLaboratory = () => {
               });
 
               e.target.reset();
+              setIsLoading(false);
               navigate(`/lab-section/${location}`);
             });
           }
@@ -1024,8 +1031,12 @@ const UpdateLaboratory = () => {
                     <button
                       type="submit"
                       className="btn-submit customBtn customBtnUpdate"
+                      disabled={isLoading}
                     >
-                      Update
+                      <div className="d-flex align-items-center gap-2">
+                        {isLoading && <Spinner animation="border" size="sm" />}
+                        <p className="text-uppercase">Update</p>
+                      </div>
                     </button>
                     <button type="reset" className="customBtn customClearBtn">
                       Clear
