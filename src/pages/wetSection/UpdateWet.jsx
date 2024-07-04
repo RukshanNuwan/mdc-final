@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { Spinner } from "react-bootstrap";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -18,6 +19,7 @@ const UpdateWet = () => {
   const [data, setData] = useState({});
   const [validated, setValidated] = useState(false);
   const [quality, setQuality] = useState(state.quality);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,6 +37,8 @@ const UpdateWet = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setIsLoading(false);
+
     // Update wet_section & cutter_section
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -50,6 +54,8 @@ const UpdateWet = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             // Update query
             const docRef = doc(db, "wet_section", state.id);
             await updateDoc(docRef, {
@@ -64,6 +70,7 @@ const UpdateWet = () => {
               });
 
               e.target.reset();
+              setIsLoading(false);
               navigate("/wet-section");
             });
           }
@@ -242,7 +249,7 @@ const UpdateWet = () => {
                         rows={4}
                         required
                         className="customInput"
-                        defaultValue={state.kernelQualityRemark}
+                        defaultValue={state.reasonForUpdate}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -252,8 +259,12 @@ const UpdateWet = () => {
                     <button
                       type="submit"
                       className="btn-submit customBtn customBtnUpdate"
+                      disabled={isLoading}
                     >
-                      Update
+                      <div className="d-flex align-items-center gap-2">
+                        {isLoading && <Spinner animation="border" size="sm" />}
+                        <p className="text-uppercase">Update</p>
+                      </div>
                     </button>
                     <button type="reset" className="customBtn customClearBtn">
                       Cancel

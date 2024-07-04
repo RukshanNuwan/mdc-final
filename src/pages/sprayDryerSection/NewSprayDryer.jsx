@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { Figure, InputGroup } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 import "../common.css";
 import BackToTop from "../../components/backToTop/BackToTop";
@@ -30,6 +31,7 @@ const NewSprayDryer = () => {
   const [validated, setValidated] = useState(false);
   const [batchNumberData, setBatchNumberData] = useState({});
   const [expectedTime, setExpectedTime] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -67,6 +69,9 @@ const NewSprayDryer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(false);
+
     const confirmData = `Powder spray start time: ${data?.powderSprayStartTime} | Atomizer size: ${data?.atomizerSize} | Inlet temperature: ${data?.inletTemp} | Outlet temperature: ${data?.outletTemp} | Operators : ${data?.operators}`;
 
     const form = e.currentTarget;
@@ -84,6 +89,8 @@ const NewSprayDryer = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "sd_section", batchNumberData.id);
             await updateDoc(docRef, {
               ...data,
@@ -111,6 +118,7 @@ const NewSprayDryer = () => {
                 });
 
                 e.target.reset();
+                setIsLoading(false);
                 navigate(`/sd-section/${location}`);
               })
               .catch((error) => {
@@ -448,8 +456,17 @@ const NewSprayDryer = () => {
                     </Row>
 
                     <div className="mt-5">
-                      <button type="submit" className="btn-submit customBtn">
-                        Continue
+                      <button
+                        type="submit"
+                        className="btn-submit customBtn"
+                        disabled={isLoading}
+                      >
+                        <div className="d-flex align-items-center gap-2">
+                          {isLoading && (
+                            <Spinner animation="border" size="sm" />
+                          )}
+                          <p className="text-uppercase">Continue</p>
+                        </div>
                       </button>
                       <button type="reset" className="customBtn customClearBtn">
                         Clear

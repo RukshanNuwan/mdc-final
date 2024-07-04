@@ -33,7 +33,7 @@ import UpdateMixing from "./pages/mixingSection/UpdateMixing";
 import UpdateLaboratory from "./pages/laboratory/UpdateLaboratory";
 import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
 import Reports from "./pages/reports/Reports";
-import DailySummery from "./pages/reports/DailySummery";
+import DailySummary from "./pages/reports/DailySummary";
 
 function App() {
   const Layout = () => {
@@ -98,7 +98,7 @@ function App() {
 
             <Route path="reports">
               <Route index element={<Reports />} />
-              <Route path="daily-summery" element={<DailySummery />} />
+              <Route path="daily-summary" element={<DailySummary />} />
             </Route>
           </Route>
         </Route>

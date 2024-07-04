@@ -20,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { Figure } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 import "../common.css";
 import BackToTop from "../../components/backToTop/BackToTop";
@@ -45,6 +46,7 @@ const NewMixing = () => {
   const [newKernelWeight, setNewKernelWeight] = useState(0);
   const [isInformed, setIsInformed] = useState(false);
   const [batchNumber, setBatchNumber] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -111,6 +113,9 @@ const NewMixing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(false);
+
     const confirmData = `Batch number: ${data?.batchNumber} | Order name: ${data?.recipeName} | Order type: ${data?.recipeType} | Milk quantity: ${milkQuantity} | Mixing tank in time: ${data?.mixingTankInTime} | Mix start time: ${data?.mixingStartTime} | Mix finish time: ${data?.mixingFinishTime} | Feeding tank in time: ${data?.feedTankInTime} | Feed start time: ${data?.feedingStartTime} | Operators: ${data?.operators} | Steam pressure: ${data?.steamBars} | Pressure pump value: ${data?.pressurePumpValue}`;
 
     const form = e.currentTarget;
@@ -128,6 +133,8 @@ const NewMixing = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "mixing_section", batchNumberData.id);
             await updateDoc(docRef, {
               ...data,
@@ -164,6 +171,7 @@ const NewMixing = () => {
                       });
 
                       e.target.reset();
+                      setIsLoading(false);
                       navigate(`/mixing-section/${location}`);
                     });
                   } catch (error) {
@@ -801,8 +809,17 @@ const NewMixing = () => {
                     </Row>
 
                     <div className="mt-5">
-                      <button type="submit" className="btn-submit customBtn">
-                        Continue
+                      <button
+                        type="submit"
+                        className="btn-submit customBtn"
+                        disabled={isLoading}
+                      >
+                        <div className="d-flex align-items-center gap-2">
+                          {isLoading && (
+                            <Spinner animation="border" size="sm" />
+                          )}
+                          <p className="text-uppercase">Continue</p>
+                        </div>
                       </button>
                       <button type="reset" className="customBtn customClearBtn">
                         Clear

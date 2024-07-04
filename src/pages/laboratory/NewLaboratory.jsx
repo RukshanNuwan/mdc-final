@@ -14,6 +14,8 @@ import {
   where,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
+import InputGroup from "react-bootstrap/InputGroup";
+import { Figure, Spinner } from "react-bootstrap";
 
 import "../common.css";
 import BackToTop from "../../components/backToTop/BackToTop";
@@ -21,10 +23,8 @@ import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
-import InputGroup from "react-bootstrap/InputGroup";
 import { db } from "../../config/firebase.config";
 import ErrorMessage from "../../components/errorMessage/ErrorMessage";
-import { Figure } from "react-bootstrap";
 
 const NewLaboratory = () => {
   const [validated, setValidated] = useState(false);
@@ -38,6 +38,7 @@ const NewLaboratory = () => {
   const [batchNumberData, setBatchNumberData] = useState({});
   const [isMixHaveIssue, setIsMixHaveIssue] = useState(false);
   const [prevBatchData, setPrevBatchData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -63,6 +64,9 @@ const NewLaboratory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(false);
+
     const confirmData = `Sample in time: ${data?.sampleInTime} | Test start time: ${data?.testStartTime} | Raw milk pH: ${data?.rawMilkPh} | Raw milk TSS: ${data?.rawMilkTSS} | Raw milk fat: ${data?.rawMilkFat} | Mix milk pH: ${data?.mixMilkPh} | Mix milk TSS: ${data?.mixMilkTSS} | Mix milk fat: ${data?.mixMilkFat} | Expected powder quantity: ${data?.expectedPowderQuantity}`;
 
     const form = e.currentTarget;
@@ -80,6 +84,8 @@ const NewLaboratory = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "lab_section", batchNumberData.id);
             await updateDoc(docRef, {
               ...data,
@@ -92,6 +98,7 @@ const NewLaboratory = () => {
               });
 
               e.target.reset();
+              setIsLoading(false);
               navigate(`/lab-section/${location}`);
             });
           }
@@ -663,8 +670,17 @@ const NewLaboratory = () => {
                     </Row>
 
                     <div className="mt-5">
-                      <button type="submit" className="btn-submit customBtn">
-                        Continue
+                      <button
+                        type="submit"
+                        className="btn-submit customBtn"
+                        disabled={isLoading}
+                      >
+                        <div className="d-flex align-items-center gap-2">
+                          {isLoading && (
+                            <Spinner animation="border" size="sm" />
+                          )}
+                          <p className="text-uppercase">Continue</p>
+                        </div>
                       </button>
                       <button type="reset" className="customBtn customClearBtn">
                         Clear

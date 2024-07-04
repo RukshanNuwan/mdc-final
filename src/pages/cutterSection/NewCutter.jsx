@@ -18,6 +18,7 @@ import {
 } from "firebase/firestore";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 import "../common.css";
 import BackToTop from "../../components/backToTop/BackToTop";
@@ -35,6 +36,7 @@ const NewCutter = () => {
   const [location, setLocation] = useState("mdc");
   const [heatValve, setHeatValve] = useState(true);
   const [dailyProductionData, setDailyProductionData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -64,6 +66,9 @@ const NewCutter = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(false);
+
     const confirmData = `Expeller start time: ${data?.expellerStartTime} | Heat Valve: ${data?.heatValve} | Location: ${data?.location} | Operator: ${data?.operator}`;
 
     const form = e.currentTarget;
@@ -81,6 +86,8 @@ const NewCutter = () => {
           cancelButtonColor: "#ff007f",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "cutter_section", batchNumberData.id);
             await updateDoc(docRef, {
               ...data,
@@ -117,6 +124,7 @@ const NewCutter = () => {
                 });
 
                 e.target.reset();
+                setIsLoading(false);
                 navigate("/cutter-section");
                 setLocationCookie();
               })
@@ -356,8 +364,17 @@ const NewCutter = () => {
                     </Row>
 
                     <div className="mt-5">
-                      <button type="submit" className="btn-submit customBtn">
-                        Continue
+                      <button
+                        type="submit"
+                        className="btn-submit customBtn"
+                        disabled={isLoading}
+                      >
+                        <div className="d-flex align-items-center gap-2">
+                          {isLoading && (
+                            <Spinner animation="border" size="sm" />
+                          )}
+                          <p className="text-uppercase">Continue</p>
+                        </div>
                       </button>
                       <button type="reset" className="customBtn customClearBtn">
                         Clear
