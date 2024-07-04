@@ -18,6 +18,7 @@ const ReportDataTable = ({ dataSet, columnName }) => {
           },
         }}
         pageSizeOptions={[25, 50, 100, 500, 750]}
+        getRowId={(row) => row.id}
       />
     </div>
   );
