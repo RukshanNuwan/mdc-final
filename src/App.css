@@ -106,7 +106,11 @@
   }
 
   .customBtnPrint {
-    background: var(--light-blue);
+    background: var(--dark-blue-1);
+  }
+
+  .customBtnPrint:hover {
+    background: #2a325c;
   }
 
   .customBtnUpdate:hover {

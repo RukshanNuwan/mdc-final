@@ -814,7 +814,7 @@ const NewMixing = () => {
                         className="btn-submit customBtn"
                         disabled={isLoading}
                       >
-                        <div className="d-flex align-items-center gap-2">
+                        <div className="d-flex align-items-center justify-content-center gap-2">
                           {isLoading && (
                             <Spinner animation="border" size="sm" />
                           )}

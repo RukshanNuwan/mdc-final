@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link } from "react-router-dom";
 import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
 
 import { db } from "../../config/firebase.config";
-import UseCurrentDate from "../../hooks/useCurrentDate";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
@@ -13,33 +12,18 @@ import Footer from "../../components/footer/Footer";
 import ReportDataTable from "../../components/dataTable/ReportDataTable";
 import BackToTop from "../../components/backToTop/BackToTop";
 
-import {
-  cutterSectionColumns,
-  generalReportColumns,
-  laboratorySectionColumns,
-  mixingSectionColumns,
-  sprayDryerSectionColumns,
-  wetSectionColumns,
-} from "../../data/reportDataTableSource";
-
 const DailySummary = () => {
   const [date, setDate] = useState();
-  // const [location, setLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [dailyProductionDataByDate, setDailyProductionDataByDate] = useState(
     {}
   );
   const [wetDataByDate, setWetDataByDate] = useState([]);
   const [cutterDataByDate, setCutterDataByDate] = useState([]);
-  // const [mixingDataByDateAndLocation, setMixingDataByDateAndLocation] =
-  // useState([]);
-  // const [labDataByDateAndLocation, setLabDataByDateAndLocation] = useState([]);
-  // const [sdDataByDateAndLocation, setSdDataByDateAndLocation] = useState([]);
   const [mixingDataByDate, setMixingDataByDate] = useState([]);
   const [labDataByDate, setLabDataByDate] = useState([]);
   const [sdDataByDate, setSdDataByDate] = useState([]);
 
-  // const generalDataByDateAndLocation = [];
   const generalDataByDate = {};
 
   // Fetch daily production data by date
@@ -109,26 +93,6 @@ const DailySummary = () => {
   };
 
   // Fetch mixing data by date and location
-  // const fetchMixingDataByDateAndLocation = async () => {
-  //   try {
-  //     const list = [];
-  //     const q = query(
-  //       collection(db, "mixing_section"),
-  //       where("date", "==", date)
-  //       // where("location", "==", location)
-  //     );
-
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-  //     });
-
-  //     setMixingDataByDateAndLocation(list);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const fetchMixingDataByDate = async () => {
     try {
       const list = [];
@@ -150,26 +114,6 @@ const DailySummary = () => {
   };
 
   // Fetch lab data by date and location
-  // const fetchLabDataByDateAndLocation = async () => {
-  //   try {
-  //     const list = [];
-  //     const q = query(
-  //       collection(db, "lab_section"),
-  //       where("date", "==", date)
-  //       // where("location", "==", location)
-  //     );
-
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-  //     });
-
-  //     setLabDataByDateAndLocation(list);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const fetchLabDataByDate = async () => {
     try {
       const list = [];
@@ -191,26 +135,6 @@ const DailySummary = () => {
   };
 
   // Fetch sd data by date and location
-  // const fetchSdDataByDateAndLocation = async () => {
-  //   try {
-  //     const list = [];
-  //     const q = query(
-  //       collection(db, "sd_section"),
-  //       where("date", "==", date)
-  //       // where("location", "==", location)
-  //     );
-
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-  //     });
-
-  //     setSdDataByDateAndLocation(list);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const fetchSdDataByDate = async () => {
     try {
       const list = [];
@@ -263,37 +187,16 @@ const DailySummary = () => {
       fetchMixingDataByDate().then(() => setIsLoading(false));
       fetchLabDataByDate().then(() => setIsLoading(false));
       fetchSdDataByDate().then(() => setIsLoading(false));
-      // fetchMixingDataByDateAndLocation().then(() => setIsLoading(false));
-      // fetchLabDataByDateAndLocation().then(() => setIsLoading(false));
-      // fetchSdDataByDateAndLocation().then(() => setIsLoading(false));
     }
-
-    // if (date && location) {
-    // fetchMixingDataByDateAndLocation().then(() => setIsLoading(false));
-    // fetchLabDataByDateAndLocation().then(() => setIsLoading(false));
-    // fetchSdDataByDateAndLocation().then(() => setIsLoading(false));
-    // }
   };
 
   if (
     wetDataByDate.length > 0 &&
     cutterDataByDate.length > 0 &&
-    // mixingDataByDateAndLocation.length > 0 &&
-    // labDataByDateAndLocation.length > 0 &&
-    // sdDataByDateAndLocation.length > 0
     mixingDataByDate.length > 0 &&
     labDataByDate.length > 0 &&
     sdDataByDate.length > 0
   ) {
-    // generalDataByDateAndLocation.push(
-    //   { id: 1, daily_production_data: dailyProductionDataByDate },
-    //   { id: 2, wet_data: wetDataByDate },
-    //   { id: 3, cutter_data: cutterDataByDate },
-    //   { id: 4, mixing_data: mixingDataByDateAndLocation },
-    //   { id: 5, lab_data: labDataByDateAndLocation },
-    //   { id: 6, sd_data: sdDataByDateAndLocation }
-    // );
-
     generalDataByDate.daily_production_data = dailyProductionDataByDate;
     generalDataByDate.wet_data = wetDataByDate;
     generalDataByDate.cutter_data = cutterDataByDate;
@@ -301,11 +204,6 @@ const DailySummary = () => {
     generalDataByDate.lab_data = labDataByDate;
     generalDataByDate.sd_data = sdDataByDate;
   }
-  console.log("general -> ", generalDataByDate);
-
-  // const handlePrint = () => {
-  //   alert("Not implemented yet");
-  // };
 
   return (
     <>
@@ -330,7 +228,6 @@ const DailySummary = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {/* <div className="d-flex justify-content-between"> */}
                 <p className="display-6 mb-4 text-white">Daily summary</p>
 
                 {/* <div>
@@ -342,7 +239,6 @@ const DailySummary = () => {
                       Print
                     </button>
                   </div> */}
-                {/* </div> */}
 
                 <Form onSubmit={handleSubmit}>
                   <Row>
@@ -491,66 +387,8 @@ const DailySummary = () => {
 
                   <div className="table-container">
                     <Card body className="mb-2">
-                      <ReportDataTable
-                        dataSet={""}
-                        columnName={generalReportColumns}
-                      />
+                      <ReportDataTable dataSet={generalDataByDate} />
                     </Card>
-
-                    {/* <Card body className="mb-2">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
-                        Wet section
-                      </span>
-
-                      <ReportDataTable
-                        dataSet={wetDataByDate}
-                        columnName={wetSectionColumns}
-                      />
-                    </Card>
-
-                    <Card body className="mb-2">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
-                        Cutter section
-                      </span>
-
-                      <ReportDataTable
-                        dataSet={cutterDataByDate}
-                        columnName={cutterSectionColumns}
-                      />
-                    </Card>
-
-                    <Card body className="mb-2">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
-                        Mixing section
-                      </span>
-
-                      <ReportDataTable
-                        dataSet={mixingDataByDateAndLocation}
-                        columnName={mixingSectionColumns}
-                      />
-                    </Card>
-
-                    <Card body className="mb-2">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
-                        Spray dryer
-                      </span>
-
-                      <ReportDataTable
-                        dataSet={sdDataByDateAndLocation}
-                        columnName={sprayDryerSectionColumns}
-                      />
-                    </Card>
-
-                    <Card body className="mb-2">
-                      <span className="sectionTitle sectionTitleBlue text-uppercase">
-                        Laboratory
-                      </span>
-
-                      <ReportDataTable
-                        dataSet={labDataByDateAndLocation}
-                        columnName={laboratorySectionColumns}
-                      />
-                    </Card> */}
                   </div>
                 </div>
               </div>
