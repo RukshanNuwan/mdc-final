@@ -33,7 +33,7 @@ const Reports = () => {
               <div className="card-body formWrapper">
                 <div className="row gap-2">
                   <div className="col-md-3">
-                    <ReportTile title="Daily summery" link="daily-summery" />
+                    <ReportTile title="Daily summary" link="daily-summary" />
                   </div>
                 </div>
               </div>

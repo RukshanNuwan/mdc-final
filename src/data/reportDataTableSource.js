@@ -1,6 +1,27 @@
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
+export const generalReportColumns = [
+  {
+    field: "batchNumber",
+    headerName: "Batch #",
+    width: 100,
+    renderCell: (params) => {
+      return <div>{params.row.mixing_data.batchNumber}</div>;
+    },
+  },
+  // {
+  //   field: "timeStamp",
+  //   headerName: "Date & Time",
+  //   width: 200,
+  //   renderCell: (params) => {
+  //     return (
+  //       <div>{new Date(params.row.timeStamp?.toDate()).toLocaleString()}</div>
+  //     );
+  //   },
+  // },
+];
+
 export const wetSectionColumns = [
   {
     field: "timeStamp",
