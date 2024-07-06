@@ -180,7 +180,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
       <DataGrid
         rows={data}
         columns={columnName.concat(actionColumn)}
-        slots={{ toolbar: GridToolbar }}
+        // slots={{ toolbar: GridToolbar }}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 25 },

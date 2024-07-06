@@ -80,6 +80,10 @@
     font-size: var(--smallText);
   }
 
+  .subText {
+    font-size: var(--mediumText);
+  }
+
   .customBtn {
     padding: var(--buttonPaddingVertical) var(--buttonPaddingHorizontal);
     font-size: var(--mediumText);
