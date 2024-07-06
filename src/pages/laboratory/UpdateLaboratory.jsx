@@ -1021,7 +1021,6 @@ const UpdateLaboratory = () => {
                         rows={4}
                         required={state.status !== "ongoing"}
                         className="customInput"
-                        defaultValue={state.reasonForUpdate}
                         onChange={handleChange}
                       />
                     </Form.Group>

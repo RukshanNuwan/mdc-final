@@ -170,10 +170,31 @@ const DailySummary = () => {
     );
   };
 
-  // TODO: Get sd data (sd status = completed)
-  // Get sdData.wet_mixing_batch_id -> mixing object
-  // Get sdData.lab_batch_id -> lab object
-  // Get mixing.cutter_batch_id -> cutter object
+  // Calculate milk expeller efficiency
+  // const renderMilkExpellerEfficiency = () => {
+  //   let sum = 0;
+  //   let index = 0;
+
+  //   mixingDataByDate.forEach((data) => {
+  //     if (data.milkRecovery) sum = sum + Number(data.milkRecovery);
+  //     index++;
+  //   });
+
+  //   return (sum / index).toFixed(2);
+  // };
+
+  // Calculate milk powder recovery
+  // const renderPowderRecovery = () => {
+  //   let sum = 0;
+  //   let index = 0;
+
+  //   sdDataByDate.forEach((data) => {
+  //     if (data.powderRecovery) sum = sum + Number(data.powderRecovery);
+  //     index++;
+  //   });
+
+  //   return (sum / index).toFixed(2);
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -229,16 +250,6 @@ const DailySummary = () => {
 
               <div className="card-body formWrapper">
                 <p className="display-6 mb-4 text-white">Daily summary</p>
-
-                {/* <div>
-                    <button
-                      type="button"
-                      className="btn-submit customBtn customBtnPrint"
-                      onClick={handlePrint}
-                    >
-                      Print
-                    </button>
-                  </div> */}
 
                 <Form onSubmit={handleSubmit}>
                   <Row>
@@ -305,17 +316,6 @@ const DailySummary = () => {
                         </div>
                       </div>
 
-                      {/* {location && (
-                        <div className="row">
-                          <div className="col-6 d-flex justify-content-end">
-                            <p className="fw-bold">Location</p>
-                          </div>
-                          <div className="col-6">
-                            <p>{location === "mdc" ? "SD - 03" : "SD - 04"}</p>
-                          </div>
-                        </div>
-                      )} */}
-
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
                           <p className="fw-bold">Total coconut count</p>
@@ -356,6 +356,28 @@ const DailySummary = () => {
                               : "-"}
                           </p>
                         </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">SD 03</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate?.totalBatchCountInMdc
+                              ? dailyProductionDataByDate?.totalBatchCountInMdc
+                              : "-"}
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">SD 04</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate?.totalBatchCountInAraliyaKele
+                              ? dailyProductionDataByDate?.totalBatchCountInAraliyaKele
+                              : "-"}
+                          </p>
+                        </div>
                       </div>
 
                       <div className="row">
@@ -372,7 +394,42 @@ const DailySummary = () => {
                             kg
                           </p>
                         </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">SD 03</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate?.totalMilkAmountInMdc
+                              ? dailyProductionDataByDate?.totalMilkAmountInMdc
+                              : "-"}
+                            kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">SD 04</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
+                              ? dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
+                              : "-"}
+                            kg
+                          </p>
+                        </div>
                       </div>
+
+                      {/* <div className="row">
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="fw-bold">Avg. expeller efficiency</p>
+                        </div>
+                        <div className="col-6">
+                          <span className="sectionTitle sectionTitleBlue">
+                            {renderMilkExpellerEfficiency()}%
+                          </span>
+                        </div>
+                      </div> */}
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
@@ -381,7 +438,42 @@ const DailySummary = () => {
                         <div className="col-6">
                           <p>{renderTotalPowderQuantity()}kg</p>
                         </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">SD 03</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate?.totalPowderQuantityInMdc
+                              ? dailyProductionDataByDate?.totalPowderQuantityInMdc
+                              : "-"}
+                            kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">SD 04</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
+                              ? dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
+                              : "-"}
+                            kg
+                          </p>
+                        </div>
                       </div>
+
+                      {/* <div className="row">
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="fw-bold">Avg. powder recovery</p>
+                        </div>
+                        <div className="col-6">
+                          <span className="sectionTitle sectionTitleBlue">
+                            {renderPowderRecovery()}%
+                          </span>
+                        </div>
+                      </div> */}
                     </div>
                   )}
 

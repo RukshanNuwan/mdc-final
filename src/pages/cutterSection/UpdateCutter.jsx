@@ -120,8 +120,7 @@ const UpdateCutter = () => {
                 const querySnapshot = await getDocs(q);
 
                 if (querySnapshot.empty) {
-                  console.log("inside");
-
+                  // Add mixing_section
                   await addDoc(collection(db, "mixing_section"), {
                     cutter_batch_id: state.id,
                     wet_batch_id: state.wet_batch_id,

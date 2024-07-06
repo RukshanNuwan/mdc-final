@@ -3,7 +3,15 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState } from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { Spinner } from "react-bootstrap";
 
 import Header from "../../components/header/Header";
@@ -61,17 +69,49 @@ const UpdateWet = () => {
             await updateDoc(docRef, {
               ...data,
               updatedAt: serverTimestamp(),
-            }).then(() => {
-              Swal.fire({
-                title: "Changes saved",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500,
-              });
+            }).then(async () => {
+              try {
+                const q = query(
+                  collection(db, "cutter_section"),
+                  where("wet_batch_id", "==", state.id)
+                );
+                const querySnapshot = await getDocs(q);
 
-              e.target.reset();
-              setIsLoading(false);
-              navigate("/wet-section");
+                if (querySnapshot) {
+                  // Update blancherStartTime in wet section
+                  querySnapshot.forEach((snapshot) => {
+                    const docRef = doc(db, "cutter_section", snapshot.id);
+                    updateDoc(docRef, {
+                      blancherStartTime: data.blancherInTime,
+                      updatedAt: serverTimestamp(),
+                    }).then(() => {
+                      Swal.fire({
+                        title: "Changes saved",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+
+                      e.target.reset();
+                      setIsLoading(false);
+                      navigate("/wet-section");
+                    });
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Changes saved",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+
+                  e.target.reset();
+                  setIsLoading(false);
+                  navigate("/wet-section");
+                }
+              } catch (error) {
+                console.log(error);
+              }
             });
           }
         });
@@ -195,9 +235,9 @@ const UpdateWet = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled
-                        className="customInput disabled"
+                        className="customInput"
                         defaultValue={state.blancherInTime}
+                        onChange={handleChange}
                       />
                     </Form.Group>
 
