@@ -47,7 +47,7 @@ export const cutterSectionColumns = [
     width: 150,
   },
   { field: "cutter_expeller_delay_time", headerName: "Delay time", width: 150 },
-  { field: "status", headerName: "Status", width: 130 },
+  { field: "cutter_status", headerName: "Status", width: 130 },
   {
     field: "location",
     headerName: "Location",

@@ -85,7 +85,6 @@ const NewWet = () => {
       [id]: value,
       wet_kernel_weight: kernelWeight,
       wet_kernel_quality: quality,
-      section_name: "wet",
 
       // cutter section data
       cutter_heat_valve: false,

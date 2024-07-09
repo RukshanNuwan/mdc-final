@@ -4,16 +4,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 
@@ -29,8 +20,7 @@ const UpdateCutter = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
-  const [heatValve, setHeatValve] = useState(state.heatValve);
+  const [heatValve, setHeatValve] = useState(state.cutter_heat_valve);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -41,9 +31,9 @@ const UpdateCutter = () => {
 
     setData({
       ...data,
-      heatValve,
-      status: "completed",
       [id]: value,
+      cutter_heat_valve: heatValve,
+      cutter_status: "completed",
     });
   };
 
@@ -64,7 +54,7 @@ const UpdateCutter = () => {
 
   const handleExpellerEndTime = (e) => {
     const processTime = calculateTimeDifference(
-      state?.expellerStartTime,
+      state?.cutter_expeller_start_time,
       e.target.value
     );
 
@@ -83,92 +73,50 @@ const UpdateCutter = () => {
 
     setData({
       ...data,
-      expellerFinishTime: e.target.value,
-      expellerProcessTime: processTime,
-      expellerDelayTime: delayTime,
+      expeller_finish_time: e.target.value,
+      cutter_expeller_process_time: processTime,
+      cutter_expeller_delay_time: delayTime,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#ff007f",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#0d1b2a",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "cutter_section", state.id);
-            await updateDoc(docRef, data).then(async () => {
-              try {
-                const q = query(
-                  collection(db, "mixing_section"),
-                  where("cutter_batch_id", "==", state.id)
-                );
-                const querySnapshot = await getDocs(q);
-
-                if (querySnapshot.empty) {
-                  // Add mixing_section
-                  await addDoc(collection(db, "mixing_section"), {
-                    cutter_batch_id: state.id,
-                    wet_batch_id: state.wet_batch_id,
-                    wet_batch_number: state.batchNumber,
-                    date: state.date,
-                    location: state.location,
-                    status: "ongoing",
-                    timeStamp: serverTimestamp(),
-                  })
-                    .then(() => {
-                      Swal.fire({
-                        title: "Changes saved",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                      });
-
-                      e.target.reset();
-                      setIsLoading(false);
-                      navigate("/cutter-section");
-                    })
-                    .catch((error) => {
-                      console.log("Error updating document:", error);
-                    });
-                } else {
-                  Swal.fire({
-                    title: "Changes saved",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-
-                  e.target.reset();
-                  setIsLoading(false);
-                  navigate("/cutter-section");
-                }
-              } catch (error) {
-                console.log(error);
-              }
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            cutter_updated_at: serverTimestamp(),
+            mixing_status: "ongoing",
+          }).then(() => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
             });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+            e.target.reset();
+            setIsLoading(false);
+            navigate("/cutter-section");
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -194,7 +142,7 @@ const UpdateCutter = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
                       as={Col}
@@ -214,24 +162,22 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="batchNumber"
+                      controlId="primary_batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">
-                        Batch number (Wet section)
-                      </Form.Label>
+                      <Form.Label className="fw-bold">Batch number</Form.Label>
                       <Form.Control
                         type="number"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batchNumber}
+                        defaultValue={state.primary_batch_number}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="blancherStartTime"
+                      controlId="blancher_in_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -241,7 +187,7 @@ const UpdateCutter = () => {
                         type="time"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.blancherStartTime}
+                        defaultValue={state.blancher_in_time}
                       />
                     </Form.Group>
                   </Row>
@@ -250,7 +196,7 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="heatValve"
+                      controlId="cutter_heat_valve"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Heat Valve</Form.Label>
@@ -266,7 +212,7 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="expellerStartTime"
+                      controlId="cutter_expeller_start_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -278,7 +224,7 @@ const UpdateCutter = () => {
                         className={`customInput ${
                           state.status === "ongoing" && "disabled"
                         }`}
-                        defaultValue={state.expellerStartTime}
+                        defaultValue={state.cutter_expeller_start_time}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -307,13 +253,13 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="operator"
+                      controlId="cutter_operator_name"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Operator name</Form.Label>
                       <Form.Control
                         type="text"
-                        defaultValue={state.operator}
+                        defaultValue={state.cutter_operator_name}
                         disabled={state.status === "ongoing"}
                         className={`customInput ${
                           state.status === "ongoing" && "disabled"
@@ -326,7 +272,7 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="cutterFinishTime"
+                      controlId="cutter_finish_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -334,7 +280,7 @@ const UpdateCutter = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        defaultValue={state.cutterFinishTime}
+                        defaultValue={state.cutter_finish_time}
                         required={state.status === "updated"}
                         disabled={state.status === "ongoing"}
                         className={`customInput ${
@@ -348,7 +294,7 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="expellerFinishTime"
+                      controlId="expeller_finish_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -357,7 +303,7 @@ const UpdateCutter = () => {
 
                       <Form.Control
                         type="time"
-                        defaultValue={state.expellerFinishTime}
+                        defaultValue={state.expeller_finish_time}
                         required={state.status === "updated"}
                         disabled={state.status === "ongoing"}
                         className={`customInput ${
@@ -372,18 +318,15 @@ const UpdateCutter = () => {
                     <Form.Group
                       as={Col}
                       md="12"
-                      controlId="specialNotes"
+                      controlId="cutter_special_notes"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Special notes</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        disabled={state.status === "ongoing"}
-                        className={`customInput ${
-                          state.status === "ongoing" && "disabled"
-                        }`}
-                        defaultValue={state.specialNotes}
+                        className="customInput"
+                        defaultValue={state.cutter_special_notes}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -400,6 +343,7 @@ const UpdateCutter = () => {
                         <p>Update</p>
                       </div>
                     </button>
+
                     <button type="reset" className="customBtn customClearBtn">
                       Clear
                     </button>

@@ -94,10 +94,7 @@ const CutterSection = () => {
                   />
                 )}
 
-                <DataTable
-                  collectionName="cutter_section"
-                  columnName={cutterSectionColumns}
-                />
+                <DataTable columnName={cutterSectionColumns} />
               </div>
             </div>
           </div>
