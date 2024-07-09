@@ -61,7 +61,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.batchNumber}
+                            {state?.primary_batch_number}
                           </p>
                         </div>
                       </div>
@@ -73,7 +73,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.tankNumber}
+                            {state?.wet_tank_number}
                           </p>
                         </div>
                       </div>
@@ -85,7 +85,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.kernelWeight}kg
+                            {state?.wet_kernel_weight}kg
                           </p>
                         </div>
                       </div>
@@ -97,7 +97,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.quality === true ? (
+                            {state?.wet_kernel_quality === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -115,9 +115,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.kernelQualityRemark
-                              ? state?.kernelQualityRemark
-                              : "-"}
+                            {state?.wet_remark ? state?.wet_remark : "-"}
                           </p>
                         </div>
                       </div>
@@ -131,7 +129,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.blancherInTime}
+                            {state?.blancher_in_time}
                           </p>
                         </div>
                       </div>
@@ -140,12 +138,12 @@ const WetDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Operator's name</p>
+                          <p className="bodyText">Operator name</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.operator}
+                            {state?.wet_operator_name}
                           </p>
                         </div>
                       </div>
@@ -153,8 +151,17 @@ const WetDetails = () => {
 
                     <div className="mt-4 text-end">
                       <p className="smallText text-white">
-                        Added at {state?.timeStamp?.toDate().toLocaleString()}
+                        Added at{" "}
+                        {state?.wet_added_at?.toDate().toLocaleString()}
                       </p>
+
+                      {state?.wet_updated_at && (
+                        <p className="smallText text-white">
+                          Last updated at{" "}
+                          {state?.wet_updated_at?.toDate().toLocaleString()}
+                        </p>
+                      )}
+
                       {/* <p className="smallText">
                         by {data?.addedBy.displayName}
                       </p> */}

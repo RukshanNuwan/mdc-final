@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 
 import "./sideBar.css";
-import { firstNavList, secondNavList } from "../../data/navItem";
+import {
+  otherNavList,
+  packingLinesNavList,
+  productionNavList,
+} from "../../data/navItem";
 import NavItem from "../nav/NavItem";
 
 const SideBar = () => {
@@ -15,13 +19,18 @@ const SideBar = () => {
           </Link>
         </li>
 
-        <li className="nav-heading">Operations</li>
-        {firstNavList.map((nav, index) => (
+        <li className="nav-heading">Productions</li>
+        {productionNavList.map((nav, index) => (
+          <NavItem data={nav} key={index} />
+        ))}
+
+        <li className="nav-heading">Packing Lines</li>
+        {packingLinesNavList.map((nav, index) => (
           <NavItem data={nav} key={index} />
         ))}
 
         <li className="nav-heading">Other</li>
-        {secondNavList.map((nav, index) => (
+        {otherNavList.map((nav, index) => (
           <NavItem data={nav} key={index} />
         ))}
       </ul>

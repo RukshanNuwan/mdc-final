@@ -1034,7 +1034,7 @@ const UpdateLaboratory = () => {
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
-                        <p className="text-uppercase">Update</p>
+                        <p>Update</p>
                       </div>
                     </button>
                     <button type="reset" className="customBtn customClearBtn">

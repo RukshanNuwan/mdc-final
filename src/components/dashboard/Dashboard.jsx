@@ -649,12 +649,24 @@ const Dashboard = () => {
                             {breakdown.informedTo}
                           </span>
                         </p>
-                        <p className="text-secondary text-sm">
-                          Time :
-                          <span className="fw-bold text-capitalize textSuccessGreen">
-                            {breakdown.timeStamp?.toDate().toLocaleString()}
-                          </span>
-                        </p>
+
+                        <div>
+                          <p className="text-secondary text-sm">
+                            Start time :
+                            <span className="fw-bold text-capitalize textSuccessGreen">
+                              {breakdown.timeStamp?.toDate().toLocaleString()}
+                            </span>
+                          </p>
+
+                          {breakdown.finishTime && (
+                            <p className="text-secondary text-sm">
+                              End time :
+                              <span className="fw-bold text-capitalize textSuccessGreen">
+                                {breakdown.updatedAt?.toDate().toLocaleString()}
+                              </span>
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </ListGroup.Item>
                   ))}

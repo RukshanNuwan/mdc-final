@@ -27,8 +27,8 @@ const DataTable = ({ collectionName, columnName, location }) => {
   // Fetch Data from DB
   const fetchDataWithoutLocation = useCallback(async () => {
     const q = query(
-      collection(db, collectionName),
-      orderBy("timeStamp", "desc")
+      collection(db, "production_data"),
+      orderBy("wet_added_at", "desc")
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let list = [];
@@ -42,7 +42,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
     return () => {
       unsubscribe();
     };
-  }, [collectionName]);
+  }, []);
 
   const fetchDataWithLocation = useCallback(async () => {
     try {
@@ -85,6 +85,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
     navigate("update", { state: data });
   };
 
+  // TODO:
   const handleDelete = async (data) => {
     try {
       Swal.fire({
@@ -186,7 +187,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
             paginationModel: { page: 0, pageSize: 25 },
           },
           sorting: {
-            sortModel: [{ field: "timeStamp", sort: "desc" }],
+            sortModel: [{ field: "wet_added_at", sort: "desc" }],
           },
         }}
         pageSizeOptions={[25, 50, 100]}

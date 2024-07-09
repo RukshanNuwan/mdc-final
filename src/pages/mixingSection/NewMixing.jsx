@@ -94,7 +94,7 @@ const NewMixing = () => {
   const handleOperatorsChange = (e) => {
     const str = e.target.value;
     const operators = str.split(",");
-    setData({ ...data, operators });
+    setData({ ...data, mixing_operator_names: operators });
   };
 
   const handleMilkRecovery = (e) => {

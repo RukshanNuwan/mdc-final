@@ -1,4 +1,4 @@
-const firstNavList = [
+const productionNavList = [
   {
     _id: 1,
     name: "Wet Section",
@@ -31,7 +31,16 @@ const firstNavList = [
   },
 ];
 
-const secondNavList = [
+const packingLinesNavList = [
+  {
+    _id: 1,
+    name: "Packing Lines",
+    icon: "bi bi-box-fill",
+    path: "/packing-lines",
+  }
+];
+
+const otherNavList = [
   // {
   //   _id: 1,
   //   name: 'Orders',
@@ -46,4 +55,4 @@ const secondNavList = [
   },
 ];
 
-export { firstNavList, secondNavList };
+export { packingLinesNavList, productionNavList, otherNavList };

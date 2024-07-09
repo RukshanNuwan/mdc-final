@@ -26,7 +26,7 @@ import NewSprayDryer from "./pages/sprayDryerSection/NewSprayDryer";
 import LaboratorySection from "./pages/laboratory/LaboratorySection";
 import LaboratoryDetails from "./pages/laboratory/LaboratoryDetails";
 import NewLaboratory from "./pages/laboratory/NewLaboratory";
-import Orders from "./pages/orders/Orders";
+// import Orders from "./pages/orders/Orders";
 import UpdateWet from "./pages/wetSection/UpdateWet";
 import UpdateCutter from "./pages/cutterSection/UpdateCutter";
 import UpdateMixing from "./pages/mixingSection/UpdateMixing";
@@ -34,6 +34,7 @@ import UpdateLaboratory from "./pages/laboratory/UpdateLaboratory";
 import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
 import Reports from "./pages/reports/Reports";
 import DailySummary from "./pages/reports/DailySummary";
+import PackingLines from "./pages/packingLines/PackingLines";
 
 function App() {
   const Layout = () => {
@@ -92,8 +93,12 @@ function App() {
               <Route path=":location/update" element={<UpdateLaboratory />} />
             </Route>
 
-            <Route path="orders">
+            {/* <Route path="orders">
               <Route index element={<Orders />} />
+            </Route> */}
+
+            <Route path="packing-lines">
+              <Route index element={<PackingLines />} />
             </Route>
 
             <Route path="reports">

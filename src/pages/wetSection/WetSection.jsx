@@ -87,6 +87,7 @@ const WetSection = () => {
               });
 
               e.target.reset();
+              navigate("/");
             });
           }
         });
@@ -119,6 +120,7 @@ const WetSection = () => {
               });
 
               e.target.reset();
+              navigate("/");
             });
           }
         });
@@ -126,8 +128,6 @@ const WetSection = () => {
         console.log(error);
       }
     }
-
-    navigate("/");
   };
 
   useEffect(() => {
@@ -235,16 +235,12 @@ const WetSection = () => {
                 </div>
 
                 <div className="addNewBtnWrapper">
-                  {/*  /!* print button *!/*/}
                   <Link to="new" className="addNewBtn customBtn">
                     Add new
                   </Link>
                 </div>
 
-                <DataTable
-                  collectionName="wet_section"
-                  columnName={wetSectionColumns}
-                />
+                <DataTable columnName={wetSectionColumns} />
               </div>
             </div>
           </div>

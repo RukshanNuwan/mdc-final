@@ -3,15 +3,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState } from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import Swal from "sweetalert2";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { Spinner } from "react-bootstrap";
 
 import Header from "../../components/header/Header";
@@ -25,8 +17,7 @@ const UpdateWet = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
-  const [quality, setQuality] = useState(state.quality);
+  const [quality, setQuality] = useState(state.wet_kernel_quality);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -37,90 +28,48 @@ const UpdateWet = () => {
 
     setData({
       ...data,
-      quality,
       [id]: value,
+      wet_kernel_quality: quality,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    // Update wet_section & cutter_section
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            // Update query
-            const docRef = doc(db, "wet_section", state.id);
-            await updateDoc(docRef, {
-              ...data,
-              updatedAt: serverTimestamp(),
-            }).then(async () => {
-              try {
-                const q = query(
-                  collection(db, "cutter_section"),
-                  where("wet_batch_id", "==", state.id)
-                );
-                const querySnapshot = await getDocs(q);
-
-                if (querySnapshot) {
-                  // Update blancherStartTime in wet section
-                  querySnapshot.forEach((snapshot) => {
-                    const docRef = doc(db, "cutter_section", snapshot.id);
-                    updateDoc(docRef, {
-                      blancherStartTime: data.blancherInTime,
-                      updatedAt: serverTimestamp(),
-                    }).then(() => {
-                      Swal.fire({
-                        title: "Changes saved",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                      });
-
-                      e.target.reset();
-                      setIsLoading(false);
-                      navigate("/wet-section");
-                    });
-                  });
-                } else {
-                  Swal.fire({
-                    title: "Changes saved",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-
-                  e.target.reset();
-                  setIsLoading(false);
-                  navigate("/wet-section");
-                }
-              } catch (error) {
-                console.log(error);
-              }
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            wet_updated_at: serverTimestamp(),
+          }).then(() => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
             });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+            e.target.reset();
+            setIsLoading(false);
+            navigate("/wet-section");
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -146,7 +95,7 @@ const UpdateWet = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
                       as={Col}
@@ -166,7 +115,7 @@ const UpdateWet = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="batchNumber"
+                      controlId="primary_batch_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
@@ -174,21 +123,21 @@ const UpdateWet = () => {
                         type="number"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batchNumber}
+                        defaultValue={state.primary_batch_number}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="tankNumber"
+                      controlId="wet_tank_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Tank number</Form.Label>
                       <Form.Control
                         type="number"
                         className="customInput"
-                        defaultValue={state.tankNumber}
+                        defaultValue={state.wet_tank_number}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -198,7 +147,7 @@ const UpdateWet = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="kernelWeight"
+                      controlId="wet_kernel_weight"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Kernel weight</Form.Label>
@@ -208,7 +157,7 @@ const UpdateWet = () => {
                           aria-label="kernel weight"
                           aria-describedby="addon"
                           className="customInput"
-                          defaultValue={state.kernelWeight}
+                          defaultValue={state.wet_kernel_weight}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -227,7 +176,7 @@ const UpdateWet = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="blancherInTime"
+                      controlId="blancher_in_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -236,7 +185,7 @@ const UpdateWet = () => {
                       <Form.Control
                         type="time"
                         className="customInput"
-                        defaultValue={state.blancherInTime}
+                        defaultValue={state.blancher_in_time}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -244,7 +193,7 @@ const UpdateWet = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="kernelQuality"
+                      controlId="wet_kernel_quality"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -265,14 +214,14 @@ const UpdateWet = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="operator"
+                      controlId="wet_operator_name"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Operator name</Form.Label>
                       <Form.Control
                         type="text"
                         className="customInput"
-                        defaultValue={state.operator}
+                        defaultValue={state.wet_operator_name}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -280,7 +229,7 @@ const UpdateWet = () => {
                     <Form.Group
                       as={Col}
                       md="8"
-                      controlId="reasonForUpdate"
+                      controlId="wet_remark"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Remark</Form.Label>
@@ -289,7 +238,7 @@ const UpdateWet = () => {
                         rows={4}
                         required
                         className="customInput"
-                        defaultValue={state.reasonForUpdate}
+                        defaultValue={state.wet_remark}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -303,7 +252,7 @@ const UpdateWet = () => {
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
-                        <p className="text-uppercase">Update</p>
+                        <p>Update</p>
                       </div>
                     </button>
                     <button type="reset" className="customBtn customClearBtn">

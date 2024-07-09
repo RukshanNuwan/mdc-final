@@ -92,7 +92,6 @@
     border-radius: 0.25rem;
     background: var(--pink);
     color: var(--white);
-    text-transform: uppercase;
   }
 
   .customBackBtn {
@@ -101,7 +100,6 @@
     border: none;
     outline: none;
     color: var(--dark-blue-2);
-    text-transform: uppercase;
   }
 
   .customBtnUpdate {

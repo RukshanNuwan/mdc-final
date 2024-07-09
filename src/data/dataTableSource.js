@@ -1,48 +1,67 @@
 export const wetSectionColumns = [
-  { field: "batchNumber", headerName: "Batch", width: 100 },
-  { field: "kernelWeight", headerName: "Kernel weight", width: 150 },
+  { field: "primary_batch_number", headerName: "Batch#", width: 100 },
   {
-    field: "timeStamp",
+    field: "wet_kernel_weight",
+    headerName: "Kernel weight",
+    width: 150,
+    renderCell: (params) => {
+      return <div>{params.row.wet_kernel_weight}kg</div>;
+    },
+  },
+  {
+    field: "wet_added_at",
     headerName: "Date & Time",
     width: 200,
     renderCell: (params) => {
       return (
-        <div>{new Date(params.row.timeStamp?.toDate()).toLocaleString()}</div>
+        <div>
+          {new Date(params.row.wet_added_at?.toDate()).toLocaleString()}
+        </div>
       );
     },
   },
   {
-    field: "blancherInTime",
+    field: "blancher_in_time",
     headerName: "Blancher in time",
     width: 200,
   },
 ];
 
 export const cutterSectionColumns = [
-  { field: "batchNumber", headerName: "Wet batch no", width: 100 },
+  { field: "primary_batch_number", headerName: "Wet batch #", width: 100 },
   {
-    field: "timeStamp",
+    field: "wet_added_at",
     headerName: "Date & Time",
     width: 200,
     renderCell: (params) => {
       return (
-        <div>{new Date(params.row.timeStamp?.toDate()).toLocaleString()}</div>
+        <div>
+          {new Date(params.row.wet_added_at?.toDate()).toLocaleString()}
+        </div>
       );
     },
   },
   {
-    field: "expellerFinishTime",
+    field: "expeller_finish_time",
     headerName: "Expeller finish time",
     width: 150,
   },
-  { field: "expellerDelayTime", headerName: "Delay time", width: 150 },
+  { field: "cutter_expeller_delay_time", headerName: "Delay time", width: 150 },
   { field: "status", headerName: "Status", width: 130 },
   {
     field: "location",
     headerName: "Location",
     width: 130,
     renderCell: (params) => {
-      return <div>{params.row.location === "mdc" ? "SD 03" : "SD 04"}</div>;
+      return (
+        <div>
+          {params.row.location === "mdc"
+            ? "SD 03"
+            : params.row.location === "araliya_kele"
+            ? "SD 04"
+            : "-"}
+        </div>
+      );
     },
   },
 ];

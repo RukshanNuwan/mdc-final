@@ -679,7 +679,7 @@ const NewLaboratory = () => {
                           {isLoading && (
                             <Spinner animation="border" size="sm" />
                           )}
-                          <p className="text-uppercase">Continue</p>
+                          <p>Continue</p>
                         </div>
                       </button>
                       <button type="reset" className="customBtn customClearBtn">

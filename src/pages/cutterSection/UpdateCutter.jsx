@@ -103,9 +103,9 @@ const UpdateCutter = () => {
           title: "Do you want to save the changes?",
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
+          confirmButtonColor: "#ff007f",
           confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
+          cancelButtonColor: "#0d1b2a",
         }).then(async (result) => {
           if (result.isConfirmed) {
             setIsLoading(true);
@@ -397,7 +397,7 @@ const UpdateCutter = () => {
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
-                        <p className="text-uppercase">Update</p>
+                        <p>Update</p>
                       </div>
                     </button>
                     <button type="reset" className="customBtn customClearBtn">
