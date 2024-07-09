@@ -47,8 +47,9 @@ const DataTable = ({ collectionName, columnName, location }) => {
   const fetchDataWithLocation = useCallback(async () => {
     try {
       const q = query(
-        collection(db, collectionName),
-        where("location", "==", location)
+        collection(db, "production_data"),
+        where("location", "==", location),
+        orderBy("wet_added_at", "desc")
       );
       const unsubscribe = onSnapshot(
         q,
@@ -70,7 +71,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [collectionName, location]);
+  }, [location]);
 
   useEffect(() => {
     if (location) fetchDataWithLocation();
@@ -85,7 +86,6 @@ const DataTable = ({ collectionName, columnName, location }) => {
     navigate("update", { state: data });
   };
 
-  // TODO:
   const handleDelete = async (data) => {
     try {
       Swal.fire({
@@ -106,31 +106,9 @@ const DataTable = ({ collectionName, columnName, location }) => {
             cancelButtonColor: "#ff007f",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              // Delete data from cutter section
-              await deleteDoc(doc(db, "cutter_section", data.id)).then(
-                async () => {
-                  await deleteDoc(
-                    doc(db, "wet_section", data.wet_batch_id)
-                  ).then(async () => {});
-
-                  // Get data from wet section by cutter batch id
-                  const q = query(
-                    collection(db, "mixing_section"),
-                    where("cutter_batch_id", "==", data.id)
-                  );
-                  const querySnapshot = await getDocs(q);
-                  querySnapshot.forEach((item) => {
-                    // Delete data from wet section
-                    deleteDoc(doc(db, "mixing_section", item.id)).then(() => {
-                      Swal.fire(
-                        "Deleted!",
-                        "Your file has been deleted.",
-                        "success"
-                      );
-                    });
-                  });
-                }
-              );
+              await deleteDoc(doc(db, "production_data", data.id)).then(() => {
+                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              });
             }
           });
         }
@@ -162,14 +140,12 @@ const DataTable = ({ collectionName, columnName, location }) => {
               />
             </div>
 
-            {params.row.sectionName === "cutter" && (
-              <div>
-                <DeleteIcon
-                  className="tableAction"
-                  onClick={() => handleDelete(params.row)}
-                />
-              </div>
-            )}
+            <div>
+              <DeleteIcon
+                className="tableAction"
+                onClick={() => handleDelete(params.row)}
+              />
+            </div>
           </div>
         );
       },

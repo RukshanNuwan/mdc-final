@@ -67,21 +67,28 @@ export const cutterSectionColumns = [
 ];
 
 export const mixingSectionColumns = [
-  { field: "wet_batch_number", headerName: "Wet batch", width: 100 },
-  { field: "batchNumber", headerName: "Mixing Batch", width: 100 },
+  { field: "primary_batch_number", headerName: "Wet batch #", width: 100 },
+  { field: "batch_number", headerName: "Mixing Batch #", width: 130 },
   {
-    field: "timeStamp",
+    field: "wet_added_at",
     headerName: "Date & Time",
     width: 200,
     renderCell: (params) => {
       return (
-        <div>{new Date(params.row.timeStamp?.toDate()).toLocaleString()}</div>
+        <div>
+          {params.row.mixing_added_at &&
+            new Date(params.row.mixing_added_at?.toDate()).toLocaleString()}
+        </div>
       );
     },
   },
-  { field: "milkRecovery", headerName: "Milk recovery", width: 150 },
-  { field: "feedingStartTime", headerName: "Feed start time", width: 150 },
-  { field: "status", headerName: "Status", width: 150 },
+  { field: "mixing_milk_recovery", headerName: "Milk recovery", width: 120 },
+  {
+    field: "mixing_feed_start_time",
+    headerName: "Feed start time",
+    width: 150,
+  },
+  { field: "mixing_status", headerName: "Status", width: 150 },
 ];
 
 export const sprayDryerSectionColumns = [

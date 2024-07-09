@@ -49,7 +49,6 @@ const NewCutter = () => {
       [id]: value,
       location,
       cutter_heat_valve: heatValve,
-      section_name: "cutter",
       cutter_status: "updated",
     });
   };

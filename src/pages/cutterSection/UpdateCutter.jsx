@@ -100,6 +100,7 @@ const UpdateCutter = () => {
             ...data,
             cutter_updated_at: serverTimestamp(),
             mixing_status: "ongoing",
+            mixing_added_at: serverTimestamp(),
           }).then(() => {
             Swal.fire({
               title: "Changes saved",
