@@ -464,12 +464,13 @@ const LaboratoryDetails = () => {
 
                     <div className="mt-4 text-end">
                       <p className="smallText text-white">
-                        Added at {state?.lab_added_at.toDate().toLocaleString()}
+                        Added at{" "}
+                        {state?.lab_added_at?.toDate().toLocaleString()}
                       </p>
 
                       <p className="smallText text-white">
                         Last updated at{" "}
-                        {state?.lab_updated_at.toDate().toLocaleString()}
+                        {state?.lab_updated_at?.toDate().toLocaleString()}
                       </p>
                     </div>
                   </div>

@@ -130,11 +130,11 @@ const NewLaboratory = () => {
       try {
         const list = [];
         const q = query(
-          collection(db, "lab_section"),
+          collection(db, "production_data"),
           where("date", "==", ongoingData.date),
           where("location", "==", location),
           where("lab_status", "==", "updated"),
-          orderBy("lab_added_at", "asc")
+          orderBy("lab_added_at", "desc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -150,7 +150,7 @@ const NewLaboratory = () => {
     };
 
     fetchPrevBatchData();
-  }, [ongoingData?.date, location]);
+  }, [ongoingData?.date, location, ongoingData?.batch_number]);
 
   return (
     <>
@@ -199,7 +199,7 @@ const NewLaboratory = () => {
 
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="2"
                         controlId="primary_batch_number"
                         className="mb-2"
                       >
@@ -216,7 +216,7 @@ const NewLaboratory = () => {
 
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="2"
                         controlId="batch_number"
                         className="mb-2"
                       >

@@ -141,8 +141,8 @@ const UpdateLaboratory = () => {
           collection(db, "production_data"),
           where("date", "==", state.date),
           where("location", "==", location),
-          where("lab_status", "==", "updated"),
-          orderBy("lab_added_at", "asc")
+          where("lab_status", "==", "completed"),
+          orderBy("lab_updated_at", "desc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -158,7 +158,9 @@ const UpdateLaboratory = () => {
     };
 
     fetchPrevBatchData();
-  }, [state?.date, location]);
+  }, [state?.date, location, state.batch_number]);
+
+  console.log(prevBatchData);
 
   return (
     <>
@@ -204,7 +206,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="2"
                       controlId="primary_batch_number"
                       className="mb-2"
                     >
@@ -221,7 +223,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="2"
                       controlId="batch_number"
                       className="mb-2"
                     >
@@ -744,7 +746,7 @@ const UpdateLaboratory = () => {
                         type="number"
                         disabled={state.lab_status === "ongoing"}
                         className={`customInput ${
-                          state.lab_status !== "updated" && "disabled"
+                          state.lab_status === "ongoing" && "disabled"
                         }`}
                         defaultValue={state.lab_powder_fat}
                         onChange={handleChange}

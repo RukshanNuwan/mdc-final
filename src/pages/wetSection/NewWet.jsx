@@ -43,9 +43,9 @@ const NewWet = () => {
     try {
       const list = [];
       const q = query(
-        collection(db, "wet_section"),
+        collection(db, "production_data"),
         where("date", "==", e.target.value),
-        orderBy("batchNumber", "desc"),
+        orderBy("primary_batch_number", "desc"),
         limit(1)
       );
       const querySnapshot = await getDocs(q);
@@ -56,7 +56,7 @@ const NewWet = () => {
       let res = list.filter((doc) => doc);
 
       if (res[0]) {
-        setNextBatchNumber(Number(res[0].batchNumber) + 1);
+        setNextBatchNumber(Number(res[0].primary_batch_number) + 1);
       } else {
         setNextBatchNumber(1);
       }
