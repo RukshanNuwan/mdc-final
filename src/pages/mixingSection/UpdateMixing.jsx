@@ -341,9 +341,9 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixing_tank_in_time}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -361,9 +361,9 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixing_mix_start_time}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -381,9 +381,9 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixing_mix_finish_time}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -403,9 +403,9 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.mixing_feeding_tank_in_time}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -522,9 +522,9 @@ const UpdateMixing = () => {
                         type="number"
                         step=".01"
                         defaultValue={state.mixing_steam_pressure_value}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -544,9 +544,9 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="number"
                         defaultValue={state.mixing_pressure_pump_value}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />

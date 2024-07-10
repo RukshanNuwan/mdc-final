@@ -221,9 +221,9 @@ const UpdateCutter = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled={state.status === "ongoing"}
+                        disabled={state.cutter_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.cutter_status === "ongoing" && "disabled"
                         }`}
                         defaultValue={state.cutter_expeller_start_time}
                         onChange={handleChange}
@@ -261,9 +261,9 @@ const UpdateCutter = () => {
                       <Form.Control
                         type="text"
                         defaultValue={state.cutter_operator_name}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.cutter_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.cutter_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -282,10 +282,10 @@ const UpdateCutter = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.cutter_finish_time}
-                        required={state.status === "updated"}
-                        disabled={state.status === "ongoing"}
+                        required={state.cutter_status === "updated"}
+                        disabled={state.cutter_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.cutter_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -305,10 +305,10 @@ const UpdateCutter = () => {
                       <Form.Control
                         type="time"
                         defaultValue={state.expeller_finish_time}
-                        required={state.status === "updated"}
-                        disabled={state.status === "ongoing"}
+                        required={state.cutter_status === "updated"}
+                        disabled={state.cutter_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.cutter_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleExpellerEndTime}
                       />

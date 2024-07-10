@@ -132,7 +132,6 @@ const NewMixing = () => {
           const docRef = doc(db, "production_data", ongoingData.id);
           await updateDoc(docRef, {
             ...data,
-            mixing_updated_at: serverTimestamp(),
             lab_status: "ongoing",
             lab_added_at: serverTimestamp(),
             sd_status: "ongoing",
@@ -188,7 +187,7 @@ const NewMixing = () => {
           collection(db, "production_data"),
           where("mixing_status", "==", "ongoing"),
           where("location", "==", location),
-          orderBy("mixing_added_at", "asc")
+          orderBy("wet_added_at", "asc")
         );
 
         const querySnapshot = await getDocs(q);

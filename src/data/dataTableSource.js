@@ -92,21 +92,27 @@ export const mixingSectionColumns = [
 ];
 
 export const sprayDryerSectionColumns = [
-  { field: "batchNumber", headerName: "Batch", width: 100 },
+  { field: "batch_number", headerName: "Batch #", width: 100 },
   {
-    field: "timeStamp",
+    field: "wet_added_at",
     headerName: "Date & Time",
     width: 200,
     renderCell: (params) => {
       return (
-        <div>{new Date(params.row.timeStamp?.toDate()).toLocaleString()}</div>
+        <div>
+          {new Date(params.row.wet_added_at?.toDate()).toLocaleString()}
+        </div>
       );
     },
   },
-  { field: "powderSprayStartTime", headerName: "Start time", width: 150 },
-  { field: "recipeName", headerName: "Order", width: 150 },
-  { field: "powderQuantity", headerName: "Powder quantity", width: 150 },
-  { field: "status", headerName: "Status", width: 150 },
+  { field: "sd_powder_spray_start_time", headerName: "Start time", width: 150 },
+  { field: "order_name", headerName: "Order", width: 150 },
+  {
+    field: "sd_total_powder_quantity",
+    headerName: "Powder quantity",
+    width: 150,
+  },
+  { field: "sd_status", headerName: "Status", width: 150 },
 ];
 
 export const laboratorySectionColumns = [
