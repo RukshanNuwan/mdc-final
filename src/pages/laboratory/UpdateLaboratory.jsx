@@ -160,8 +160,6 @@ const UpdateLaboratory = () => {
     fetchPrevBatchData();
   }, [state?.date, location, state.batch_number]);
 
-  console.log(prevBatchData);
-
   return (
     <>
       <Header />

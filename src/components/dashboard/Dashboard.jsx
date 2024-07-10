@@ -75,10 +75,13 @@ const Dashboard = () => {
     fetchId();
   }, [currentDate]);
 
+
   useEffect(() => {
     const handleStatus = () => {
-      if (sd3Data?.sd_status !== "completed") setSd3Status(true);
-      if (sd4Data?.sd_status !== "completed") setSd4Status(true);
+      if (sd3Data?.sd_status === "ongoing" || sd3Data?.sd_status === "updated")
+        setSd3Status(true);
+      if (sd4Data?.sd_status === "ongoing" || sd4Data?.sd_status === "updated")
+        setSd4Status(true);
     };
 
     handleStatus();

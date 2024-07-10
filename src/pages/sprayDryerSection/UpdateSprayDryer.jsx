@@ -34,12 +34,13 @@ const UpdateSprayDryer = () => {
   );
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [powderQuantity, setPowderQuantity] = useState();
+  const [expectedPowderQuantity, setExpectedPowderQuantity] = useState(
+    state?.expected_powder_quantity | 120
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { location } = useParams();
-
-  let expectedPowderQuantity = state.expected_powder_quantity | 120;
 
   const handleChangeAtomizerSize = (e) => {
     setExpectedTime("-");

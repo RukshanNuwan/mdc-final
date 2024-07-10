@@ -12,8 +12,6 @@ const MixingDetails = () => {
   const { location } = useParams();
   const { state } = useLocation();
 
-  console.log(state);
-
   return (
     <>
       <Header />

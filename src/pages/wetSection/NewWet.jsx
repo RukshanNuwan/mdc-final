@@ -167,7 +167,7 @@ const NewWet = () => {
     e.preventDefault();
     setIsLoading(false);
 
-    const confirmData = `Date: ${data.date} | Batch number: ${data.primary_batch_number} | Tank number: ${data.tank_number} | Kernel Weight: ${data.kernel_weight} | Blancher in time: ${data.blancher_in_time} | Quality: ${data.kernel_quality} | Operator: ${data.wet_operator_name}`;
+    const confirmData = `Date: ${data.date} | Batch number: ${data.primary_batch_number} | Tank number: ${data.wet_tank_number} | Kernel Weight: ${data.wet_kernel_weight} | Blancher in time: ${data.blancher_in_time} | Quality: ${data.wet_kernel_quality} | Operator: ${data.wet_operator_name}`;
 
     try {
       Swal.fire({
