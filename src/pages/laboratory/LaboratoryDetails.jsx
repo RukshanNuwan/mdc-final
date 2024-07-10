@@ -2,8 +2,6 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import LoopIcon from "@mui/icons-material/Loop";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -60,11 +58,22 @@ const LaboratoryDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
+                          <p className="bodyText">Wet batch number</p>
+                        </div>
+                        <div className="col-5">
+                          <p className="bodyText fw-bold">
+                            {state?.primary_batch_number}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="row py-1">
+                        <div className="col-7">
                           <p className="bodyText">Batch number</p>
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold">
-                            {state?.batchNumber}
+                            {state?.batch_number}
                           </p>
                         </div>
                       </div>
@@ -75,7 +84,7 @@ const LaboratoryDetails = () => {
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold">
-                            {state?.expectedPowderQuantity}kg
+                            {state?.expected_powder_quantity}kg
                           </p>
                         </div>
                       </div>
@@ -85,14 +94,8 @@ const LaboratoryDetails = () => {
                           <p className="bodyText">Status</p>
                         </div>
                         <div className="col-5">
-                          <p className="bodyText fw-bold">
-                            {state?.status === "completed" ? (
-                              <PublishedWithChangesIcon className="text-success" />
-                            ) : (
-                              <div>
-                                <LoopIcon className="text-primary" />
-                              </div>
-                            )}
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.lab_status}
                           </p>
                         </div>
                       </div>
@@ -101,22 +104,22 @@ const LaboratoryDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Recipe name</p>
+                          <p className="bodyText">Order name</p>
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.recipeName}
+                            {state.order_name}
                           </p>
                         </div>
                       </div>
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Recipe type</p>
+                          <p className="bodyText">Order type</p>
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.recipeType}
+                            {state.order_type}
                           </p>
                         </div>
                       </div>
@@ -129,7 +132,7 @@ const LaboratoryDetails = () => {
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.sampleInTime}
+                            {state?.lab_sample_in_time}
                           </p>
                         </div>
                       </div>
@@ -140,7 +143,7 @@ const LaboratoryDetails = () => {
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.testStartTime}
+                            {state?.lab_test_start_time}
                           </p>
                         </div>
                       </div>
@@ -155,21 +158,21 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">pH</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.rawMilkPh}
+                            {state?.lab_raw_ph}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">TSS</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.rawMilkTSS}
+                            {state?.lab_raw_tss}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Fat</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.rawMilkFat}
+                            {state?.lab_raw_fat}
                           </p>
                         </div>
                       </div>
@@ -178,7 +181,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Taste</p>
                           <p className="subSectionValue bodyText">
-                            {state?.rawMilkTaste === true ? (
+                            {state?.lab_row_taste === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -189,7 +192,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Color</p>
                           <p className="subSectionValue bodyText">
-                            {state?.rawMilkColor === true ? (
+                            {state?.lab_row_color === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -200,7 +203,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Odor</p>
                           <p className="subSectionValue bodyText">
-                            {state?.rawMilkOdor === true ? (
+                            {state?.lab_row_odor === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -219,21 +222,21 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">pH</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.mixMilkPh}
+                            {state?.lab_mix_ph}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">TSS</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.mixMilkTSS}
+                            {state?.lab_mix_tss}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Fat</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.mixMilkFat}
+                            {state?.lab_mix_fat}
                           </p>
                         </div>
                       </div>
@@ -242,7 +245,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Taste</p>
                           <p className="subSectionValue bodyText">
-                            {state?.mixMilkTaste === true ? (
+                            {state?.lab_mix_taste === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -253,7 +256,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Color</p>
                           <p className="subSectionValue bodyText">
-                            {state?.mixMilkColor === true ? (
+                            {state?.lab_mix_color === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -264,7 +267,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Odor</p>
                           <p className="subSectionValue bodyText">
-                            {state?.mixMilkOdor === true ? (
+                            {state?.lab_mix_odor === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -274,7 +277,7 @@ const LaboratoryDetails = () => {
                       </div>
                     </div>
 
-                    {state?.isMixHaveIssue && (
+                    {state?.lab_mix_issue && (
                       <div className="dataItemWrapper">
                         <>
                           <div className="row py-1">
@@ -283,7 +286,7 @@ const LaboratoryDetails = () => {
                             </div>
                             <div className="col-5">
                               <p className="bodyText fw-bold text-capitalize">
-                                {state?.informedToAboutMix}
+                                {state?.lab_mix_issue_informed_to}
                               </p>
                             </div>
                           </div>
@@ -293,8 +296,8 @@ const LaboratoryDetails = () => {
                               <p className="bodyText">Issue details</p>
                             </div>
                             <div className="col-5">
-                              <p className="bodyText fw-bold text-danger">
-                                {state?.remarkAboutMixIssue}
+                              <p className="bodyText fw-bold text-capitalize">
+                                {state?.lab_mix_issue_details}
                               </p>
                             </div>
                           </div>
@@ -311,35 +314,35 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Fat</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.milkPowderFat}
+                            {state?.lab_powder_fat}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Moisture</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.milkPowderMoisture}
+                            {state?.lab_powder_moisture}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Bulk density</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.bulkDensity}
+                            {state?.lab_powder_bulk_density}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Fat layer</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.milkPowderFatLayer}
+                            {state?.lab_powder_fat_layer}
                           </p>
                         </div>
 
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Time</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.milkPowderTime}
+                            {state?.lab_powder_fat_layer_time} min
                           </p>
                         </div>
                       </div>
@@ -348,7 +351,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Taste</p>
                           <p className="subSectionValue bodyText">
-                            {state?.powderTaste === true ? (
+                            {state?.lab_powder_taste === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -359,7 +362,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Color</p>
                           <p className="subSectionValue bodyText">
-                            {state?.powderColor === true ? (
+                            {state?.lab_powder_color === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -370,7 +373,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Odor</p>
                           <p className="subSectionValue bodyText">
-                            {state?.powderOdor === true ? (
+                            {state?.lab_powder_odor === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -381,7 +384,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Solubility</p>
                           <p className="subSectionValue bodyText">
-                            {state?.powderSolubility === true ? (
+                            {state?.lab_powder_solubility === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -392,7 +395,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Free flowing</p>
                           <p className="subSectionValue bodyText">
-                            {state?.powderFreeFlowing === true ? (
+                            {state?.lab_powder_free_flowing === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <CloseIcon className="text-danger" />
@@ -402,7 +405,7 @@ const LaboratoryDetails = () => {
                       </div>
                     </div>
 
-                    {state?.isPowderHaveIssue && (
+                    {state?.lab_powder_issue && (
                       <div className="dataItemWrapper">
                         <div className="row py-1">
                           <div className="col-7">
@@ -410,7 +413,7 @@ const LaboratoryDetails = () => {
                           </div>
                           <div className="col-5">
                             <p className="bodyText fw-bold text-capitalize">
-                              {state?.informedToAboutPowder}
+                              {state?.lab_powder_issue_informed_to}
                             </p>
                           </div>
                         </div>
@@ -422,7 +425,9 @@ const LaboratoryDetails = () => {
 
                           <div className="col-5">
                             <p className="bodyText fw-bold text-capitalize">
-                              {state?.remarks ? state?.remarks : "-"}
+                              {state.lab_powder_issue_details
+                                ? state?.lab_powder_issue_details
+                                : "-"}
                             </p>
                           </div>
                         </div>
@@ -437,7 +442,21 @@ const LaboratoryDetails = () => {
 
                         <div className="col-5">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.laboratoryTechnician}
+                            {state?.lab_technician_name}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="dataItemWrapper">
+                      <div className="row py-1">
+                        <div className="col-7">
+                          <p className="bodyText">Reason for last update</p>
+                        </div>
+
+                        <div className="col-5">
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.lab_reason_for_update}
                           </p>
                         </div>
                       </div>
@@ -445,7 +464,12 @@ const LaboratoryDetails = () => {
 
                     <div className="mt-4 text-end">
                       <p className="smallText text-white">
-                        Added at {state?.timeStamp?.toDate().toLocaleString()}
+                        Added at {state?.lab_added_at.toDate().toLocaleString()}
+                      </p>
+
+                      <p className="smallText text-white">
+                        Last updated at{" "}
+                        {state?.lab_updated_at.toDate().toLocaleString()}
                       </p>
                     </div>
                   </div>

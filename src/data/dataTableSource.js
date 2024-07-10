@@ -116,20 +116,22 @@ export const sprayDryerSectionColumns = [
 ];
 
 export const laboratorySectionColumns = [
-  { field: "batchNumber", headerName: "Batch", width: 100 },
+  { field: "batch_number", headerName: "Batch #", width: 100 },
   {
-    field: "timeStamp",
+    field: "wet_added_at",
     headerName: "Date & Time",
     width: 200,
     renderCell: (params) => {
       return (
-        <div>{new Date(params.row.timeStamp?.toDate()).toLocaleString()}</div>
+        <div>
+          {new Date(params.row.wet_added_at?.toDate()).toLocaleString()}
+        </div>
       );
     },
   },
-  { field: "status", headerName: "Status", width: 150 },
-  { field: "rawMilkPh", headerName: "Raw milk pH", width: 100 },
-  { field: "mixMilkPh", headerName: "Mix milk pH", width: 100 },
-  { field: "rawMilkTSS", headerName: "Raw milk TSS", width: 150 },
-  { field: "mixMilkTSS", headerName: "Mix milk TSS", width: 150 },
+  { field: "lab_status", headerName: "Status", width: 130 },
+  { field: "lab_raw_ph", headerName: "Raw milk pH", width: 110 },
+  { field: "lab_mix_ph", headerName: "Mix milk pH", width: 110 },
+  { field: "lab_raw_tss", headerName: "Raw milk TSS", width: 150 },
+  { field: "lab_mix_tss", headerName: "Mix milk TSS", width: 150 },
 ];

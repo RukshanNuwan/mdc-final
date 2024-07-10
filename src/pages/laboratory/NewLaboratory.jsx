@@ -27,7 +27,6 @@ import { db } from "../../config/firebase.config";
 import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 
 const NewLaboratory = () => {
-  const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
   const [rawMilkTaste, setRawMilkTaste] = useState(true);
   const [rawMilkColor, setRawMilkColor] = useState(true);
@@ -35,7 +34,7 @@ const NewLaboratory = () => {
   const [mixMilkTaste, setMixMilkTaste] = useState(true);
   const [mixMilkColor, setMixMilkColor] = useState(true);
   const [mixMilkOdor, setMixMilkOdor] = useState(true);
-  const [batchNumberData, setBatchNumberData] = useState({});
+  const [ongoingData, setOngoingData] = useState({});
   const [isMixHaveIssue, setIsMixHaveIssue] = useState(false);
   const [prevBatchData, setPrevBatchData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -49,66 +48,55 @@ const NewLaboratory = () => {
 
     setData({
       ...data,
-      rawMilkTaste,
-      rawMilkColor,
-      rawMilkOdor,
-      mixMilkTaste,
-      mixMilkColor,
-      mixMilkOdor,
-      isMixHaveIssue,
-      status: "updated",
-      sectionName: "lab",
       [id]: value,
+      lab_status: "updated",
+      lab_row_taste: rawMilkTaste,
+      lab_row_color: rawMilkColor,
+      lab_row_odor: rawMilkOdor,
+      lab_mix_taste: mixMilkTaste,
+      lab_mix_color: mixMilkColor,
+      lab_mix_odor: mixMilkOdor,
+      lab_mix_issue: isMixHaveIssue,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const confirmData = `Sample in time: ${data?.sampleInTime} | Test start time: ${data?.testStartTime} | Raw milk pH: ${data?.rawMilkPh} | Raw milk TSS: ${data?.rawMilkTSS} | Raw milk fat: ${data?.rawMilkFat} | Mix milk pH: ${data?.mixMilkPh} | Mix milk TSS: ${data?.mixMilkTSS} | Mix milk fat: ${data?.mixMilkFat} | Expected powder quantity: ${data?.expectedPowderQuantity}`;
+    const confirmData = `Sample in time: ${data?.lab_sample_in_time} | Test start time: ${data?.lab_test_start_time} | Raw milk pH: ${data?.lab_raw_ph} | Raw milk TSS: ${data?.lab_raw_tss} | Raw milk fat: ${data?.lab_raw_fat} | Mix milk pH: ${data?.lab_mix_ph} | Mix milk TSS: ${data?.lab_mix_tss} | Mix milk fat: ${data?.lab_mix_fat} | Expected powder quantity: ${data?.expected_powder_quantity}`;
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          text: confirmData,
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        text: confirmData,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "lab_section", batchNumberData.id);
-            await updateDoc(docRef, {
-              ...data,
-            }).then(() => {
-              Swal.fire({
-                title: "Changes saved",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-
-              e.target.reset();
-              setIsLoading(false);
-              navigate(`/lab-section/${location}`);
+          const docRef = doc(db, "production_data", ongoingData.id);
+          await updateDoc(docRef, { ...data }).then(() => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
             });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+            e.target.reset();
+            setIsLoading(false);
+            navigate(`/lab-section/${location}`);
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -116,10 +104,10 @@ const NewLaboratory = () => {
       try {
         const list = [];
         const q = query(
-          collection(db, "lab_section"),
-          where("status", "==", "ongoing"),
+          collection(db, "production_data"),
+          where("lab_status", "==", "ongoing"),
           where("location", "==", location),
-          orderBy("timeStamp", "asc")
+          orderBy("lab_added_at", "asc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -128,7 +116,7 @@ const NewLaboratory = () => {
         });
 
         let res = list.filter((doc) => doc);
-        setBatchNumberData(res[0]);
+        setOngoingData(res[0]);
       } catch (error) {
         console.log(error);
       }
@@ -143,10 +131,10 @@ const NewLaboratory = () => {
         const list = [];
         const q = query(
           collection(db, "lab_section"),
-          where("date", "==", batchNumberData.date),
+          where("date", "==", ongoingData.date),
           where("location", "==", location),
-          where("status", "==", "updated"),
-          orderBy("timeStamp", "asc")
+          where("lab_status", "==", "updated"),
+          orderBy("lab_added_at", "asc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -162,7 +150,7 @@ const NewLaboratory = () => {
     };
 
     fetchPrevBatchData();
-  }, [batchNumberData?.date, location]);
+  }, [ongoingData?.date, location]);
 
   return (
     <>
@@ -189,14 +177,10 @@ const NewLaboratory = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {batchNumberData &&
-                !batchNumberData.rawMilkColor &&
-                batchNumberData?.location === location ? (
-                  <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={handleSubmit}
-                  >
+                {ongoingData &&
+                !ongoingData.lab_row_color &&
+                ongoingData?.location === location ? (
+                  <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
                         as={Col}
@@ -209,14 +193,31 @@ const NewLaboratory = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.date}
+                          defaultValue={ongoingData.date}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="batchNumber"
+                        controlId="primary_batch_number"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Wet batch number
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={ongoingData.primary_batch_number}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="batch_number"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -226,22 +227,22 @@ const NewLaboratory = () => {
                           type="number"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.batchNumber}
+                          defaultValue={ongoingData.batch_number}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="recipeName"
+                        controlId="order_name"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Recipe name</Form.Label>
+                        <Form.Label className="fw-bold">Order name</Form.Label>
                         <Form.Control
                           type="text"
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={batchNumberData.recipeName}
+                          defaultValue={ongoingData.order_name}
                         />
                       </Form.Group>
                     </Row>
@@ -250,21 +251,21 @@ const NewLaboratory = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="type"
+                        controlId="order_type"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Recipe type</Form.Label>
+                        <Form.Label className="fw-bold">Order type</Form.Label>
                         <Form.Control
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={batchNumberData.recipeType}
+                          defaultValue={ongoingData.order_type}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="sampleInTime"
+                        controlId="lab_sample_in_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -281,7 +282,7 @@ const NewLaboratory = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="testStartTime"
+                        controlId="lab_test_start_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -313,13 +314,13 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="rawMilkPh"
+                          controlId="lab_raw_ph"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                             <p>pH value</p>
                             <p className="text-primary">
-                              {prevBatchData && prevBatchData?.rawMilkPh}
+                              {prevBatchData && prevBatchData?.lab_raw_ph}
                             </p>
                           </Form.Label>
 
@@ -338,13 +339,13 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="rawMilkTSS"
+                          controlId="lab_raw_tss"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                             <p>TSS</p>
                             <p className="text-primary">
-                              {prevBatchData && prevBatchData?.rawMilkTSS}
+                              {prevBatchData && prevBatchData?.lab_raw_tss}
                             </p>
                           </Form.Label>
 
@@ -362,13 +363,13 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="rawMilkFat"
+                          controlId="lab_raw_fat"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                             <p>Fat</p>
                             <p className="text-primary">
-                              {prevBatchData && prevBatchData?.rawMilkFat}
+                              {prevBatchData && prevBatchData?.lab_raw_fat}
                             </p>
                           </Form.Label>
 
@@ -386,7 +387,7 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="rawMilkTaste"
+                          controlId="lab_row_taste"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -394,7 +395,7 @@ const NewLaboratory = () => {
                           </Form.Label>
                           <Form.Switch
                             type="switch"
-                            id="raw_milk_taste"
+                            id="lab_row_taste"
                             label={rawMilkTaste === true ? "Good" : "Not good"}
                             checked={rawMilkTaste}
                             onChange={(e) => setRawMilkTaste(e.target.checked)}
@@ -405,7 +406,7 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="rawMilkColor"
+                          controlId="lab_row_color"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -413,7 +414,7 @@ const NewLaboratory = () => {
                           </Form.Label>
                           <Form.Switch
                             type="switch"
-                            id="raw_milk_color"
+                            id="lab_row_color"
                             label={rawMilkColor === true ? "Good" : "Not good"}
                             checked={rawMilkColor}
                             onChange={(e) => setRawMilkColor(e.target.checked)}
@@ -424,7 +425,7 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="rawMilkOdor"
+                          controlId="lab_row_odor"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -432,7 +433,7 @@ const NewLaboratory = () => {
                           </Form.Label>
                           <Form.Switch
                             type="switch"
-                            id="raw_milk_odor"
+                            id="lab_row_odor"
                             label={rawMilkOdor === true ? "Good" : "Not good"}
                             checked={rawMilkOdor}
                             onChange={(e) => setRawMilkOdor(e.target.checked)}
@@ -450,13 +451,13 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="mixMilkPh"
+                          controlId="lab_mix_ph"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                             <p>pH value</p>
                             <p className="text-primary">
-                              {prevBatchData && prevBatchData?.mixMilkPh}
+                              {prevBatchData && prevBatchData?.lab_mix_ph}
                             </p>
                           </Form.Label>
 
@@ -475,13 +476,13 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="mixMilkTSS"
+                          controlId="lab_mix_tss"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                             <p>TSS</p>
                             <p className="text-primary">
-                              {prevBatchData && prevBatchData?.mixMilkTSS}
+                              {prevBatchData && prevBatchData?.lab_mix_tss}
                             </p>
                           </Form.Label>
 
@@ -499,13 +500,13 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="mixMilkFat"
+                          controlId="lab_mix_fat"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                             <p>Fat</p>
                             <p className="text-primary">
-                              {prevBatchData && prevBatchData?.rawMilkFat}
+                              {prevBatchData && prevBatchData?.lab_mix_fat}
                             </p>
                           </Form.Label>
 
@@ -527,7 +528,7 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="mixMilkTaste"
+                          controlId="lab_mix_taste"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -535,7 +536,7 @@ const NewLaboratory = () => {
                           </Form.Label>
                           <Form.Switch
                             type="switch"
-                            id="mix_milk_taste"
+                            id="lab_mix_taste"
                             label={mixMilkTaste === true ? "Good" : "Not good"}
                             checked={mixMilkTaste}
                             onChange={(e) => setMixMilkTaste(e.target.checked)}
@@ -546,7 +547,7 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="mixMilkColor"
+                          controlId="lab_mix_color"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -554,7 +555,7 @@ const NewLaboratory = () => {
                           </Form.Label>
                           <Form.Switch
                             type="switch"
-                            id="mix_milk_color"
+                            id="lab_mix_color"
                             label={mixMilkColor === true ? "Good" : "Not good"}
                             checked={mixMilkColor}
                             onChange={(e) => setMixMilkColor(e.target.checked)}
@@ -565,7 +566,7 @@ const NewLaboratory = () => {
                           as={Col}
                           md="2"
                           xs="4"
-                          controlId="mixMilkOdor"
+                          controlId="lab_mix_odor"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -573,7 +574,7 @@ const NewLaboratory = () => {
                           </Form.Label>
                           <Form.Switch
                             type="switch"
-                            id="mix_milk_odor"
+                            id="lab_mix_odor"
                             label={mixMilkOdor === true ? "Good" : "Not good"}
                             checked={mixMilkOdor}
                             onChange={(e) => setMixMilkOdor(e.target.checked)}
@@ -587,13 +588,13 @@ const NewLaboratory = () => {
                         as={Col}
                         md="4"
                         xs="4"
-                        controlId="isAnyIssue"
+                        controlId="lab_mix_issue"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">Any issue?</Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="mix_issue"
+                          id="lab_mix_issue"
                           label={isMixHaveIssue === true ? "Yes" : "No"}
                           checked={isMixHaveIssue}
                           onChange={(e) => setIsMixHaveIssue(e.target.checked)}
@@ -605,7 +606,7 @@ const NewLaboratory = () => {
                           <Form.Group
                             as={Col}
                             md="4"
-                            controlId="informedToAboutMix"
+                            controlId="lab_mix_issue_informed_to"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
@@ -621,7 +622,7 @@ const NewLaboratory = () => {
                           <Form.Group
                             as={Col}
                             md="4"
-                            controlId="remarkAboutMixIssue"
+                            controlId="lab_mix_issue_details"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
@@ -640,7 +641,7 @@ const NewLaboratory = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="expectedPowderQuantity"
+                        controlId="expected_powder_quantity"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -682,6 +683,7 @@ const NewLaboratory = () => {
                           <p>Continue</p>
                         </div>
                       </button>
+
                       <button type="reset" className="customBtn customClearBtn">
                         Clear
                       </button>

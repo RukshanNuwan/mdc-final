@@ -1,7 +1,5 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import LoopIcon from "@mui/icons-material/Loop";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -13,8 +11,6 @@ import DataPill from "../../components/dataPIll/DataPill";
 const SprayDryerDetails = () => {
   const { location } = useParams();
   const { state } = useLocation();
-
-  console.log(state);
 
   return (
     <>
@@ -298,7 +294,8 @@ const SprayDryerDetails = () => {
                       </p>
 
                       <p className="smallText text-white">
-                        Last updated at {state?.sd_updated_at?.toDate().toLocaleString()}
+                        Last updated at{" "}
+                        {state?.sd_updated_at?.toDate().toLocaleString()}
                       </p>
 
                       {/* <p className="smallText text-capitalize">

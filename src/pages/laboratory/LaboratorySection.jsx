@@ -39,14 +39,12 @@ const LaboratorySection = () => {
 
               <div className="card-body p-0">
                 <div className="addNewBtnWrapper">
-                  {/* print button */}
                   <Link to="new" className="addNewBtn customBtn">
                     Add new
                   </Link>
                 </div>
 
                 <DataTable
-                  collectionName="lab_section"
                   columnName={laboratorySectionColumns}
                   location={location}
                 />
