@@ -29,7 +29,7 @@ const SideBar = () => {
           <NavItem data={nav} key={index} />
         ))}
 
-        <li className="nav-heading">Other</li>
+        <li className="nav-heading">Reports</li>
         {otherNavList.map((nav, index) => (
           <NavItem data={nav} key={index} />
         ))}

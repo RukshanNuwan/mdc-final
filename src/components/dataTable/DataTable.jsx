@@ -18,7 +18,7 @@ import Swal from "sweetalert2";
 import "./dataTable.css";
 import { db } from "../../config/firebase.config";
 
-const DataTable = ({ collectionName, columnName, location }) => {
+const DataTable = ({ columnName, location }) => {
   const [data, setData] = useState([]);
 
   const navigate = useNavigate();
