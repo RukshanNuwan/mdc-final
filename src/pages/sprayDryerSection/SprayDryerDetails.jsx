@@ -1,7 +1,5 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import LoopIcon from "@mui/icons-material/Loop";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -62,12 +60,24 @@ const SprayDryerDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
+                          <p className="bodyText">Wet batch number</p>
+                        </div>
+                        <div className="col-1" />
+                        <div className="col-4">
+                          <p className="bodyText fw-bold">
+                            {state?.primary_batch_number}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="row py-1">
+                        <div className="col-7">
                           <p className="bodyText">Batch number</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.batchNumber}
+                            {state?.batch_number}
                           </p>
                         </div>
                       </div>
@@ -78,26 +88,20 @@ const SprayDryerDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {state?.status === "completed" ? (
-                              <PublishedWithChangesIcon className="text-success" />
-                            ) : (
-                              <div>
-                                <LoopIcon className="text-primary" />
-                              </div>
-                            )}
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.sd_status}
                           </p>
                         </div>
                       </div>
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Recipe type</p>
+                          <p className="bodyText">Order type</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.recipeType === "organic"
+                            {state?.order_type === "organic"
                               ? "Organic"
                               : "Conventional"}
                           </p>
@@ -106,12 +110,12 @@ const SprayDryerDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Recipe name</p>
+                          <p className="bodyText">Order name</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.recipeName}
+                            {state?.order_name}
                           </p>
                         </div>
                       </div>
@@ -125,7 +129,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.powderSprayStartTime}
+                            {state?.sd_powder_spray_start_time}
                           </p>
                         </div>
                       </div>
@@ -137,9 +141,9 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.powderSprayStartTime
-                              ? state?.powderSprayStartTime
-                              : "Not finish yet"}
+                            {state?.sd_batch_finish_time
+                              ? state?.sd_batch_finish_time
+                              : "Not finished yet"}
                           </p>
                         </div>
                       </div>
@@ -153,7 +157,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.powderQuantity} kg
+                            {state?.sd_total_powder_quantity} kg
                           </p>
                         </div>
                       </div>
@@ -165,7 +169,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.expectedPowderQuantity} kg
+                            {state?.expected_powder_quantity} kg
                           </p>
                         </div>
                       </div>
@@ -177,7 +181,9 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.rp ? `${state?.rp}kg` : "-"}
+                            {state?.sd_rp_quantity
+                              ? `${state?.sd_rp_quantity}kg`
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -189,26 +195,10 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.powderRecovery} %
+                            {state?.sd_powder_recovery} %
                           </p>
                         </div>
                       </div>
-
-                      {/* <div className="row py-1">
-                        <div className="col-7">
-                          <p className="bodyText">Powder quality</p>
-                        </div>
-                        <div className="col-1" />
-                        <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {state?.quality === true ? (
-                              <CheckIcon className="text-success" />
-                            ) : (
-                              <CloseIcon className="text-danger" />
-                            )}
-                          </p>
-                        </div>
-                      </div> */}
                     </div>
 
                     {/* <div className="dataItemWrapper"> */}
@@ -226,7 +216,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.atomizerSize} mm
+                            {state?.sd_atomizer_size} mm
                           </p>
                         </div>
                       </div>
@@ -238,7 +228,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.inletTemp} &deg;C
+                            {state?.sd_inlet_temp} &deg;C
                           </p>
                         </div>
                       </div>
@@ -250,7 +240,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.outletTemp} &deg;C
+                            {state?.sd_outlet_temp} &deg;C
                           </p>
                         </div>
                       </div>
@@ -264,7 +254,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {<DataPill data={state.operators} />}
+                            {<DataPill data={state.sd_operator_names} />}
                           </p>
                         </div>
                       </div>
@@ -275,8 +265,10 @@ const SprayDryerDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {state?.otherDetails ? state?.otherDetails : "-"}
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.sd_other_details
+                              ? state?.sd_other_details
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -287,8 +279,10 @@ const SprayDryerDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {state?.specialNotes ? state?.specialNotes : "-"}
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.sd_special_notes
+                              ? state?.sd_special_notes
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -296,8 +290,14 @@ const SprayDryerDetails = () => {
 
                     <div className="mt-4 text-end">
                       <p className="smallText text-white">
-                        Added at {state?.timeStamp?.toDate().toLocaleString()}
+                        Added at {state?.sd_added_at?.toDate().toLocaleString()}
                       </p>
+
+                      <p className="smallText text-white">
+                        Last updated at{" "}
+                        {state?.sd_updated_at?.toDate().toLocaleString()}
+                      </p>
+
                       {/* <p className="smallText text-capitalize">
                         by {data?.addedBy?.displayName}
                       </p> */}

@@ -60,13 +60,13 @@ const MixingDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Batch number (Wet)</p>
+                          <p className="bodyText">Wet batch number</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.wet_batch_number
-                              ? state?.wet_batch_number
+                            {state?.primary_batch_number
+                              ? state?.primary_batch_number
                               : "-"}
                           </p>
                         </div>
@@ -74,12 +74,15 @@ const MixingDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Batch number</p>
+                          <p className="bodyText">
+                            {state.location === "mdc" ? "SD 03" : "SD 04"} batch
+                            number
+                          </p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.batchNumber}
+                            {state?.batch_number}
                           </p>
                         </div>
                       </div>
@@ -91,7 +94,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.recipeName}
+                            {state?.order_name}
                           </p>
                         </div>
                       </div>
@@ -103,7 +106,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.recipeType === "organic"
+                            {state?.order_type === "organic"
                               ? "Organic"
                               : "Conventional"}
                           </p>
@@ -119,7 +122,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.milkQuantity}kg
+                            {state?.mixing_milk_quantity}kg
                           </p>
                         </div>
                       </div>
@@ -132,17 +135,17 @@ const MixingDetails = () => {
                         <div className="col-4">
                           <p
                             className={`bodyText fw-bold ${
-                              state?.milkRecovery < "75"
+                              state?.mixing_milk_recovery < "75"
                                 ? "text-danger"
                                 : "text-success"
                             }`}
                           >
-                            {state?.milkRecovery}%
+                            {state?.mixing_milk_recovery}%
                           </p>
                         </div>
                       </div>
 
-                      {state?.additionalCratesCount !== 0 && (
+                      {state?.mixing_additional_crates_count !== 0 && (
                         <>
                           <div className="row py-1">
                             <div className="col-7">
@@ -153,7 +156,7 @@ const MixingDetails = () => {
                             <div className="col-1" />
                             <div className="col-4">
                               <p className="bodyText fw-bold">
-                                {state?.additionalCratesCount}
+                                {state?.mixing_additional_crates_count}
                               </p>
                             </div>
                           </div>
@@ -165,7 +168,7 @@ const MixingDetails = () => {
                             <div className="col-1" />
                             <div className="col-4">
                               <p className="bodyText fw-bold text-capitalize">
-                                {state?.informedTo}
+                                {state?.mixing_additional_crates_informed_to}
                               </p>
                             </div>
                           </div>
@@ -185,8 +188,8 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.prevBatchPhValue
-                              ? state?.prevBatchPhValue
+                            {state?.mixing_prev_batch_raw_ph
+                              ? state?.mixing_prev_batch_raw_ph
                               : "-"}
                           </p>
                         </div>
@@ -199,8 +202,8 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.prevBatchTSSValue
-                              ? `${state?.prevBatchTSSValue}%`
+                            {state?.mixing_prev_batch_raw_tss
+                              ? `${state?.mixing_prev_batch_raw_tss}%`
                               : "-"}
                           </p>
                         </div>
@@ -215,7 +218,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.rawMilkInTime}
+                            {state?.expeller_finish_time}
                           </p>
                         </div>
                       </div>
@@ -227,7 +230,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.mixingTankInTime}
+                            {state?.mixing_tank_in_time}
                           </p>
                         </div>
                       </div>
@@ -239,7 +242,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.mixingStartTime}
+                            {state?.mixing_mix_start_time}
                           </p>
                         </div>
                       </div>
@@ -251,7 +254,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.mixingFinishTime}
+                            {state?.mixing_mix_finish_time}
                           </p>
                         </div>
                       </div>
@@ -265,7 +268,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.feedTankInTime}
+                            {state?.mixing_feeding_tank_in_time}
                           </p>
                         </div>
                       </div>
@@ -277,7 +280,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.feedingStartTime}
+                            {state?.mixing_feed_start_time}
                           </p>
                         </div>
                       </div>
@@ -291,7 +294,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.steamBars} MPa
+                            {state?.mixing_steam_pressure_value} MPa
                           </p>
                         </div>
                       </div>
@@ -303,7 +306,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.pressurePumpValue} MPa
+                            {state?.mixing_pressure_pump_value} MPa
                           </p>
                         </div>
                       </div>
@@ -317,7 +320,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <div className="bodyText fw-bold">
-                            {<DataPill data={state.operators} />}
+                            {<DataPill data={state.mixing_operator_names} />}
                           </div>
                         </div>
                       </div>
@@ -328,8 +331,10 @@ const MixingDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {state?.mixDetails ? state?.mixDetails : "-"}
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.mixing_mix_details
+                              ? state?.mixing_mix_details
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -337,8 +342,15 @@ const MixingDetails = () => {
 
                     <div className="mt-4 text-end">
                       <p className="smallText text-white">
-                        Added at {state?.timeStamp?.toDate().toLocaleString()}
+                        Added at{" "}
+                        {state?.mixing_added_at?.toDate().toLocaleString()}
                       </p>
+                      {state?.mixing_updated_at && (
+                        <p className="smallText text-white">
+                          Last updated at{" "}
+                          {state?.mixing_updated_at?.toDate().toLocaleString()}
+                        </p>
+                      )}
                       {/* <p className="smallText text-capitalize">
                         by {state?.addedBy?.displayName}
                       </p> */}

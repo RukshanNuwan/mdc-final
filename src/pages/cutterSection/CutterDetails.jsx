@@ -2,8 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import LoopIcon from "@mui/icons-material/Loop";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
@@ -63,7 +61,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.batchNumber}
+                            {state?.primary_batch_number}
                           </p>
                         </div>
                       </div>
@@ -86,14 +84,8 @@ const CutterDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {state?.status === "completed" ? (
-                              <PublishedWithChangesIcon className="text-success" />
-                            ) : (
-                              <div>
-                                <LoopIcon className="text-primary" />
-                              </div>
-                            )}
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.cutter_status}
                           </p>
                         </div>
                       </div>
@@ -107,22 +99,10 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.blancherStartTime}
+                            {state?.blancher_in_time}
                           </p>
                         </div>
                       </div>
-
-                      {/* <div className="row py-1">
-                        <div className="col-7">
-                          <p className="bodyText">Cutter start time</p>
-                        </div>
-                        <div className="col-1" />
-                        <div className="col-4">
-                          <p className="bodyText fw-bold">
-                            {data?.cutterStartTime}
-                          </p>
-                        </div>
-                      </div> */}
 
                       <div className="row py-1">
                         <div className="col-7">
@@ -131,7 +111,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.cutterFinishTime}
+                            {state?.cutter_finish_time}
                           </p>
                         </div>
                       </div>
@@ -143,7 +123,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.expellerStartTime}
+                            {state?.cutter_expeller_start_time}
                           </p>
                         </div>
                       </div>
@@ -155,7 +135,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.expellerFinishTime}
+                            {state?.expeller_finish_time}
                           </p>
                         </div>
                       </div>
@@ -168,12 +148,12 @@ const CutterDetails = () => {
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {`${
-                              state?.expellerProcessTime?.hours
-                                ? state?.expellerProcessTime?.hours
+                              state?.cutter_expeller_process_time?.hours
+                                ? state?.cutter_expeller_process_time?.hours
                                 : "-"
                             }hr ${
-                              state?.expellerProcessTime?.minutes
-                                ? state?.expellerProcessTime?.minutes
+                              state?.cutter_expeller_process_time?.minutes
+                                ? state?.cutter_expeller_process_time?.minutes
                                 : "-"
                             }min`}
                           </p>
@@ -187,7 +167,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-danger">
-                            {state?.expellerDelayTime}
+                            {state?.cutter_expeller_delay_time}
                           </p>
                         </div>
                       </div>
@@ -201,7 +181,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.heatValve === true ? (
+                            {state?.cutter_heat_valve === true ? (
                               <CheckIcon className="text-success" />
                             ) : (
                               <div>
@@ -219,7 +199,9 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.specialNotes ? state?.specialNotes : "-"}
+                            {state?.cutter_special_notes
+                              ? state?.cutter_special_notes
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -231,7 +213,7 @@ const CutterDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.operator}
+                            {state?.cutter_operator_name}
                           </p>
                         </div>
                       </div>
@@ -239,7 +221,13 @@ const CutterDetails = () => {
 
                     <div className="mt-4 text-end">
                       <p className="smallText text-white">
-                        Added at {state?.timeStamp?.toDate().toLocaleString()}
+                        Added at{" "}
+                        {state?.cutter_added_at?.toDate().toLocaleString()}
+                      </p>
+
+                      <p className="smallText text-white">
+                        Last updated at{" "}
+                        {state?.cutter_updated_at?.toDate().toLocaleString()}
                       </p>
                       {/* <p className="smallText">
                         by {data?.addedBy?.displayName}

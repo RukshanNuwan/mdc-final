@@ -16,7 +16,6 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 
@@ -31,8 +30,7 @@ import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 
 const NewCutter = () => {
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
-  const [batchNumberData, setBatchNumberData] = useState({});
+  const [ongoingData, setOngoingData] = useState({});
   const [location, setLocation] = useState("mdc");
   const [heatValve, setHeatValve] = useState(true);
   const [dailyProductionData, setDailyProductionData] = useState({});
@@ -48,97 +46,78 @@ const NewCutter = () => {
 
     setData({
       ...data,
-      location,
-      heatValve,
-      // addedBy: loggedInUser,
-      sectionName: "cutter",
-      status: "updated",
       [id]: value,
-    });
-  };
-
-  const setLocationCookie = () => {
-    Cookies.set("location", data.location, {
-      expires: 1,
-      sameSite: "strict",
+      location,
+      cutter_heat_valve: heatValve,
+      cutter_status: "updated",
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const confirmData = `Expeller start time: ${data?.expellerStartTime} | Heat Valve: ${data?.heatValve} | Location: ${data?.location} | Operator: ${data?.operator}`;
+    const confirmData = `Expeller start time: ${data?.cutter_expeller_start_time} | Heat Valve: ${data?.cutter_heat_valve} | Location: ${data?.location} | Operator: ${data?.cutter_operator_name}`;
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          text: confirmData,
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        text: confirmData,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "cutter_section", batchNumberData.id);
-            await updateDoc(docRef, {
-              ...data,
-              timeStamp: serverTimestamp(),
-            })
-              .then(async () => {
-                const ref = doc(db, "daily_production", dailyProductionData.id);
+          const docRef = doc(db, "production_data", ongoingData.id);
+          await updateDoc(docRef, {
+            ...data,
+            cutter_added_at: serverTimestamp(),
+          })
+            .then(async () => {
+              const ref = doc(db, "daily_production", dailyProductionData.id);
 
-                try {
-                  if (data.location === "mdc") {
-                    await updateDoc(ref, {
-                      ...dailyProductionData,
-                      totalBatchCountInMdc:
-                        dailyProductionData.totalBatchCountInMdc + 1,
-                    });
-                  } else {
-                    console.log("location = a_k");
-                    await updateDoc(ref, {
-                      ...dailyProductionData,
-                      totalBatchCountInAraliyaKele:
-                        dailyProductionData.totalBatchCountInAraliyaKele + 1,
-                    });
-                  }
-                } catch (error) {
-                  console.log(error);
+              try {
+                if (data.location === "mdc") {
+                  await updateDoc(ref, {
+                    ...dailyProductionData,
+                    totalBatchCountInMdc:
+                      dailyProductionData.totalBatchCountInMdc + 1,
+                  });
+                } else {
+                  await updateDoc(ref, {
+                    ...dailyProductionData,
+                    totalBatchCountInAraliyaKele:
+                      dailyProductionData.totalBatchCountInAraliyaKele + 1,
+                  });
                 }
-              })
-              .then(() => {
-                Swal.fire({
-                  title: "Changes saved",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-
-                e.target.reset();
-                setIsLoading(false);
-                navigate("/cutter-section");
-                setLocationCookie();
-              })
-              .catch((error) => {
-                console.log("Error updating document:", error);
+              } catch (error) {
+                console.log(error);
+              }
+            })
+            .then(() => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
               });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+              e.target.reset();
+              setIsLoading(false);
+              navigate("/cutter-section");
+            })
+            .catch((error) => {
+              console.log("Error updating document:", error);
+            });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -146,9 +125,9 @@ const NewCutter = () => {
       try {
         const list = [];
         const q = query(
-          collection(db, "cutter_section"),
-          where("status", "==", "ongoing"),
-          orderBy("timeStamp", "asc"),
+          collection(db, "production_data"),
+          where("cutter_status", "==", "ongoing"),
+          orderBy("wet_added_at", "asc"),
           limit(1)
         );
 
@@ -158,7 +137,7 @@ const NewCutter = () => {
         });
 
         let res = list.filter((doc) => doc);
-        setBatchNumberData(res[0]);
+        setOngoingData(res[0]);
       } catch (error) {
         console.log(error);
       }
@@ -217,12 +196,8 @@ const NewCutter = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {batchNumberData && !batchNumberData.heatValve ? (
-                  <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={handleSubmit}
-                  >
+                {ongoingData ? (
+                  <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
                         as={Col}
@@ -235,31 +210,31 @@ const NewCutter = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.date}
+                          defaultValue={ongoingData.date}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="batchNumber"
+                        controlId="primary_batch_number"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
-                          Batch number (Wet section)
+                          Batch number
                         </Form.Label>
                         <Form.Control
                           type="number"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.batchNumber}
+                          defaultValue={ongoingData.primary_batch_number}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="blancherStartTime"
+                        controlId="blancher_in_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -269,41 +244,22 @@ const NewCutter = () => {
                           type="time"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.blancherStartTime}
+                          defaultValue={ongoingData.blancher_in_time}
                         />
                       </Form.Group>
                     </Row>
-
-                    {/* <Row>
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        controlId="cutterStartTime"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Cutter start time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-                    </Row> */}
 
                     <Row>
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="heatValve"
+                        controlId="cutter_heat_valve"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">Heat Valve</Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="heat_valve"
+                          id="cutter_heat_valve"
                           label={heatValve === true ? "On" : "Off"}
                           checked={heatValve}
                           onChange={(e) => setHeatValve(e.target.checked)}
@@ -313,7 +269,7 @@ const NewCutter = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="expellerStartTime"
+                        controlId="cutter_expeller_start_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -348,7 +304,7 @@ const NewCutter = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="operator"
+                        controlId="cutter_operator_name"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -373,7 +329,7 @@ const NewCutter = () => {
                           {isLoading && (
                             <Spinner animation="border" size="sm" />
                           )}
-                          <p className="text-uppercase">Continue</p>
+                          <p>Continue</p>
                         </div>
                       </button>
                       <button type="reset" className="customBtn customClearBtn">

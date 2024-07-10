@@ -14,17 +14,12 @@ import BackToTop from "../../components/backToTop/BackToTop";
 
 const DailySummary = () => {
   const [date, setDate] = useState();
+  const [location, setLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [dailyProductionDataByDate, setDailyProductionDataByDate] = useState(
     {}
   );
-  const [wetDataByDate, setWetDataByDate] = useState([]);
-  const [cutterDataByDate, setCutterDataByDate] = useState([]);
-  const [mixingDataByDate, setMixingDataByDate] = useState([]);
-  const [labDataByDate, setLabDataByDate] = useState([]);
-  const [sdDataByDate, setSdDataByDate] = useState([]);
-
-  const generalDataByDate = {};
+  const [productionData, setProductionData] = useState([]);
 
   // Fetch daily production data by date
   const fetchDailyProductionDataByDate = async () => {
@@ -50,14 +45,13 @@ const DailySummary = () => {
     }
   };
 
-  // Fetch wet data by date
-  const fetchWetDataByDate = async () => {
+  const fetchProductionDataByDate = async () => {
     try {
       const list = [];
       const q = query(
-        collection(db, "wet_section"),
+        collection(db, "production_data"),
         where("date", "==", date),
-        orderBy("timeStamp", "asc")
+        orderBy("wet_added_at", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -65,20 +59,22 @@ const DailySummary = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setWetDataByDate(list);
+      setProductionData(list);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Fetch cutter data by date
-  const fetchCutterDataByDate = async () => {
+  const fetchProductionDataByDateAndLocation = async () => {
+    setProductionData([]);
+
     try {
       const list = [];
       const q = query(
-        collection(db, "cutter_section"),
+        collection(db, "production_data"),
         where("date", "==", date),
-        orderBy("timeStamp", "asc")
+        where("location", "==", location),
+        orderBy("wet_added_at", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -86,70 +82,7 @@ const DailySummary = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setCutterDataByDate(list);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Fetch mixing data by date and location
-  const fetchMixingDataByDate = async () => {
-    try {
-      const list = [];
-      const q = query(
-        collection(db, "mixing_section"),
-        where("date", "==", date),
-        orderBy("timeStamp", "asc")
-      );
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-      });
-
-      setMixingDataByDate(list);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Fetch lab data by date and location
-  const fetchLabDataByDate = async () => {
-    try {
-      const list = [];
-      const q = query(
-        collection(db, "lab_section"),
-        where("date", "==", date),
-        orderBy("timeStamp", "asc")
-      );
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-      });
-
-      setLabDataByDate(list);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Fetch sd data by date and location
-  const fetchSdDataByDate = async () => {
-    try {
-      const list = [];
-      const q = query(
-        collection(db, "sd_section"),
-        where("date", "==", date),
-        orderBy("timeStamp", "asc")
-      );
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-      });
-
-      setSdDataByDate(list);
+      setProductionData(list);
     } catch (error) {
       console.log(error);
     }
@@ -170,18 +103,18 @@ const DailySummary = () => {
     );
   };
 
-  // Calculate milk expeller efficiency
-  // const renderMilkExpellerEfficiency = () => {
-  //   let sum = 0;
-  //   let index = 0;
+  const renderMilkExpellerEfficiency = () => {
+    let sum = 0;
+    let index = 0;
 
-  //   mixingDataByDate.forEach((data) => {
-  //     if (data.milkRecovery) sum = sum + Number(data.milkRecovery);
-  //     index++;
-  //   });
+    productionData.forEach((data) => {
+      if (data?.mixing_milk_recovery)
+        sum = sum + Number(data?.mixing_milk_recovery);
+      index++;
+    });
 
-  //   return (sum / index).toFixed(2);
-  // };
+    return (sum / index).toFixed(2);
+  };
 
   // Calculate milk powder recovery
   // const renderPowderRecovery = () => {
@@ -198,33 +131,16 @@ const DailySummary = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     if (date) {
       fetchDailyProductionDataByDate().then(() => setIsLoading(false));
-      fetchWetDataByDate().then(() => setIsLoading(false));
-      fetchCutterDataByDate().then(() => setIsLoading(false));
-      fetchMixingDataByDate().then(() => setIsLoading(false));
-      fetchLabDataByDate().then(() => setIsLoading(false));
-      fetchSdDataByDate().then(() => setIsLoading(false));
+      fetchProductionDataByDate().then(() => setIsLoading(false));
     }
-  };
 
-  if (
-    wetDataByDate.length > 0 &&
-    cutterDataByDate.length > 0 &&
-    mixingDataByDate.length > 0 &&
-    labDataByDate.length > 0 &&
-    sdDataByDate.length > 0
-  ) {
-    generalDataByDate.daily_production_data = dailyProductionDataByDate;
-    generalDataByDate.wet_data = wetDataByDate;
-    generalDataByDate.cutter_data = cutterDataByDate;
-    generalDataByDate.mixing_data = mixingDataByDate;
-    generalDataByDate.lab_data = labDataByDate;
-    generalDataByDate.sd_data = sdDataByDate;
-  }
+    if (date && location)
+      fetchProductionDataByDateAndLocation().then(() => setIsLoading(false));
+  };
 
   return (
     <>
@@ -267,7 +183,7 @@ const DailySummary = () => {
                       />
                     </Form.Group>
 
-                    {/* <Form.Group
+                    <Form.Group
                       as={Col}
                       md="4"
                       controlId="type"
@@ -276,23 +192,20 @@ const DailySummary = () => {
                       <Form.Label className="fw-bold">Location</Form.Label>
                       <Form.Select
                         className="customInput"
-                        defaultValue=""
                         onChange={(e) => setLocation(e.target.value)}
                       >
-                        <option disabled value="">
-                          Select location
-                        </option>
+                        <option>Select location</option>
                         <option value="mdc">SD - 03</option>
                         <option value="araliya_kele">SD - 04</option>
                       </Form.Select>
-                    </Form.Group> */}
+                    </Form.Group>
 
                     <Form.Group as={Col} className="d-flex align-items-end">
                       <button type="submit" className="btn-submit customBtn">
                         {isLoading ? (
                           <div className="d-flex align-items-center gap-2">
                             <Spinner animation="border" size="sm" />
-                            <p className="text-capitalize">Loading...</p>
+                            <p>Generating...</p>
                           </div>
                         ) : (
                           "Generate"
@@ -420,7 +333,7 @@ const DailySummary = () => {
                         </div>
                       </div>
 
-                      {/* <div className="row">
+                      <div className="row">
                         <div className="col-6 d-flex justify-content-end">
                           <p className="fw-bold">Avg. expeller efficiency</p>
                         </div>
@@ -429,7 +342,7 @@ const DailySummary = () => {
                             {renderMilkExpellerEfficiency()}%
                           </span>
                         </div>
-                      </div> */}
+                      </div>
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
@@ -479,7 +392,7 @@ const DailySummary = () => {
 
                   <div className="table-container">
                     <Card body className="mb-2">
-                      <ReportDataTable dataSet={generalDataByDate} />
+                      <ReportDataTable data={productionData} />
                     </Card>
                   </div>
                 </div>

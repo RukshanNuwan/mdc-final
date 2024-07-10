@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   collection,
   doc,
-  getDocs,
   onSnapshot,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -25,13 +25,18 @@ const UpdateSprayDryer = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
   const [expectedTime, setExpectedTime] = useState();
-  const [powderRecovery, setPowderRecovery] = useState(state?.powderRecovery);
-  const [expectedPowderQuantity, setExpectedPowderQuantity] = useState();
-  const [dailyProductionData, setDailyProductionData] = useState({});
+  const [powderRecovery, setPowderRecovery] = useState(
+    state?.sd_powder_recovery
+  );
+  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+    {}
+  );
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [powderQuantity, setPowderQuantity] = useState();
+  const [expectedPowderQuantity, setExpectedPowderQuantity] = useState(
+    state?.expected_powder_quantity | 120
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -44,21 +49,21 @@ const UpdateSprayDryer = () => {
     if (e.target.value === "1") setExpectedTime("1hr");
     if (e.target.value === "1.2") setExpectedTime("50min");
 
-    setData({ ...data, atomizerSize: e.target.value });
+    setData({ ...data, sd_atomizer_size: e.target.value });
   };
 
   const handlePowderQuantity = (e) => {
     let recovery;
 
     recovery = ((e.target.value / expectedPowderQuantity) * 100).toFixed(2);
-    setPowderRecovery(recovery);
 
+    setPowderRecovery(recovery);
     setPowderQuantity(e.target.value);
+
     setData({
       ...data,
-      expectedPowderQuantity,
-      powderQuantity: e.target.value,
-      powderRecovery: recovery,
+      sd_total_powder_quantity: e.target.value,
+      sd_powder_recovery: recovery,
     });
   };
 
@@ -67,15 +72,15 @@ const UpdateSprayDryer = () => {
     const value = e.target.value;
 
     if (location === "mdc") {
-      setDailyProductionData({
-        ...dailyProductionData,
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
         totalPowderQuantityInMdc:
           dailyProductionDataInDb?.totalPowderQuantityInMdc +
           Number(powderQuantity),
       });
     } else {
-      setDailyProductionData({
-        ...dailyProductionData,
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
         totalPowderQuantityInAraliyaKele:
           dailyProductionDataInDb?.totalPowderQuantityInAraliyaKele +
           Number(powderQuantity),
@@ -84,90 +89,63 @@ const UpdateSprayDryer = () => {
 
     setData({
       ...data,
-      status: "completed",
       [id]: value,
+      sd_status: "completed",
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "sd_section", state.id);
-            await updateDoc(docRef, { ...data })
-              .then(() => {
-                Swal.fire({
-                  title: "Changes saved",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-                e.target.reset();
-                setIsLoading(false);
-                navigate(`/sd-section/${location}`);
-              })
-              .catch((error) => {
-                console.log("Error updating document:", error);
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            sd_updated_at: serverTimestamp(),
+          })
+            .then(() => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
               });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
-      try {
-        const docRef = doc(db, "daily_production", dailyProductionDataInDb.id);
-        await updateDoc(docRef, { ...dailyProductionData });
-
-        e.target.reset();
-      } catch (error) {
-        console.log(error);
-      }
+              e.target.reset();
+              setIsLoading(false);
+              navigate(`/sd-section/${location}`);
+            })
+            .catch((error) => {
+              console.log("Error updating document:", error);
+            });
+        }
+      });
+    } catch (error) {
+      console.log(error);
     }
 
-    setValidated(true);
+    try {
+      const docRef = doc(db, "daily_production", dailyProductionDataInDb.id);
+      await updateDoc(docRef, { ...updatedDailyProductionData });
+
+      console.log("Daily production data updated successfully");
+
+      e.target.reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  // Fetch expected powder quantity from lab
-  useEffect(() => {
-    const getExpectedPowderQuantity = async () => {
-      try {
-        const q = query(
-          collection(db, "lab_section"),
-          where("location", "==", location),
-          where("batchNumber", "==", state?.batchNumber)
-        );
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          doc.data().expectedPowderQuantity
-            ? setExpectedPowderQuantity(doc.data().expectedPowderQuantity)
-            : setExpectedPowderQuantity(120);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getExpectedPowderQuantity();
-  }, [location, state?.batchNumber]);
 
   // Fetch daily production data by selected object date
   useEffect(() => {
@@ -224,7 +202,7 @@ const UpdateSprayDryer = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
                       as={Col}
@@ -244,7 +222,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="batchNumber"
+                      controlId="primary_batch_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -254,7 +232,7 @@ const UpdateSprayDryer = () => {
                         type="number"
                         disabled
                         min={1}
-                        value={state.wetBatchNumber}
+                        value={state.primary_batch_number}
                         className="customInput disabled"
                       />
                     </Form.Group>
@@ -262,7 +240,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="batchNumber"
+                      controlId="batch_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
@@ -270,7 +248,7 @@ const UpdateSprayDryer = () => {
                         type="number"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batchNumber}
+                        defaultValue={state.batch_number}
                       />
                     </Form.Group>
                   </Row>
@@ -279,36 +257,36 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="type"
+                      controlId="order_type"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Recipe type</Form.Label>
+                      <Form.Label className="fw-bold">Order type</Form.Label>
                       <Form.Control
                         disabled
                         className="customInput text-capitalize disabled"
-                        defaultValue={state.recipeType}
+                        defaultValue={state.order_type}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="recipeName"
+                      controlId="order_name"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Recipe name</Form.Label>
+                      <Form.Label className="fw-bold">Order name</Form.Label>
                       <Form.Control
                         type="text"
                         disabled
                         className="customInput text-capitalize disabled"
-                        defaultValue={state.recipeName}
+                        defaultValue={state.order_name}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="powderSprayStartTime"
+                      controlId="sd_powder_spray_start_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -317,7 +295,7 @@ const UpdateSprayDryer = () => {
                       <Form.Control
                         type="time"
                         disabled
-                        defaultValue={state.powderSprayStartTime}
+                        defaultValue={state.sd_powder_spray_start_time}
                         className="customInput disabled"
                       />
                     </Form.Group>
@@ -327,7 +305,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="atomizerSize"
+                      controlId="sd_atomizer_size"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Atomizer size</Form.Label>
@@ -336,11 +314,11 @@ const UpdateSprayDryer = () => {
                           type="text"
                           aria-label="atomizer size"
                           aria-describedby="addon"
-                          disabled={state.status === "ongoing"}
+                          disabled={state.sd_status === "ongoing"}
                           className={`customInput ${
-                            state.status === "ongoing" && "disabled"
+                            state.sd_status === "ongoing" && "disabled"
                           }`}
-                          defaultValue={state.atomizerSize}
+                          defaultValue={state.sd_atomizer_size}
                           onChange={handleChangeAtomizerSize}
                         />
                         <InputGroup.Text
@@ -368,7 +346,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="inletTemp"
+                      controlId="sd_inlet_temp"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -379,11 +357,11 @@ const UpdateSprayDryer = () => {
                           type="text"
                           aria-label="inlet temperature"
                           aria-describedby="addon"
-                          disabled={state.status === "ongoing"}
+                          disabled={state.sd_status === "ongoing"}
                           className={`customInput ${
-                            state.status === "ongoing" && "disabled"
+                            state.sd_status === "ongoing" && "disabled"
                           }`}
-                          defaultValue={state.inletTemp}
+                          defaultValue={state.sd_inlet_temp}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -405,7 +383,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="outletTemp"
+                      controlId="sd_outlet_temp"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -416,10 +394,10 @@ const UpdateSprayDryer = () => {
                           type="text"
                           aria-label="outlet temperature"
                           aria-describedby="addon"
-                          defaultValue={state.outletTemp}
-                          disabled={state.status === "ongoing"}
+                          defaultValue={state.sd_outlet_temp}
+                          disabled={state.sd_status === "ongoing"}
                           className={`customInput ${
-                            state.status === "ongoing" && "disabled"
+                            state.sd_status === "ongoing" && "disabled"
                           }`}
                           onChange={handleChange}
                         />
@@ -444,7 +422,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="operators"
+                      controlId="sd_operator_names"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -453,26 +431,26 @@ const UpdateSprayDryer = () => {
                       <Form.Control
                         type="text"
                         disabled
-                        defaultValue={state.operators}
-                        className="customInput disabled"
+                        defaultValue={state.sd_operator_names}
+                        className="customInput disabled text-capitalize"
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="8"
-                      controlId="otherDetails"
+                      controlId="sd_other_details"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Other details</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.sd_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.sd_status === "ongoing" && "disabled"
                         }`}
-                        defaultValue={state.otherDetails}
+                        defaultValue={state.sd_other_details}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -484,7 +462,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="expectedPowderQuantity"
+                      controlId="expected_powder_quantity"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -515,7 +493,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="powderQuantity"
+                      controlId="sd_total_powder_quantity"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -526,10 +504,10 @@ const UpdateSprayDryer = () => {
                           type="number"
                           aria-label="powder quantity"
                           aria-describedby="addon"
-                          value={state?.powderQuantity}
-                          required={state.status === "updated"}
+                          defaultValue={state.sd_total_powder_quantity}
+                          required={state.sd_status === "updated"}
                           className="customInput"
-                          disabled={state.status === "completed"}
+                          disabled={state.sd_status === "completed"}
                           onChange={handlePowderQuantity}
                         />
                         <InputGroup.Text
@@ -548,7 +526,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="powderRecovery"
+                      controlId="sd_powder_recovery"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Recovery</Form.Label>
@@ -637,7 +615,12 @@ const UpdateSprayDryer = () => {
                 </Row> */}
 
                   <Row>
-                    <Form.Group as={Col} md="4" controlId="rp" className="mb-2">
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="sd_rp_quantity"
+                      className="mb-2"
+                    >
                       <Form.Label className="fw-bold">RP</Form.Label>
                       <InputGroup>
                         <Form.Control
@@ -645,8 +628,8 @@ const UpdateSprayDryer = () => {
                           aria-label="rp"
                           aria-describedby="addon"
                           className="customInput"
-                          disabled={state.status === "completed"}
-                          defaultValue={state.rp}
+                          disabled={state.sd_status === "completed"}
+                          defaultValue={state.sd_rp_quantity}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -665,7 +648,7 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="powderSprayFinishTime"
+                      controlId="sd_batch_finish_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -673,11 +656,11 @@ const UpdateSprayDryer = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        required={state.status === "updated"}
-                        disabled={state.status === "completed"}
-                        defaultValue={state?.powderSprayFinishTime}
+                        required={state.sd_status === "updated"}
+                        disabled={state.sd_status === "completed"}
+                        defaultValue={state?.sd_batch_finish_time}
                         className={`customInput ${
-                          state.status === "completed" && "disabled"
+                          state.sd_status === "completed" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -688,19 +671,19 @@ const UpdateSprayDryer = () => {
                     <Form.Group
                       as={Col}
                       md="12"
-                      controlId="specialNotes"
+                      controlId="sd_special_notes"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Special notes</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        disabled={state.status === "ongoing"}
+                        disabled={state.sd_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.sd_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
-                        defaultValue={state.specialNotes}
+                        defaultValue={state.sd_special_notes}
                       />
                     </Form.Group>
                   </Row>
@@ -713,7 +696,7 @@ const UpdateSprayDryer = () => {
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
-                        <p className="text-uppercase">Update</p>
+                        <p>Update</p>
                       </div>
                     </button>
 

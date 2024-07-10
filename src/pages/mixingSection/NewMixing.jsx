@@ -6,10 +6,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
-  addDoc,
   collection,
   doc,
-  getDoc,
   getDocs,
   onSnapshot,
   orderBy,
@@ -33,15 +31,14 @@ import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 
 const NewMixing = () => {
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
-  const [receivedData, setReceivedData] = useState({});
+  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
   const [recipeType, setRecipeType] = useState("conventional");
-  const [batchNumberData, setBatchNumberData] = useState({});
-  const [wetData, setWetData] = useState();
-  const [rawMilkInTime, setRawMilkInTime] = useState();
-  const [dailyProductionData, setDailyProductionData] = useState({});
+  const [ongoingData, setOngoingData] = useState({});
+  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+    {}
+  );
   const [additionalCratesCount, setAdditionalCratesCount] = useState(0);
   const [newKernelWeight, setNewKernelWeight] = useState(0);
   const [isInformed, setIsInformed] = useState(false);
@@ -55,7 +52,7 @@ const NewMixing = () => {
 
   const handleChangeBatchNumber = (e) => {
     setBatchNumber(Number(e.target.value));
-    setData({ ...data, batchNumber: Number(e.target.value) });
+    setData({ ...data, batch_number: Number(e.target.value) });
   };
 
   const handleChange = (e) => {
@@ -63,42 +60,43 @@ const NewMixing = () => {
     const value = e.target.value;
 
     if (location === "mdc") {
-      setDailyProductionData({
-        ...dailyProductionData,
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
         totalMilkAmountInMdc:
-          receivedData?.totalMilkAmountInMdc + Number(milkQuantity),
+          dailyProductionDataInDb?.totalMilkAmountInMdc + Number(milkQuantity),
       });
     } else {
-      setDailyProductionData({
-        ...dailyProductionData,
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
         totalMilkAmountInAraliyaKele:
-          receivedData?.totalMilkAmountInAraliyaKele + Number(milkQuantity),
+          dailyProductionDataInDb?.totalMilkAmountInAraliyaKele +
+          Number(milkQuantity),
       });
     }
 
     setData({
       ...data,
-      rawMilkInTime,
-      recipeType,
-      milkQuantity,
-      milkRecovery,
-      additionalCratesCount,
-      isInformed,
-      // addedBy: loggedInUser,
-      status: "completed",
-      sectionName: "mixing",
       [id]: value,
+      order_type: recipeType,
+      mixing_milk_quantity: milkQuantity,
+      mixing_milk_recovery: milkRecovery,
+      mixing_additional_crates_count: additionalCratesCount,
+      mixing_additional_crates_is_informed: isInformed,
+      mixing_status: "completed",
     });
   };
 
   const handleOperatorsChange = (e) => {
     const str = e.target.value;
     const operators = str.split(",");
-    setData({ ...data, operators });
+    setData({ ...data, mixing_operator_names: operators });
   };
 
   const handleMilkRecovery = (e) => {
-    const recovery = ((e.target.value / wetData.kernelWeight) * 100).toFixed(2);
+    const recovery = (
+      (e.target.value / ongoingData.wet_kernel_weight) *
+      100
+    ).toFixed(2);
 
     setMilkQuantity(e.target.value);
     setMilkRecovery(recovery);
@@ -106,115 +104,79 @@ const NewMixing = () => {
 
   const handleAdditionalCratesCountChange = (e) => {
     const weightByCratesCount = e.target.value * 20;
-    const newWeight = Number(wetData.kernelWeight) + weightByCratesCount;
+    const newWeight =
+      Number(ongoingData.wet_kernel_weight) + weightByCratesCount;
     setNewKernelWeight(newWeight);
     setAdditionalCratesCount(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const confirmData = `Batch number: ${data?.batchNumber} | Order name: ${data?.recipeName} | Order type: ${data?.recipeType} | Milk quantity: ${milkQuantity} | Mixing tank in time: ${data?.mixingTankInTime} | Mix start time: ${data?.mixingStartTime} | Mix finish time: ${data?.mixingFinishTime} | Feeding tank in time: ${data?.feedTankInTime} | Feed start time: ${data?.feedingStartTime} | Operators: ${data?.operators} | Steam pressure: ${data?.steamBars} | Pressure pump value: ${data?.pressurePumpValue}`;
+    const confirmData = `Batch number: ${data?.batch_number} | Order name: ${data?.order_name} | Order type: ${data?.order_type} | Milk quantity: ${milkQuantity} | Mixing tank in time: ${data?.mixing_tank_in_time} | Mix start time: ${data?.mixing_mix_start_time} | Mix finish time: ${data?.mixing_mix_finish_time} | Feeding tank in time: ${data?.mixing_feeding_tank_in_time} | Feed start time: ${data?.mixing_feed_start_time} | Operators: ${data?.mixing_operator_names} | Steam pressure: ${data?.mixing_steam_pressure_value} | Pressure pump value: ${data?.mixing_pressure_pump_value}`;
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          text: confirmData,
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        text: confirmData,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "mixing_section", batchNumberData.id);
-            await updateDoc(docRef, {
-              ...data,
-            }).then(async () => {
-              try {
-                await addDoc(collection(db, "lab_section"), {
-                  date: batchNumberData.date,
-                  batchNumber: data.batchNumber,
-                  recipeName: data.recipeName,
-                  recipeType: data.recipeType,
-                  location: batchNumberData.location,
-                  wetBatchNumber: wetData.batchNumber,
-                  status: "ongoing",
-                  timeStamp: serverTimestamp(),
-                }).then(async (r) => {
-                  try {
-                    await addDoc(collection(db, "sd_section"), {
-                      mixing_batch_id: batchNumberData.id,
-                      lab_batch_id: r.id,
-                      batchNumber: data.batchNumber,
-                      wetBatchNumber: wetData.batchNumber,
-                      date: batchNumberData.date,
-                      location: batchNumberData.location,
-                      recipeName: data.recipeName,
-                      recipeType: data.recipeType,
-                      status: "ongoing",
-                      timeStamp: serverTimestamp(),
-                    }).then(() => {
-                      Swal.fire({
-                        title: "Changes saved",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                      });
-
-                      e.target.reset();
-                      setIsLoading(false);
-                      navigate(`/mixing-section/${location}`);
-                    });
-                  } catch (error) {
-                    console.log(error);
-                  }
-                });
-              } catch (error) {
-                console.log(error);
-              }
+          const docRef = doc(db, "production_data", ongoingData.id);
+          await updateDoc(docRef, {
+            ...data,
+            lab_status: "ongoing",
+            lab_added_at: serverTimestamp(),
+            sd_status: "ongoing",
+            sd_added_at: serverTimestamp(),
+          }).then(async () => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
             });
-          }
+
+            e.target.reset();
+            setIsLoading(false);
+            navigate(`/mixing-section/${location}`);
+          });
+        }
+      });
+
+      try {
+        const docRef = doc(db, "daily_production", dailyProductionDataInDb.id);
+        await updateDoc(docRef, {
+          ...updatedDailyProductionData,
         });
 
-        try {
-          const docRef = doc(db, "daily_production", receivedData.id);
-          await updateDoc(docRef, {
-            ...dailyProductionData,
-          });
-
-          console.log("successfully updated daily production");
-        } catch (error) {
-          console.log(error);
-        }
-
-        // update kernel batch weight in wet section
-        if (newKernelWeight > 0) {
-          try {
-            const docRef = doc(db, "wet_section", batchNumberData.wet_batch_id);
-            await updateDoc(docRef, {
-              kernelWeight: newKernelWeight,
-            });
-
-            console.log("successfully updated kernel weight in wet section");
-          } catch (error) {
-            console.log(error);
-          }
-        }
+        console.log("successfully updated daily production data");
       } catch (error) {
         console.log(error);
       }
-    }
 
-    setValidated(true);
+      if (newKernelWeight > 0) {
+        try {
+          const docRef = doc(db, "production_data", ongoingData.id);
+          await updateDoc(docRef, {
+            wet_kernel_weight: newKernelWeight,
+          });
+
+          console.log("successfully updated kernel weight");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -222,10 +184,10 @@ const NewMixing = () => {
       try {
         const list = [];
         const q = query(
-          collection(db, "mixing_section"),
-          where("status", "==", "ongoing"),
+          collection(db, "production_data"),
+          where("mixing_status", "==", "ongoing"),
           where("location", "==", location),
-          orderBy("timeStamp", "asc")
+          orderBy("wet_added_at", "asc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -234,7 +196,7 @@ const NewMixing = () => {
         });
 
         let res = list.filter((doc) => doc);
-        setBatchNumberData(res[0]);
+        setOngoingData(res[0]);
       } catch (error) {
         console.log(error);
       }
@@ -242,48 +204,6 @@ const NewMixing = () => {
 
     fetchCurrentBatchInCutter();
   }, [location]);
-
-  useEffect(() => {
-    const fetchExpellerFinishTimeInCutter = async () => {
-      try {
-        const docRef = doc(
-          db,
-          "cutter_section",
-          batchNumberData.cutter_batch_id
-        );
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setRawMilkInTime(docSnap.data().expellerFinishTime);
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (batchNumberData) fetchExpellerFinishTimeInCutter();
-  }, [batchNumberData]);
-
-  useEffect(() => {
-    const fetchKernelWeightFromWetSection = async () => {
-      try {
-        const docRef = doc(db, "wet_section", batchNumberData.wet_batch_id);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setWetData(docSnap.data());
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (batchNumberData) fetchKernelWeightFromWetSection();
-  }, [batchNumberData]);
 
   useEffect(() => {
     const fetchSubFormData = async () => {
@@ -298,7 +218,7 @@ const NewMixing = () => {
             list.push({ id: doc.id, ...doc.data() });
           });
 
-          setReceivedData(list[0]);
+          setDailyProductionDataInDb(list[0]);
         });
 
         return () => {
@@ -339,12 +259,8 @@ const NewMixing = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {batchNumberData ? (
-                  <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={handleSubmit}
-                  >
+                {ongoingData ? (
+                  <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
                         as={Col}
@@ -357,14 +273,14 @@ const NewMixing = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.date}
+                          defaultValue={ongoingData.date}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="batchNumber"
+                        controlId="primary_batch_number"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -374,17 +290,15 @@ const NewMixing = () => {
                           type="number"
                           disabled
                           min={1}
-                          defaultValue={wetData?.batchNumber}
+                          defaultValue={ongoingData?.primary_batch_number}
                           className="customInput disabled"
                         />
                       </Form.Group>
 
-                      {/* TODO: Choose the spray dryer (2 or 3) from dropdown */}
-
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="rawMilkInTime"
+                        controlId="expeller_finish_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -394,7 +308,7 @@ const NewMixing = () => {
                           type="time"
                           disabled
                           className="customInput disabled"
-                          defaultValue={rawMilkInTime}
+                          defaultValue={ongoingData?.expeller_finish_time}
                         />
                       </Form.Group>
                     </Row>
@@ -403,7 +317,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="batchNumber"
+                        controlId="batch_number"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -421,7 +335,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="recipeName"
+                        controlId="order_name"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">Order name</Form.Label>
@@ -436,7 +350,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="type"
+                        controlId="order_type"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">Order type</Form.Label>
@@ -458,7 +372,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="milkQuantity"
+                        controlId="mixing_milk_quantity"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -490,7 +404,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="milkRecovery"
+                        controlId="mixing_milk_recovery"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -523,7 +437,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="additionalCratesCount"
+                        controlId="mixing_additional_crates_count"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -542,7 +456,7 @@ const NewMixing = () => {
                           <Form.Group
                             as={Col}
                             md="4"
-                            controlId="isInformedToCutter"
+                            controlId="mixing_additional_crates_is_informed"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
@@ -565,7 +479,7 @@ const NewMixing = () => {
                           <Form.Group
                             as={Col}
                             md="4"
-                            controlId="informedTo"
+                            controlId="mixing_additional_crates_informed_to"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
@@ -585,7 +499,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="mixingTankInTime"
+                        controlId="mixing_tank_in_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -602,7 +516,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="mixingStartTime"
+                        controlId="mixing_mix_start_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -619,7 +533,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="mixingFinishTime"
+                        controlId="mixing_mix_finish_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -638,7 +552,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="feedTankInTime"
+                        controlId="mixing_feeding_tank_in_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -655,7 +569,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="feedingStartTime"
+                        controlId="mixing_feed_start_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -672,7 +586,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="operators"
+                        controlId="mixing_operator_names"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -707,7 +621,7 @@ const NewMixing = () => {
                           <Form.Group
                             as={Col}
                             md="6"
-                            controlId="prevBatchPhValue"
+                            controlId="mixing_prev_batch_raw_ph"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold textDarkBlue">
@@ -728,7 +642,7 @@ const NewMixing = () => {
                           <Form.Group
                             as={Col}
                             md="6"
-                            controlId="prevBatchTSSValue"
+                            controlId="mixing_prev_batch_raw_tss"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold textDarkBlue">
@@ -752,7 +666,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="steamBars"
+                        controlId="mixing_steam_pressure_value"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -774,7 +688,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="pressurePumpValue"
+                        controlId="mixing_pressure_pump_value"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -795,7 +709,7 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="mixDetails"
+                        controlId="mixing_mix_details"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">Mix details</Form.Label>
@@ -818,9 +732,10 @@ const NewMixing = () => {
                           {isLoading && (
                             <Spinner animation="border" size="sm" />
                           )}
-                          <p className="text-uppercase">Continue</p>
+                          <p>Continue</p>
                         </div>
                       </button>
+
                       <button type="reset" className="customBtn customClearBtn">
                         Clear
                       </button>

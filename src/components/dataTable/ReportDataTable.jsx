@@ -5,12 +5,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 
 import "./dataTable.css";
-import useCurrentDate from "../../hooks/useCurrentDate";
 
-const ReportDataTable = ({ dataSet }) => {
+const ReportDataTable = ({ data }) => {
   const tableRef = useRef(null);
-
-  const currentDate = useCurrentDate();
 
   return (
     <div
@@ -18,356 +15,180 @@ const ReportDataTable = ({ dataSet }) => {
       className="mt-2 d-flex flex-column"
     >
       <DownloadTableExcel
-        filename={`${currentDate} summery report`}
-        sheet={`${currentDate}`}
+        filename={`${data[0]?.date} summery report`}
+        sheet={`${data[0]?.date}`}
         currentTableRef={tableRef.current}
       >
         <button className="mb-2 customBtn customBtnPrint">Export excel</button>
       </DownloadTableExcel>
 
-      <Table responsive striped="columns" bordered hover ref={tableRef}>
+      <Table responsive bordered hover size="sm" ref={tableRef}>
+        <thead>
+          <tr>
+            <th>Wet batch #</th>
+            <th>Batch #</th>
+            <th>Location</th>
+            <th>Order name</th>
+            <th>Kernel weight</th>
+            <th>Wet load time</th>
+            <th>Cutter start time</th>
+            <th>Milk weight</th>
+            <th>Efficiency</th>
+            <th>Raw pH</th>
+            <th>Raw TSS</th>
+            <th>Raw fat</th>
+            <th>Taste</th>
+            <th>Color</th>
+            <th>Odor</th>
+            <th>Mix pH</th>
+            <th>Mix TSS</th>
+            <th>Mix fat</th>
+            <th>Taste</th>
+            <th>Color</th>
+            <th>Odor</th>
+            <th>Raw milk in time</th>
+            <th>Mix start time</th>
+            <th>Mix finish time</th>
+            <th>Feed tank in time</th>
+            <th>Feed start time</th>
+            <th>Powder spray start time</th>
+            <th>Powder spray finish time</th>
+            <th>RP</th>
+            <th>Inlet temp</th>
+            <th>Outlet temp</th>
+            <th>Pressure pump</th>
+            <th>Moisture</th>
+            <th>Fat</th>
+            <th>Fat layer</th>
+            <th>Time</th>
+            <th>Taste</th>
+            <th>Color</th>
+            <th>Odor</th>
+            <th>Solubility</th>
+            <th>Free flowing</th>
+          </tr>
+        </thead>
+
         <tbody>
-          <tr>
-            <th className="bg-info">Wet batch #</th>
-            {dataSet?.wet_data?.map((item, index) => (
-              <td key={index}>{item.batchNumber}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Batch #</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.batchNumber}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Location</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>
-                {item.location === "mdc" ? "SD - 03" : "SD - 04"}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Order name</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.recipeName}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Kernel weight</th>
-            {dataSet?.wet_data?.map((item, index) => (
-              <td key={index}>{item.kernelWeight}kg</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Wet load time</th>
-            {dataSet?.wet_data?.map((item, index) => (
-              <td key={index}>{item.blancherInTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Cutter start time</th>
-            {dataSet?.cutter_data?.map((item, index) => (
-              <td key={index}>{item.expellerStartTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Expeller finish time</th>
-            {dataSet?.cutter_data?.map((item, index) => (
-              <td key={index}>{item.expellerFinishTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Milk weight</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.milkQuantity}kg</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Efficiency</th>
-            {dataSet?.mixing_data?.map((item, index) => (
+          {data?.map((item, index) => (
+            <tr key={index}>
+              <td>{item.primary_batch_number}</td>
+              <td>{item.batch_number}</td>
+              <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
+              <td>{item.order_name}</td>
+              <td>{item.wet_kernel_weight}kg</td>
+              <td>{item.blancher_in_time}</td>
+              <td>{item.cutter_expeller_start_time}</td>
+              <td>{item.mixing_milk_quantity}kg</td>
               <td
-                key={index}
                 className={`${
-                  item.milkRecovery < 75 ? "text-danger" : "text-success"
+                  item.mixing_milk_recovery < 75
+                    ? "text-danger"
+                    : "text-success"
                 }`}
               >
-                {item.milkRecovery}%
+                {item.mixing_milk_recovery}%
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Raw pH</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.rawMilkPh}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Raw TSS</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.rawMilkTSS}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Raw fat</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.rawMilkFat}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Taste</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.rawMilkTaste ? (
+              <td>{item.lab_raw_ph}</td>
+              <td>{item.lab_raw_tss}</td>
+              <td>{item.lab_raw_fat}</td>
+              <td>
+                {item.lab_row_taste ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Color</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.rawMilkColor ? (
+              <td>
+                {item.lab_row_color ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Odor</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.rawMilkOdor ? (
+              <td>
+                {item.lab_row_odor ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Mix pH</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.mixMilkPh}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Mix TSS</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.mixMilkTSS}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Mix fat</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.mixMilkFat}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Taste</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.rawMilkTaste ? (
+              <td>{item.lab_mix_ph}</td>
+              <td>{item.lab_mix_tss}</td>
+              <td>{item.lab_mix_fat}</td>
+              <td>
+                {item.lab_mix_taste ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Color</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.rawMilkColor ? (
+              <td>
+                {item.lab_mix_color ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Odor</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.rawMilkOdor ? (
+              <td>
+                {item.lab_mix_odor ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Raw milk in time</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.rawMilkInTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Mix start time</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.mixingStartTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Mix finish time</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.mixingFinishTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Feed tank in time</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.feedTankInTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Feed start time</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.feedingStartTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Powder spray start time</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>{item.powderSprayStartTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Powder spray finish time</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>{item.powderSprayFinishTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Powder spray finish time</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>{item.powderSprayFinishTime}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Quantity</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>
-                {item.powderQuantity ? item.powderQuantity : "-"}kg
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">RP</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>{item.rp}kg</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Inlet temp</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>{item.inletTemp}&deg;C</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Outlet temp</th>
-            {dataSet?.sd_data?.map((item, index) => (
-              <td key={index}>{item.outletTemp}&deg;C</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Pressure pump</th>
-            {dataSet?.mixing_data?.map((item, index) => (
-              <td key={index}>{item.pressurePumpValue}MPa</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Moisture</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.milkPowderMoisture}%</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Fat</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.milkPowderFat}</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Fat layer</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.milkPowderFatLayer}cm</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Time</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>{item.milkPowderTime}min</td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Powder taste</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.powderTaste ? (
+              <td>{item.expeller_finish_time}</td>
+              <td>{item.mixing_mix_start_time}</td>
+              <td>{item.mixing_mix_finish_time}</td>
+              <td>{item.mixing_feeding_tank_in_time}</td>
+              <td>{item.mixing_feed_start_time}</td>
+              <td>{item.sd_powder_spray_start_time}</td>
+              <td>{item.sd_batch_finish_time}</td>
+              <td>{item.sd_rp_quantity}kg</td>
+              <td>{item.sd_inlet_temp}&deg;C</td>
+              <td>{item.sd_outlet_temp}&deg;C</td>
+              <td>{item.mixing_pressure_pump_value}MPa</td>
+              <td>{item.lab_powder_moisture}%</td>
+              <td>{item.lab_powder_fat}</td>
+              <td>{item.lab_powder_fat_layer}cm</td>
+              <td>{item.lab_powder_fat_layer_time}min</td>
+              <td>
+                {item.lab_powder_taste ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Powder color</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.powderColor ? (
+              <td>
+                {item.lab_powder_color ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Powder Odor</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.powderOdor ? (
+              <td>
+                {item.lab_powder_odor ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Solubility</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.powderSolubility ? (
+              <td>
+                {item.lab_powder_solubility ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
-          <tr>
-            <th className="bg-info">Free flowing</th>
-            {dataSet?.lab_data?.map((item, index) => (
-              <td key={index}>
-                {item.powderFreeFlowing ? (
+              <td>
+                {item.lab_powder_free_flowing ? (
                   <CheckIcon className="text-success" />
                 ) : (
                   <CloseIcon className="text-danger" />
                 )}
               </td>
-            ))}
-          </tr>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

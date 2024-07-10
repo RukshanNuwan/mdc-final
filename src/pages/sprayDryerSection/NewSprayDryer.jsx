@@ -28,8 +28,7 @@ import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 
 const NewSprayDryer = () => {
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
-  const [batchNumberData, setBatchNumberData] = useState({});
+  const [ongoingData, setOngoingData] = useState({});
   const [expectedTime, setExpectedTime] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,17 +43,15 @@ const NewSprayDryer = () => {
 
     setData({
       ...data,
-      // addedBy: loggedInUser,
-      sectionName: "spraydryer",
-      status: "updated",
       [id]: value,
+      sd_status: "updated",
     });
   };
 
   const handleOperatorsChange = (e) => {
     const str = e.target.value;
     const operators = str.split(",");
-    setData({ ...data, operators });
+    setData({ ...data, sd_operator_names: operators });
   };
 
   const handleChangeAtomizerSize = (e) => {
@@ -64,85 +61,63 @@ const NewSprayDryer = () => {
     if (e.target.value === "1") setExpectedTime("1hr");
     if (e.target.value === "1.2") setExpectedTime("50min");
 
-    setData({ ...data, atomizerSize: e.target.value });
+    setData({ ...data, sd_atomizer_size: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const confirmData = `Powder spray start time: ${data?.powderSprayStartTime} | Atomizer size: ${data?.atomizerSize} | Inlet temperature: ${data?.inletTemp} | Outlet temperature: ${data?.outletTemp} | Operators : ${data?.operators}`;
+    const confirmData = `Powder spray start time: ${data?.sd_powder_spray_start_time} | Atomizer size: ${data?.sd_atomizer_size} | Inlet temperature: ${data?.sd_inlet_temp} | Outlet temperature: ${data?.sd_outlet_temp} | Operators : ${data?.sd_operator_names}`;
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          text: confirmData,
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        text: confirmData,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "sd_section", batchNumberData.id);
-            await updateDoc(docRef, {
-              ...data,
-            })
-              .then(async () => {
-                try {
-                  const docRefLab = doc(
-                    db,
-                    "lab_section",
-                    batchNumberData.lab_batch_id
-                  );
-                  await updateDoc(docRefLab, {
-                    sd_batch_id: batchNumberData.id,
-                  });
-                } catch (error) {
-                  console.log(error);
-                }
-              })
-              .then(() => {
-                Swal.fire({
-                  title: "Changes saved",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-
-                e.target.reset();
-                setIsLoading(false);
-                navigate(`/sd-section/${location}`);
-              })
-              .catch((error) => {
-                console.log("Error updating document:", error);
+          const docRef = doc(db, "production_data", ongoingData.id);
+          await updateDoc(docRef, {
+            ...data,
+          })
+            .then(() => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
               });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+              e.target.reset();
+              setIsLoading(false);
+              navigate(`/sd-section/${location}`);
+            })
+            .catch((error) => {
+              console.log("Error updating document:", error);
+            });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    const fetchCurrentBatchInMixing = async () => {
+    const fetchOngoingBatch = async () => {
       try {
         const list = [];
         const q = query(
-          collection(db, "sd_section"),
-          where("status", "==", "ongoing"),
+          collection(db, "production_data"),
+          where("sd_status", "==", "ongoing"),
           where("location", "==", location),
-          orderBy("timeStamp", "asc")
+          orderBy("wet_added_at", "asc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -151,13 +126,13 @@ const NewSprayDryer = () => {
         });
 
         let res = list.filter((doc) => doc);
-        setBatchNumberData(res[0]);
+        setOngoingData(res[0]);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchCurrentBatchInMixing();
+    fetchOngoingBatch();
   }, [location]);
 
   return (
@@ -187,12 +162,8 @@ const NewSprayDryer = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {batchNumberData && !batchNumberData?.powderSprayStartTime ? (
-                  <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={handleSubmit}
-                  >
+                {ongoingData && !ongoingData?.powderSprayStartTime ? (
+                  <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
                         as={Col}
@@ -205,14 +176,14 @@ const NewSprayDryer = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.date}
+                          defaultValue={ongoingData.date}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="batchNumber"
+                        controlId="batch_number"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -222,14 +193,14 @@ const NewSprayDryer = () => {
                           type="number"
                           disabled
                           className="customInput disabled"
-                          defaultValue={batchNumberData.batchNumber}
+                          defaultValue={ongoingData.batch_number}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="batchNumber"
+                        controlId="primary_batch_number"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -239,7 +210,7 @@ const NewSprayDryer = () => {
                           type="number"
                           disabled
                           min={1}
-                          value={batchNumberData.wetBatchNumber}
+                          value={ongoingData.primary_batch_number}
                           className="customInput disabled"
                         />
                       </Form.Group>
@@ -249,36 +220,36 @@ const NewSprayDryer = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="type"
+                        controlId="order_name"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Recipe type</Form.Label>
+                        <Form.Label className="fw-bold">Order type</Form.Label>
                         <Form.Control
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={batchNumberData.recipeType}
+                          defaultValue={ongoingData.order_name}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="recipeName"
+                        controlId="order_type"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Recipe name</Form.Label>
+                        <Form.Label className="fw-bold">Order name</Form.Label>
                         <Form.Control
                           type="text"
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={batchNumberData.recipeName}
+                          defaultValue={ongoingData.order_type}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="powderSprayStartTime"
+                        controlId="sd_powder_spray_start_time"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -293,24 +264,11 @@ const NewSprayDryer = () => {
                       </Form.Group>
                     </Row>
 
-                    {/* TODO: */}
-                    {/* <Row> */}
-                    {/* <Form.Group
-                      as={Col}
-                      md="12"
-                      controlId="singleBagDataTable"
-                      className="mb-2"
-                    >
-                      <div>some title</div>
-                      <TableInForm id='singleBagDataTable' />
-                    </Form.Group> */}
-                    {/* </Row> */}
-
                     <Row>
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="atomizerSize"
+                        controlId="sd_atomizer_size"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -350,7 +308,7 @@ const NewSprayDryer = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="inletTemp"
+                        controlId="sd_inlet_temp"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -384,7 +342,7 @@ const NewSprayDryer = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="outletTemp"
+                        controlId="sd_outlet_temp"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -420,7 +378,7 @@ const NewSprayDryer = () => {
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="operators"
+                        controlId="sd_operator_names"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -440,7 +398,7 @@ const NewSprayDryer = () => {
                       <Form.Group
                         as={Col}
                         md="8"
-                        controlId="otherDetails"
+                        controlId="sd_other_details"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
@@ -465,9 +423,10 @@ const NewSprayDryer = () => {
                           {isLoading && (
                             <Spinner animation="border" size="sm" />
                           )}
-                          <p className="text-uppercase">Continue</p>
+                          <p>Continue</p>
                         </div>
                       </button>
+
                       <button type="reset" className="customBtn customClearBtn">
                         Clear
                       </button>

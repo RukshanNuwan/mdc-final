@@ -18,18 +18,19 @@ import useCurrentDate from "../../hooks/useCurrentDate";
 
 const Dashboard = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
-  const [sdData, setSdData] = useState([]);
-  const [mdcLabData, setMDCLabData] = useState({});
-  const [araliyaKeleLabData, setAraliyaKeleLabData] = useState({});
-  const [mdcStatus, setMdcStatus] = useState(false);
-  const [araliyaKeleStatus, setAraliyaKeleStatus] = useState(false);
+  const [sd3Data, setSd3Data] = useState({});
+  const [sd4Data, setSd4Data] = useState({});
+  const [sd3LabData, setSd3LabData] = useState({});
+  const [sd4LabData, setSd4LabData] = useState({});
+  const [sd3Status, setSd3Status] = useState(false);
+  const [sd4Status, setSd4Status] = useState(false);
   const [breakdowns, setBreakdowns] = useState([]);
-  const [isMDCBreakdown, setIsMDCBreaksown] = useState(false);
-  const [isAraliyaKeleBreakdown, setIsAraliyaKeleBreaksown] = useState(false);
+
+  // TODO: Add MDC & Araliya Kele Breakdown
+  const [isSd3Breakdown, setIsSd3Breaksown] = useState(false);
+  const [isSd4Breakdown, setIsAraliyaKeleBreaksown] = useState(false);
 
   const currentDate = useCurrentDate();
-
-  // TODO: handle breakdowns
 
   const calculateRemainingBatches = (totalBatches) => {
     if (
@@ -74,28 +75,26 @@ const Dashboard = () => {
     fetchId();
   }, [currentDate]);
 
+
   useEffect(() => {
     const handleStatus = () => {
-      // eslint-disable-next-line array-callback-return
-      sdData.map((item) => {
-        if (item?.location === "mdc") {
-          setMdcStatus(true);
-        } else if (item?.location === "araliya_kele") {
-          setAraliyaKeleStatus(true);
-        }
-      });
+      if (sd3Data?.sd_status === "ongoing" || sd3Data?.sd_status === "updated")
+        setSd3Status(true);
+      if (sd4Data?.sd_status === "ongoing" || sd4Data?.sd_status === "updated")
+        setSd4Status(true);
     };
 
     handleStatus();
-  }, [sdData]);
+  }, [sd3Data?.sd_status, sd4Data?.sd_status]);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
       try {
         const q = query(
-          collection(db, "sd_section"),
-          where("status", "==", "updated"),
-          orderBy("timeStamp", "desc"),
+          collection(db, "production_data"),
+          where("sd_status", "==", "updated"),
+          where("location", "==", "mdc"),
+          orderBy("wet_added_at", "desc"),
           limit(1)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -103,7 +102,8 @@ const Dashboard = () => {
           querySnapshot.forEach((doc) => {
             list.push(doc.data());
           });
-          setSdData(list);
+
+          setSd3Data(list[0]);
         });
 
         return () => {
@@ -118,14 +118,44 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const fetchMDCLabData = async () => {
+    const fetchCurrentSdData = async () => {
       try {
         const q = query(
-          collection(db, "lab_section"),
-          where("status", "==", "completed"),
+          collection(db, "production_data"),
+          where("sd_status", "==", "updated"),
+          where("location", "==", "araliya_kele"),
+          orderBy("wet_added_at", "desc"),
+          limit(1)
+        );
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const list = [];
+          querySnapshot.forEach((doc) => {
+            list.push(doc.data());
+          });
+
+          setSd4Data(list[0]);
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCurrentSdData();
+  }, []);
+
+  useEffect(() => {
+    const fetchSd3LabData = async () => {
+      try {
+        const q = query(
+          collection(db, "production_data"),
+          where("lab_status", "==", "completed"),
           where("date", "==", dailyProductionData.date),
           where("location", "==", "mdc"),
-          orderBy("timeStamp", "desc"),
+          orderBy("wet_added_at", "desc"),
           limit(1)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -133,7 +163,7 @@ const Dashboard = () => {
           querySnapshot.forEach((doc) => {
             list.push(doc.data());
           });
-          setMDCLabData(list[0]);
+          setSd3LabData(list[0]);
         });
 
         return () => {
@@ -144,14 +174,14 @@ const Dashboard = () => {
       }
     };
 
-    const fetchAraliyaKeleLabData = async () => {
+    const fetchSd4LabData = async () => {
       try {
         const q = query(
-          collection(db, "lab_section"),
-          where("status", "==", "completed"),
+          collection(db, "production_data"),
+          where("lab_status", "==", "completed"),
           where("date", "==", dailyProductionData.date),
           where("location", "==", "araliya_kele"),
-          orderBy("timeStamp", "desc"),
+          orderBy("wet_added_at", "desc"),
           limit(1)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -159,7 +189,7 @@ const Dashboard = () => {
           querySnapshot.forEach((doc) => {
             list.push(doc.data());
           });
-          setAraliyaKeleLabData(list[0]);
+          setSd4LabData(list[0]);
         });
 
         return () => {
@@ -170,8 +200,8 @@ const Dashboard = () => {
       }
     };
 
-    fetchMDCLabData();
-    fetchAraliyaKeleLabData();
+    fetchSd3LabData();
+    fetchSd4LabData();
   }, [dailyProductionData?.date]);
 
   useEffect(() => {
@@ -278,18 +308,18 @@ const Dashboard = () => {
                 </span>
 
                 <span
-                  className={`status ${mdcStatus && "running"} ${
-                    isMDCBreakdown && "stopped"
+                  className={`status ${sd3Status && "running"} ${
+                    isSd3Breakdown && "stopped"
                   }`}
                 >
                   <p
                     className={`${
-                      mdcStatus && !isMDCBreakdown ? "d-block" : "d-none"
+                      sd3Status && !isSd3Breakdown ? "d-block" : "d-none"
                     }`}
                   >
                     Running
                   </p>
-                  <p className={`${isMDCBreakdown ? "d-block" : "d-none"}`}>
+                  <p className={`${isSd3Breakdown ? "d-block" : "d-none"}`}>
                     Stopped
                   </p>
                 </span>
@@ -298,10 +328,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Running batch</p>
 
               <p className="sectionMainValue text-center">
-                {sdData &&
-                  sdData.map(
-                    (data) => data.location === "mdc" && data.batchNumber
-                  )}
+                {sd3Data?.batch_number ? sd3Data?.batch_number : "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -309,9 +336,9 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Last batch free flowing</p>
 
                   <p className="sectionSubValue text-capitalize fw-bold">
-                    {mdcLabData?.powderFreeFlowing ? (
+                    {sd3LabData?.lab_powder_free_flowing ? (
                       <CheckIcon className="textSuccessGreen" />
-                    ) : mdcLabData?.powderFreeFlowing === false ? (
+                    ) : sd3LabData?.lab_powder_free_flowing === false ? (
                       <CloseIcon className="text-danger" />
                     ) : (
                       <p>-</p>
@@ -323,9 +350,9 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Last batch solubility</p>
 
                   <p className="sectionSubValue text-capitalize fw-bold">
-                    {mdcLabData?.powderSolubility ? (
+                    {sd3LabData?.lab_powder_solubility ? (
                       <CheckIcon className="textSuccessGreen" />
-                    ) : mdcLabData?.powderSolubility === false ? (
+                    ) : sd3LabData?.lab_powder_solubility === false ? (
                       <CloseIcon className="text-danger" />
                     ) : (
                       <p>-</p>
@@ -355,7 +382,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {mdcLabData?.rawMilkPh ? mdcLabData?.rawMilkPh : "-"}
+                        {sd3LabData?.lab_raw_ph ? sd3LabData?.lab_raw_ph : "-"}
                       </p>
                     </div>
 
@@ -363,7 +390,9 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {mdcLabData?.rawMilkTSS ? mdcLabData?.rawMilkTSS : "-"}
+                        {sd3LabData?.lab_raw_tss
+                          ? sd3LabData?.lab_raw_tss
+                          : "-"}
                       </p>
                     </div>
 
@@ -371,7 +400,9 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {mdcLabData?.rawMilkFat ? mdcLabData?.rawMilkFat : "-"}
+                        {sd3LabData?.lab_raw_fat
+                          ? sd3LabData?.lab_raw_fat
+                          : "-"}
                       </p>
                     </div>
                   </div>
@@ -384,7 +415,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {mdcLabData?.mixMilkPh ? mdcLabData?.mixMilkPh : "-"}
+                        {sd3LabData?.lab_mix_ph ? sd3LabData?.lab_mix_ph : "-"}
                       </p>
                     </div>
 
@@ -392,7 +423,9 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {mdcLabData?.mixMilkTSS ? mdcLabData?.mixMilkTSS : "-"}
+                        {sd3LabData?.lab_mix_tss
+                          ? sd3LabData?.lab_mix_tss
+                          : "-"}
                       </p>
                     </div>
 
@@ -400,7 +433,9 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {mdcLabData?.mixMilkFat ? mdcLabData?.mixMilkFat : "-"}
+                        {sd3LabData?.lab_mix_fat
+                          ? sd3LabData?.lab_mix_fat
+                          : "-"}
                       </p>
                     </div>
                   </div>
@@ -457,24 +492,18 @@ const Dashboard = () => {
                 </span>
 
                 <span
-                  className={`status ${araliyaKeleStatus && "running"} ${
-                    isAraliyaKeleBreakdown && "stopped"
+                  className={`status ${sd4Status && "running"} ${
+                    isSd4Breakdown && "stopped"
                   }`}
                 >
                   <p
                     className={`${
-                      araliyaKeleStatus && !isAraliyaKeleBreakdown
-                        ? "d-block"
-                        : "d-none"
+                      sd4Status && !isSd4Breakdown ? "d-block" : "d-none"
                     }`}
                   >
                     Running
                   </p>
-                  <p
-                    className={`${
-                      isAraliyaKeleBreakdown ? "d-block" : "d-none"
-                    }`}
-                  >
+                  <p className={`${isSd4Breakdown ? "d-block" : "d-none"}`}>
                     Stopped
                   </p>
                 </span>
@@ -483,11 +512,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Running batch</p>
 
               <p className="sectionMainValue text-center">
-                {sdData &&
-                  sdData.map(
-                    (data) =>
-                      data.location === "araliya_kele" && data.batchNumber
-                  )}
+                {sd4Data?.batch_number ? sd4Data?.batch_number : "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -495,9 +520,9 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Last batch free flowing</p>
 
                   <p className="sectionSubValue text-capitalize fw-bold">
-                    {araliyaKeleLabData?.powderFreeFlowing ? (
+                    {sd4LabData?.lab_powder_free_flowing ? (
                       <CheckIcon className="textSuccessGreen" />
-                    ) : araliyaKeleLabData?.powderFreeFlowing === false ? (
+                    ) : sd4LabData?.lab_powder_free_flowing === false ? (
                       <CloseIcon className="text-danger" />
                     ) : (
                       <p>-</p>
@@ -509,9 +534,9 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Last batch solubility</p>
 
                   <p className="sectionSubValue text-capitalize fw-bold">
-                    {araliyaKeleLabData?.powderSolubility ? (
+                    {sd4LabData?.lab_powder_solubility ? (
                       <CheckIcon className="textSuccessGreen" />
-                    ) : araliyaKeleLabData?.powderSolubility === false ? (
+                    ) : sd4LabData?.lab_powder_solubility === false ? (
                       <CloseIcon className="text-danger" />
                     ) : (
                       <p>-</p>
@@ -540,9 +565,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {araliyaKeleLabData?.rawMilkPh
-                          ? araliyaKeleLabData?.rawMilkPh
-                          : "-"}
+                        {sd4LabData?.lab_raw_ph ? sd4LabData?.lab_raw_ph : "-"}
                       </p>
                     </div>
 
@@ -550,8 +573,8 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {araliyaKeleLabData?.rawMilkTSS
-                          ? araliyaKeleLabData?.rawMilkTSS
+                        {sd4LabData?.lab_raw_tss
+                          ? sd4LabData?.lab_raw_tss
                           : "-"}
                       </p>
                     </div>
@@ -560,8 +583,8 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {araliyaKeleLabData?.rawMilkFat
-                          ? araliyaKeleLabData?.rawMilkFat
+                        {sd4LabData?.lab_raw_fat
+                          ? sd4LabData?.lab_raw_fat
                           : "-"}
                       </p>
                     </div>
@@ -575,9 +598,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {araliyaKeleLabData?.mixMilkPh
-                          ? araliyaKeleLabData?.mixMilkPh
-                          : "-"}
+                        {sd4LabData?.lab_mix_ph ? sd4LabData?.lab_mix_ph : "-"}
                       </p>
                     </div>
 
@@ -585,8 +606,8 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {araliyaKeleLabData?.mixMilkTSS
-                          ? araliyaKeleLabData?.mixMilkTSS
+                        {sd4LabData?.lab_mix_tss
+                          ? sd4LabData?.lab_mix_tss
                           : "-"}
                       </p>
                     </div>
@@ -595,8 +616,8 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {araliyaKeleLabData?.mixMilkFat
-                          ? araliyaKeleLabData?.mixMilkFat
+                        {sd4LabData?.lab_mix_fat
+                          ? sd4LabData?.lab_mix_fat
                           : "-"}
                       </p>
                     </div>
@@ -649,18 +670,30 @@ const Dashboard = () => {
                             {breakdown.informedTo}
                           </span>
                         </p>
-                        <p className="text-secondary text-sm">
-                          Time :
-                          <span className="fw-bold text-capitalize textSuccessGreen">
-                            {breakdown.timeStamp?.toDate().toLocaleString()}
-                          </span>
-                        </p>
+
+                        <div>
+                          <p className="text-secondary text-sm">
+                            Start time :
+                            <span className="fw-bold text-capitalize textSuccessGreen">
+                              {breakdown.timeStamp?.toDate().toLocaleString()}
+                            </span>
+                          </p>
+
+                          {breakdown.finishTime && (
+                            <p className="text-secondary text-sm">
+                              End time :
+                              <span className="fw-bold text-capitalize textSuccessGreen">
+                                {breakdown.updatedAt?.toDate().toLocaleString()}
+                              </span>
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </ListGroup.Item>
                   ))}
                 </ListGroup>
               ) : (
-                <p className="text-white text-center mt-5">No breakdown</p>
+                <p className="text-white text-center mt-5">No breakdowns</p>
               )}
             </div>
           </div>

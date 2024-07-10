@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -19,7 +18,7 @@ import Swal from "sweetalert2";
 import "./dataTable.css";
 import { db } from "../../config/firebase.config";
 
-const DataTable = ({ collectionName, columnName, location }) => {
+const DataTable = ({ columnName, location }) => {
   const [data, setData] = useState([]);
 
   const navigate = useNavigate();
@@ -27,8 +26,8 @@ const DataTable = ({ collectionName, columnName, location }) => {
   // Fetch Data from DB
   const fetchDataWithoutLocation = useCallback(async () => {
     const q = query(
-      collection(db, collectionName),
-      orderBy("timeStamp", "desc")
+      collection(db, "production_data"),
+      orderBy("wet_added_at", "desc")
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let list = [];
@@ -42,13 +41,14 @@ const DataTable = ({ collectionName, columnName, location }) => {
     return () => {
       unsubscribe();
     };
-  }, [collectionName]);
+  }, []);
 
   const fetchDataWithLocation = useCallback(async () => {
     try {
       const q = query(
-        collection(db, collectionName),
-        where("location", "==", location)
+        collection(db, "production_data"),
+        where("location", "==", location),
+        orderBy("wet_added_at", "desc")
       );
       const unsubscribe = onSnapshot(
         q,
@@ -70,7 +70,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [collectionName, location]);
+  }, [location]);
 
   useEffect(() => {
     if (location) fetchDataWithLocation();
@@ -105,31 +105,9 @@ const DataTable = ({ collectionName, columnName, location }) => {
             cancelButtonColor: "#ff007f",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              // Delete data from cutter section
-              await deleteDoc(doc(db, "cutter_section", data.id)).then(
-                async () => {
-                  await deleteDoc(
-                    doc(db, "wet_section", data.wet_batch_id)
-                  ).then(async () => {});
-
-                  // Get data from wet section by cutter batch id
-                  const q = query(
-                    collection(db, "mixing_section"),
-                    where("cutter_batch_id", "==", data.id)
-                  );
-                  const querySnapshot = await getDocs(q);
-                  querySnapshot.forEach((item) => {
-                    // Delete data from wet section
-                    deleteDoc(doc(db, "mixing_section", item.id)).then(() => {
-                      Swal.fire(
-                        "Deleted!",
-                        "Your file has been deleted.",
-                        "success"
-                      );
-                    });
-                  });
-                }
-              );
+              await deleteDoc(doc(db, "production_data", data.id)).then(() => {
+                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              });
             }
           });
         }
@@ -161,14 +139,12 @@ const DataTable = ({ collectionName, columnName, location }) => {
               />
             </div>
 
-            {params.row.sectionName === "cutter" && (
-              <div>
-                <DeleteIcon
-                  className="tableAction"
-                  onClick={() => handleDelete(params.row)}
-                />
-              </div>
-            )}
+            <div>
+              <DeleteIcon
+                className="tableAction"
+                onClick={() => handleDelete(params.row)}
+              />
+            </div>
           </div>
         );
       },
@@ -186,7 +162,7 @@ const DataTable = ({ collectionName, columnName, location }) => {
             paginationModel: { page: 0, pageSize: 25 },
           },
           sorting: {
-            sortModel: [{ field: "timeStamp", sort: "desc" }],
+            sortModel: [{ field: "wet_added_at", sort: "desc" }],
           },
         }}
         pageSizeOptions={[25, 50, 100]}

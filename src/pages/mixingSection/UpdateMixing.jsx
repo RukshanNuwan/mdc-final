@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -17,7 +17,6 @@ const UpdateMixing = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -35,52 +34,45 @@ const UpdateMixing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "mixing_section", state.id);
-            await updateDoc(docRef, {
-              ...data,
-            })
-              .then(() => {
-                Swal.fire({
-                  title: "Changes saved",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-
-                e.target.reset();
-                setIsLoading(false);
-                navigate(`/mixing-section/${location}`);
-              })
-              .catch((error) => {
-                console.log(error);
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            mixing_updated_at: serverTimestamp(),
+          })
+            .then(() => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
               });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+              e.target.reset();
+              setIsLoading(false);
+              navigate(`/mixing-section/${location}`);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -110,7 +102,7 @@ const UpdateMixing = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
                       as={Col}
@@ -130,7 +122,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="batchNumber"
+                      controlId="primary_batch_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -140,17 +132,15 @@ const UpdateMixing = () => {
                         type="number"
                         disabled
                         min={1}
-                        value={state.wet_batch_number}
+                        value={state.primary_batch_number}
                         className="customInput disabled"
                       />
                     </Form.Group>
 
-                    {/* TODO: Choose the spray dryer (2 or 3) from dropdown */}
-
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="rawMilkInTime"
+                      controlId="expeller_finish_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -160,7 +150,7 @@ const UpdateMixing = () => {
                         type="time"
                         disabled
                         className="customInput disabled"
-                        value={state.rawMilkInTime}
+                        value={state.expeller_finish_time}
                       />
                     </Form.Group>
                   </Row>
@@ -169,7 +159,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="batchNumber"
+                      controlId="batch_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
@@ -177,20 +167,20 @@ const UpdateMixing = () => {
                         type="number"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batchNumber}
+                        defaultValue={state.batch_number}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="recipeName"
+                      controlId="order_name"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Order name</Form.Label>
                       <Form.Control
                         type="text"
-                        defaultValue={state.recipeName}
+                        defaultValue={state.order_name}
                         disabled
                         className="customInput disabled"
                       />
@@ -199,7 +189,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="type"
+                      controlId="order_type"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Order type</Form.Label>
@@ -207,7 +197,7 @@ const UpdateMixing = () => {
                         disabled
                         className="customInput disabled"
                         defaultValue={
-                          state.recipeType === "organic"
+                          state.order_type === "organic"
                             ? "Organic"
                             : "Conventional"
                         }
@@ -219,7 +209,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="milkQuantity"
+                      controlId="mixing_milk_quantity"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Milk quantity</Form.Label>
@@ -230,7 +220,7 @@ const UpdateMixing = () => {
                           aria-describedby="addon"
                           disabled
                           className="customInput"
-                          value={state.milkQuantity}
+                          value={state.mixing_milk_quantity}
                         />
                         <InputGroup.Text
                           id="addon"
@@ -248,7 +238,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="milkRecovery"
+                      controlId="mixing_milk_recovery"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Milk recovery</Form.Label>
@@ -259,7 +249,7 @@ const UpdateMixing = () => {
                           aria-describedby="addon"
                           disabled
                           className="customInput"
-                          value={state.milkRecovery}
+                          value={state.mixing_milk_recovery}
                         />
                         <InputGroup.Text
                           id="addon"
@@ -279,7 +269,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="additionalCratesCount"
+                      controlId="mixing_additional_crates_count"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -287,18 +277,18 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="number"
-                        defaultValue={state.additionalCratesCount}
+                        defaultValue={state.mixing_additional_crates_count}
                         disabled
                         className="customInput disabled"
                       />
                     </Form.Group>
 
-                    {state.additionalCratesCount > 0 && (
+                    {state.mixing_additional_crates_count > 0 && (
                       <>
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="isInformedToCutter"
+                          controlId="mixing_additional_crates_is_informed"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
@@ -309,14 +299,17 @@ const UpdateMixing = () => {
                             type="text"
                             disabled
                             className="customInput disabled"
-                            defaultValue={state.isInformed}
+                            defaultValue={
+                              state?.mixing_additional_crates_is_informed &&
+                              "Informed"
+                            }
                           />
                         </Form.Group>
 
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="informedTo"
+                          controlId="mixing_additional_crates_informed_to"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
@@ -325,8 +318,10 @@ const UpdateMixing = () => {
                           <Form.Control
                             type="text"
                             disabled
-                            className="customInput disabled"
-                            defaultValue={state?.informedTo}
+                            className="customInput disabled text-capitalize"
+                            defaultValue={
+                              state?.mixing_additional_crates_informed_to
+                            }
                           />
                         </Form.Group>
                       </>
@@ -337,7 +332,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="mixingTankInTime"
+                      controlId="mixing_tank_in_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -345,10 +340,10 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        defaultValue={state.mixingTankInTime}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.mixing_tank_in_time}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -357,7 +352,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="mixingStartTime"
+                      controlId="mixing_mix_start_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -365,10 +360,10 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        defaultValue={state.mixingStartTime}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.mixing_mix_start_time}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -377,7 +372,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="mixingFinishTime"
+                      controlId="mixing_mix_finish_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -385,10 +380,10 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        defaultValue={state.mixingFinishTime}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.mixing_mix_finish_time}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -399,7 +394,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="feedTankInTime"
+                      controlId="mixing_feeding_tank_in_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -407,10 +402,10 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        defaultValue={state.feedTankInTime}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.mixing_feeding_tank_in_time}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -419,7 +414,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="feedingStartTime"
+                      controlId="mixing_feed_start_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -428,7 +423,7 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="time"
                         disabled
-                        defaultValue={state.feedingStartTime}
+                        defaultValue={state.mixing_feed_start_time}
                         className="customInput disabled"
                       />
                     </Form.Group>
@@ -436,7 +431,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="operators"
+                      controlId="mixing_operator_names"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -445,13 +440,13 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="text"
                         disabled
-                        className="customInput disabled"
-                        defaultValue={state.operators}
+                        className="customInput disabled text-capitalize"
+                        defaultValue={state.mixing_operator_names}
                       />
                     </Form.Group>
                   </Row>
 
-                  {state.batchNumber > 1 && (
+                  {state.batch_number > 1 && (
                     <div
                       className="p-3 mb-3"
                       style={{
@@ -468,7 +463,7 @@ const UpdateMixing = () => {
                         <Form.Group
                           as={Col}
                           md="6"
-                          controlId="prevBatchPhValue"
+                          controlId="mixing_prev_batch_raw_ph"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -478,7 +473,7 @@ const UpdateMixing = () => {
                           <Form.Control
                             type="number"
                             step=".01"
-                            defaultValue={state.prevBatchPhValue}
+                            defaultValue={state.mixing_prev_batch_raw_ph}
                             className="customInput"
                             onChange={handleChange}
                           />
@@ -490,7 +485,7 @@ const UpdateMixing = () => {
                         <Form.Group
                           as={Col}
                           md="6"
-                          controlId="prevBatchTSSValue"
+                          controlId="mixing_prev_batch_raw_tss"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold textDarkBlue">
@@ -500,7 +495,7 @@ const UpdateMixing = () => {
                           <Form.Control
                             type="number"
                             step=".01"
-                            defaultValue={state.prevBatchTSSValue}
+                            defaultValue={state.mixing_prev_batch_raw_tss}
                             className="customInput"
                             onChange={handleChange}
                           />
@@ -516,7 +511,7 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="steamBars"
+                      controlId="mixing_steam_pressure_value"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -526,10 +521,10 @@ const UpdateMixing = () => {
                       <Form.Control
                         type="number"
                         step=".01"
-                        defaultValue={state.steamBars}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.mixing_steam_pressure_value}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -541,17 +536,17 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="pressurePumpValue"
+                      controlId="mixing_pressure_pump_value"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Pressure pump</Form.Label>
 
                       <Form.Control
                         type="number"
-                        defaultValue={state.pressurePumpValue}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.mixing_pressure_pump_value}
+                        disabled={state.mixing_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.mixing_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -563,14 +558,14 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="mixDetails"
+                      controlId="mixing_mix_details"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Mix details</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        defaultValue={state.mixDetails}
+                        defaultValue={state.mixing_mix_details}
                         className="customInput"
                         onChange={handleChange}
                       />
@@ -585,9 +580,10 @@ const UpdateMixing = () => {
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
-                        <p className="text-uppercase">Update</p>
+                        <p>Update</p>
                       </div>
                     </button>
+
                     <button type="reset" className="customBtn customClearBtn">
                       Clear
                     </button>

@@ -5,6 +5,7 @@ import {
   getDocs,
   orderBy,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -24,47 +25,46 @@ import BackToTop from "../../components/backToTop/BackToTop";
 const UpdateLaboratory = () => {
   const { state } = useLocation();
 
-  const [validated, setValidated] = useState(false);
   const [data, setData] = useState({});
   const [rawMilkTaste, setRawMilkTaste] = useState(
-    state.rawMilkTaste ? state.rawMilkTaste : false
+    state.lab_row_taste ? state.lab_row_taste : false
   );
   const [rawMilkColor, setRawMilkColor] = useState(
-    state.rawMilkColor ? state.rawMilkColor : false
+    state.lab_row_color ? state.lab_row_color : false
   );
   const [rawMilkOdor, setRawMilkOdor] = useState(
-    state.rawMilkOdor ? state.rawMilkOdor : false
+    state.lab_row_odor ? state.lab_row_odor : false
   );
   const [mixMilkTaste, setMixMilkTaste] = useState(
-    state.mixMilkTaste ? state.mixMilkTaste : false
+    state.lab_mix_taste ? state.lab_mix_taste : false
   );
   const [mixMilkColor, setMixMilkColor] = useState(
-    state.mixMilkColor ? state.mixMilkColor : false
+    state.lab_mix_color ? state.lab_mix_color : false
   );
   const [mixMilkOdor, setMixMilkOdor] = useState(
-    state.mixMilkOdor ? state.mixMilkOdor : false
+    state.lab_mix_odor ? state.lab_mix_odor : false
   );
   const [isMixHaveIssue, setIsMixHaveIssue] = useState(
-    state.isMixHaveIssue ? state.isMixHaveIssue : false
+    state.lab_mix_issue ? state.lab_mix_issue : false
   );
   const [prevBatchData, setPrevBatchData] = useState({});
   const [isPowderHaveIssue, setIsPowderHaveIssue] = useState(
-    state.isPowderHaveIssue ? state.isPowderHaveIssue : false
+    state.lab_powder_issue ? state.lab_powder_issue : false
   );
   const [powderTaste, setPowderTaste] = useState(
-    state.powderTaste ? state.powderTaste : false
+    state.lab_powder_taste ? state.lab_powder_taste : false
   );
   const [powderColor, setPowderColor] = useState(
-    state.powderColor ? state.powderColor : false
+    state.lab_powder_color ? state.lab_powder_color : false
   );
   const [powderOdor, setPowderOdor] = useState(
-    state.powderOdor ? state.powderOdor : false
+    state.lab_powder_odor ? state.lab_powder_odor : false
   );
   const [powderSolubility, setPowderSolubility] = useState(
-    state.powderSolubility ? state.powderSolubility : false
+    state.lab_powder_solubility ? state.lab_powder_solubility : false
   );
   const [powderFreeFlowing, setPowderFreeFlowing] = useState(
-    state.powderFreeFlowing ? state.powderFreeFlowing : false
+    state.lab_powder_free_flowing ? state.lab_powder_free_flowing : false
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,61 +77,60 @@ const UpdateLaboratory = () => {
 
     setData({
       ...data,
-      powderTaste,
-      powderColor,
-      powderOdor,
-      powderSolubility,
-      powderFreeFlowing,
-      isPowderHaveIssue,
-      status: "completed",
       [id]: value,
+      lab_status: "completed",
+      lab_row_taste: rawMilkTaste,
+      lab_row_color: rawMilkColor,
+      lab_row_odor: rawMilkOdor,
+      lab_mix_taste: mixMilkTaste,
+      lab_mix_color: mixMilkColor,
+      lab_mix_odor: mixMilkOdor,
+      lab_powder_taste: powderTaste,
+      lab_powder_color: powderColor,
+      lab_powder_odor: powderOdor,
+      lab_powder_solubility: powderSolubility,
+      lab_powder_free_flowing: powderFreeFlowing,
+      lab_powder_issue: isPowderHaveIssue,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(false);
 
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        Swal.fire({
-          title: "Do you want to save the changes?",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setIsLoading(true);
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
 
-            const docRef = doc(db, "lab_section", state.id);
-            await updateDoc(docRef, {
-              ...data,
-            }).then(() => {
-              Swal.fire({
-                title: "Changes saved",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-
-              e.target.reset();
-              setIsLoading(false);
-              navigate(`/lab-section/${location}`);
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            lab_updated_at: serverTimestamp(),
+          }).then(() => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
             });
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    setValidated(true);
+            e.target.reset();
+            setIsLoading(false);
+            navigate(`/lab-section/${location}`);
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -139,11 +138,11 @@ const UpdateLaboratory = () => {
       try {
         const list = [];
         const q = query(
-          collection(db, "lab_section"),
+          collection(db, "production_data"),
           where("date", "==", state.date),
           where("location", "==", location),
-          where("status", "==", "updated"),
-          orderBy("timeStamp", "asc")
+          where("lab_status", "==", "completed"),
+          orderBy("lab_updated_at", "desc")
         );
 
         const querySnapshot = await getDocs(q);
@@ -159,7 +158,7 @@ const UpdateLaboratory = () => {
     };
 
     fetchPrevBatchData();
-  }, [state?.date, location]);
+  }, [state?.date, location, state.batch_number]);
 
   return (
     <>
@@ -186,7 +185,7 @@ const UpdateLaboratory = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
                       as={Col}
@@ -205,8 +204,25 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
-                      controlId="batchNumber"
+                      md="2"
+                      controlId="primary_batch_number"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Wet batch number
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.primary_batch_number}
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="2"
+                      controlId="batch_number"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
@@ -214,22 +230,22 @@ const UpdateLaboratory = () => {
                         type="number"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batchNumber}
+                        defaultValue={state.batch_number}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="recipeName"
+                      controlId="order_name"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Recipe name</Form.Label>
+                      <Form.Label className="fw-bold">Order name</Form.Label>
                       <Form.Control
                         type="text"
                         disabled
                         className="customInput text-capitalize disabled"
-                        defaultValue={state.recipeName}
+                        defaultValue={state.order_name}
                       />
                     </Form.Group>
                   </Row>
@@ -238,21 +254,21 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="type"
+                      controlId="order_type"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Recipe type</Form.Label>
+                      <Form.Label className="fw-bold">Order type</Form.Label>
                       <Form.Control
                         disabled
                         className="customInput text-capitalize disabled"
-                        defaultValue={state.recipeType}
+                        defaultValue={state.order_type}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="sampleInTime"
+                      controlId="lab_sample_in_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -260,11 +276,11 @@ const UpdateLaboratory = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled={state.status !== "updated"}
+                        disabled={state.lab_status !== "updated"}
                         className={`customInput ${
-                          state.status !== "updated" && "disabled"
+                          state.lab_status !== "updated" && "disabled"
                         }`}
-                        defaultValue={state.sampleInTime}
+                        defaultValue={state.lab_sample_in_time}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -272,7 +288,7 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="testStartTime"
+                      controlId="lab_test_start_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -280,11 +296,11 @@ const UpdateLaboratory = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled={state.status !== "updated"}
+                        disabled={state.lab_status !== "updated"}
                         className={`customInput ${
-                          state.status !== "updated" && "disabled"
+                          state.lab_status !== "updated" && "disabled"
                         }`}
-                        defaultValue={state.testStartTime}
+                        defaultValue={state.lab_test_start_time}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -307,21 +323,21 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="rawMilkPh"
+                        controlId="lab_raw_ph"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                           <p>pH value</p>
                           <p className="text-primary">
-                            {prevBatchData && prevBatchData?.rawMilkPh}
+                            {prevBatchData && prevBatchData?.lab_raw_ph}
                           </p>
                         </Form.Label>
 
                         <Form.Control
                           type="number"
                           step=".01"
-                          disabled={state.status === "ongoing"}
-                          defaultValue={state.rawMilkPh}
+                          disabled={state.lab_status === "ongoing"}
+                          defaultValue={state.lab_raw_ph}
                           onChange={handleChange}
                         />
                         <Figure.Caption className="tooltipTextPink">
@@ -333,21 +349,21 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="rawMilkTSS"
+                        controlId="lab_raw_tss"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                           <p>TSS</p>
                           <p className="text-primary">
-                            {prevBatchData && prevBatchData?.rawMilkTSS}
+                            {prevBatchData && prevBatchData?.lab_raw_tss}
                           </p>
                         </Form.Label>
 
                         <Form.Control
                           type="number"
                           step=".01"
-                          disabled={state.status === "ongoing"}
-                          defaultValue={state.rawMilkTSS}
+                          disabled={state.lab_status === "ongoing"}
+                          defaultValue={state.lab_raw_tss}
                           onChange={handleChange}
                         />
                         <Figure.Caption className="tooltipTextPink">
@@ -359,20 +375,20 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="rawMilkFat"
+                        controlId="lab_raw_fat"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                           <p>Fat</p>
                           <p className="text-primary">
-                            {prevBatchData && prevBatchData?.rawMilkFat}
+                            {prevBatchData && prevBatchData?.lab_raw_fat}
                           </p>
                         </Form.Label>
 
                         <Form.Control
                           type="number"
-                          disabled={state.status === "ongoing"}
-                          defaultValue={state.rawMilkFat}
+                          disabled={state.lab_status === "ongoing"}
+                          defaultValue={state.lab_raw_fat}
                           onChange={handleChange}
                         />
                         <Figure.Caption className="tooltipTextPink">
@@ -384,7 +400,7 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="rawMilkTaste"
+                        controlId="lab_row_taste"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold textDarkBlue">
@@ -392,8 +408,8 @@ const UpdateLaboratory = () => {
                         </Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="raw_milk_taste"
-                          disabled={state.status === "ongoing"}
+                          id="lab_row_taste"
+                          disabled={state.lab_status === "ongoing"}
                           label={rawMilkTaste === true ? "Good" : "Not good"}
                           checked={rawMilkTaste}
                           onChange={(e) => setRawMilkTaste(e.target.checked)}
@@ -404,7 +420,7 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="rawMilkColor"
+                        controlId="lab_row_color"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold textDarkBlue">
@@ -412,8 +428,8 @@ const UpdateLaboratory = () => {
                         </Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="raw_milk_color"
-                          disabled={state.status === "ongoing"}
+                          id="lab_row_color"
+                          disabled={state.lab_status === "ongoing"}
                           label={rawMilkColor === true ? "Good" : "Not good"}
                           checked={rawMilkColor}
                           onChange={(e) => setRawMilkColor(e.target.checked)}
@@ -424,7 +440,7 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="rawMilkOdor"
+                        controlId="lab_row_odor"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold textDarkBlue">
@@ -432,8 +448,8 @@ const UpdateLaboratory = () => {
                         </Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="raw_milk_odor"
-                          disabled={state.status === "ongoing"}
+                          id="lab_row_odor"
+                          disabled={state.lab_status === "ongoing"}
                           label={rawMilkOdor === true ? "Good" : "Not good"}
                           checked={rawMilkOdor}
                           onChange={(e) => setRawMilkOdor(e.target.checked)}
@@ -451,21 +467,21 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="mixMilkPh"
+                        controlId="lab_mix_ph"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                           <p>pH value</p>
                           <p className="text-primary">
-                            {prevBatchData && prevBatchData?.mixMilkPh}
+                            {prevBatchData && prevBatchData?.lab_mix_ph}
                           </p>
                         </Form.Label>
 
                         <Form.Control
                           type="number"
                           step=".01"
-                          disabled={state.status === "ongoing"}
-                          defaultValue={state.mixMilkPh}
+                          disabled={state.lab_status === "ongoing"}
+                          defaultValue={state.lab_mix_ph}
                           onChange={handleChange}
                         />
                         <Figure.Caption className="tooltipTextPink">
@@ -477,21 +493,21 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="mixMilkTSS"
+                        controlId="lab_mix_tss"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                           <p>TSS</p>
                           <p className="text-primary">
-                            {prevBatchData && prevBatchData?.mixMilkTSS}
+                            {prevBatchData && prevBatchData?.lab_mix_tss}
                           </p>
                         </Form.Label>
 
                         <Form.Control
                           type="number"
                           step=".01"
-                          disabled={state.status === "ongoing"}
-                          defaultValue={state.mixMilkTSS}
+                          disabled={state.lab_status === "ongoing"}
+                          defaultValue={state.lab_mix_tss}
                           onChange={handleChange}
                         />
                         <Figure.Caption className="tooltipTextPink">
@@ -503,20 +519,20 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="mixMilkFat"
+                        controlId="lab_mix_fat"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold d-flex justify-content-between textDarkBlue">
                           <p>Fat</p>
                           <p className="text-primary">
-                            {prevBatchData && prevBatchData?.rawMilkFat}
+                            {prevBatchData && prevBatchData?.lab_mix_fat}
                           </p>
                         </Form.Label>
 
                         <Form.Control
                           type="number"
-                          disabled={state.status === "ongoing"}
-                          defaultValue={state.mixMilkFat}
+                          disabled={state.lab_status === "ongoing"}
+                          defaultValue={state.lab_mix_fat}
                           onChange={handleChange}
                         />
                         <Figure.Caption className="tooltipTextPink">
@@ -531,7 +547,7 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="mixMilkTaste"
+                        controlId="lab_mix_taste"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold textDarkBlue">
@@ -539,8 +555,8 @@ const UpdateLaboratory = () => {
                         </Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="mix_milk_taste"
-                          disabled={state.status === "ongoing"}
+                          id="lab_mix_taste"
+                          disabled={state.lab_status === "ongoing"}
                           label={mixMilkTaste === true ? "Good" : "Not good"}
                           checked={mixMilkTaste}
                           onChange={(e) => setMixMilkTaste(e.target.checked)}
@@ -551,7 +567,7 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="mixMilkColor"
+                        controlId="lab_mix_color"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold textDarkBlue">
@@ -559,8 +575,8 @@ const UpdateLaboratory = () => {
                         </Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="mix_milk_color"
-                          disabled={state.status === "ongoing"}
+                          id="lab_mix_color"
+                          disabled={state.lab_status === "ongoing"}
                           label={mixMilkColor === true ? "Good" : "Not good"}
                           checked={mixMilkColor}
                           onChange={(e) => setMixMilkColor(e.target.checked)}
@@ -571,7 +587,7 @@ const UpdateLaboratory = () => {
                         as={Col}
                         md="2"
                         xs="4"
-                        controlId="mixMilkOdor"
+                        controlId="lab_mix_odor"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold textDarkBlue">
@@ -579,8 +595,8 @@ const UpdateLaboratory = () => {
                         </Form.Label>
                         <Form.Switch
                           type="switch"
-                          id="mix_milk_odor"
-                          disabled={state.status === "ongoing"}
+                          id="lab_mix_odor"
+                          disabled={state.lab_status === "ongoing"}
                           label={mixMilkOdor === true ? "Good" : "Not good"}
                           checked={mixMilkOdor}
                           onChange={(e) => setMixMilkOdor(e.target.checked)}
@@ -594,14 +610,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="4"
                       xs="4"
-                      controlId="isAnyIssue"
+                      controlId="lab_mix_issue"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Any issue?</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="mix_issue"
-                        disabled={state.status === "ongoing"}
+                        id="lab_mix_issue"
+                        disabled={state.lab_status === "ongoing"}
                         label={isMixHaveIssue === true ? "Yes" : "No"}
                         checked={isMixHaveIssue}
                         onChange={(e) => setIsMixHaveIssue(e.target.checked)}
@@ -613,7 +629,7 @@ const UpdateLaboratory = () => {
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="informedToAboutMix"
+                          controlId="lab_mix_issue_informed_to"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
@@ -622,7 +638,7 @@ const UpdateLaboratory = () => {
                           <Form.Control
                             type="text"
                             className="customInput"
-                            defaultValue={state.informedToAboutMix}
+                            defaultValue={state.lab_mix_issue_informed_to}
                             onChange={handleChange}
                           />
                         </Form.Group>
@@ -630,7 +646,7 @@ const UpdateLaboratory = () => {
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="remarkAboutMixIssue"
+                          controlId="lab_mix_issue_details"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
@@ -640,7 +656,7 @@ const UpdateLaboratory = () => {
                             as="textarea"
                             rows={2}
                             className="customInput"
-                            defaultValue={state.remarkAboutMixIssue}
+                            defaultValue={state.lab_mix_issue_details}
                             onChange={handleChange}
                           />
                         </Form.Group>
@@ -650,7 +666,7 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="expectedPowderQuantity"
+                      controlId="expected_powder_quantity"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -661,9 +677,9 @@ const UpdateLaboratory = () => {
                           type="number"
                           aria-label="expected powder quantity"
                           aria-describedby="addon"
-                          disabled={state.status !== "updated"}
+                          disabled={state.lab_status !== "updated"}
                           className="customInput"
-                          defaultValue={state.expectedPowderQuantity}
+                          defaultValue={state.expected_powder_quantity}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -686,7 +702,7 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="3"
-                      controlId="milkPowderMoisture"
+                      controlId="lab_powder_moisture"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Moisture</Form.Label>
@@ -695,10 +711,10 @@ const UpdateLaboratory = () => {
                           type="number"
                           aria-label="moisture"
                           aria-describedby="addon"
-                          disabled={state.status === "ongoing"}
+                          disabled={state.lab_status === "ongoing"}
                           className="customInput"
                           step=".01"
-                          defaultValue={state.milkPowderMoisture}
+                          defaultValue={state.lab_powder_moisture}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -720,17 +736,17 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="3"
-                      controlId="milkPowderFat"
+                      controlId="lab_powder_fat"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Fat</Form.Label>
                       <Form.Control
                         type="number"
-                        disabled={state.status === "ongoing"}
+                        disabled={state.lab_status === "ongoing"}
                         className={`customInput ${
-                          state.status !== "updated" && "disabled"
+                          state.lab_status === "ongoing" && "disabled"
                         }`}
-                        defaultValue={state.milkPowderFat}
+                        defaultValue={state.lab_powder_fat}
                         onChange={handleChange}
                       />
                       <Figure.Caption className="tooltipText">
@@ -744,7 +760,7 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="3"
-                      controlId="milkPowderFatLayer"
+                      controlId="lab_powder_fat_layer"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Fat layer</Form.Label>
@@ -754,9 +770,9 @@ const UpdateLaboratory = () => {
                           aria-label="fat layer"
                           aria-describedby="addon"
                           step=".01"
-                          disabled={state.status === "ongoing"}
+                          disabled={state.lab_status === "ongoing"}
                           className="customInput"
-                          defaultValue={state.milkPowderFatLayer}
+                          defaultValue={state.lab_powder_fat_layer}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -781,7 +797,7 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="3"
-                      controlId="milkPowderTime"
+                      controlId="lab_powder_fat_layer_time"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Time</Form.Label>
@@ -790,9 +806,9 @@ const UpdateLaboratory = () => {
                           type="number"
                           aria-label="time"
                           aria-describedby="addon"
-                          disabled={state.status === "ongoing"}
+                          disabled={state.lab_status === "ongoing"}
                           className="customInput"
-                          defaultValue={state.milkPowderTime}
+                          defaultValue={state.lab_powder_fat_layer_time}
                           onChange={handleChange}
                         />
                         <InputGroup.Text
@@ -817,14 +833,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="2"
                       xs="4"
-                      controlId="powderTaste"
+                      controlId="lab_powder_taste"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Taste</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="powder_taste"
-                        disabled={state.status === "ongoing"}
+                        id="lab_powder_taste"
+                        disabled={state.lab_status === "ongoing"}
                         label={powderTaste === true ? "Good" : "Not good"}
                         checked={powderTaste}
                         onChange={(e) => setPowderTaste(e.target.checked)}
@@ -835,14 +851,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="2"
                       xs="4"
-                      controlId="powderColor"
+                      controlId="lab_powder_color"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Color</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="powder_color"
-                        disabled={state.status === "ongoing"}
+                        id="lab_powder_color"
+                        disabled={state.lab_status === "ongoing"}
                         label={powderColor === true ? "Good" : "Not good"}
                         checked={powderColor}
                         onChange={(e) => setPowderColor(e.target.checked)}
@@ -853,14 +869,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="2"
                       xs="4"
-                      controlId="powderOdor"
+                      controlId="lab_powder_odor"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Odor</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="powder_odor"
-                        disabled={state.status === "ongoing"}
+                        id="lab_powder_odor"
+                        disabled={state.lab_status === "ongoing"}
                         label={powderOdor === true ? "Good" : "Not good"}
                         checked={powderOdor}
                         onChange={(e) => setPowderOdor(e.target.checked)}
@@ -871,14 +887,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="2"
                       xs="4"
-                      controlId="powderSolubility"
+                      controlId="lab_powder_solubility"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Solubility</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="powder_soluibilty"
-                        disabled={state.status === "ongoing"}
+                        id="lab_powder_solubility"
+                        disabled={state.lab_status === "ongoing"}
                         label={powderSolubility === true ? "Good" : "Not good"}
                         checked={powderSolubility}
                         onChange={(e) => setPowderSolubility(e.target.checked)}
@@ -889,14 +905,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="2"
                       xs="5"
-                      controlId="powderFreeFlowing"
+                      controlId="lab_powder_free_flowing"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Free flowing</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="powder_free_flowing"
-                        disabled={state.status === "ongoing"}
+                        id="lab_powder_free_flowing"
+                        disabled={state.lab_status === "ongoing"}
                         label={powderFreeFlowing === true ? "Good" : "Not good"}
                         checked={powderFreeFlowing}
                         onChange={(e) => setPowderFreeFlowing(e.target.checked)}
@@ -908,17 +924,17 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="bulkDensity"
+                      controlId="lab_powder_bulk_density"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Bulk density</Form.Label>
                       <Form.Control
                         type="number"
                         step=".01"
-                        defaultValue={state.bulkDensity}
-                        disabled={state.status === "ongoing"}
+                        defaultValue={state.lab_powder_bulk_density}
+                        disabled={state.lab_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.lab_status === "ongoing" && "disabled"
                         }`}
                         onChange={handleChange}
                       />
@@ -934,14 +950,14 @@ const UpdateLaboratory = () => {
                       as={Col}
                       md="4"
                       xs="4"
-                      controlId="isAnyIssue"
+                      controlId="lab_powder_issue"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Any issue?</Form.Label>
                       <Form.Switch
                         type="switch"
-                        id="mix_issue"
-                        disabled={state.status === "ongoing"}
+                        id="lab_powder_issue"
+                        disabled={state.lab_status === "ongoing"}
                         label={isPowderHaveIssue === true ? "Yes" : "No"}
                         checked={isPowderHaveIssue}
                         onChange={(e) => setIsPowderHaveIssue(e.target.checked)}
@@ -953,7 +969,7 @@ const UpdateLaboratory = () => {
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="informedToAboutPowder"
+                          controlId="lab_powder_issue_informed_to"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
@@ -962,7 +978,7 @@ const UpdateLaboratory = () => {
                           <Form.Control
                             type="text"
                             className="customInput"
-                            defaultValue={state.informedToAboutPowder}
+                            defaultValue={state.lab_powder_issue_informed_to}
                             onChange={handleChange}
                           />
                         </Form.Group>
@@ -970,7 +986,7 @@ const UpdateLaboratory = () => {
                         <Form.Group
                           as={Col}
                           md="12"
-                          controlId="remarks"
+                          controlId="lab_powder_issue_details"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
@@ -980,7 +996,7 @@ const UpdateLaboratory = () => {
                             as="textarea"
                             rows={4}
                             className="customInput"
-                            defaultValue={state.remarks}
+                            defaultValue={state.lab_powder_issue_details}
                             onChange={handleChange}
                           />
                         </Form.Group>
@@ -992,17 +1008,17 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="laboratoryTechnician"
+                      controlId="lab_technician_name"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Checked by</Form.Label>
                       <Form.Control
                         type="text"
-                        disabled={state.status === "ongoing"}
+                        disabled={state.lab_status === "ongoing"}
                         className={`customInput ${
-                          state.status === "ongoing" && "disabled"
+                          state.lab_status === "ongoing" && "disabled"
                         }`}
-                        defaultValue={state.laboratoryTechnician}
+                        defaultValue={state.lab_technician_name}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -1010,7 +1026,7 @@ const UpdateLaboratory = () => {
                     <Form.Group
                       as={Col}
                       md="8"
-                      controlId="reasonForUpdate"
+                      controlId="lab_reason_for_update"
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">
@@ -1019,7 +1035,7 @@ const UpdateLaboratory = () => {
                       <Form.Control
                         as="textarea"
                         rows={4}
-                        required={state.status !== "ongoing"}
+                        required={state.lab_status !== "ongoing"}
                         className="customInput"
                         onChange={handleChange}
                       />
@@ -1034,9 +1050,10 @@ const UpdateLaboratory = () => {
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
-                        <p className="text-uppercase">Update</p>
+                        <p>Update</p>
                       </div>
                     </button>
+
                     <button type="reset" className="customBtn customClearBtn">
                       Clear
                     </button>

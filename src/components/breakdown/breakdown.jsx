@@ -27,9 +27,9 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
 
     setData({
       ...data,
-      date: currentDate,
+      breakdown_date: currentDate,
       // addedBy: loggedInUser,
-      sectionName: section,
+      breakdown_section_name: section,
       location: location,
       status: "ongoing",
       [id]: value,
