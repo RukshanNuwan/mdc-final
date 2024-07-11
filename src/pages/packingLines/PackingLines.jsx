@@ -212,19 +212,17 @@ const PackingLines = () => {
                             defaultValue={data.order_name}
                           />
                         </Form.Group>
-
-                         
                       </Row>
 
                       <Row>
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="packing_bag_number" // TODO: this could be changed
+                          controlId="packing_bag_numbers" // TODO: this could be changed -> like sd operator names
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Bag number
+                            Bag number(s)
                           </Form.Label>
                           <Form.Control
                             type="number"
@@ -233,6 +231,8 @@ const PackingLines = () => {
                             onChange={handleChange}
                           />
                         </Form.Group>
+
+                        {/* TODO: Bag number range - two inputs (if 20kg = no time range) */}
 
                         <Form.Group
                           as={Col}
