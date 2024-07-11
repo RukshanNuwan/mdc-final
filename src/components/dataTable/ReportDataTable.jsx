@@ -93,7 +93,7 @@ const ReportDataTable = ({ data }) => {
 
         <tbody>
           {data?.map((item, index) => (
-            <tr key={index} className="text-center">
+            <tr key={index} className="text-center text-capitalize">
               <td>{item.primary_batch_number}</td>
               <td>{item.batch_number}</td>
               <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>

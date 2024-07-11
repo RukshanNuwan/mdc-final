@@ -183,6 +183,21 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
+                      controlId="batch_code"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Batch code</Form.Label>
+                      <Form.Control
+                        type="text"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.batch_code}
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
                       controlId="order_name"
                       className="mb-2"
                     >
@@ -194,7 +209,9 @@ const UpdateMixing = () => {
                         className="customInput disabled"
                       />
                     </Form.Group>
+                  </Row>
 
+                  <Row>
                     <Form.Group
                       as={Col}
                       md="4"
@@ -212,9 +229,7 @@ const UpdateMixing = () => {
                         }
                       />
                     </Form.Group>
-                  </Row>
 
-                  <Row>
                     <Form.Group
                       as={Col}
                       md="4"

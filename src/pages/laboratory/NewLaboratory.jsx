@@ -184,7 +184,7 @@ const NewLaboratory = () => {
                     <Row>
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="3"
                         controlId="date"
                         className="mb-2"
                       >
@@ -193,13 +193,13 @@ const NewLaboratory = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={ongoingData.date}
+                          defaultValue={ongoingData?.date}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
-                        md="2"
+                        md="3"
                         controlId="primary_batch_number"
                         className="mb-2"
                       >
@@ -210,13 +210,13 @@ const NewLaboratory = () => {
                           type="number"
                           disabled
                           className="customInput disabled"
-                          defaultValue={ongoingData.primary_batch_number}
+                          defaultValue={ongoingData?.primary_batch_number}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
-                        md="2"
+                        md="3"
                         controlId="batch_number"
                         className="mb-2"
                       >
@@ -227,13 +227,30 @@ const NewLaboratory = () => {
                           type="number"
                           disabled
                           className="customInput disabled"
-                          defaultValue={ongoingData.batch_number}
+                          defaultValue={ongoingData?.batch_number}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="3"
+                        controlId="batch_code"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Batch code</Form.Label>
+                        <Form.Control
+                          type="text"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={ongoingData?.batch_code}
+                        />
+                      </Form.Group>
+                    </Row>
+
+                    <Row>
+                      <Form.Group
+                        as={Col}
+                        md="3"
                         controlId="order_name"
                         className="mb-2"
                       >
@@ -242,15 +259,13 @@ const NewLaboratory = () => {
                           type="text"
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={ongoingData.order_name}
+                          defaultValue={ongoingData?.order_name}
                         />
                       </Form.Group>
-                    </Row>
 
-                    <Row>
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="3"
                         controlId="order_type"
                         className="mb-2"
                       >
@@ -258,13 +273,13 @@ const NewLaboratory = () => {
                         <Form.Control
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={ongoingData.order_type}
+                          defaultValue={ongoingData?.order_type}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="3"
                         controlId="lab_sample_in_time"
                         className="mb-2"
                       >
@@ -281,7 +296,7 @@ const NewLaboratory = () => {
 
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="3"
                         controlId="lab_test_start_time"
                         className="mb-2"
                       >

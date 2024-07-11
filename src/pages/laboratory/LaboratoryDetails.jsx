@@ -80,6 +80,17 @@ const LaboratoryDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
+                          <p className="bodyText">Batch code</p>
+                        </div>
+                        <div className="col-5">
+                          <p className="bodyText fw-bold">
+                            {state?.batch_code}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="row py-1">
+                        <div className="col-7">
                           <p className="bodyText">Expected powder quantity</p>
                         </div>
                         <div className="col-5">

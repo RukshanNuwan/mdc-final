@@ -46,15 +46,30 @@ const NewMixing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(false);
   const [isOutputTapCleaned, setIsOutputTapCleaned] = useState(false);
+  const [batchCode, setBatchCode] = useState();
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
   const { location } = useParams();
 
+  const currentDate = new Date();
+  const year = ("" + currentDate.getFullYear()).substring(2);
+  const month = currentDate.getMonth() + 1;
+  const monthStr = month < 10 ? "0" + month : month;
+  const date = currentDate.getDate();
+  const dateStr = date < 10 ? "0" + date : date;
+
   const handleChangeBatchNumber = (e) => {
     setBatchNumber(Number(e.target.value));
     setData({ ...data, batch_number: Number(e.target.value) });
+
+    const batchCode = `${
+      location === "mdc" ? "SD3" : "SD4"
+    }${year}${monthStr}${dateStr}${e.target.value}`;
+
+    setBatchCode(batchCode);
+    setData({ ...data, batch_code: batchCode });
   };
 
   const handleChange = (e) => {
@@ -264,7 +279,7 @@ const NewMixing = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {true ? (
+                {ongoingData ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
@@ -340,6 +355,21 @@ const NewMixing = () => {
                       <Form.Group
                         as={Col}
                         md="4"
+                        controlId="batch_code"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Batch code</Form.Label>
+                        <Form.Control
+                          type="text"
+                          disabled
+                          defaultValue={batchCode}
+                          className="customInput disabled"
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
                         controlId="order_name"
                         className="mb-2"
                       >
@@ -351,7 +381,9 @@ const NewMixing = () => {
                           onChange={handleChange}
                         />
                       </Form.Group>
+                    </Row>
 
+                    <Row>
                       <Form.Group
                         as={Col}
                         md="4"
@@ -371,9 +403,7 @@ const NewMixing = () => {
                           <option value="organic">Organic Recipe</option>
                         </Form.Select>
                       </Form.Group>
-                    </Row>
 
-                    <Row>
                       <Form.Group
                         as={Col}
                         md="4"
