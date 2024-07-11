@@ -84,6 +84,18 @@ const SprayDryerDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
+                          <p className="bodyText">Batch code</p>
+                        </div>
+                        <div className="col-1" />
+                        <div className="col-4">
+                          <p className="bodyText fw-bold">
+                            {state?.batch_code}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="row py-1">
+                        <div className="col-7">
                           <p className="bodyText">Status</p>
                         </div>
                         <div className="col-1" />

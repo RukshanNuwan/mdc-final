@@ -115,6 +115,18 @@ const UpdateSprayDryer = () => {
             ...data,
             sd_updated_at: serverTimestamp(),
           })
+            .then(async () => {
+              try {
+                const docRef = doc(
+                  db,
+                  "daily_production",
+                  dailyProductionDataInDb.id
+                );
+                await updateDoc(docRef, { ...updatedDailyProductionData });
+              } catch (error) {
+                console.log(error);
+              }
+            })
             .then(() => {
               Swal.fire({
                 title: "Changes saved",
@@ -131,17 +143,6 @@ const UpdateSprayDryer = () => {
             });
         }
       });
-    } catch (error) {
-      console.log(error);
-    }
-
-    try {
-      const docRef = doc(db, "daily_production", dailyProductionDataInDb.id);
-      await updateDoc(docRef, { ...updatedDailyProductionData });
-
-      console.log("Daily production data updated successfully");
-
-      e.target.reset();
     } catch (error) {
       console.log(error);
     }
@@ -206,7 +207,7 @@ const UpdateSprayDryer = () => {
                   <Row>
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="date"
                       className="mb-2"
                     >
@@ -221,7 +222,7 @@ const UpdateSprayDryer = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="primary_batch_number"
                       className="mb-2"
                     >
@@ -239,7 +240,7 @@ const UpdateSprayDryer = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="batch_number"
                       className="mb-2"
                     >
@@ -249,6 +250,21 @@ const UpdateSprayDryer = () => {
                         disabled
                         className="customInput disabled"
                         defaultValue={state.batch_number}
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="3"
+                      controlId="batch_number"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Batch code</Form.Label>
+                      <Form.Control
+                        type="number"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.batch_code}
                       />
                     </Form.Group>
                   </Row>

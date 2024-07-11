@@ -18,6 +18,12 @@ const UpdateMixing = () => {
 
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(
+    state.sd_4_is_bowser_filling_hole_cleaned
+  );
+  const [isOutputTapCleaned, setIsOutputTapCleaned] = useState(
+    state.sd_4_is_bowser_output_tap_cleaned
+  );
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -29,6 +35,9 @@ const UpdateMixing = () => {
     setData({
       ...data,
       [id]: value,
+      // bowser details
+      sd_4_is_bowser_filling_hole_cleaned: isFillingHoleCleaned,
+      sd_4_is_bowser_output_tap_cleaned: isOutputTapCleaned,
     });
   };
 
@@ -174,6 +183,21 @@ const UpdateMixing = () => {
                     <Form.Group
                       as={Col}
                       md="4"
+                      controlId="batch_code"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Batch code</Form.Label>
+                      <Form.Control
+                        type="text"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.batch_code}
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
                       controlId="order_name"
                       className="mb-2"
                     >
@@ -185,7 +209,9 @@ const UpdateMixing = () => {
                         className="customInput disabled"
                       />
                     </Form.Group>
+                  </Row>
 
+                  <Row>
                     <Form.Group
                       as={Col}
                       md="4"
@@ -203,9 +229,7 @@ const UpdateMixing = () => {
                         }
                       />
                     </Form.Group>
-                  </Row>
 
-                  <Row>
                     <Form.Group
                       as={Col}
                       md="4"
@@ -265,68 +289,183 @@ const UpdateMixing = () => {
                     </Form.Group>
                   </Row>
 
-                  <Row>
-                    <Form.Group
-                      as={Col}
-                      md="4"
-                      controlId="mixing_additional_crates_count"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">
-                        Additional crates count
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        defaultValue={state.mixing_additional_crates_count}
-                        disabled
-                        className="customInput disabled"
-                      />
-                    </Form.Group>
+                  {state.location === "mdc" ? (
+                    <Row>
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="mixing_additional_crates_count"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Additional crates count
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          defaultValue={state.mixing_additional_crates_count}
+                          disabled
+                          className="customInput disabled"
+                        />
+                      </Form.Group>
 
-                    {state.mixing_additional_crates_count > 0 && (
+                      {state.mixing_additional_crates_count > 0 && (
+                        <>
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="mixing_additional_crates_is_informed"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Is informed
+                            </Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              disabled
+                              className="customInput disabled"
+                              defaultValue={
+                                state?.mixing_additional_crates_is_informed &&
+                                "Informed"
+                              }
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="mixing_additional_crates_informed_to"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Informed to
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              disabled
+                              className="customInput disabled text-capitalize"
+                              defaultValue={
+                                state?.mixing_additional_crates_informed_to
+                              }
+                            />
+                          </Form.Group>
+                        </>
+                      )}
+                    </Row>
+                  ) : (
+                    state.mixing_status === "completed" && (
                       <>
-                        <Form.Group
-                          as={Col}
-                          md="4"
-                          controlId="mixing_additional_crates_is_informed"
-                          className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">
-                            Is informed
-                          </Form.Label>
+                        <hr className="custom-hr-yellow" />
 
-                          <Form.Control
-                            type="text"
-                            disabled
-                            className="customInput disabled"
-                            defaultValue={
-                              state?.mixing_additional_crates_is_informed &&
-                              "Informed"
-                            }
-                          />
-                        </Form.Group>
+                        <Row>
+                          <Form.Group
+                            as={Col}
+                            md="3"
+                            controlId="sd_4_bowser_in_time"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Bowser in time
+                            </Form.Label>
 
-                        <Form.Group
-                          as={Col}
-                          md="4"
-                          controlId="mixing_additional_crates_informed_to"
-                          className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">
-                            Informed to
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            disabled
-                            className="customInput disabled text-capitalize"
-                            defaultValue={
-                              state?.mixing_additional_crates_informed_to
-                            }
-                          />
-                        </Form.Group>
+                            <Form.Control
+                              type="time"
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="3"
+                            controlId="sd_4_batches_in_bowser"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              batches in bowser
+                            </Form.Label>
+
+                            <Form.Control
+                              type="number"
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="3"
+                            controlId="sd_4_is_bowser_filling_hole_cleaned"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Filling hole cleaning
+                            </Form.Label>
+
+                            <Form.Switch
+                              type="switch"
+                              id="is_informed"
+                              label={
+                                isFillingHoleCleaned === true
+                                  ? "Clean"
+                                  : "Not clean"
+                              }
+                              checked={isFillingHoleCleaned}
+                              onChange={(e) =>
+                                setIsFillingHoleCleaned(e.target.checked)
+                              }
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="3"
+                            controlId="sd_4_is_bowser_output_tap_cleaned"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Output tap cleaning
+                            </Form.Label>
+
+                            <Form.Switch
+                              type="switch"
+                              id="is_informed"
+                              label={
+                                isOutputTapCleaned === true
+                                  ? "Clean"
+                                  : "Not clean"
+                              }
+                              checked={isOutputTapCleaned}
+                              onChange={(e) =>
+                                setIsOutputTapCleaned(e.target.checked)
+                              }
+                            />
+                          </Form.Group>
+                        </Row>
+
+                        <Row>
+                          <Form.Group
+                            as={Col}
+                            md="12"
+                            controlId="sd_4_bowser_overall_condition"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Overall condition
+                            </Form.Label>
+                            <Form.Control
+                              as="textarea"
+                              rows={4}
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+                        </Row>
+
+                        <hr className="custom-hr-yellow" />
                       </>
-                    )}
-                  </Row>
+                    )
+                  )}
 
                   <Row>
                     <Form.Group

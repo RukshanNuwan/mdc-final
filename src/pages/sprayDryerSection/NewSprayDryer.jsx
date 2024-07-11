@@ -162,12 +162,13 @@ const NewSprayDryer = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {ongoingData && !ongoingData?.powderSprayStartTime ? (
+                {/* {ongoingData && !ongoingData?.powderSprayStartTime ? ( */}
+                {true ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
                         as={Col}
-                        md="4"
+                        md="3"
                         controlId="date"
                         className="mb-2"
                       >
@@ -176,30 +177,13 @@ const NewSprayDryer = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={ongoingData.date}
+                          defaultValue={ongoingData?.date}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
-                        md="4"
-                        controlId="batch_number"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Batch number
-                        </Form.Label>
-                        <Form.Control
-                          type="number"
-                          disabled
-                          className="customInput disabled"
-                          defaultValue={ongoingData.batch_number}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="4"
+                        md="3"
                         controlId="primary_batch_number"
                         className="mb-2"
                       >
@@ -210,8 +194,42 @@ const NewSprayDryer = () => {
                           type="number"
                           disabled
                           min={1}
-                          value={ongoingData.primary_batch_number}
+                          value={ongoingData?.primary_batch_number}
                           className="customInput disabled"
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="3"
+                        controlId="batch_number"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Batch number
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={ongoingData?.batch_number}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="3"
+                        controlId="batch_number"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Batch code
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={ongoingData?.batch_code}
                         />
                       </Form.Group>
                     </Row>
@@ -227,7 +245,7 @@ const NewSprayDryer = () => {
                         <Form.Control
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={ongoingData.order_name}
+                          defaultValue={ongoingData?.order_name}
                         />
                       </Form.Group>
 
@@ -242,7 +260,7 @@ const NewSprayDryer = () => {
                           type="text"
                           disabled
                           className="customInput text-capitalize disabled"
-                          defaultValue={ongoingData.order_type}
+                          defaultValue={ongoingData?.order_type}
                         />
                       </Form.Group>
 

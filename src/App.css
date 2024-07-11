@@ -144,6 +144,26 @@
     background-color: var(--dark-blue-1) !important;
     color: var(--white);
   }
+
+  .daily-summery-bg-red {
+    background-color: #EC7063;
+  }
+  
+  .daily-summery-bg-blue {
+    background-color: #7FB3D5;
+  }
+
+  .daily-summery-bg-orange {
+    background-color: #F0B27A;
+  }
+
+  .daily-summery-bg-green {
+    background-color: #82E0AA;
+  }
+
+  .daily-summery-bg-purple {
+    background-color: #C39BD3;
+  }
 }
 
 @media only screen and (max-width: 600px) {

@@ -189,7 +189,7 @@ const UpdateLaboratory = () => {
                   <Row>
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="date"
                       className="mb-2"
                     >
@@ -204,7 +204,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="2"
+                      md="3"
                       controlId="primary_batch_number"
                       className="mb-2"
                     >
@@ -221,7 +221,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="2"
+                      md="3"
                       controlId="batch_number"
                       className="mb-2"
                     >
@@ -236,7 +236,24 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
+                      controlId="batch_code"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Batch code</Form.Label>
+                      <Form.Control
+                        type="number"
+                        disabled
+                        className="customInput disabled"
+                        defaultValue={state.batch_code}
+                      />
+                    </Form.Group>
+                  </Row>
+
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="3"
                       controlId="order_name"
                       className="mb-2"
                     >
@@ -248,12 +265,10 @@ const UpdateLaboratory = () => {
                         defaultValue={state.order_name}
                       />
                     </Form.Group>
-                  </Row>
 
-                  <Row>
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="order_type"
                       className="mb-2"
                     >
@@ -267,7 +282,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="lab_sample_in_time"
                       className="mb-2"
                     >
@@ -287,7 +302,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="lab_test_start_time"
                       className="mb-2"
                     >

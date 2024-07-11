@@ -25,27 +25,49 @@ const ReportDataTable = ({ data }) => {
       <Table responsive bordered hover size="sm" ref={tableRef}>
         <thead>
           <tr>
-            <th>Wet batch #</th>
-            <th>Batch #</th>
-            <th>Location</th>
-            <th>Order name</th>
-            <th>Kernel weight</th>
-            <th>Wet load time</th>
-            <th>Cutter start time</th>
-            <th>Milk weight</th>
-            <th>Efficiency</th>
-            <th>Raw pH</th>
-            <th>Raw TSS</th>
-            <th>Raw fat</th>
-            <th>Taste</th>
-            <th>Color</th>
-            <th>Odor</th>
-            <th>Mix pH</th>
-            <th>Mix TSS</th>
-            <th>Mix fat</th>
-            <th>Taste</th>
-            <th>Color</th>
-            <th>Odor</th>
+            <th colSpan={2} className="text-center daily-summery-bg-red">
+              Batch number
+            </th>
+            <th colSpan={7} className="daily-summery-bg-red"></th>
+            <th colSpan={6} className="text-center daily-summery-bg-blue">
+              Raw milk
+            </th>
+            <th colSpan={5}></th>
+            <th colSpan={6} className="text-center daily-summery-bg-green">
+              Mix milk
+            </th>
+            <th colSpan={11}></th>
+            <th colSpan={9} className="text-center daily-summery-bg-purple">
+              Milk powder
+            </th>
+          </tr>
+          <tr className="text-center">
+            <th className="daily-summery-bg-red">Wet</th>
+            <th className="daily-summery-bg-red">SD</th>
+            <th className="daily-summery-bg-red">Location</th>
+            <th className="daily-summery-bg-red">Order name</th>
+            <th className="daily-summery-bg-red">Kernel weight</th>
+            <th className="daily-summery-bg-red">Wet load time</th>
+            <th className="daily-summery-bg-red">Cutter start time</th>
+            <th className="daily-summery-bg-red">Milk weight</th>
+            <th className="daily-summery-bg-red">Efficiency</th>
+            <th className="daily-summery-bg-blue">Raw pH</th>
+            <th className="daily-summery-bg-blue">Raw TSS</th>
+            <th className="daily-summery-bg-blue">Raw fat</th>
+            <th className="daily-summery-bg-blue">Taste</th>
+            <th className="daily-summery-bg-blue">Color</th>
+            <th className="daily-summery-bg-blue">Odor</th>
+            <th className="daily-summery-bg-orange">Bowser in time</th>
+            <th className="daily-summery-bg-orange">Batches in bowser</th>
+            <th className="daily-summery-bg-orange">Filling hole cleaning</th>
+            <th className="daily-summery-bg-orange">Output tap cleaning</th>
+            <th className="daily-summery-bg-orange">Overall condition</th>
+            <th className="daily-summery-bg-green">Mix TSS</th>
+            <th className="daily-summery-bg-green">Mix pH</th>
+            <th className="daily-summery-bg-green">Mix fat</th>
+            <th className="daily-summery-bg-green">Taste</th>
+            <th className="daily-summery-bg-green">Color</th>
+            <th className="daily-summery-bg-green">Odor</th>
             <th>Raw milk in time</th>
             <th>Mix start time</th>
             <th>Mix finish time</th>
@@ -57,21 +79,21 @@ const ReportDataTable = ({ data }) => {
             <th>Inlet temp</th>
             <th>Outlet temp</th>
             <th>Pressure pump</th>
-            <th>Moisture</th>
-            <th>Fat</th>
-            <th>Fat layer</th>
-            <th>Time</th>
-            <th>Taste</th>
-            <th>Color</th>
-            <th>Odor</th>
-            <th>Solubility</th>
-            <th>Free flowing</th>
+            <th className="daily-summery-bg-purple">Moisture</th>
+            <th className="daily-summery-bg-purple">Fat</th>
+            <th className="daily-summery-bg-purple">Fat layer</th>
+            <th className="daily-summery-bg-purple">Time</th>
+            <th className="daily-summery-bg-purple">Taste</th>
+            <th className="daily-summery-bg-purple">Color</th>
+            <th className="daily-summery-bg-purple">Odor</th>
+            <th className="daily-summery-bg-purple">Solubility</th>
+            <th className="daily-summery-bg-purple">Free flowing</th>
           </tr>
         </thead>
 
         <tbody>
           {data?.map((item, index) => (
-            <tr key={index}>
+            <tr key={index} className="text-center text-capitalize">
               <td>{item.primary_batch_number}</td>
               <td>{item.batch_number}</td>
               <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
@@ -113,6 +135,23 @@ const ReportDataTable = ({ data }) => {
                   <CloseIcon className="text-danger" />
                 )}
               </td>
+              <td>{item.sd_4_bowser_in_time}</td>
+              <td>{item.sd_4_batches_in_bowser}</td>
+              <td>
+                {item.sd_4_is_bowser_filling_hole_cleaned ? (
+                  <CheckIcon className="text-success" />
+                ) : (
+                  <CloseIcon className="text-danger" />
+                )}
+              </td>
+              <td>
+                {item.sd_4_is_bowser_output_tap_cleaned ? (
+                  <CheckIcon className="text-success" />
+                ) : (
+                  <CloseIcon className="text-danger" />
+                )}
+              </td>
+              <td>{item.sd_4_bowser_overall_condition}</td>
               <td>{item.lab_mix_ph}</td>
               <td>{item.lab_mix_tss}</td>
               <td>{item.lab_mix_fat}</td>

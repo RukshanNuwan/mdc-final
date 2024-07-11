@@ -72,9 +72,11 @@ const Dashboard = () => {
       }
     };
 
+    
     fetchId();
   }, [currentDate]);
-
+  
+  console.log(dailyProductionData);
 
   useEffect(() => {
     const handleStatus = () => {
