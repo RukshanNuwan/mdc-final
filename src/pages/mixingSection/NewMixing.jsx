@@ -44,6 +44,8 @@ const NewMixing = () => {
   const [isInformed, setIsInformed] = useState(false);
   const [batchNumber, setBatchNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(false);
+  const [isOutputTapCleaned, setIsOutputTapCleaned] = useState(false);
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -83,6 +85,9 @@ const NewMixing = () => {
       mixing_additional_crates_count: additionalCratesCount,
       mixing_additional_crates_is_informed: isInformed,
       mixing_status: "completed",
+      // bowser details
+      sd_4_is_bowser_filling_hole_cleaned: isFillingHoleCleaned,
+      sd_4_is_bowser_output_tap_cleaned: isOutputTapCleaned,
     });
   };
 
@@ -259,7 +264,7 @@ const NewMixing = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {ongoingData ? (
+                {true ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
@@ -273,7 +278,7 @@ const NewMixing = () => {
                           type="date"
                           disabled
                           className="customInput disabled"
-                          defaultValue={ongoingData.date}
+                          defaultValue={ongoingData?.date}
                         />
                       </Form.Group>
 
@@ -433,67 +438,183 @@ const NewMixing = () => {
                       </Form.Group>
                     </Row>
 
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_additional_crates_count"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Additional crates count
-                        </Form.Label>
-                        <Form.Control
-                          type="number"
-                          defaultValue={additionalCratesCount}
-                          className="customInput"
-                          onChange={handleAdditionalCratesCountChange}
-                        />
-                      </Form.Group>
+                    {location === "mdc" ? (
+                      <Row>
+                        <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="mixing_additional_crates_count"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Additional crates count
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            defaultValue={additionalCratesCount}
+                            className="customInput"
+                            onChange={handleAdditionalCratesCountChange}
+                          />
+                        </Form.Group>
 
-                      {additionalCratesCount > 0 && (
-                        <>
+                        {additionalCratesCount > 0 && (
+                          <>
+                            <Form.Group
+                              as={Col}
+                              md="4"
+                              controlId="mixing_additional_crates_is_informed"
+                              className="mb-2"
+                            >
+                              <Form.Label className="fw-bold">
+                                Is informed
+                              </Form.Label>
+
+                              <Form.Switch
+                                type="switch"
+                                id="is_informed"
+                                label={
+                                  isInformed === true
+                                    ? "Informed"
+                                    : "Not informed"
+                                }
+                                checked={isInformed}
+                                onChange={(e) =>
+                                  setIsInformed(e.target.checked)
+                                }
+                              />
+                            </Form.Group>
+
+                            <Form.Group
+                              as={Col}
+                              md="4"
+                              controlId="mixing_additional_crates_informed_to"
+                              className="mb-2"
+                            >
+                              <Form.Label className="fw-bold">
+                                Informed to
+                              </Form.Label>
+                              <Form.Control
+                                type="text"
+                                className="customInput"
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+                          </>
+                        )}
+                      </Row>
+                    ) : (
+                      <>
+                        <hr className="custom-hr-yellow" />
+
+                        <Row>
                           <Form.Group
                             as={Col}
-                            md="4"
-                            controlId="mixing_additional_crates_is_informed"
+                            md="3"
+                            controlId="sd_4_bowser_in_time"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Is informed
+                              Bowser in time
+                            </Form.Label>
+
+                            <Form.Control
+                              type="time"
+                              required
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="3"
+                            controlId="sd_4_batches_in_bowser"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              batches in bowser
+                            </Form.Label>
+
+                            <Form.Control
+                              type="number"
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="3"
+                            controlId="sd_4_is_bowser_filling_hole_cleaned"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Filling hole cleaning
                             </Form.Label>
 
                             <Form.Switch
                               type="switch"
                               id="is_informed"
                               label={
-                                isInformed === true
-                                  ? "Informed"
-                                  : "Not informed"
+                                isFillingHoleCleaned === true
+                                  ? "Clean"
+                                  : "Not clean"
                               }
-                              checked={isInformed}
-                              onChange={(e) => setIsInformed(e.target.checked)}
+                              checked={isFillingHoleCleaned}
+                              onChange={(e) =>
+                                setIsFillingHoleCleaned(e.target.checked)
+                              }
                             />
                           </Form.Group>
 
                           <Form.Group
                             as={Col}
-                            md="4"
-                            controlId="mixing_additional_crates_informed_to"
+                            md="3"
+                            controlId="sd_4_is_bowser_output_tap_cleaned"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Informed to
+                              Output tap cleaning
+                            </Form.Label>
+
+                            <Form.Switch
+                              type="switch"
+                              id="is_informed"
+                              label={
+                                isOutputTapCleaned === true
+                                  ? "Clean"
+                                  : "Not clean"
+                              }
+                              checked={isOutputTapCleaned}
+                              onChange={(e) =>
+                                setIsOutputTapCleaned(e.target.checked)
+                              }
+                            />
+                          </Form.Group>
+                        </Row>
+
+                        <Row>
+                          <Form.Group
+                            as={Col}
+                            md="12"
+                            controlId="sd_4_bowser_overall_condition"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Overall condition
                             </Form.Label>
                             <Form.Control
-                              type="text"
+                              as="textarea"
+                              rows={4}
                               className="customInput"
                               onChange={handleChange}
                             />
                           </Form.Group>
-                        </>
-                      )}
-                    </Row>
+                        </Row>
+
+                        <hr className="custom-hr-yellow" />
+                      </>
+                    )}
 
                     <Row>
                       <Form.Group
