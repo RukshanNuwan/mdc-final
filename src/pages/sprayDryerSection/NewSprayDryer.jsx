@@ -222,11 +222,9 @@ const NewSprayDryer = () => {
                         controlId="batch_number"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">
-                          Batch code
-                        </Form.Label>
+                        <Form.Label className="fw-bold">Batch code</Form.Label>
                         <Form.Control
-                          type="number"
+                          type="text"
                           disabled
                           className="customInput disabled"
                           defaultValue={ongoingData?.batch_code}
