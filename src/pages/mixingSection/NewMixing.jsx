@@ -62,14 +62,17 @@ const NewMixing = () => {
 
   const handleChangeBatchNumber = (e) => {
     setBatchNumber(Number(e.target.value));
-    setData({ ...data, batch_number: Number(e.target.value) });
 
     const batchCode = `${
       location === "mdc" ? "SD3" : "SD4"
     }${year}${monthStr}${dateStr}${e.target.value}`;
 
     setBatchCode(batchCode);
-    setData({ ...data, batch_code: batchCode });
+    setData({
+      ...data,
+      batch_number: Number(e.target.value),
+      batch_code: batchCode,
+    });
   };
 
   const handleChange = (e) => {
@@ -156,44 +159,50 @@ const NewMixing = () => {
             lab_added_at: serverTimestamp(),
             sd_status: "ongoing",
             sd_added_at: serverTimestamp(),
-          }).then(async () => {
-            Swal.fire({
-              title: "Changes saved",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
-            });
+          })
+            .then(async () => {
+              try {
+                const docRef = doc(
+                  db,
+                  "daily_production",
+                  dailyProductionDataInDb.id
+                );
+                await updateDoc(docRef, {
+                  ...updatedDailyProductionData,
+                });
 
-            e.target.reset();
-            setIsLoading(false);
-            navigate(`/mixing-section/${location}`);
-          });
+                console.log("successfully updated daily production data");
+              } catch (error) {
+                console.log(error);
+              }
+
+              if (newKernelWeight > 0) {
+                try {
+                  const docRef = doc(db, "production_data", ongoingData.id);
+                  await updateDoc(docRef, {
+                    wet_kernel_weight: newKernelWeight,
+                  });
+
+                  console.log("successfully updated kernel weight");
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+            })
+            .then(async () => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+
+              e.target.reset();
+              setIsLoading(false);
+              navigate(`/mixing-section/${location}`);
+            });
         }
       });
-
-      try {
-        const docRef = doc(db, "daily_production", dailyProductionDataInDb.id);
-        await updateDoc(docRef, {
-          ...updatedDailyProductionData,
-        });
-
-        console.log("successfully updated daily production data");
-      } catch (error) {
-        console.log(error);
-      }
-
-      if (newKernelWeight > 0) {
-        try {
-          const docRef = doc(db, "production_data", ongoingData.id);
-          await updateDoc(docRef, {
-            wet_kernel_weight: newKernelWeight,
-          });
-
-          console.log("successfully updated kernel weight");
-        } catch (error) {
-          console.log(error);
-        }
-      }
     } catch (error) {
       console.log(error);
     }

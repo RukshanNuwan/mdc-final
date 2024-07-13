@@ -1,6 +1,14 @@
 import { useState } from "react";
-import { Col, Form, Row, Spinner } from "react-bootstrap";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { Col, Figure, Form, Row, Spinner } from "react-bootstrap";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+  where,
+} from "firebase/firestore";
+import Swal from "sweetalert2";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
@@ -36,6 +44,17 @@ const PackingLines = () => {
     });
   };
 
+  const handleRadioButtonChange = (e) => {
+    const id = e.target.id;
+    setPackingType(id);
+  };
+
+  const handleBagNumbersChange = (e) => {
+    const str = e.target.value;
+    const bagNumbers = str.toLowerCase().split(",");
+    setUpdatedData({ ...updatedData, packing_bag_numbers: bagNumbers });
+  };
+
   const handleChange = (e) => {
     const id = e.target.id;
     const value = e.target.value;
@@ -43,26 +62,66 @@ const PackingLines = () => {
     setUpdatedData({
       ...updatedData,
       [id]: value,
+      packing_production_date: data?.date,
+      production_batch_code: data?.batch_code,
+      production_batch_id: data?.id,
     });
-  };
-
-  // const str = e.target.value;
-  // const operators = str.split(",");
-  // setData({ ...data, mixing_operator_names: operators });
-
-  const handleRadioButtonChange = (e) => {
-    const id = e.target.id;
-    setPackingType(id);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setUpdatedData({});
-    setIsLoading(false);
-  };
 
-  console.log(data);
+    const confirmData = `Date: ${data.date} | Bag number(s): ${
+      updatedData.packing_bag_numbers
+    } | Job sheet number: ${
+      updatedData.packing_job_sheet_number
+    } | Carton box or Craft bag number: ${
+      updatedData.packing_carton_box_number
+        ? updatedData.packing_carton_box_number
+        : updatedData.packing_craft_bag_number
+    } | Time range - Start: ${
+      updatedData.packing_packet_time_range_start
+        ? updatedData.packing_packet_time_range_start
+        : "N/A"
+    } | Time range - End: ${
+      updatedData.packing_packet_time_range_end
+        ? updatedData.packing_packet_time_range_end
+        : "N/A"
+    } | Bag number range - Start: ${
+      updatedData.packing_bag_number_range_start
+    } | Bag number range - End: ${updatedData.packing_bag_number_range_end}`;
+
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        text: confirmData,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await addDoc(collection(db, "packing_line_data"), {
+            ...updatedData,
+            packing_line_added_at: serverTimestamp(),
+          }).then(() => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            e.target.reset();
+            setIsLoading(false);
+            setSearchInput("");
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -165,23 +224,6 @@ const PackingLines = () => {
                         <Form.Group
                           as={Col}
                           md="3"
-                          controlId="primary_batch_number"
-                          className="mb-2"
-                        >
-                          <Form.Label className="fw-bold">
-                            Wet batch number
-                          </Form.Label>
-                          <Form.Control
-                            type="number"
-                            disabled
-                            className="customInput disabled"
-                            defaultValue={data.primary_batch_number}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
                           controlId="batch_number"
                           className="mb-2"
                         >
@@ -218,21 +260,22 @@ const PackingLines = () => {
                         <Form.Group
                           as={Col}
                           md="4"
-                          controlId="packing_bag_numbers" // TODO: this could be changed -> like sd operator names
+                          controlId="packing_bag_numbers"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
                             Bag number(s)
                           </Form.Label>
                           <Form.Control
-                            type="number"
+                            type="text"
                             required
                             className="customInput"
-                            onChange={handleChange}
+                            onChange={handleBagNumbersChange}
                           />
+                          <Figure.Caption className="tooltipText">
+                            Type bag numbers with commas
+                          </Figure.Caption>
                         </Form.Group>
-
-                        {/* TODO: Bag number range - two inputs (if 20kg = no time range) */}
 
                         <Form.Group
                           as={Col}
@@ -262,7 +305,7 @@ const PackingLines = () => {
                               Craft bag number
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               required={packingType === "packing_type_20"}
                               className="customInput"
                               onChange={handleChange}
@@ -272,14 +315,14 @@ const PackingLines = () => {
                           <Form.Group
                             as={Col}
                             md="4"
-                            controlId="packing_carton_number"
+                            controlId="packing_carton_box_number"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Carton number
+                              Carton box number
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               required={packingType === "packing_type_other"}
                               className="customInput"
                               onChange={handleChange}
@@ -289,18 +332,57 @@ const PackingLines = () => {
                       </Row>
 
                       <Row>
+                        {packingType === "packing_type_other" && (
+                          <>
+                            <Form.Group
+                              as={Col}
+                              md="3"
+                              controlId="packing_packet_time_range_start"
+                              className="mb-2"
+                            >
+                              <Form.Label className="fw-bold">
+                                Time range - Start
+                              </Form.Label>
+                              <Form.Control
+                                type="time"
+                                step="1"
+                                required
+                                className="customInput"
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+
+                            <Form.Group
+                              as={Col}
+                              md="3"
+                              controlId="packing_packet_time_range_end"
+                              className="mb-2"
+                            >
+                              <Form.Label className="fw-bold">
+                                Time range - End
+                              </Form.Label>
+                              <Form.Control
+                                type="time"
+                                step="1"
+                                required
+                                className="customInput"
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+                          </>
+                        )}
+
                         <Form.Group
                           as={Col}
-                          md="4"
-                          controlId="packing_packet_time_range_start"
+                          md="3"
+                          controlId="packing_bag_number_range_start"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Time range (Start)
+                            Bag numbers range - Start
                           </Form.Label>
                           <Form.Control
-                            type="time"
-                            step="1"
+                            type="number"
                             required
                             className="customInput"
                             onChange={handleChange}
@@ -309,24 +391,21 @@ const PackingLines = () => {
 
                         <Form.Group
                           as={Col}
-                          md="4"
-                          controlId="packing_packet_time_range_end"
+                          md="3"
+                          controlId="packing_bag_number_range_end"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Time range (End)
+                            Bag numbers range - End
                           </Form.Label>
                           <Form.Control
-                            type="time"
-                            step="1"
+                            type="number"
                             required
                             className="customInput"
                             onChange={handleChange}
                           />
                         </Form.Group>
                       </Row>
-
-                      <Row>{/* bag numbers */}</Row>
 
                       <div className="mt-5">
                         <button
