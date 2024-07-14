@@ -8,6 +8,7 @@ import {
   collection,
   doc,
   getDocs,
+  onSnapshot,
   orderBy,
   query,
   updateDoc,
@@ -31,6 +32,10 @@ const NewSprayDryer = () => {
   const [ongoingData, setOngoingData] = useState({});
   const [expectedTime, setExpectedTime] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+    {}
+  );
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -40,6 +45,18 @@ const NewSprayDryer = () => {
   const handleChange = (e) => {
     const id = e.target.id;
     const value = e.target.value;
+
+    if (location === "mdc") {
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
+        runningBatchNumberInMdc: ongoingData.batch_number,
+      });
+    } else {
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
+        runningBatchNumberInAraliyaKele: ongoingData.batch_number,
+      });
+    }
 
     setData({
       ...data,
@@ -87,6 +104,18 @@ const NewSprayDryer = () => {
           await updateDoc(docRef, {
             ...data,
           })
+            .then(async () => {
+              try {
+                const docRef = doc(
+                  db,
+                  "daily_production",
+                  dailyProductionDataInDb.id
+                );
+                await updateDoc(docRef, { ...updatedDailyProductionData });
+              } catch (error) {
+                console.log(error);
+              }
+            })
             .then(() => {
               Swal.fire({
                 title: "Changes saved",
@@ -135,6 +164,33 @@ const NewSprayDryer = () => {
     fetchOngoingBatch();
   }, [location]);
 
+  useEffect(() => {
+    const fetchSubFormData = async () => {
+      try {
+        const q = query(
+          collection(db, "daily_production"),
+          where("date", "==", ongoingData?.date)
+        );
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let list = [];
+          querySnapshot.forEach((doc) => {
+            list.push({ id: doc.id, ...doc.data() });
+          });
+
+          setDailyProductionDataInDb(list[0]);
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSubFormData();
+  }, [ongoingData?.date]);
+
   return (
     <>
       <Header />
@@ -162,8 +218,7 @@ const NewSprayDryer = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {/* {ongoingData && !ongoingData?.powderSprayStartTime ? ( */}
-                {true ? (
+                {ongoingData && !ongoingData?.powderSprayStartTime ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
