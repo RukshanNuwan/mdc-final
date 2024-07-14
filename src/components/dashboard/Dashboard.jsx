@@ -52,7 +52,7 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          // where("date", "==", currentDate)
+          where("date", "==", currentDate),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -72,11 +72,10 @@ const Dashboard = () => {
       }
     };
 
-    
     fetchId();
   }, [currentDate]);
-  
-  console.log(dailyProductionData);
+
+  console.log(sd3Data, sd4Data);
 
   useEffect(() => {
     const handleStatus = () => {
@@ -96,6 +95,7 @@ const Dashboard = () => {
           collection(db, "production_data"),
           where("sd_status", "==", "updated"),
           where("location", "==", "mdc"),
+          where("date", "==", currentDate),
           orderBy("wet_added_at", "desc"),
           limit(1)
         );
@@ -117,7 +117,7 @@ const Dashboard = () => {
     };
 
     fetchCurrentSdData();
-  }, []);
+  }, [currentDate]);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
@@ -126,6 +126,7 @@ const Dashboard = () => {
           collection(db, "production_data"),
           where("sd_status", "==", "updated"),
           where("location", "==", "araliya_kele"),
+          where("date", "==", currentDate),
           orderBy("wet_added_at", "desc"),
           limit(1)
         );
@@ -147,7 +148,7 @@ const Dashboard = () => {
     };
 
     fetchCurrentSdData();
-  }, []);
+  }, [currentDate]);
 
   useEffect(() => {
     const fetchSd3LabData = async () => {
@@ -330,7 +331,9 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Running batch</p>
 
               <p className="sectionMainValue text-center">
-                {sd3Data?.batch_number ? sd3Data?.batch_number : "-"}
+                {dailyProductionData?.runningBatchNumberInMdc
+                  ? dailyProductionData?.runningBatchNumberInMdc
+                  : "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -514,7 +517,9 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Running batch</p>
 
               <p className="sectionMainValue text-center">
-                {sd4Data?.batch_number ? sd4Data?.batch_number : "-"}
+                {dailyProductionData?.runningBatchNumberInAraliyaKele
+                  ? dailyProductionData?.runningBatchNumberInAraliyaKele
+                  : "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">

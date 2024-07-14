@@ -239,6 +239,7 @@ const NewMixing = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
+          where("date", "==", ongoingData.date),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -259,7 +260,7 @@ const NewMixing = () => {
     };
 
     fetchSubFormData();
-  }, []);
+  }, [ongoingData.date]);
 
   return (
     <>
