@@ -22,6 +22,7 @@ const PackingLines = () => {
   const [data, setData] = useState({});
   const [updatedData, setUpdatedData] = useState({});
   const [packingType, setPackingType] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -37,10 +38,19 @@ const PackingLines = () => {
       where("batch_code", "==", searchInput)
     );
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setData({ id: doc.id, ...doc.data() });
-      setIsLoading(false);
+    await getDocs(q).then((res) => {
+      if (res.docs.length === 0) {
+        setIsEmpty(true);
+        setIsLoading(false);
+        return;
+      }
+      
+      setIsEmpty(false);
+
+      res.forEach((doc) => {
+        setData({ id: doc.id, ...doc.data() });
+        setIsLoading(false);
+      });
     });
   };
 
@@ -140,38 +150,6 @@ const PackingLines = () => {
                 <div className="col-md subFormParent">
                   <Form onSubmit={handleSearch}>
                     <Row>
-                      <Form.Group
-                        as={Col}
-                        md="2"
-                        xs="6"
-                        controlId="packing_type"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">20kg</Form.Label>
-                        <Form.Check
-                          name="group1"
-                          type="radio"
-                          id="packing_type_20"
-                          onChange={handleRadioButtonChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="2"
-                        xs="6"
-                        controlId="packing_type"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">1kg & other</Form.Label>
-                        <Form.Check
-                          name="group1"
-                          type="radio"
-                          id="packing_type_other"
-                          onChange={handleRadioButtonChange}
-                        />
-                      </Form.Group>
-
                       <Form.Group as={Col} md="4" controlId="date">
                         <Form.Label className="fw-bold">Batch code</Form.Label>
                         <Form.Control
@@ -194,11 +172,42 @@ const PackingLines = () => {
                           {isLoading ? "Searching..." : "Search"}
                         </button>
                       </div>
+
+                      {isEmpty && (
+                        <span className="mt-1 text-danger smallText">
+                          No data found for this batch code
+                        </span>
+                      )}
+
+                      <Form.Group as={Col} md="4">
+                        <div className="mt-4">
+                          <Form.Label className="fw-bold">
+                            Select type
+                          </Form.Label>
+
+                          <Form.Check
+                            name="group1"
+                            type="radio"
+                            id="packing_type_20"
+                            label="20kg"
+                            className="text-white"
+                            onChange={handleRadioButtonChange}
+                          />
+
+                          <Form.Check
+                            name="group1"
+                            type="radio"
+                            id="packing_type_other"
+                            label="Other"
+                            onChange={handleRadioButtonChange}
+                          />
+                        </div>
+                      </Form.Group>
                     </Row>
                   </Form>
                 </div>
 
-                <hr className="custom-hr-yellow" />
+                <hr className="custom-hr-yellow my-2" />
 
                 {data.id && (
                   <div>

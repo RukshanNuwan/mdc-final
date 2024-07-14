@@ -151,7 +151,7 @@ const NewCutter = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          where("date", "==", ongoingData.date),
+          where("date", "==", ongoingData?.date),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -172,7 +172,7 @@ const NewCutter = () => {
     };
 
     fetchSubFormData();
-  }, [ongoingData.date]);
+  }, [ongoingData?.date]);
 
   return (
     <>
