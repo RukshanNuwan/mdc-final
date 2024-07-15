@@ -740,11 +740,7 @@ const Complaints = () => {
                   <div className="d-flex flex-column gap-2">
                     {data &&
                       data.map((item, index) => (
-                        <SearchResultCard
-                          key={index}
-                          data={item}
-                          index={index}
-                        />
+                        <SearchResultCard key={index} data={item} />
                       ))}
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const SearchResultCard = ({ data, index }) => {
+const SearchResultCard = ({ data }) => {
   return (
     <div className="card p-3 rounded bg-dark-blue-2">
       <Link to={`${data?.id}`} className="d-flex gap-3">
