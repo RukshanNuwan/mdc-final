@@ -425,7 +425,6 @@ const UpdateLaboratory = () => {
                           type="switch"
                           id="lab_row_taste"
                           disabled={state.lab_status === "ongoing"}
-                          label={rawMilkTaste === true ? "Good" : "Not good"}
                           checked={rawMilkTaste}
                           onChange={(e) => setRawMilkTaste(e.target.checked)}
                         />
@@ -445,7 +444,6 @@ const UpdateLaboratory = () => {
                           type="switch"
                           id="lab_row_color"
                           disabled={state.lab_status === "ongoing"}
-                          label={rawMilkColor === true ? "Good" : "Not good"}
                           checked={rawMilkColor}
                           onChange={(e) => setRawMilkColor(e.target.checked)}
                         />
@@ -465,7 +463,6 @@ const UpdateLaboratory = () => {
                           type="switch"
                           id="lab_row_odor"
                           disabled={state.lab_status === "ongoing"}
-                          label={rawMilkOdor === true ? "Good" : "Not good"}
                           checked={rawMilkOdor}
                           onChange={(e) => setRawMilkOdor(e.target.checked)}
                         />
@@ -572,7 +569,6 @@ const UpdateLaboratory = () => {
                           type="switch"
                           id="lab_mix_taste"
                           disabled={state.lab_status === "ongoing"}
-                          label={mixMilkTaste === true ? "Good" : "Not good"}
                           checked={mixMilkTaste}
                           onChange={(e) => setMixMilkTaste(e.target.checked)}
                         />
@@ -592,7 +588,6 @@ const UpdateLaboratory = () => {
                           type="switch"
                           id="lab_mix_color"
                           disabled={state.lab_status === "ongoing"}
-                          label={mixMilkColor === true ? "Good" : "Not good"}
                           checked={mixMilkColor}
                           onChange={(e) => setMixMilkColor(e.target.checked)}
                         />
@@ -612,7 +607,6 @@ const UpdateLaboratory = () => {
                           type="switch"
                           id="lab_mix_odor"
                           disabled={state.lab_status === "ongoing"}
-                          label={mixMilkOdor === true ? "Good" : "Not good"}
                           checked={mixMilkOdor}
                           onChange={(e) => setMixMilkOdor(e.target.checked)}
                         />
@@ -856,7 +850,6 @@ const UpdateLaboratory = () => {
                         type="switch"
                         id="lab_powder_taste"
                         disabled={state.lab_status === "ongoing"}
-                        label={powderTaste === true ? "Good" : "Not good"}
                         checked={powderTaste}
                         onChange={(e) => setPowderTaste(e.target.checked)}
                       />
@@ -874,7 +867,6 @@ const UpdateLaboratory = () => {
                         type="switch"
                         id="lab_powder_color"
                         disabled={state.lab_status === "ongoing"}
-                        label={powderColor === true ? "Good" : "Not good"}
                         checked={powderColor}
                         onChange={(e) => setPowderColor(e.target.checked)}
                       />
@@ -892,7 +884,6 @@ const UpdateLaboratory = () => {
                         type="switch"
                         id="lab_powder_odor"
                         disabled={state.lab_status === "ongoing"}
-                        label={powderOdor === true ? "Good" : "Not good"}
                         checked={powderOdor}
                         onChange={(e) => setPowderOdor(e.target.checked)}
                       />
@@ -910,7 +901,6 @@ const UpdateLaboratory = () => {
                         type="switch"
                         id="lab_powder_solubility"
                         disabled={state.lab_status === "ongoing"}
-                        label={powderSolubility === true ? "Good" : "Not good"}
                         checked={powderSolubility}
                         onChange={(e) => setPowderSolubility(e.target.checked)}
                       />
@@ -928,7 +918,6 @@ const UpdateLaboratory = () => {
                         type="switch"
                         id="lab_powder_free_flowing"
                         disabled={state.lab_status === "ongoing"}
-                        label={powderFreeFlowing === true ? "Good" : "Not good"}
                         checked={powderFreeFlowing}
                         onChange={(e) => setPowderFreeFlowing(e.target.checked)}
                       />

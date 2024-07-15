@@ -177,9 +177,7 @@ const NewLaboratory = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {ongoingData &&
-                !ongoingData.lab_row_color &&
-                ongoingData?.location === location ? (
+                {ongoingData && ongoingData?.location === location ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
@@ -411,7 +409,6 @@ const NewLaboratory = () => {
                           <Form.Switch
                             type="switch"
                             id="lab_row_taste"
-                            label={rawMilkTaste === true ? "Good" : "Not good"}
                             checked={rawMilkTaste}
                             onChange={(e) => setRawMilkTaste(e.target.checked)}
                           />
@@ -430,7 +427,6 @@ const NewLaboratory = () => {
                           <Form.Switch
                             type="switch"
                             id="lab_row_color"
-                            label={rawMilkColor === true ? "Good" : "Not good"}
                             checked={rawMilkColor}
                             onChange={(e) => setRawMilkColor(e.target.checked)}
                           />
@@ -449,7 +445,6 @@ const NewLaboratory = () => {
                           <Form.Switch
                             type="switch"
                             id="lab_row_odor"
-                            label={rawMilkOdor === true ? "Good" : "Not good"}
                             checked={rawMilkOdor}
                             onChange={(e) => setRawMilkOdor(e.target.checked)}
                           />
@@ -552,7 +547,6 @@ const NewLaboratory = () => {
                           <Form.Switch
                             type="switch"
                             id="lab_mix_taste"
-                            label={mixMilkTaste === true ? "Good" : "Not good"}
                             checked={mixMilkTaste}
                             onChange={(e) => setMixMilkTaste(e.target.checked)}
                           />
@@ -571,7 +565,6 @@ const NewLaboratory = () => {
                           <Form.Switch
                             type="switch"
                             id="lab_mix_color"
-                            label={mixMilkColor === true ? "Good" : "Not good"}
                             checked={mixMilkColor}
                             onChange={(e) => setMixMilkColor(e.target.checked)}
                           />
@@ -590,7 +583,6 @@ const NewLaboratory = () => {
                           <Form.Switch
                             type="switch"
                             id="lab_mix_odor"
-                            label={mixMilkOdor === true ? "Good" : "Not good"}
                             checked={mixMilkOdor}
                             onChange={(e) => setMixMilkOdor(e.target.checked)}
                           />

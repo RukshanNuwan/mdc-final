@@ -53,6 +53,12 @@ const otherNavList = [
     icon: "bi bi-file-text",
     path: "/reports",
   },
+  {
+    _id: 3,
+    name: "Complaints",
+    icon: "bi bi-journal-x",
+    path: "/complaints",
+  },
 ];
 
 export { packingLinesNavList, productionNavList, otherNavList };

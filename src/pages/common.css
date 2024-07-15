@@ -21,7 +21,7 @@ label.form-label {
 }
 
 .form-check-label {
-  color: var(--dark-blue-1) !important;
+  color: var(--white) !important;
 }
 
 .addNewBtnWrapper {

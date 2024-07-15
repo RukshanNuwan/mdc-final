@@ -35,6 +35,7 @@ import UpdateSprayDryer from "./pages/sprayDryerSection/UpdateSprayDryer";
 import Reports from "./pages/reports/Reports";
 import DailySummary from "./pages/reports/DailySummary";
 import PackingLines from "./pages/packingLines/PackingLines";
+import Complaints from "./pages/complaints/Complaints";
 
 function App() {
   const Layout = () => {
@@ -104,6 +105,10 @@ function App() {
             <Route path="reports">
               <Route index element={<Reports />} />
               <Route path="daily-summary" element={<DailySummary />} />
+            </Route>
+
+            <Route path="complaints">
+              <Route index element={<Complaints />} />
             </Route>
           </Route>
         </Route>
