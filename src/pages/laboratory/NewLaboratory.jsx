@@ -177,9 +177,7 @@ const NewLaboratory = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {ongoingData &&
-                !ongoingData.lab_row_color &&
-                ongoingData?.location === location ? (
+                {ongoingData && ongoingData?.location === location ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
