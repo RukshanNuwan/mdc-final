@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Col, Form, Row, Spinner } from "react-bootstrap";
-import { and, collection, getDocs, or, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
+import SearchResultCard from "../../components/SearchResultCard/SearchResultCard";
 
 const Complaints = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -620,8 +620,6 @@ const Complaints = () => {
     setIsLoading(false);
   };
 
-  console.log(data);
-
   const handleClear = () => {
     setTimeInput("");
     setBagNumberInput("");
@@ -636,10 +634,6 @@ const Complaints = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Packing Lines" />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="row mb-2 subFormWrapper">
@@ -719,7 +713,7 @@ const Complaints = () => {
                     <div className="col d-flex justify-content-end mt-4">
                       <button
                         type="submit"
-                        className="d-flex align-items-center justify-content-center mt-md-4 gap-2 subform-btn-submit customBtn"
+                        className="d-flex align-items-center justify-content-center gap-2 subform-btn-submit customBtn"
                       >
                         {isLoading && <Spinner animation="border" size="sm" />}
                         {isLoading ? "Searching..." : "Search"}
@@ -744,10 +738,14 @@ const Complaints = () => {
                   <hr className="custom-hr-yellow" />
 
                   <div className="d-flex flex-column gap-2">
-                    <div>search results</div>
-                    <div>search results</div>
-                    <div>search results</div>
-                    {/* <SearchResultCard/> */}
+                    {data &&
+                      data.map((item, index) => (
+                        <SearchResultCard
+                          key={index}
+                          data={item}
+                          index={index}
+                        />
+                      ))}
                   </div>
                 </div>
               </div>

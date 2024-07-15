@@ -44,7 +44,7 @@ const PackingLines = () => {
         setIsLoading(false);
         return;
       }
-      
+
       setIsEmpty(false);
 
       res.forEach((doc) => {
@@ -72,6 +72,7 @@ const PackingLines = () => {
     setUpdatedData({
       ...updatedData,
       [id]: value,
+      packing_type: packingType,
       packing_production_date: data?.date,
       production_batch_code: data?.batch_code,
       production_batch_id: data?.id,
