@@ -82,7 +82,24 @@ export const mixingSectionColumns = [
       );
     },
   },
-  { field: "mixing_milk_recovery", headerName: "Milk recovery", width: 120 },
+  {
+    field: "mixing_milk_recovery",
+    headerName: "Milk recovery",
+    width: 120,
+    renderCell: (params) => {
+      return (
+        <div
+          className={`${
+            params.row.mixing_milk_recovery > 75
+              ? "text-success"
+              : "text-danger"
+          }`}
+        >
+          {params.row.mixing_milk_recovery}%
+        </div>
+      );
+    },
+  },
   {
     field: "mixing_feed_start_time",
     headerName: "Feed start time",

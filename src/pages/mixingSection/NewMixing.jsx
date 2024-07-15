@@ -53,7 +53,7 @@ const NewMixing = () => {
   const navigate = useNavigate();
   const { location } = useParams();
 
-  const currentDate = new Date();
+  const currentDate = new Date(ongoingData.date);
   const year = ("" + currentDate.getFullYear()).substring(2);
   const month = currentDate.getMonth() + 1;
   const monthStr = month < 10 ? "0" + month : month;

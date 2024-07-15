@@ -150,7 +150,7 @@ const PackingLines = () => {
                 <div className="col-md subFormParent">
                   <Form onSubmit={handleSearch}>
                     <Row>
-                      <Form.Group as={Col} md="4" controlId="date">
+                      <Form.Group as={Col} md="4" controlId="batch_code">
                         <Form.Label className="fw-bold">Batch code</Form.Label>
                         <Form.Control
                           type="text"
