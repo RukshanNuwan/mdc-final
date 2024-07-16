@@ -302,6 +302,25 @@ const NewCutter = () => {
                         </Form.Select>
                       </Form.Group>
 
+                      {location && location === "araliya_kele" && (
+                        <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="cutter_bowser_load_time"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Bowser load time
+                          </Form.Label>
+                          <Form.Control
+                            type="time"
+                            required={location === "araliya_kele"}
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
+                      )}
+
                       <Form.Group
                         as={Col}
                         md="4"

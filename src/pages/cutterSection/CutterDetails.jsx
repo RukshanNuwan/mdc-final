@@ -78,6 +78,20 @@ const CutterDetails = () => {
                         </div>
                       </div>
 
+                      {state.location && state.location === "araliya_kele" && (
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Bowser load time</p>
+                          </div>
+                          <div className="col-1" />
+                          <div className="col-4">
+                            <p className="bodyText fw-bold">
+                              {state?.cutter_bowser_load_time}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
                       <div className="row py-1">
                         <div className="col-7">
                           <p className="bodyText">Status</p>
