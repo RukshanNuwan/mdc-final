@@ -119,6 +119,22 @@ label.form-label {
   color: var(--pink);
 }
 
+.text-yellow {
+  color: var(--bright-yellow);
+}
+
+.text-light-blue {
+  color: var(--light-blue);
+}
+
+.bg-dark-blue-2 {
+  background: var(--dark-blue-2);
+}
+
+.border-pink {
+  border: 2px solid var(--pink) !important;
+}
+
 @media only screen and (max-width: 600px) {
   button.btn-submit,
   button.subform-btn-submit {
@@ -157,5 +173,9 @@ label.form-label {
 
   .formWrapper {
     padding: 1rem !important;
+  }
+  
+  .mt-xs-1 {
+    margin-top: 0.5rem;
   }
 }

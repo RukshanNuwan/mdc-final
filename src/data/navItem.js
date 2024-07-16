@@ -55,8 +55,8 @@ const otherNavList = [
   },
   {
     _id: 3,
-    name: "Complaints",
-    icon: "bi bi-journal-x",
+    name: "Back tracing",
+    icon: "bi bi-sign-turn-left",
     path: "/complaints",
   },
 ];

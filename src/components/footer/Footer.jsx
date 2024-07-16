@@ -9,7 +9,10 @@ const Footer = () => {
           <strong>
             <span>Manchiee De Coco Products. </span>
           </strong>
-          All Rights Reserved
+          All Rights Reserved{" "}
+          <span className="ms-3" style={{ color: "#ffffff4d" }}>
+            v2.3.8
+          </span>
         </p>
       </div>
     </footer>

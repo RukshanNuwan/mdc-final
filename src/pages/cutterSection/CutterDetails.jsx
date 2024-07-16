@@ -208,7 +208,7 @@ const CutterDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Operator's name</p>
+                          <p className="bodyText">Operator name</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
