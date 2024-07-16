@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const SearchResultCard = ({ data }) => {
   return (
     <div className="card p-3 rounded bg-dark-blue-2">
-      <Link to={`${data?.id}`} className="d-flex gap-3">
+      <Link to={`${data?.id}`} className="d-flex flex-wrap gap-3">
         <div
           className="p-2 d-flex justify-content-center align-items-center border"
           style={{ width: "60px", height: "60px", borderRadius: "50%" }}
@@ -13,7 +13,7 @@ const SearchResultCard = ({ data }) => {
           </div>
         </div>
 
-        <div className="d-flex gap-4">
+        <div className="d-flex flex-wrap gap-4">
           <div className="d-flex flex-column justify-content-center">
             <div className="text-white">Batch code</div>
             <div className="text-light-blue">{data?.production_batch_code}</div>
