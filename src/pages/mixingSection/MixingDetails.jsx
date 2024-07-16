@@ -1,5 +1,7 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -221,6 +223,82 @@ const MixingDetails = () => {
                         </div>
                       </div>
                     </div>
+
+                    {state.location === "araliya_kele" && (
+                      <div className="dataItemWrapper">
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Bowser in time</p>
+                          </div>
+                          <div className="col-1" />
+                          <div className="col-4">
+                            <p className="bodyText fw-bold">
+                              {state?.sd_4_bowser_in_time}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Batches in bowser</p>
+                          </div>
+                          <div className="col-1" />
+                          <div className="col-4">
+                            <p className="bodyText fw-bold">
+                              {state?.sd_4_batches_in_bowser}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Filling hole cleaning</p>
+                          </div>
+                          <div className="col-1" />
+                          <div className="col-4">
+                            <p className="bodyText fw-bold">
+                              {state?.sd_4_is_bowser_filling_hole_cleaned ===
+                              true ? (
+                                <CheckIcon className="text-success" />
+                              ) : (
+                                <CloseIcon className="text-danger" />
+                              )}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Output tap cleaning</p>
+                          </div>
+                          <div className="col-1" />
+                          <div className="col-4">
+                            <p className="bodyText fw-bold">
+                              {state?.sd_4_is_bowser_output_tap_cleaned ===
+                              true ? (
+                                <CheckIcon className="text-success" />
+                              ) : (
+                                <CloseIcon className="text-danger" />
+                              )}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="row py-1">
+                          <div className="col-7">
+                            <p className="bodyText">Overall condition</p>
+                          </div>
+                          <div className="col-1" />
+                          <div className="col-4">
+                            <p className="bodyText fw-bold">
+                              {state?.sd_4_bowser_overall_condition
+                                ? state?.sd_4_bowser_overall_condition
+                                : "-"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="dataItemWrapper">
                       <div className="row py-1">

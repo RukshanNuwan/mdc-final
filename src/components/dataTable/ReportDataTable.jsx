@@ -61,6 +61,7 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-blue">Taste</th>
             <th className="daily-summery-bg-blue">Color</th>
             <th className="daily-summery-bg-blue">Odor</th>
+            <th className="daily-summery-bg-orange">Bowser load time</th>
             <th className="daily-summery-bg-orange">Bowser in time</th>
             <th className="daily-summery-bg-orange">Batches in bowser</th>
             <th className="daily-summery-bg-orange">Filling hole cleaning</th>
@@ -141,6 +142,7 @@ const ReportDataTable = ({ data }) => {
                   <CloseIcon className="text-danger" />
                 )}
               </td>
+              <td>{item.cutter_bowser_load_time}</td>
               <td>{item.sd_4_bowser_in_time}</td>
               <td>{item.sd_4_batches_in_bowser}</td>
               <td>
