@@ -30,7 +30,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -59,7 +58,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -88,7 +86,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -117,7 +114,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -147,7 +143,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -178,7 +173,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -209,7 +203,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -239,7 +232,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -269,7 +261,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -300,7 +291,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -332,7 +322,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -364,7 +353,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -396,7 +384,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -427,7 +414,6 @@ const Complaints = () => {
         if (res.docs.length === 0) {
           setIsEmpty(true);
           setIsLoading(false);
-
           return;
         }
 
@@ -461,7 +447,6 @@ const Complaints = () => {
           if (res.docs.length === 0) {
             setIsEmpty(true);
             setIsLoading(false);
-
             return;
           }
 

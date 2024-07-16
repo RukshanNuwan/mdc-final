@@ -62,8 +62,8 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-orange">Filling hole cleaning</th>
             <th className="daily-summery-bg-orange">Output tap cleaning</th>
             <th className="daily-summery-bg-orange">Overall condition</th>
-            <th className="daily-summery-bg-green">Mix TSS</th>
             <th className="daily-summery-bg-green">Mix pH</th>
+            <th className="daily-summery-bg-green">Mix TSS</th>
             <th className="daily-summery-bg-green">Mix fat</th>
             <th className="daily-summery-bg-green">Taste</th>
             <th className="daily-summery-bg-green">Color</th>

@@ -346,7 +346,7 @@ const LaboratoryDetails = () => {
                         <div className="text-center">
                           <p className="subSectionKey bodyText">Fat layer</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.lab_powder_fat_layer}
+                            {state?.lab_powder_fat_layer} cm
                           </p>
                         </div>
 
