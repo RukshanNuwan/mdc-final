@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Table } from "react-bootstrap";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,6 +8,18 @@ import "./dataTable.css";
 
 const ReportDataTable = ({ data }) => {
   const tableRef = useRef(null);
+
+  const calculateDelayTimeInBowser = (startTime, endTime) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    const differenceInMilliseconds = Math.abs(end - start);
+
+    const hours = Math.floor(differenceInMilliseconds / (1000 * 60 * 60));
+    const minutes = Math.floor((differenceInMilliseconds / (1000 * 60)) % 60);
+
+    return { hours, minutes };
+  };
 
   return (
     <div
@@ -63,6 +75,7 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-blue">Odor</th>
             <th className="daily-summery-bg-orange">Bowser load time</th>
             <th className="daily-summery-bg-orange">Bowser in time</th>
+            <th className="daily-summery-bg-orange">Delay time</th>
             <th className="daily-summery-bg-orange">Batches in bowser</th>
             <th className="daily-summery-bg-orange">Filling hole cleaning</th>
             <th className="daily-summery-bg-orange">Output tap cleaning</th>
@@ -99,145 +112,155 @@ const ReportDataTable = ({ data }) => {
         </thead>
 
         <tbody>
-          {data?.map((item, index) => (
-            <tr key={index} className="text-center text-capitalize">
-              <td>{item.primary_batch_number}</td>
-              <td>{item.batch_number}</td>
-              <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
-              <td>{item.order_name}</td>
-              <td>{item.wet_kernel_weight}kg</td>
-              <td>{item.blancher_in_time}</td>
-              <td>{item.cutter_expeller_start_time}</td>
-              <td>{item.mixing_milk_quantity}kg</td>
-              <td
-                className={`${
-                  item.mixing_milk_recovery < 75
-                    ? "text-danger"
-                    : "text-success"
-                }`}
-              >
-                {item.mixing_milk_recovery}%
-              </td>
-              <td>{item.lab_raw_ph}</td>
-              <td>{item.lab_raw_tss}</td>
-              <td>{item.lab_raw_fat}</td>
-              <td>
-                {item.lab_row_taste ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_row_color ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_row_odor ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>{item.cutter_bowser_load_time}</td>
-              <td>{item.sd_4_bowser_in_time}</td>
-              <td>{item.sd_4_batches_in_bowser}</td>
-              <td>
-                {item.sd_4_is_bowser_filling_hole_cleaned ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.sd_4_is_bowser_output_tap_cleaned ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>{item.sd_4_bowser_overall_condition}</td>
-              <td>{item.lab_mix_ph}</td>
-              <td>{item.lab_mix_tss}</td>
-              <td>{item.lab_mix_fat}</td>
-              <td>
-                {item.lab_mix_taste ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_mix_color ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_mix_odor ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>{item.expeller_finish_time}</td>
-              <td>{item.mixing_mix_start_time}</td>
-              <td>{item.mixing_mix_finish_time}</td>
-              <td>{item.mixing_feeding_tank_in_time}</td>
-              <td>{item.mixing_feed_start_time}</td>
-              <td>{item.sd_powder_spray_start_time}</td>
-              <td>{item.sd_batch_finish_time}</td>
-              <td>{item.sd_rp_quantity}kg</td>
-              <td>{item.sd_inlet_temp}&deg;C</td>
-              <td>{item.sd_outlet_temp}&deg;C</td>
-              <td>{item.mixing_pressure_pump_value}MPa</td>
-              <td>{item.lab_powder_ph}</td>
-              <td>{item.lab_powder_moisture}%</td>
-              <td>{item.lab_powder_fat}</td>
-              <td>{item.lab_powder_fat_layer}cm</td>
-              <td>{item.lab_powder_fat_layer_time}min</td>
-              <td>{item.lab_powder_bulk_density}</td>
-              <td>
-                {item.lab_powder_taste ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_powder_color ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_powder_odor ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_powder_solubility ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-              <td>
-                {item.lab_powder_free_flowing ? (
-                  <CheckIcon className="text-success" />
-                ) : (
-                  <CloseIcon className="text-danger" />
-                )}
-              </td>
-            </tr>
-          ))}
+          {data?.map((item, index) => {
+            const timeGap = calculateDelayTimeInBowser(
+              item.cutter_bowser_load_time,
+              item.sd_4_bowser_in_time
+            );
+
+            return (
+              <tr key={index} className="text-center text-capitalize">
+                <td>{item.primary_batch_number}</td>
+                <td>{item.batch_number}</td>
+                <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
+                <td>{item.order_name}</td>
+                <td>{item.wet_kernel_weight}kg</td>
+                <td>{item.blancher_in_time}</td>
+                <td>{item.cutter_expeller_start_time}</td>
+                <td>{item.mixing_milk_quantity}kg</td>
+                <td
+                  className={`${
+                    item.mixing_milk_recovery < 75
+                      ? "text-danger"
+                      : "text-success"
+                  }`}
+                >
+                  {item.mixing_milk_recovery}%
+                </td>
+                <td>{item.lab_raw_ph}</td>
+                <td>{item.lab_raw_tss}</td>
+                <td>{item.lab_raw_fat}</td>
+                <td>
+                  {item.lab_row_taste ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_row_color ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_row_odor ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>{item.cutter_bowser_load_time}</td>
+                <td>{item.sd_4_bowser_in_time}</td>
+                <td>
+                  {timeGap.hours}:{timeGap.minutes}
+                </td>
+                <td>{item.sd_4_batches_in_bowser}</td>
+                <td>
+                  {item.sd_4_is_bowser_filling_hole_cleaned ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.sd_4_is_bowser_output_tap_cleaned ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>{item.sd_4_bowser_overall_condition}</td>
+                <td>{item.lab_mix_ph}</td>
+                <td>{item.lab_mix_tss}</td>
+                <td>{item.lab_mix_fat}</td>
+                <td>
+                  {item.lab_mix_taste ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_mix_color ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_mix_odor ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>{item.expeller_finish_time}</td>
+                <td>{item.mixing_mix_start_time}</td>
+                <td>{item.mixing_mix_finish_time}</td>
+                <td>{item.mixing_feeding_tank_in_time}</td>
+                <td>{item.mixing_feed_start_time}</td>
+                <td>{item.sd_powder_spray_start_time}</td>
+                <td>{item.sd_batch_finish_time}</td>
+                <td>{item.sd_rp_quantity}kg</td>
+                <td>{item.sd_inlet_temp}&deg;C</td>
+                <td>{item.sd_outlet_temp}&deg;C</td>
+                <td>{item.mixing_pressure_pump_value}MPa</td>
+                <td>{item.lab_powder_ph}</td>
+                <td>{item.lab_powder_moisture}%</td>
+                <td>{item.lab_powder_fat}</td>
+                <td>{item.lab_powder_fat_layer}cm</td>
+                <td>{item.lab_powder_fat_layer_time}min</td>
+                <td>{item.lab_powder_bulk_density}</td>
+                <td>
+                  {item.lab_powder_taste ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_powder_color ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_powder_odor ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_powder_solubility ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+                <td>
+                  {item.lab_powder_free_flowing ? (
+                    <CheckIcon className="text-success" />
+                  ) : (
+                    <CloseIcon className="text-danger" />
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </div>

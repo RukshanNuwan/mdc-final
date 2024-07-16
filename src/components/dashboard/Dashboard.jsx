@@ -75,8 +75,6 @@ const Dashboard = () => {
     fetchId();
   }, [currentDate]);
 
-  console.log(sd3Data, sd4Data);
-
   useEffect(() => {
     const handleStatus = () => {
       if (sd3Data?.sd_status === "ongoing" || sd3Data?.sd_status === "updated")
