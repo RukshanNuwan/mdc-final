@@ -323,9 +323,9 @@ const LaboratoryDetails = () => {
 
                       <div className="col-12 d-flex justify-content-evenly mt-2">
                         <div className="text-center">
-                          <p className="subSectionKey bodyText">Fat</p>
+                          <p className="subSectionKey bodyText">pH</p>
                           <p className="subSectionValue bodyText fw-bold">
-                            {state?.lab_powder_fat}
+                            {state?.lab_powder_ph}
                           </p>
                         </div>
 
@@ -340,6 +340,13 @@ const LaboratoryDetails = () => {
                           <p className="subSectionKey bodyText">Bulk density</p>
                           <p className="subSectionValue bodyText fw-bold">
                             {state?.lab_powder_bulk_density}
+                          </p>
+                        </div>
+
+                        <div className="text-center">
+                          <p className="subSectionKey bodyText">Fat</p>
+                          <p className="subSectionValue bodyText fw-bold">
+                            {state?.lab_powder_fat}
                           </p>
                         </div>
 

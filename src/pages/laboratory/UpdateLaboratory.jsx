@@ -710,6 +710,25 @@ const UpdateLaboratory = () => {
                   <Row>
                     <Form.Group
                       as={Col}
+                      md="2"
+                      controlId="lab_powder_ph"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Milk powder pH</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="number"
+                          disabled={state.lab_status === "ongoing"}
+                          className="customInput"
+                          step=".01"
+                          defaultValue={state.lab_powder_ph}
+                          onChange={handleChange}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
                       md="3"
                       controlId="lab_powder_moisture"
                       className="mb-2"
@@ -744,7 +763,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="3"
+                      md="2"
                       controlId="lab_powder_fat"
                       className="mb-2"
                     >
@@ -768,7 +787,7 @@ const UpdateLaboratory = () => {
 
                     <Form.Group
                       as={Col}
-                      md="3"
+                      md="2"
                       controlId="lab_powder_fat_layer"
                       className="mb-2"
                     >

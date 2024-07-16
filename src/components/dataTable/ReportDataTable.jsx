@@ -79,6 +79,7 @@ const ReportDataTable = ({ data }) => {
             <th>Inlet temp</th>
             <th>Outlet temp</th>
             <th>Pressure pump</th>
+            <th className="daily-summery-bg-purple">Milk powder pH</th>
             <th className="daily-summery-bg-purple">Moisture</th>
             <th className="daily-summery-bg-purple">Fat</th>
             <th className="daily-summery-bg-purple">Fat layer</th>
@@ -187,6 +188,7 @@ const ReportDataTable = ({ data }) => {
               <td>{item.sd_inlet_temp}&deg;C</td>
               <td>{item.sd_outlet_temp}&deg;C</td>
               <td>{item.mixing_pressure_pump_value}MPa</td>
+              <td>{item.lab_powder_ph}</td>
               <td>{item.lab_powder_moisture}%</td>
               <td>{item.lab_powder_fat}</td>
               <td>{item.lab_powder_fat_layer}cm</td>
