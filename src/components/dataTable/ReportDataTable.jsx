@@ -28,7 +28,9 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={2} className="text-center daily-summery-bg-red">
               Batch number
             </th>
-            <th colSpan={7} className="daily-summery-bg-red"></th>
+            <th colSpan={7} className="text-center daily-summery-bg-red">
+              Wet
+            </th>
             <th colSpan={6} className="text-center daily-summery-bg-blue">
               Raw milk
             </th>
@@ -36,8 +38,10 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={6} className="text-center daily-summery-bg-green">
               Mix milk
             </th>
-            <th colSpan={11}></th>
-            <th colSpan={9} className="text-center daily-summery-bg-purple">
+            <th colSpan={11} className="text-center">
+              Spray dryer
+            </th>
+            <th colSpan={11} className="text-center daily-summery-bg-purple">
               Milk powder
             </th>
           </tr>
@@ -84,6 +88,7 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-purple">Fat</th>
             <th className="daily-summery-bg-purple">Fat layer</th>
             <th className="daily-summery-bg-purple">Time</th>
+            <th className="daily-summery-bg-purple">Bulk density</th>
             <th className="daily-summery-bg-purple">Taste</th>
             <th className="daily-summery-bg-purple">Color</th>
             <th className="daily-summery-bg-purple">Odor</th>
@@ -193,6 +198,7 @@ const ReportDataTable = ({ data }) => {
               <td>{item.lab_powder_fat}</td>
               <td>{item.lab_powder_fat_layer}cm</td>
               <td>{item.lab_powder_fat_layer_time}min</td>
+              <td>{item.lab_powder_bulk_density}</td>
               <td>
                 {item.lab_powder_taste ? (
                   <CheckIcon className="text-success" />

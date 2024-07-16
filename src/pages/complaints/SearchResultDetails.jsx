@@ -175,7 +175,7 @@ const SearchResultDetails = () => {
                         {packingLineData.packing_type === "packing_type_20" && (
                           <div className="col-sm-6 col-md-3">
                             <div className="d-flex justify-content-between">
-                              <h6>Bag number range</h6>
+                              <h6>Time range</h6>
                               <p className="text-light-blue">
                                 {
                                   packingLineData.packing_packet_time_range_start

@@ -53,13 +53,14 @@ const NewMixing = () => {
   const navigate = useNavigate();
   const { location } = useParams();
 
-  const currentDate = new Date(ongoingData.date);
+  const currentDate = new Date(ongoingData?.date);
   const year = ("" + currentDate.getFullYear()).substring(2);
   const month = currentDate.getMonth() + 1;
   const monthStr = month < 10 ? "0" + month : month;
   const date = currentDate.getDate();
   const dateStr = date < 10 ? "0" + date : date;
 
+  // TODO: Re-check this function
   const handleChangeBatchNumber = (e) => {
     setBatchNumber(Number(e.target.value));
 
@@ -239,7 +240,7 @@ const NewMixing = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          where("date", "==", ongoingData.date),
+          where("date", "==", ongoingData?.date),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -260,7 +261,7 @@ const NewMixing = () => {
     };
 
     fetchSubFormData();
-  }, [ongoingData.date]);
+  }, [ongoingData?.date]);
 
   return (
     <>

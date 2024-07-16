@@ -11,7 +11,7 @@ const Footer = () => {
           </strong>
           All Rights Reserved{" "}
           <span className="ms-3" style={{ color: "#ffffff4d" }}>
-            v2.3.8
+            v2.3.9
           </span>
         </p>
       </div>
