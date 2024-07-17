@@ -301,7 +301,7 @@ const PackingLines = () => {
                           <Form.Control
                             type="text"
                             disabled
-                            className="customInput disabled"
+                            className="customInput text-capitalize disabled"
                             defaultValue={data.order_name}
                           />
                         </Form.Group>
@@ -315,7 +315,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Sd 03/04 bag number(s)
+                            Sd 03 | 04 bag number(s)
                           </Form.Label>
                           <Form.Control
                             type="text"
