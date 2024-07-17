@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Figure, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Figure, Form, InputGroup, Row, Spinner } from "react-bootstrap";
 import {
   addDoc,
   collection,
@@ -151,7 +151,7 @@ const PackingLines = () => {
                 <div className="col-md subFormParent">
                   <Form onSubmit={handleSearch}>
                     <Row>
-                      <Form.Group as={Col} md="4" controlId="batch_code">
+                      <Form.Group as={Col} md="3" controlId="batch_code">
                         <Form.Label className="fw-bold">Batch code</Form.Label>
                         <Form.Control
                           type="text"
@@ -180,7 +180,7 @@ const PackingLines = () => {
                         </span>
                       )}
 
-                      <Form.Group as={Col} md="4">
+                      <Form.Group as={Col} md="2">
                         <div className="mt-4">
                           <Form.Label className="fw-bold">
                             Select type
@@ -203,6 +203,47 @@ const PackingLines = () => {
                             onChange={handleRadioButtonChange}
                           />
                         </div>
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        controlId="packing_powder_fat"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Fat</Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="customInput"
+                          onChange={handleChange}
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        controlId="packing_powder_fat_layer"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Fat layer</Form.Label>
+                        <InputGroup>
+                          <Form.Control
+                            type="number"
+                            aria-label="fat layer"
+                            aria-describedby="addon"
+                            step=".01"
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                          <InputGroup.Text
+                            id="addon"
+                            style={{
+                              borderTopRightRadius: "0.25rem",
+                              borderBottomRightRadius: "0.25rem",
+                              color: "#0d1b2a",
+                            }}
+                          >
+                            cm
+                          </InputGroup.Text>
+                        </InputGroup>
                       </Form.Group>
                     </Row>
                   </Form>
@@ -274,7 +315,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Bag number(s)
+                            Sd 03/04 bag number(s)
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -411,6 +452,23 @@ const PackingLines = () => {
                           <Form.Control
                             type="number"
                             required
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
+                      </Row>
+
+                      <Row>
+                        <Form.Group
+                          as={Col}
+                          md="12"
+                          controlId="packing_remarks"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">Remarks</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={4}
                             className="customInput"
                             onChange={handleChange}
                           />

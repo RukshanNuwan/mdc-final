@@ -175,7 +175,7 @@ const SearchResultDetails = () => {
                         {packingLineData.packing_type === "packing_type_20" && (
                           <div className="col-sm-6 col-md-3">
                             <div className="d-flex justify-content-between">
-                              <h6>Bag number range</h6>
+                              <h6>Time range</h6>
                               <p className="text-light-blue">
                                 {
                                   packingLineData.packing_packet_time_range_start
@@ -852,11 +852,11 @@ const SearchResultDetails = () => {
                           Milk powder
                         </span>
 
-                        <div className="col-sm-4 col-md mt-2">
+                        <div className="col-sm-4 col-md mt-sm-2">
                           <div className="d-flex justify-content-between">
-                            <h6>Fat</h6>
+                            <h6>pH</h6>
                             <p className="text-light-blue">
-                              {productionData.lab_powder_fat}
+                              {productionData.lab_powder_ph}
                             </p>
                           </div>
                         </div>
@@ -866,6 +866,15 @@ const SearchResultDetails = () => {
                             <h6>Moisture</h6>
                             <p className="text-light-blue">
                               {productionData.lab_powder_moisture}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-4 col-md mt-2">
+                          <div className="d-flex justify-content-between">
+                            <h6>Fat</h6>
+                            <p className="text-light-blue">
+                              {productionData.lab_powder_fat}
                             </p>
                           </div>
                         </div>

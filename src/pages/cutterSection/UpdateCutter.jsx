@@ -196,7 +196,7 @@ const UpdateCutter = () => {
                   <Row>
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="cutter_heat_valve"
                       className="mb-2"
                     >
@@ -212,7 +212,7 @@ const UpdateCutter = () => {
 
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="cutter_expeller_start_time"
                       className="mb-2"
                     >
@@ -233,7 +233,7 @@ const UpdateCutter = () => {
                     {/* TODO: this field can be updated after added (status = completed) */}
                     <Form.Group
                       as={Col}
-                      md="4"
+                      md="3"
                       controlId="location"
                       className="mb-2"
                     >
@@ -246,6 +246,25 @@ const UpdateCutter = () => {
                         }
                       />
                     </Form.Group>
+
+                    {state.location && state.location === "araliya_kele" && (
+                      <Form.Group
+                        as={Col}
+                        md="3"
+                        controlId="cutter_bowser_load_time"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">
+                          Bowser load time
+                        </Form.Label>
+                        <Form.Control
+                          type="time"
+                          disabled
+                          className="customInput disabled"
+                          defaultValue={state.cutter_bowser_load_time}
+                        />
+                      </Form.Group>
+                    )}
                   </Row>
 
                   <hr className="custom-hr-yellow" />

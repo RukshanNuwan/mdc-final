@@ -590,7 +590,7 @@ const NewLaboratory = () => {
                       </Row>
                     </div>
 
-                    <Row className="mb-5">
+                    <Row>
                       <Form.Group
                         as={Col}
                         md="4"
