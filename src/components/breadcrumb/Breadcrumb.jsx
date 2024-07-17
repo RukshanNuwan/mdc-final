@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import './breadcrumb.css';
+import "./breadcrumb.css";
 
 const Breadcrumb = ({ title }) => {
   return (

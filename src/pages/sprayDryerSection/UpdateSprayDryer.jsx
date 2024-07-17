@@ -310,9 +310,11 @@ const UpdateSprayDryer = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled
+                        disabled={state.sd_status === "ongoing"}
                         defaultValue={state.sd_powder_spray_start_time}
-                        className="customInput disabled"
+                        className={`customInput ${
+                          state.sd_status === "ongoing" && "disabled"
+                        }`}
                       />
                     </Form.Group>
                   </Row>
@@ -683,7 +685,7 @@ const UpdateSprayDryer = () => {
                     </Form.Group>
                   </Row>
 
-                  <Row className="mb-5">
+                  <Row>
                     <Form.Group
                       as={Col}
                       md="12"

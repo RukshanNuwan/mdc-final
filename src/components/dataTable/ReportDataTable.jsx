@@ -164,7 +164,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.cutter_bowser_load_time}</td>
                 <td>{item.sd_4_bowser_in_time}</td>
                 <td>
-                  {timeGap.hours}:{timeGap.minutes}
+                  {timeGap?.hours}:{timeGap?.minutes}
                 </td>
                 <td>{item.sd_4_batches_in_bowser}</td>
                 <td>
