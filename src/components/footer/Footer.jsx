@@ -1,3 +1,4 @@
+import Version from "../version/Version";
 import "./footer.css";
 
 const Footer = () => {
@@ -9,10 +10,7 @@ const Footer = () => {
           <strong>
             <span>Manchiee De Coco Products. </span>
           </strong>
-          All Rights Reserved{" "}
-          <span className="ms-3" style={{ color: "#ffffff4d" }}>
-            v2.4.1
-          </span>
+          All Rights Reserved <Version />
         </p>
       </div>
     </footer>
