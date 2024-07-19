@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Table } from "react-bootstrap";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,16 +9,19 @@ import "./dataTable.css";
 const ReportDataTable = ({ data }) => {
   const tableRef = useRef(null);
 
-  const calculateDelayTimeInBowser = (startTime, endTime) => {
-    const start = new Date(startTime);
-    const end = new Date(endTime);
+  const calculateTimeDifference = (startTime, endTime) => {
+    if (startTime && endTime) {
+      const [hours1, minutes1] = startTime?.split(":").map(Number);
+      const [hours2, minutes2] = endTime?.split(":").map(Number);
 
-    const differenceInMilliseconds = Math.abs(end - start);
+      const totalMinutes1 = hours1 * 60 + minutes1;
+      const totalMinutes2 = hours2 * 60 + minutes2;
+      const diffInMinutes = Math.abs(totalMinutes2 - totalMinutes1);
+      const hours = Math.floor(diffInMinutes / 60);
+      const minutes = diffInMinutes % 60;
 
-    const hours = Math.floor(differenceInMilliseconds / (1000 * 60 * 60));
-    const minutes = Math.floor((differenceInMilliseconds / (1000 * 60)) % 60);
-
-    return { hours, minutes };
+      return `${hours}h ${minutes}m`;
+    }
   };
 
   return (
@@ -113,11 +116,6 @@ const ReportDataTable = ({ data }) => {
 
         <tbody>
           {data?.map((item, index) => {
-            const timeGap = calculateDelayTimeInBowser(
-              item.cutter_bowser_load_time,
-              item.sd_4_bowser_in_time
-            );
-
             return (
               <tr key={index} className="text-center text-capitalize">
                 <td>{item.primary_batch_number}</td>
@@ -163,9 +161,16 @@ const ReportDataTable = ({ data }) => {
                 </td>
                 <td>{item.cutter_bowser_load_time}</td>
                 <td>{item.sd_4_bowser_in_time}</td>
-                <td>
-                  {timeGap?.hours}:{timeGap?.minutes}
-                </td>
+                {item.location === "araliya_kele" ? (
+                  <td>
+                    {calculateTimeDifference(
+                      item?.cutter_bowser_load_time,
+                      item?.sd_4_bowser_in_time
+                    )}
+                  </td>
+                ) : (
+                  <td>-</td>
+                )}
                 <td>{item.sd_4_batches_in_bowser}</td>
                 <td>
                   {item.sd_4_is_bowser_filling_hole_cleaned ? (
