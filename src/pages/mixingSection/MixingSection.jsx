@@ -27,7 +27,7 @@ const MixingSection = () => {
   };
 
   useEffect(() => {
-    const fetchLatestData = async () => {
+    const fetchBreakdownData = async () => {
       try {
         const q = query(
           collection(db, "breakdowns"),
@@ -44,7 +44,7 @@ const MixingSection = () => {
       }
     };
 
-    fetchLatestData();
+    fetchBreakdownData();
 
     setIsBreakdown(ongoingBreakdown?.status === "ongoing");
   }, [ongoingBreakdown?.status]);

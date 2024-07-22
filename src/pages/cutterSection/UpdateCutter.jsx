@@ -230,7 +230,6 @@ const UpdateCutter = () => {
                       />
                     </Form.Group>
 
-                    {/* TODO: this field can be updated after added (status = completed) */}
                     <Form.Group
                       as={Col}
                       md="3"
@@ -288,7 +287,6 @@ const UpdateCutter = () => {
                       />
                     </Form.Group>
 
-                    {/* TODO: mewa status = complete unata passe update wenawanm meke depend wena mixing data update karanna wenw */}
                     <Form.Group
                       as={Col}
                       md="4"
@@ -310,7 +308,6 @@ const UpdateCutter = () => {
                       />
                     </Form.Group>
 
-                    {/* TODO: mewa status = complete unata passe update wenawanm meke depend wena mixing data update karanna wenw */}
                     <Form.Group
                       as={Col}
                       md="4"

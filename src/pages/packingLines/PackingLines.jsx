@@ -9,6 +9,8 @@ import {
   where,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
@@ -23,6 +25,18 @@ const PackingLines = () => {
   const [updatedData, setUpdatedData] = useState({});
   const [packingType, setPackingType] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+
+  // TODO: Calculate completed powder quantity as percentage of total and show it in circular progress bar
+  const [totalQuantity, setTotalQuantity] = useState(2000);
+  const [currentQuantity, setCurrentQuantity] = useState(200);
+
+  
+
+  let percentage = 0;
+
+  if (totalQuantity > 0 && currentQuantity < totalQuantity) {
+    percentage = (currentQuantity / totalQuantity) * 100;
+  }
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -305,6 +319,31 @@ const PackingLines = () => {
                             defaultValue={data.order_name}
                           />
                         </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          controlId="order_name"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold" />
+                          <div
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              color: "green",
+                            }}
+                          >
+                            <CircularProgressbar
+                              value={percentage}
+                              text={`${percentage}%`}
+                              styles={{
+                                path: { stroke: "#129700" },
+                                text: { fontSize: "25px" },
+                              }}
+                            />
+                          </div>
+                        </Form.Group>
                       </Row>
 
                       <Row>
@@ -457,6 +496,61 @@ const PackingLines = () => {
                           />
                         </Form.Group>
                       </Row>
+
+                      <div className="border border-1 border-white rounded py-2 px-4 mb-2">
+                        <Row>
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="packing_powder_collecting_qc_name"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Powder collecting QC name
+                            </Form.Label>
+                            <Form.Control
+                              type="number"
+                              required
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="packing_carton_packing_qc_name"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Carton packing QC name
+                            </Form.Label>
+                            <Form.Control
+                              type="number"
+                              required
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="packing_line_supervisor_name"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Line supervisor name
+                            </Form.Label>
+                            <Form.Control
+                              type="number"
+                              required
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+                        </Row>
+                      </div>
 
                       <Row>
                         <Form.Group
