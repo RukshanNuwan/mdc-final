@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   collection,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -25,10 +26,11 @@ const Dashboard = () => {
   const [sd3Status, setSd3Status] = useState(false);
   const [sd4Status, setSd4Status] = useState(false);
   const [breakdowns, setBreakdowns] = useState([]);
+  const [date, setDate] = useState();
 
   // TODO: Add MDC & Araliya Kele Breakdown
-  const [isSd3Breakdown, setIsSd3Breaksown] = useState(false);
-  const [isSd4Breakdown, setIsAraliyaKeleBreaksown] = useState(false);
+  const [isSd3Breakdown, setIsSd3Breakdown] = useState(false);
+  const [isSd4Breakdown, setIsSd4Breakdown] = useState(false);
 
   const currentDate = useCurrentDate();
 
@@ -52,7 +54,7 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          where("date", "==", currentDate),
+          where("date", "==", date),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -73,7 +75,7 @@ const Dashboard = () => {
     };
 
     fetchId();
-  }, [currentDate]);
+  }, [date]);
 
   useEffect(() => {
     const handleStatus = () => {
@@ -86,6 +88,9 @@ const Dashboard = () => {
     handleStatus();
   }, [sd3Data?.sd_status, sd4Data?.sd_status]);
 
+  // console.log("sd3Data -> ", sd3Data);
+  // console.log("sd4Data -> ", sd4Data);
+
   useEffect(() => {
     const fetchCurrentSdData = async () => {
       try {
@@ -93,7 +98,7 @@ const Dashboard = () => {
           collection(db, "production_data"),
           where("sd_status", "==", "updated"),
           where("location", "==", "mdc"),
-          where("date", "==", currentDate),
+          where("date", "==", date),
           orderBy("wet_added_at", "desc"),
           limit(1)
         );
@@ -115,7 +120,7 @@ const Dashboard = () => {
     };
 
     fetchCurrentSdData();
-  }, [currentDate]);
+  }, [date]);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
@@ -124,7 +129,7 @@ const Dashboard = () => {
           collection(db, "production_data"),
           where("sd_status", "==", "updated"),
           where("location", "==", "araliya_kele"),
-          where("date", "==", currentDate),
+          where("date", "==", date),
           orderBy("wet_added_at", "desc"),
           limit(1)
         );
@@ -146,7 +151,7 @@ const Dashboard = () => {
     };
 
     fetchCurrentSdData();
-  }, [currentDate]);
+  }, [date]);
 
   useEffect(() => {
     const fetchSd3LabData = async () => {
@@ -154,7 +159,7 @@ const Dashboard = () => {
         const q = query(
           collection(db, "production_data"),
           where("lab_status", "==", "completed"),
-          where("date", "==", dailyProductionData.date),
+          where("date", "==", date),
           where("location", "==", "mdc"),
           orderBy("wet_added_at", "desc"),
           limit(1)
@@ -180,7 +185,7 @@ const Dashboard = () => {
         const q = query(
           collection(db, "production_data"),
           where("lab_status", "==", "completed"),
-          where("date", "==", dailyProductionData.date),
+          where("date", "==", date),
           where("location", "==", "araliya_kele"),
           orderBy("wet_added_at", "desc"),
           limit(1)
@@ -203,14 +208,14 @@ const Dashboard = () => {
 
     fetchSd3LabData();
     fetchSd4LabData();
-  }, [dailyProductionData?.date]);
+  }, [date]);
 
   useEffect(() => {
     const fetchBreakdowns = async () => {
       try {
         const q = query(
           collection(db, "breakdowns"),
-          where("date", "==", currentDate),
+          where("date", "==", date),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -230,7 +235,29 @@ const Dashboard = () => {
     };
 
     fetchBreakdowns();
-  }, [currentDate]);
+  }, [date]);
+
+  useEffect(() => {
+    const fetchDate = async () => {
+      try {
+        const q = query(
+          collection(db, "production_data"),
+          where("primary_batch_number", "==", 1),
+          orderBy("wet_added_at", "desc"),
+          limit(1)
+        );
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          setDate(doc.data().date);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDate();
+  }, []);
 
   return (
     <section>

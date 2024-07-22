@@ -43,21 +43,21 @@ const packingLinesNavList = [
 const otherNavList = [
   {
     _id: 1,
-    name: 'Orders',
-    icon: 'bi bi-truck',
-    path: '/orders',
-  },
-  {
-    _id: 2,
     name: "Reports",
     icon: "bi bi-file-text",
     path: "/reports",
   },
   {
-    _id: 3,
+    _id: 2,
     name: "Back tracing",
     icon: "bi bi-sign-turn-left",
     path: "/complaints",
+  },
+  {
+    _id: 3,
+    name: "Orders",
+    icon: "bi bi-truck",
+    path: "/orders",
   },
 ];
 
