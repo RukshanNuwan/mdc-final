@@ -3,13 +3,12 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import InputGroup from "react-bootstrap/InputGroup";
-import CheckIcon from "@mui/icons-material/Check";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {
   collection,
   doc,
-  onSnapshot,
+  getDocs,
   query,
   serverTimestamp,
   setDoc,
@@ -25,64 +24,58 @@ import useGetCurrentDate from "../../hooks/useCurrentDate";
 import { db } from "../../config/firebase.config";
 
 const Orders = () => {
-  const [mdcData, setMdcData] = useState({});
-  const [araliyaKeleData, setAraliyaKeleData] = useState({});
-  const [mdcRecipeType, setMdcRecipeType] = useState("conventional");
-  const [mdcOrderId, setMdcOrderId] = useState();
-  const [araliyaKeleOrderId, setAraliyaKeleOrderId] = useState();
-  const [retrieveData, setRetrieveData] = useState([]);
+  const [sd3Data, setSd3Data] = useState({});
+  const [sd4Data, setSd4Data] = useState({});
+  const [sd3RecipeType, setSd3RecipeType] = useState("conventional");
+  const [sd3OrderId, setSd3OrderId] = useState();
+  const [sd4OrderId, setSd4OrderId] = useState();
+  const [ordersData, setOrdersData] = useState([]);
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  // const loggedInUser = JSON.parse(localStorage.getItem("user"));
   const currentDate = useGetCurrentDate();
 
-  const araliyaKeleLocation = "araliya_kele";
-  const mdcLocation = "mdc";
   const status = "ongoing";
-  const araliyaKeleRecipeType = "organic";
+  const sd4RecipeType = "organic";
 
-  const mdcUpdateAt = retrieveData[1]?.updatedAt?.toDate().toLocaleString();
-  const mdcUpdateBy = retrieveData[1]?.updatedBy?.displayName;
-  const araliyaKeleUpdateAt = retrieveData[0]?.updatedAt
-    ?.toDate()
-    .toLocaleString();
-  const araliyaKeleUpdateBy = retrieveData[0]?.updatedBy?.displayName;
+  const sd3UpdateAt = ordersData[1]?.updatedAt?.toDate().toLocaleString();
+  const sd4UpdateAt = ordersData[0]?.updatedAt?.toDate().toLocaleString();
 
-  const handleMdcChange = (e) => {
+  const handleSd3Change = (e) => {
     const id = e.target.id;
     const value = e.target.value;
 
-    setMdcData({
-      ...mdcData,
-      date: currentDate,
-      location: mdcLocation,
-      recipeType: mdcRecipeType,
-      status,
-      updatedBy: loggedInUser,
+    setSd3Data({
+      ...sd3Data,
       [id]: value,
+      date: currentDate,
+      location: "mdc",
+      recipeType: sd3RecipeType,
+      status,
+      // updatedBy: loggedInUser,
     });
   };
 
-  const handleAraliyaKeleChange = (e) => {
+  const handleSd4Change = (e) => {
     const id = e.target.id;
     const value = e.target.value;
 
-    setAraliyaKeleData({
-      ...araliyaKeleData,
-      date: currentDate,
-      location: araliyaKeleLocation,
-      recipeType: araliyaKeleRecipeType,
-      status,
-      updatedBy: loggedInUser,
+    setSd4Data({
+      ...sd4Data,
       [id]: value,
+      date: currentDate,
+      location: "araliya_kele",
+      recipeType: sd4RecipeType,
+      status,
+      // updatedBy: loggedInUser,
     });
   };
 
-  const handleMdcSubmit = async (e) => {
+  const handleSd3Submit = async (e) => {
     e.preventDefault();
 
     try {
-      await setDoc(doc(db, "orders", mdcOrderId), {
-        ...mdcData,
+      await setDoc(doc(db, "orders", sd3OrderId), {
+        ...sd3Data,
         updatedAt: serverTimestamp(),
       });
 
@@ -92,12 +85,12 @@ const Orders = () => {
     }
   };
 
-  const handleAraliyaKeleSubmit = async (e) => {
+  const handleSd4Submit = async (e) => {
     e.preventDefault();
 
     try {
-      await setDoc(doc(db, "orders", araliyaKeleOrderId), {
-        ...araliyaKeleData,
+      await setDoc(doc(db, "orders", sd4OrderId), {
+        ...sd4Data,
         updatedAt: serverTimestamp(),
       });
 
@@ -111,19 +104,17 @@ const Orders = () => {
     const fetchDataFromCollection = async () => {
       try {
         const q = query(collection(db, "orders"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
           let list = [];
-          querySnapshot.forEach((doc) => {
-            list.push({ id: doc.id, ...doc.data() });
-          });
-          setAraliyaKeleOrderId(list[0]?.id);
-          setMdcOrderId(list[1]?.id);
-          setRetrieveData(list);
-        });
+          list.push({ id: doc.id, ...doc.data() });
 
-        return () => {
-          unsubscribe();
-        };
+          console.log(list);
+
+          setSd3OrderId(list[0]?.id);
+          setSd4OrderId(list[1]?.id);
+          setOrdersData(list);
+        });
       } catch (error) {
         console.log(error);
       }
@@ -148,7 +139,7 @@ const Orders = () => {
               <div className="mb-2">
                 <Link
                   to="/"
-                  className="d-flex align-items-center customClearBtn"
+                  className="d-flex align-items-center customBackBtn"
                 >
                   <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
@@ -158,14 +149,14 @@ const Orders = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="card-body">
-                      <p className="display-6">SD 03</p>
+                      <p className="display-6 text-white">SD - 03</p>
 
-                      <Form onSubmit={handleMdcSubmit}>
+                      <Form onSubmit={handleSd3Submit}>
                         <Row>
                           <Form.Group
                             as={Col}
                             md="6"
-                            controlId="mdcType"
+                            controlId="sd3RecipeType"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
@@ -174,8 +165,8 @@ const Orders = () => {
                             <Form.Select
                               required
                               className="customInput"
-                              defaultValue={mdcRecipeType}
-                              onChange={(e) => setMdcRecipeType(e.target.value)}
+                              defaultValue={sd3RecipeType}
+                              onChange={(e) => setSd3RecipeType(e.target.value)}
                             >
                               <option value="conventional">
                                 Conventional Recipe
@@ -187,7 +178,7 @@ const Orders = () => {
                           <Form.Group
                             as={Col}
                             md="6"
-                            controlId="mdcRecipeName"
+                            controlId="sd3RecipeName"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
@@ -197,7 +188,7 @@ const Orders = () => {
                               required
                               className="customInput"
                               type="text"
-                              onChange={handleMdcChange}
+                              onChange={handleSd3Change}
                             />
                           </Form.Group>
                         </Row>
@@ -206,11 +197,11 @@ const Orders = () => {
                           <Form.Group
                             as={Col}
                             md="6"
-                            controlId="mdcOrderQuantity"
+                            controlId="sd3TotalOrderQuantity"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Order quantity
+                              Total order quantity
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
@@ -219,13 +210,13 @@ const Orders = () => {
                                 aria-describedby="addon"
                                 required
                                 className="customInput"
-                                onChange={handleMdcChange}
+                                onChange={handleSd3Change}
                               />
                               <InputGroup.Text
                                 id="addon"
                                 style={{
-                                  borderTopRightRadius: "0.5rem",
-                                  borderBottomRightRadius: "0.5rem",
+                                  borderTopRightRadius: "0.25rem",
+                                  borderBottomRightRadius: "0.25rem",
                                   fontWeight: "bold",
                                 }}
                               >
@@ -241,7 +232,7 @@ const Orders = () => {
                           </Col>
                           <Col className="d-flex col-md-6">
                             <p className="bodyText fw-bold text-capitalize">
-                              {retrieveData[1]?.mdcRecipeName}
+                              {ordersData[1]?.mdcRecipeName}
                             </p>
                           </Col>
                         </Row>
@@ -252,7 +243,7 @@ const Orders = () => {
                           </Col>
                           <Col className="d-flex col-md-6">
                             <p className="bodyText fw-bold">
-                              {retrieveData[1]?.mdcOrderQuantity}kg
+                              {ordersData[1]?.mdcOrderQuantity}kg
                             </p>
                           </Col>
                         </Row>
@@ -263,7 +254,6 @@ const Orders = () => {
                               type="submit"
                               className="btn-submit customBtn"
                             >
-                              <CheckIcon className="me-2" />
                               Submit
                             </button>
                             <button
@@ -276,10 +266,10 @@ const Orders = () => {
                         </Row>
 
                         <div className="d-flex flex-column align-items-end mt-3">
-                          <p className="smallText">
-                            Last updated at {mdcUpdateAt}
+                          <p className="smallText text-white">
+                            Last updated at {sd3UpdateAt}
                           </p>
-                          <p className="smallText">by {mdcUpdateBy}</p>
+                          {/* <p className="smallText">by {mdcUpdateBy}</p> */}
                         </div>
                       </Form>
                     </div>
@@ -287,9 +277,9 @@ const Orders = () => {
 
                   <div className="col-md-6">
                     <div className="card-body">
-                      <p className="display-6">Araliya kele</p>
+                      <p className="display-6 text-white">SD - 04</p>
 
-                      <Form onSubmit={handleAraliyaKeleSubmit}>
+                      <Form onSubmit={handleSd4Submit}>
                         <Row>
                           <Form.Group
                             as={Col}
@@ -303,7 +293,7 @@ const Orders = () => {
                             <Form.Select
                               disabled
                               className="customInput"
-                              defaultValue={araliyaKeleRecipeType}
+                              defaultValue={sd4RecipeType}
                             >
                               <option value="organic">Organic Recipe</option>
                             </Form.Select>
@@ -322,7 +312,7 @@ const Orders = () => {
                               required
                               className="customInput"
                               type="text"
-                              onChange={handleAraliyaKeleChange}
+                              onChange={handleSd4Change}
                             />
                           </Form.Group>
                         </Row>
@@ -335,7 +325,7 @@ const Orders = () => {
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Order quantity
+                              Total order quantity
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
@@ -344,13 +334,13 @@ const Orders = () => {
                                 aria-describedby="addon"
                                 required
                                 className="customInput"
-                                onChange={handleAraliyaKeleChange}
+                                onChange={handleSd4Change}
                               />
                               <InputGroup.Text
                                 id="addon"
                                 style={{
-                                  borderTopRightRadius: "0.5rem",
-                                  borderBottomRightRadius: "0.5rem",
+                                  borderTopRightRadius: "0.25rem",
+                                  borderBottomRightRadius: "0.25rem",
                                   fontWeight: "bold",
                                 }}
                               >
@@ -366,7 +356,7 @@ const Orders = () => {
                           </Col>
                           <Col className="d-flex col-md-6">
                             <p className="bodyText fw-bold text-capitalize">
-                              {retrieveData[0]?.araliyaKeleRecipeName}
+                              {ordersData[0]?.araliyaKeleRecipeName}
                             </p>
                           </Col>
                         </Row>
@@ -377,7 +367,7 @@ const Orders = () => {
                           </Col>
                           <Col className="d-flex col-md-6">
                             <p className="bodyText fw-bold">
-                              {retrieveData[0]?.araliyaKeleOrderQuantity}kg
+                              {ordersData[0]?.araliyaKeleOrderQuantity}kg
                             </p>
                           </Col>
                         </Row>
@@ -388,7 +378,6 @@ const Orders = () => {
                               type="submit"
                               className="btn-submit customBtn"
                             >
-                              <CheckIcon className="me-2" />
                               Submit
                             </button>
                             <button
@@ -401,10 +390,10 @@ const Orders = () => {
                         </Row>
 
                         <div className="d-flex flex-column align-items-end mt-3">
-                          <p className="smallText">
-                            Last updated at {araliyaKeleUpdateAt}
+                          <p className="smallText text-white">
+                            Last updated at {sd4UpdateAt}
                           </p>
-                          <p className="smallText">by {araliyaKeleUpdateBy}</p>
+                          {/* <p className="smallText">by {araliyaKeleUpdateBy}</p> */}
                         </div>
                       </Form>
                     </div>

@@ -24,7 +24,7 @@ const CutterSection = () => {
   };
 
   useEffect(() => {
-    const fetchLatestData = async () => {
+    const fetchBreakdownData = async () => {
       try {
         const q = query(
           collection(db, "breakdowns"),
@@ -41,7 +41,7 @@ const CutterSection = () => {
       }
     };
 
-    fetchLatestData();
+    fetchBreakdownData();
 
     setIsBreakdown(ongoingBreakdown?.status === "ongoing");
   }, [ongoingBreakdown?.status]);

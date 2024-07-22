@@ -694,8 +694,8 @@ const UpdateLaboratory = () => {
                         <InputGroup.Text
                           id="addon"
                           style={{
-                            borderTopRightRadius: "0.5rem",
-                            borderBottomRightRadius: "0.5rem",
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
                             fontWeight: "bold",
                           }}
                         >

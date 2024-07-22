@@ -96,6 +96,7 @@ const ReportDataTable = ({ data }) => {
             <th>Feed start time</th>
             <th>Powder spray start time</th>
             <th>Powder spray finish time</th>
+            <th>Powder quantity</th>
             <th>RP</th>
             <th>Inlet temp</th>
             <th>Outlet temp</th>
@@ -218,6 +219,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.mixing_feed_start_time}</td>
                 <td>{item.sd_powder_spray_start_time}</td>
                 <td>{item.sd_batch_finish_time}</td>
+                <td>{item.sd_total_powder_quantity}kg</td>
                 <td>{item.sd_rp_quantity}kg</td>
                 <td>{item.sd_inlet_temp}&deg;C</td>
                 <td>{item.sd_outlet_temp}&deg;C</td>
