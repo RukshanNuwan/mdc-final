@@ -46,14 +46,17 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={7} className="text-center daily-summery-bg-red">
               Wet
             </th>
+            <th colSpan={3} className="text-center">
+              Cutter
+            </th>
             <th colSpan={6} className="text-center daily-summery-bg-blue">
               Raw milk
             </th>
-            <th colSpan={5}></th>
+            <th colSpan={7}></th>
             <th colSpan={6} className="text-center daily-summery-bg-green">
               Mix milk
             </th>
-            <th colSpan={11} className="text-center">
+            <th colSpan={13} className="text-center">
               Spray dryer
             </th>
             <th colSpan={11} className="text-center daily-summery-bg-purple">
@@ -70,6 +73,9 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-red">Cutter start time</th>
             <th className="daily-summery-bg-red">Milk weight</th>
             <th className="daily-summery-bg-red">Efficiency</th>
+            <th>Expeller finish time</th>
+            <th>Process time</th>
+            <th>Delay time</th>
             <th className="daily-summery-bg-blue">Raw pH</th>
             <th className="daily-summery-bg-blue">Raw TSS</th>
             <th className="daily-summery-bg-blue">Raw fat</th>
@@ -101,6 +107,7 @@ const ReportDataTable = ({ data }) => {
             <th>Inlet temp</th>
             <th>Outlet temp</th>
             <th>Pressure pump</th>
+            <th>Nozzle size</th>
             <th className="daily-summery-bg-purple">Milk powder pH</th>
             <th className="daily-summery-bg-purple">Moisture</th>
             <th className="daily-summery-bg-purple">Fat</th>
@@ -136,6 +143,17 @@ const ReportDataTable = ({ data }) => {
                 >
                   {item.mixing_milk_recovery}%
                 </td>
+                <td>{item.expeller_finish_time}</td>
+                <td>
+                  {item.cutter_expeller_process_time.hours < 10
+                    ? `0${item.cutter_expeller_process_time.hours}`
+                    : item.cutter_expeller_process_time.hours}
+                  :
+                  {item.cutter_expeller_process_time.minutes < 10
+                    ? `0${item.cutter_expeller_process_time.minutes}`
+                    : item.cutter_expeller_process_time.minutes}
+                </td>
+                <td>{item.cutter_expeller_delay_time}</td>
                 <td>{item.lab_raw_ph}</td>
                 <td>{item.lab_raw_tss}</td>
                 <td>{item.lab_raw_fat}</td>
@@ -224,6 +242,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.sd_inlet_temp}&deg;C</td>
                 <td>{item.sd_outlet_temp}&deg;C</td>
                 <td>{item.mixing_pressure_pump_value}MPa</td>
+                <td>{item.sd_atomizer_size}</td>
                 <td>{item.lab_powder_ph}</td>
                 <td>{item.lab_powder_moisture}%</td>
                 <td>{item.lab_powder_fat}</td>

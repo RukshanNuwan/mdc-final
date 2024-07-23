@@ -289,11 +289,6 @@ const Dashboard = () => {
     handleStatus();
   }, [sd3Data?.sd_status, sd4Data?.sd_status, sd3Data]);
 
-  console.log("sd3Status", sd3Status);
-  console.log("sd4Status", sd4Status);
-  console.log("isSd3Breakdown", isSd3Breakdown);
-  console.log("isSd4Breakdown", isSd4Breakdown);
-
   return (
     <section>
       <div className="dashboardContainer">
