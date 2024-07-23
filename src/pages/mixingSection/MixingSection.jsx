@@ -32,7 +32,8 @@ const MixingSection = () => {
         const q = query(
           collection(db, "breakdowns"),
           where("status", "==", "ongoing"),
-          where("sectionName", "==", "mixing")
+          where("breakdown_section_name", "==", "mixing"),
+          where("location", "==", location)
         );
 
         const querySnapshot = await getDocs(q);
@@ -47,7 +48,7 @@ const MixingSection = () => {
     fetchBreakdownData();
 
     setIsBreakdown(ongoingBreakdown?.status === "ongoing");
-  }, [ongoingBreakdown?.status]);
+  }, [ongoingBreakdown?.status, location]);
 
   return (
     <>

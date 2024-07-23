@@ -32,7 +32,7 @@ const SprayDryerSection = () => {
         const q = query(
           collection(db, "breakdowns"),
           where("status", "==", "ongoing"),
-          where("sectionName", "==", "sd"),
+          where("breakdown_section_name", "==", "sd"),
           where("location", "==", location)
         );
 
