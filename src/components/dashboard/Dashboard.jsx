@@ -15,7 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./dashboard.css";
 import { db } from "../../config/firebase.config";
 import TotalCard from "../card/TotalCard";
-import useCurrentDate from "../../hooks/useCurrentDate";
+import UseCurrentDate from "../../hooks/useCurrentDate";
 
 const Dashboard = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
@@ -27,12 +27,11 @@ const Dashboard = () => {
   const [sd4Status, setSd4Status] = useState(false);
   const [breakdowns, setBreakdowns] = useState([]);
   const [date, setDate] = useState();
-
-  // TODO: Add MDC & Araliya Kele Breakdown
+  const [isCutterBreakdown, setIsCutterBreakdown] = useState(false);
   const [isSd3Breakdown, setIsSd3Breakdown] = useState(false);
   const [isSd4Breakdown, setIsSd4Breakdown] = useState(false);
 
-  const currentDate = useCurrentDate();
+  const currentDate = UseCurrentDate();
 
   const calculateRemainingBatches = (totalBatches) => {
     if (
@@ -76,20 +75,6 @@ const Dashboard = () => {
 
     fetchId();
   }, [date]);
-
-  useEffect(() => {
-    const handleStatus = () => {
-      if (sd3Data?.sd_status === "ongoing" || sd3Data?.sd_status === "updated")
-        setSd3Status(true);
-      if (sd4Data?.sd_status === "ongoing" || sd4Data?.sd_status === "updated")
-        setSd4Status(true);
-    };
-
-    handleStatus();
-  }, [sd3Data?.sd_status, sd4Data?.sd_status]);
-
-  // console.log("sd3Data -> ", sd3Data);
-  // console.log("sd4Data -> ", sd4Data);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
@@ -215,7 +200,8 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "breakdowns"),
-          where("date", "==", date),
+          where("breakdown_date", "==", currentDate),
+          where("status", "==", "ongoing"),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -235,15 +221,45 @@ const Dashboard = () => {
     };
 
     fetchBreakdowns();
-  }, [date]);
+  }, [currentDate]);
+
+  useEffect(() => {
+    if (breakdowns.length > 0) {
+      breakdowns.forEach((breakdown) => {
+        console.log(breakdown);
+        if (breakdown.breakdown_section_name === "cutter") {
+          setIsCutterBreakdown(true);
+        } else {
+          setIsCutterBreakdown(false);
+        }
+
+        if (
+          breakdown.breakdown_section_name === "sd" &&
+          breakdown.location === "mdc"
+        ) {
+          setIsSd3Breakdown(true);
+        } else {
+          setIsSd3Breakdown(false);
+        }
+
+        if (
+          breakdown.breakdown_section_name === "sd" &&
+          breakdown.location === "araliya_kele"
+        ) {
+          setIsSd4Breakdown(true);
+        } else {
+          setIsSd4Breakdown(false);
+        }
+      });
+    }
+  }, [breakdowns]);
 
   useEffect(() => {
     const fetchDate = async () => {
       try {
         const q = query(
-          collection(db, "production_data"),
-          where("primary_batch_number", "==", 1),
-          orderBy("wet_added_at", "desc"),
+          collection(db, "daily_production"),
+          orderBy("timeStamp", "desc"),
           limit(1)
         );
 
@@ -258,6 +274,20 @@ const Dashboard = () => {
 
     fetchDate();
   }, []);
+
+  useEffect(() => {
+    const handleStatus = () => {
+      if (sd3Data?.sd_status && sd3Data?.sd_status !== "completed")
+        setSd3Status(true);
+      else setSd3Status(false);
+
+      if (sd4Data?.sd_status && sd4Data?.sd_status !== "completed")
+        setSd4Status(true);
+      else setSd4Status(false);
+    };
+
+    handleStatus();
+  }, [sd3Data?.sd_status, sd4Data?.sd_status, sd3Data]);
 
   return (
     <section>
@@ -300,7 +330,7 @@ const Dashboard = () => {
                     {dailyProductionData?.totalKernelWeight
                       ? dailyProductionData?.totalKernelWeight
                       : "-"}
-                    kg
+                    Kg
                   </p>
                 </div>
 
@@ -476,9 +506,17 @@ const Dashboard = () => {
 
           <div className="col-md-4 mt-xs-2">
             <div className="sectionContainer">
-              <span className="sectionTitle sectionTitleYellow text-uppercase">
-                Cutter section
-              </span>
+              <div className="d-flex justify-content-between">
+                <span className="sectionTitle sectionTitleYellow text-uppercase">
+                  Cutter section
+                </span>
+
+                <span className={`status ${isCutterBreakdown && "stopped"}`}>
+                  <p className={`${isCutterBreakdown ? "d-block" : "d-none"}`}>
+                    Stopped
+                  </p>
+                </span>
+              </div>
 
               <p className="sectionHeading text-white">Total batch count</p>
 
@@ -674,7 +712,7 @@ const Dashboard = () => {
                     >
                       <div className="d-flex justify-content-between">
                         <p className="fw-bold textLightBlue text-capitalize">
-                          {breakdown.sectionName}{" "}
+                          {breakdown.breakdown_section_name}{" "}
                           {breakdown.location &&
                             ` | ${
                               breakdown.location === "mdc" ? "SD 03" : "SD 04"

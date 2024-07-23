@@ -29,7 +29,7 @@ const CutterSection = () => {
         const q = query(
           collection(db, "breakdowns"),
           where("status", "==", "ongoing"),
-          where("sectionName", "==", "cutter")
+          where("breakdown_section_name", "==", "cutter")
         );
 
         const querySnapshot = await getDocs(q);

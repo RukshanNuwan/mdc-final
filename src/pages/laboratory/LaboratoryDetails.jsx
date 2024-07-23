@@ -95,7 +95,7 @@ const LaboratoryDetails = () => {
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold">
-                            {state?.expected_powder_quantity}kg
+                            {state?.expected_powder_quantity}Kg
                           </p>
                         </div>
                       </div>

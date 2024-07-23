@@ -176,7 +176,7 @@ const WetSection = () => {
                   <div className="d-md-flex flex-md-row-reverse align-items-center subFormWrapper">
                     <div className="col-md-4">
                       <p className="bodyText fw-bold text-white">
-                        {`${receivedData?.totalKernelWeight} kg`}
+                        {`${receivedData?.totalKernelWeight}Kg`}
                       </p>
                       <p className="bodyText text-white">
                         Last updated at{" "}

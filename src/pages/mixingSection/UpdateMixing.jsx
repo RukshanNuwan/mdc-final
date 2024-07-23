@@ -254,7 +254,7 @@ const UpdateMixing = () => {
                             color: "#0d1b2a",
                           }}
                         >
-                          kg
+                          Kg
                         </InputGroup.Text>
                       </InputGroup>
                     </Form.Group>

@@ -85,7 +85,7 @@ const WetDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.wet_kernel_weight}kg
+                            {state?.wet_kernel_weight}Kg
                           </p>
                         </div>
                       </div>

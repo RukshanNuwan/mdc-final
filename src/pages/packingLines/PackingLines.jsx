@@ -392,7 +392,7 @@ const PackingLines = () => {
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Craft bag number
+                              Craft bag code
                             </Form.Label>
                             <Form.Control
                               type="text"
@@ -472,7 +472,7 @@ const PackingLines = () => {
                             Bag numbers range - Start
                           </Form.Label>
                           <Form.Control
-                            type="number"
+                            type="text"
                             required
                             className="customInput"
                             onChange={handleChange}
@@ -489,7 +489,7 @@ const PackingLines = () => {
                             Bag numbers range - End
                           </Form.Label>
                           <Form.Control
-                            type="number"
+                            type="text"
                             required
                             className="customInput"
                             onChange={handleChange}
@@ -509,7 +509,7 @@ const PackingLines = () => {
                               Powder collecting QC name
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               required
                               className="customInput"
                               onChange={handleChange}
@@ -526,7 +526,7 @@ const PackingLines = () => {
                               Carton packing QC name
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               required
                               className="customInput"
                               onChange={handleChange}
@@ -543,7 +543,7 @@ const PackingLines = () => {
                               Line supervisor name
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               required
                               className="customInput"
                               onChange={handleChange}
