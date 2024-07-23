@@ -123,10 +123,10 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.batch_number}</td>
                 <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
                 <td>{item.order_name}</td>
-                <td>{item.wet_kernel_weight}kg</td>
+                <td>{item.wet_kernel_weight}Kg</td>
                 <td>{item.blancher_in_time}</td>
                 <td>{item.cutter_expeller_start_time}</td>
-                <td>{item.mixing_milk_quantity}kg</td>
+                <td>{item.mixing_milk_quantity}Kg</td>
                 <td
                   className={`${
                     item.mixing_milk_recovery < 75
@@ -219,8 +219,8 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.mixing_feed_start_time}</td>
                 <td>{item.sd_powder_spray_start_time}</td>
                 <td>{item.sd_batch_finish_time}</td>
-                <td>{item.sd_total_powder_quantity}kg</td>
-                <td>{item.sd_rp_quantity}kg</td>
+                <td>{item.sd_total_powder_quantity}Kg</td>
+                <td>{item.sd_rp_quantity}Kg</td>
                 <td>{item.sd_inlet_temp}&deg;C</td>
                 <td>{item.sd_outlet_temp}&deg;C</td>
                 <td>{item.mixing_pressure_pump_value}MPa</td>

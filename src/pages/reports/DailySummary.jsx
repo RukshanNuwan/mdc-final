@@ -251,7 +251,7 @@ const DailySummary = () => {
                             {dailyProductionDataByDate?.totalKernelWeight
                               ? dailyProductionDataByDate?.totalKernelWeight
                               : "-"}
-                            kg
+                            Kg
                           </p>
                         </div>
                       </div>
@@ -304,7 +304,7 @@ const DailySummary = () => {
                               ? dailyProductionDataByDate?.totalMilkAmountInMdc +
                                 dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
                               : "-"}
-                            kg
+                            Kg
                           </p>
                         </div>
 
@@ -316,7 +316,7 @@ const DailySummary = () => {
                             {dailyProductionDataByDate?.totalMilkAmountInMdc
                               ? dailyProductionDataByDate?.totalMilkAmountInMdc
                               : "-"}
-                            kg
+                            Kg
                           </p>
                         </div>
 
@@ -328,7 +328,7 @@ const DailySummary = () => {
                             {dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
                               ? dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
                               : "-"}
-                            kg
+                            Kg
                           </p>
                         </div>
                       </div>
@@ -349,7 +349,7 @@ const DailySummary = () => {
                           <p className="fw-bold">Total powder quantity</p>
                         </div>
                         <div className="col-6">
-                          <p>{renderTotalPowderQuantity()}kg</p>
+                          <p>{renderTotalPowderQuantity()}Kg</p>
                         </div>
 
                         <div className="col-6 d-flex justify-content-end">
@@ -360,7 +360,7 @@ const DailySummary = () => {
                             {dailyProductionDataByDate?.totalPowderQuantityInMdc
                               ? dailyProductionDataByDate?.totalPowderQuantityInMdc
                               : "-"}
-                            kg
+                            Kg
                           </p>
                         </div>
 
@@ -372,7 +372,7 @@ const DailySummary = () => {
                             {dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
                               ? dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
                               : "-"}
-                            kg
+                            Kg
                           </p>
                         </div>
                       </div>

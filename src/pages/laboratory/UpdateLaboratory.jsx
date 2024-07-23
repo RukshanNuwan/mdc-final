@@ -699,7 +699,7 @@ const UpdateLaboratory = () => {
                             fontWeight: "bold",
                           }}
                         >
-                          kg
+                          Kg
                         </InputGroup.Text>
                       </InputGroup>
                     </Form.Group>

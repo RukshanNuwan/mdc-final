@@ -169,7 +169,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.sd_total_powder_quantity} kg
+                            {state?.sd_total_powder_quantity}Kg
                           </p>
                         </div>
                       </div>
@@ -181,7 +181,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.expected_powder_quantity} kg
+                            {state?.expected_powder_quantity}Kg
                           </p>
                         </div>
                       </div>
@@ -194,7 +194,7 @@ const SprayDryerDetails = () => {
                         <div className="col-4">
                           <p className="bodyText fw-bold">
                             {state?.sd_rp_quantity
-                              ? `${state?.sd_rp_quantity}kg`
+                              ? `${state?.sd_rp_quantity}Kg`
                               : "-"}
                           </p>
                         </div>

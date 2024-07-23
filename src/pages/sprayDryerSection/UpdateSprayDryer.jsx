@@ -503,7 +503,7 @@ const UpdateSprayDryer = () => {
                             color: "#0d1b2a",
                           }}
                         >
-                          kg
+                          Kg
                         </InputGroup.Text>
                       </InputGroup>
                     </Form.Group>
@@ -536,7 +536,7 @@ const UpdateSprayDryer = () => {
                             color: "#0d1b2a",
                           }}
                         >
-                          kg
+                          Kg
                         </InputGroup.Text>
                       </InputGroup>
                     </Form.Group>
@@ -658,7 +658,7 @@ const UpdateSprayDryer = () => {
                             color: "#0d1b2a",
                           }}
                         >
-                          kg
+                          Kg
                         </InputGroup.Text>
                       </InputGroup>
                     </Form.Group>
@@ -709,8 +709,11 @@ const UpdateSprayDryer = () => {
                   <div className="mt-5">
                     <button
                       type="submit"
+                      disabled={
+                        !state.sd_status || state.sd_status === "ongoing" ||
+                        isLoading
+                      }
                       className="btn-submit customBtn customBtnUpdate"
-                      disabled={isLoading}
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}

@@ -245,7 +245,7 @@ const SearchResultDetails = () => {
                             <div className="d-flex justify-content-between">
                               <h6>Kernel weight</h6>
                               <p className="text-light-blue">
-                                {productionData.wet_kernel_weight}kg
+                                {productionData.wet_kernel_weight}Kg
                               </p>
                             </div>
                           </div>
@@ -414,7 +414,7 @@ const SearchResultDetails = () => {
                             <div className="d-flex justify-content-between">
                               <h6>Milk amount</h6>
                               <p className="text-light-blue">
-                                {productionData.mixing_milk_quantity}kg
+                                {productionData.mixing_milk_quantity}Kg
                               </p>
                             </div>
                           </div>
@@ -572,7 +572,7 @@ const SearchResultDetails = () => {
                             <div className="d-flex justify-content-between">
                               <h6>Powder quantity</h6>
                               <p className="text-light-blue">
-                                {productionData.sd_total_powder_quantity} kg
+                                {productionData.sd_total_powder_quantity}Kg
                               </p>
                             </div>
                           </div>
@@ -581,7 +581,7 @@ const SearchResultDetails = () => {
                             <div className="d-flex justify-content-between">
                               <h6>Expected powder quantity</h6>
                               <p className="text-light-blue">
-                                {productionData.expected_powder_quantity} kg
+                                {productionData.expected_powder_quantity}Kg
                               </p>
                             </div>
                           </div>
@@ -590,7 +590,7 @@ const SearchResultDetails = () => {
                             <div className="d-flex justify-content-between">
                               <h6>RP</h6>
                               <p className="text-light-blue">
-                                {productionData.sd_rp_quantity} kg
+                                {productionData.sd_rp_quantity}Kg
                               </p>
                             </div>
                           </div>

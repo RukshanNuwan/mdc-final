@@ -136,7 +136,7 @@ const MixingDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.mixing_milk_quantity}kg
+                            {state?.mixing_milk_quantity}Kg
                           </p>
                         </div>
                       </div>

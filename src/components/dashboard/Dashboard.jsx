@@ -15,7 +15,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./dashboard.css";
 import { db } from "../../config/firebase.config";
 import TotalCard from "../card/TotalCard";
-import useCurrentDate from "../../hooks/useCurrentDate";
 
 const Dashboard = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
@@ -31,8 +30,6 @@ const Dashboard = () => {
   // TODO: Add MDC & Araliya Kele Breakdown
   const [isSd3Breakdown, setIsSd3Breakdown] = useState(false);
   const [isSd4Breakdown, setIsSd4Breakdown] = useState(false);
-
-  const currentDate = useCurrentDate();
 
   const calculateRemainingBatches = (totalBatches) => {
     if (
@@ -87,9 +84,6 @@ const Dashboard = () => {
 
     handleStatus();
   }, [sd3Data?.sd_status, sd4Data?.sd_status]);
-
-  // console.log("sd3Data -> ", sd3Data);
-  // console.log("sd4Data -> ", sd4Data);
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
@@ -241,9 +235,8 @@ const Dashboard = () => {
     const fetchDate = async () => {
       try {
         const q = query(
-          collection(db, "production_data"),
-          where("primary_batch_number", "==", 1),
-          orderBy("wet_added_at", "desc"),
+          collection(db, "daily_production"),
+          orderBy("timeStamp", "desc"),
           limit(1)
         );
 
@@ -258,6 +251,9 @@ const Dashboard = () => {
 
     fetchDate();
   }, []);
+
+  console.log("date -> ", date);
+  // console.log("daily production data -> ", dailyProductionData);
 
   return (
     <section>
@@ -300,7 +296,7 @@ const Dashboard = () => {
                     {dailyProductionData?.totalKernelWeight
                       ? dailyProductionData?.totalKernelWeight
                       : "-"}
-                    kg
+                    Kg
                   </p>
                 </div>
 

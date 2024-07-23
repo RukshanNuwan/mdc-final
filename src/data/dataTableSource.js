@@ -5,7 +5,7 @@ export const wetSectionColumns = [
     headerName: "Kernel weight",
     width: 150,
     renderCell: (params) => {
-      return <div>{params.row.wet_kernel_weight}kg</div>;
+      return <div>{params.row.wet_kernel_weight}Kg</div>;
     },
   },
   {
