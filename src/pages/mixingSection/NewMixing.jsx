@@ -46,6 +46,7 @@ const NewMixing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(false);
   const [isOutputTapCleaned, setIsOutputTapCleaned] = useState(false);
+  const [lastBatchNumber, setLastBatchNumber] = useState();
   const [batchCode, setBatchCode] = useState();
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -60,21 +61,102 @@ const NewMixing = () => {
   const date = currentDate.getDate();
   const dateStr = date < 10 ? "0" + date : date;
 
-  // TODO: Re-check this function
-  const handleChangeBatchNumber = (e) => {
-    setBatchNumber(Number(e.target.value));
+  useEffect(() => {
+    const fetchCurrentBatchInCutter = async () => {
+      try {
+        const list = [];
+        const q = query(
+          collection(db, "production_data"),
+          where("mixing_status", "==", "ongoing"),
+          where("location", "==", location),
+          orderBy("wet_added_at", "asc")
+        );
 
-    const batchCode = `${
-      location === "mdc" ? "SD3" : "SD4"
-    }${year}${monthStr}${dateStr}${e.target.value}`;
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
 
-    setBatchCode(batchCode);
-    setData({
-      ...data,
-      batch_number: Number(e.target.value),
-      batch_code: batchCode,
-    });
-  };
+        let res = list.filter((doc) => doc);
+        setOngoingData(res[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCurrentBatchInCutter();
+  }, [location]);
+
+  useEffect(() => {
+    const fetchSubFormData = async () => {
+      if (ongoingData.date) {
+        try {
+          const q = query(
+            collection(db, "daily_production"),
+            where("date", "==", ongoingData?.date),
+            orderBy("timeStamp", "desc")
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setDailyProductionDataInDb(list[0]);
+          });
+
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchSubFormData();
+  }, [ongoingData?.date]);
+
+  useEffect(() => {
+    if (ongoingData.date) {
+      const fetchLastBatchNumber = async () => {
+        const list = [];
+        const q = query(
+          collection(db, "production_data"),
+          where("mixing_status", "==", "completed"),
+          where("location", "==", location),
+          where("date", "==", ongoingData?.date),
+          orderBy("wet_added_at", "desc")
+        );
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+
+        setLastBatchNumber(list[0]?.batch_number);
+      };
+
+      fetchLastBatchNumber();
+    }
+  }, [ongoingData, location]);
+
+  useEffect(() => {
+    if (lastBatchNumber) {
+      setBatchNumber(Number(lastBatchNumber + 1));
+
+      const batchCode = `${
+        location === "mdc" ? "SD3" : "SD4"
+      }${year}${monthStr}${dateStr}${lastBatchNumber + 1}`;
+
+      setBatchCode(batchCode);
+      setData({
+        ...data,
+        batch_number: Number(lastBatchNumber + 1),
+        batch_code: batchCode,
+      });
+    }
+  }, [dateStr, lastBatchNumber, location, monthStr, year]);
 
   const handleChange = (e) => {
     const id = e.target.id;
@@ -209,60 +291,6 @@ const NewMixing = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCurrentBatchInCutter = async () => {
-      try {
-        const list = [];
-        const q = query(
-          collection(db, "production_data"),
-          where("mixing_status", "==", "ongoing"),
-          where("location", "==", location),
-          orderBy("wet_added_at", "asc")
-        );
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-
-        let res = list.filter((doc) => doc);
-        setOngoingData(res[0]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCurrentBatchInCutter();
-  }, [location]);
-
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      try {
-        const q = query(
-          collection(db, "daily_production"),
-          where("date", "==", ongoingData?.date),
-          orderBy("timeStamp", "desc")
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let list = [];
-          querySnapshot.forEach((doc) => {
-            list.push({ id: doc.id, ...doc.data() });
-          });
-
-          setDailyProductionDataInDb(list[0]);
-        });
-
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchSubFormData();
-  }, [ongoingData?.date]);
-
   return (
     <>
       <Header />
@@ -356,10 +384,9 @@ const NewMixing = () => {
                         </Form.Label>
                         <Form.Control
                           type="number"
-                          required
-                          min={1}
-                          className="customInput"
-                          onChange={handleChangeBatchNumber}
+                          disabled
+                          defaultValue={batchNumber}
+                          className="customInput disabled"
                         />
                       </Form.Group>
 

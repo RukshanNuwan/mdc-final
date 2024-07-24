@@ -49,27 +49,50 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const fetchId = async () => {
+    const fetchDate = async () => {
       try {
         const q = query(
           collection(db, "daily_production"),
-          where("date", "==", date),
-          orderBy("timeStamp", "desc")
+          orderBy("timeStamp", "desc"),
+          limit(1)
         );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let list = [];
-          querySnapshot.forEach((doc) => {
-            list.push({ id: doc.id, ...doc.data() });
-          });
 
-          setDailyProductionData(list[0]);
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          setDate(doc.data().date);
         });
-
-        return () => {
-          unsubscribe();
-        };
       } catch (error) {
         console.log(error);
+      }
+    };
+
+    fetchDate();
+  }, []);
+
+  useEffect(() => {
+    const fetchId = async () => {
+      if (date) {
+        try {
+          const q = query(
+            collection(db, "daily_production"),
+            where("date", "==", date),
+            orderBy("timeStamp", "desc")
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setDailyProductionData(list[0]);
+          });
+
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
@@ -78,29 +101,31 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
-      try {
-        const q = query(
-          collection(db, "production_data"),
-          where("sd_status", "==", "updated"),
-          where("location", "==", "mdc"),
-          where("date", "==", date),
-          orderBy("wet_added_at", "desc"),
-          limit(1)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const list = [];
-          querySnapshot.forEach((doc) => {
-            list.push(doc.data());
+      if (date) {
+        try {
+          const q = query(
+            collection(db, "production_data"),
+            where("sd_status", "==", "updated"),
+            where("location", "==", "mdc"),
+            where("date", "==", date),
+            orderBy("wet_added_at", "desc"),
+            limit(1)
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const list = [];
+            querySnapshot.forEach((doc) => {
+              list.push(doc.data());
+            });
+
+            setSd3Data(list[0]);
           });
 
-          setSd3Data(list[0]);
-        });
-
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
@@ -109,29 +134,31 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchCurrentSdData = async () => {
-      try {
-        const q = query(
-          collection(db, "production_data"),
-          where("sd_status", "==", "updated"),
-          where("location", "==", "araliya_kele"),
-          where("date", "==", date),
-          orderBy("wet_added_at", "desc"),
-          limit(1)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const list = [];
-          querySnapshot.forEach((doc) => {
-            list.push(doc.data());
+      if (date) {
+        try {
+          const q = query(
+            collection(db, "production_data"),
+            where("sd_status", "==", "updated"),
+            where("location", "==", "araliya_kele"),
+            where("date", "==", date),
+            orderBy("wet_added_at", "desc"),
+            limit(1)
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const list = [];
+            querySnapshot.forEach((doc) => {
+              list.push(doc.data());
+            });
+
+            setSd4Data(list[0]);
           });
 
-          setSd4Data(list[0]);
-        });
-
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
@@ -140,54 +167,58 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchSd3LabData = async () => {
-      try {
-        const q = query(
-          collection(db, "production_data"),
-          where("lab_status", "==", "completed"),
-          where("date", "==", date),
-          where("location", "==", "mdc"),
-          orderBy("wet_added_at", "desc"),
-          limit(1)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const list = [];
-          querySnapshot.forEach((doc) => {
-            list.push(doc.data());
+      if (date) {
+        try {
+          const q = query(
+            collection(db, "production_data"),
+            where("lab_status", "==", "completed"),
+            where("date", "==", date),
+            where("location", "==", "mdc"),
+            orderBy("wet_added_at", "desc"),
+            limit(1)
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const list = [];
+            querySnapshot.forEach((doc) => {
+              list.push(doc.data());
+            });
+            setSd3LabData(list[0]);
           });
-          setSd3LabData(list[0]);
-        });
 
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
     const fetchSd4LabData = async () => {
-      try {
-        const q = query(
-          collection(db, "production_data"),
-          where("lab_status", "==", "completed"),
-          where("date", "==", date),
-          where("location", "==", "araliya_kele"),
-          orderBy("wet_added_at", "desc"),
-          limit(1)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const list = [];
-          querySnapshot.forEach((doc) => {
-            list.push(doc.data());
+      if (date) {
+        try {
+          const q = query(
+            collection(db, "production_data"),
+            where("lab_status", "==", "completed"),
+            where("date", "==", date),
+            where("location", "==", "araliya_kele"),
+            orderBy("wet_added_at", "desc"),
+            limit(1)
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const list = [];
+            querySnapshot.forEach((doc) => {
+              list.push(doc.data());
+            });
+            setSd4LabData(list[0]);
           });
-          setSd4LabData(list[0]);
-        });
 
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
@@ -253,27 +284,6 @@ const Dashboard = () => {
       });
     }
   }, [breakdowns]);
-
-  useEffect(() => {
-    const fetchDate = async () => {
-      try {
-        const q = query(
-          collection(db, "daily_production"),
-          orderBy("timeStamp", "desc"),
-          limit(1)
-        );
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          setDate(doc.data().date);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchDate();
-  }, []);
 
   useEffect(() => {
     const handleStatus = () => {

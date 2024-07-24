@@ -127,25 +127,27 @@ const NewLaboratory = () => {
 
   useEffect(() => {
     const fetchPrevBatchData = async () => {
-      try {
-        const list = [];
-        const q = query(
-          collection(db, "production_data"),
-          where("date", "==", ongoingData.date),
-          where("location", "==", location),
-          where("lab_status", "==", "updated"),
-          orderBy("lab_added_at", "desc")
-        );
+      if (ongoingData.date) {
+        try {
+          const list = [];
+          const q = query(
+            collection(db, "production_data"),
+            where("date", "==", ongoingData.date),
+            where("location", "==", location),
+            where("lab_status", "==", "updated"),
+            orderBy("lab_added_at", "desc")
+          );
 
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            list.push({ id: doc.id, ...doc.data() });
+          });
 
-        let res = list.filter((doc) => doc);
-        setPrevBatchData(res[0]);
-      } catch (error) {
-        console.log(error);
+          let res = list.filter((doc) => doc);
+          setPrevBatchData(res[0]);
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
