@@ -166,25 +166,27 @@ const NewSprayDryer = () => {
 
   useEffect(() => {
     const fetchSubFormData = async () => {
-      try {
-        const q = query(
-          collection(db, "daily_production"),
-          where("date", "==", ongoingData?.date)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let list = [];
-          querySnapshot.forEach((doc) => {
-            list.push({ id: doc.id, ...doc.data() });
+      if (ongoingData.date) {
+        try {
+          const q = query(
+            collection(db, "daily_production"),
+            where("date", "==", ongoingData?.date)
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setDailyProductionDataInDb(list[0]);
           });
 
-          setDailyProductionDataInDb(list[0]);
-        });
-
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
