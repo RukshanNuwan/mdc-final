@@ -56,7 +56,7 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={6} className="text-center daily-summery-bg-green">
               Mix milk
             </th>
-            <th colSpan={13} className="text-center">
+            <th colSpan={14} className="text-center">
               Spray dryer
             </th>
             <th colSpan={11} className="text-center daily-summery-bg-purple">
@@ -102,6 +102,7 @@ const ReportDataTable = ({ data }) => {
             <th>Feed start time</th>
             <th>Powder spray start time</th>
             <th>Powder spray finish time</th>
+            <th>Process time</th>
             <th>Powder quantity</th>
             <th>RP</th>
             <th>Inlet temp</th>
@@ -237,6 +238,12 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.mixing_feed_start_time}</td>
                 <td>{item.sd_powder_spray_start_time}</td>
                 <td>{item.sd_batch_finish_time}</td>
+                <td>
+                  {calculateTimeDifference(
+                    item.sd_powder_spray_start_time,
+                    item.sd_batch_finish_time
+                  )}
+                </td>
                 <td>{item.sd_total_powder_quantity}Kg</td>
                 <td>{item.sd_rp_quantity}Kg</td>
                 <td>{item.sd_inlet_temp}&deg;C</td>
