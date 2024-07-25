@@ -118,7 +118,7 @@ const NewMixing = () => {
   }, [ongoingData?.date]);
 
   useEffect(() => {
-    if (ongoingData.date) {
+    if (ongoingData?.date) {
       const fetchLastBatchNumber = async () => {
         const list = [];
         const q = query(
@@ -142,20 +142,24 @@ const NewMixing = () => {
   }, [ongoingData, location]);
 
   useEffect(() => {
+    let lastBatchNumberInt = lastBatchNumber + 1;
+
     if (lastBatchNumber) {
-      setBatchNumber(Number(lastBatchNumber + 1));
-
-      const batchCode = `${
-        location === "mdc" ? "SD3" : "SD4"
-      }${year}${monthStr}${dateStr}${lastBatchNumber + 1}`;
-
-      setBatchCode(batchCode);
-      setData({
-        ...data,
-        batch_number: Number(lastBatchNumber + 1),
-        batch_code: batchCode,
-      });
+      setBatchNumber(lastBatchNumberInt);
+    } else {
+      setBatchNumber(1);
     }
+
+    const batchCode = `${
+      location === "mdc" ? "SD3" : "SD4"
+    }${year}${monthStr}${dateStr}${lastBatchNumber ? lastBatchNumberInt : 1}`;
+
+    setBatchCode(batchCode);
+    setData({
+      ...data,
+      batch_number: lastBatchNumber ? lastBatchNumberInt : 1,
+      batch_code: batchCode,
+    });
   }, [dateStr, lastBatchNumber, location, monthStr, year]);
 
   const handleChange = (e) => {
