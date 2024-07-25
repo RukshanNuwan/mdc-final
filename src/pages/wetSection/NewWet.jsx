@@ -252,9 +252,11 @@ const NewWet = () => {
                     >
                       <Form.Label className="fw-bold">Batch number</Form.Label>
                       <Form.Control
+                        required
                         type="number"
-                        disabled
-                        className="customInput disabled"
+                        className="customInput"
+                        defaultValue={nextBatchNumber}
+                        onChange={(e) => setNextBatchNumber(e.target.value)}
                       />
                     </Form.Group>
 
