@@ -33,10 +33,10 @@ const UpdateSprayDryer = () => {
     {}
   );
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
-  const [powderQuantity, setPowderQuantity] = useState();
-  const [expectedPowderQuantity, setExpectedPowderQuantity] = useState(
-    state?.expected_powder_quantity | 120
-  );
+  const [powderQuantity, setPowderQuantity] = useState(0);
+  const expectedPowderQuantity = state?.expected_powder_quantity
+    ? state?.expected_powder_quantity
+    : 120;
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -58,11 +58,11 @@ const UpdateSprayDryer = () => {
     recovery = ((e.target.value / expectedPowderQuantity) * 100).toFixed(2);
 
     setPowderRecovery(recovery);
-    setPowderQuantity(e.target.value);
+    setPowderQuantity(Number(e.target.value));
 
     setData({
       ...data,
-      sd_total_powder_quantity: e.target.value,
+      sd_total_powder_quantity: Number(e.target.value),
       sd_powder_recovery: recovery,
     });
   };
@@ -75,15 +75,14 @@ const UpdateSprayDryer = () => {
       setUpdatedDailyProductionData({
         ...updatedDailyProductionData,
         totalPowderQuantityInMdc:
-          dailyProductionDataInDb?.totalPowderQuantityInMdc +
-          Number(powderQuantity),
+          dailyProductionDataInDb?.totalPowderQuantityInMdc + powderQuantity,
       });
     } else {
       setUpdatedDailyProductionData({
         ...updatedDailyProductionData,
         totalPowderQuantityInAraliyaKele:
           dailyProductionDataInDb?.totalPowderQuantityInAraliyaKele +
-          Number(powderQuantity),
+          powderQuantity,
       });
     }
 
@@ -710,7 +709,8 @@ const UpdateSprayDryer = () => {
                     <button
                       type="submit"
                       disabled={
-                        !state.sd_status || state.sd_status === "ongoing" ||
+                        !state.sd_status ||
+                        state.sd_status === "ongoing" ||
                         isLoading
                       }
                       className="btn-submit customBtn customBtnUpdate"
