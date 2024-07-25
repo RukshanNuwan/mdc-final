@@ -1,7 +1,7 @@
 const Version = () => {
   return (
     <span className="ms-3" style={{ color: "#ffffff4d" }}>
-      v2.4.9
+      v2.5.0
     </span>
   );
 };
