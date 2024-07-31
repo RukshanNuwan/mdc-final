@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 
@@ -19,11 +28,47 @@ import { db } from "../../config/firebase.config";
 const UpdateCutter = () => {
   const { state } = useLocation();
 
+
   const [data, setData] = useState({});
   const [heatValve, setHeatValve] = useState(state.cutter_heat_valve);
   const [isLoading, setIsLoading] = useState(false);
+  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  const [location, setLocation] = useState(state.location);
+  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+    {}
+  );
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSubFormData = async () => {
+      if (state.date) {
+        try {
+          const q = query(
+            collection(db, "daily_production"),
+            where("date", "==", state?.date),
+            orderBy("timeStamp", "desc")
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setDailyProductionDataInDb(list[0]);
+          });
+
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchSubFormData();
+  }, [state?.date]);
 
   const handleChange = (e) => {
     const id = e.target.id;
@@ -79,6 +124,40 @@ const UpdateCutter = () => {
     });
   };
 
+  const handleChangeLocation = (e) => {
+    setLocation(e.target.value);
+
+    let updatedDailyProductionTotalBatchInSd3 =
+      dailyProductionDataInDb.totalBatchCountInMdc;
+    let updatedDailyProductionTotalBatchInSd4 =
+      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+
+    if (e.target.value === "mdc") {
+      updatedDailyProductionTotalBatchInSd3++;
+      updatedDailyProductionTotalBatchInSd4--;
+
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
+        totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+        totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
+      });
+
+      setData({
+        ...data,
+        cutter_bowser_load_time: null,
+      });
+    } else {
+      updatedDailyProductionTotalBatchInSd3--;
+      updatedDailyProductionTotalBatchInSd4++;
+
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
+        totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+        totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(false);
@@ -98,21 +177,33 @@ const UpdateCutter = () => {
           const docRef = doc(db, "production_data", state.id);
           await updateDoc(docRef, {
             ...data,
+            location: location,
             cutter_updated_at: serverTimestamp(),
             mixing_status: "ongoing",
             mixing_added_at: serverTimestamp(),
-          }).then(() => {
-            Swal.fire({
-              title: "Changes saved",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
-            });
+          })
+            .then(async () => {
+              const docRef = doc(
+                db,
+                "daily_production",
+                dailyProductionDataInDb.id
+              );
+              await updateDoc(docRef, {
+                ...updatedDailyProductionData,
+              });
+            })
+            .then(() => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
 
-            e.target.reset();
-            setIsLoading(false);
-            navigate("/cutter-section");
-          });
+              e.target.reset();
+              setIsLoading(false);
+              navigate("/cutter-section");
+            });
         }
       });
     } catch (error) {
@@ -237,16 +328,18 @@ const UpdateCutter = () => {
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Location</Form.Label>
-                      <Form.Control
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={
-                          state.location === "mdc" ? "SD 03" : "SD 04"
-                        }
-                      />
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={location}
+                        onChange={handleChangeLocation}
+                      >
+                        <option value="mdc">SD 03</option>
+                        <option value="araliya_kele">SD 04</option>
+                      </Form.Select>
                     </Form.Group>
 
-                    {state.location && state.location === "araliya_kele" && (
+                    {state.location && location === "araliya_kele" && (
                       <Form.Group
                         as={Col}
                         md="3"
@@ -258,9 +351,9 @@ const UpdateCutter = () => {
                         </Form.Label>
                         <Form.Control
                           type="time"
-                          disabled
-                          className="customInput disabled"
+                          className="customInput"
                           defaultValue={state.cutter_bowser_load_time}
+                          onChange={handleChange}
                         />
                       </Form.Group>
                     )}
@@ -353,7 +446,7 @@ const UpdateCutter = () => {
                     <button
                       type="submit"
                       className="btn-submit customBtn customBtnUpdate"
-                      disabled={isLoading}
+                      disabled={isLoading || state.cutter_status === "ongoing"}
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}

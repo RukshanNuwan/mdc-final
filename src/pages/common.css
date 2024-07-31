@@ -127,6 +127,10 @@ label.form-label {
   color: var(--light-blue);
 }
 
+.text-dark-blue {
+  color: var(--dark-blue-1) !important;
+}
+
 .bg-dark-blue-2 {
   background: var(--dark-blue-2);
 }

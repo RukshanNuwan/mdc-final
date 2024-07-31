@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -17,6 +26,7 @@ const UpdateMixing = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
+  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(
     state.sd_4_is_bowser_filling_hole_cleaned
@@ -24,9 +34,144 @@ const UpdateMixing = () => {
   const [isOutputTapCleaned, setIsOutputTapCleaned] = useState(
     state.sd_4_is_bowser_output_tap_cleaned
   );
+  const [isTransferred, setIsTransferred] = useState(false);
+  const [batchCode, setBatchCode] = useState();
 
   const navigate = useNavigate();
   const { location } = useParams();
+
+  const currentDate = new Date(state?.date);
+  const year = ("" + currentDate.getFullYear()).substring(2);
+  const month = currentDate.getMonth() + 1;
+  const monthStr = month < 10 ? "0" + month : month;
+  const date = currentDate.getDate();
+  const dateStr = date < 10 ? "0" + date : date;
+
+  useEffect(() => {
+    const fetchSubFormData = async () => {
+      if (state.date) {
+        try {
+          const q = query(
+            collection(db, "daily_production"),
+            where("date", "==", state?.date),
+            orderBy("timeStamp", "desc")
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setDailyProductionDataInDb(list[0]);
+          });
+
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchSubFormData();
+  }, [state?.date]);
+
+  const handleBatchNumberChange = (e) => {
+    const batchCode = `${
+      location === "mdc" ? "SD3" : "SD4"
+    }${year}${monthStr}${dateStr}${e.target.value}`;
+
+    setBatchCode(batchCode);
+    setData({
+      ...data,
+      batch_number: Number(e.target.value),
+      batch_code: batchCode,
+    });
+  };
+
+  const handleTransferredChange = (e) => {
+    setIsTransferred(e.target.checked);
+
+    let updatedDailyProductionTotalBatchInSd3 =
+      dailyProductionDataInDb.totalBatchCountInMdc;
+    let updatedDailyProductionTotalBatchInSd4 =
+      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    let updatedDailyProductionTotalMilkAmountInSd3 =
+      dailyProductionDataInDb.totalMilkAmountInMdc;
+    let updatedDailyProductionTotalMilkAmountInSd4 =
+      dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
+
+    if (e.target.checked) {
+      updatedDailyProductionTotalBatchInSd3++;
+      updatedDailyProductionTotalBatchInSd4--;
+      updatedDailyProductionTotalMilkAmountInSd3 += Number(
+        state.mixing_milk_quantity
+      );
+      updatedDailyProductionTotalMilkAmountInSd4 -= Number(
+        state.mixing_milk_quantity
+      );
+    }
+
+    Swal.fire({
+      title: "Transfer to SD 03",
+      text: "Do you want to transfer this batch to SD 03?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#ff007f",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#0d1b2a",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            location: "mdc",
+            mixing_mix_details: "Transferred from SD 04 to SD 03",
+            sd_4_bowser_in_time: null,
+            sd_4_batches_in_bowser: null,
+            sd_4_is_bowser_filling_hole_cleaned: null,
+            sd_4_is_bowser_output_tap_cleaned: null,
+            sd_4_bowser_overall_condition: null,
+          }).then(async () => {
+            try {
+              const docRef = doc(
+                db,
+                "daily_production",
+                dailyProductionDataInDb.id
+              );
+
+              await updateDoc(docRef, {
+                totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+                totalBatchCountInAraliyaKele:
+                  updatedDailyProductionTotalBatchInSd4,
+                totalMilkAmountInMdc:
+                  updatedDailyProductionTotalMilkAmountInSd3,
+                totalMilkAmountInAraliyaKele:
+                  updatedDailyProductionTotalMilkAmountInSd4,
+              }).then(() => {
+                Swal.fire({
+                  title: "Batch transferred",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+
+                navigate("/mixing-section");
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setIsTransferred(false);
+      }
+    });
+  };
 
   const handleChange = (e) => {
     const id = e.target.id;
@@ -101,13 +246,35 @@ const UpdateMixing = () => {
 
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
-              <div className="mb-2">
+              <div className="mb-2 d-flex align-items-center justify-content-between">
                 <Link
                   to="/mixing-section"
                   className="d-flex align-items-center customBackBtn"
                 >
                   <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
+
+                {location === "araliya_kele" && (
+                  <div>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="is_transferred"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold text-dark-blue">
+                        Transfer to SD 03
+                      </Form.Label>
+
+                      <Form.Switch
+                        type="switch"
+                        id="is_transferred"
+                        checked={isTransferred}
+                        onChange={handleTransferredChange}
+                      />
+                    </Form.Group>
+                  </div>
+                )}
               </div>
 
               <div className="card-body formWrapper">
@@ -174,9 +341,12 @@ const UpdateMixing = () => {
                       <Form.Label className="fw-bold">Batch number</Form.Label>
                       <Form.Control
                         type="number"
-                        disabled
-                        className="customInput disabled"
+                        disabled={location === "araliya_kele"}
+                        className={`customInput ${
+                          location === "araliya_kele" && "disabled"
+                        }`}
                         defaultValue={state.batch_number}
+                        onChange={handleBatchNumberChange}
                       />
                     </Form.Group>
 
@@ -191,7 +361,7 @@ const UpdateMixing = () => {
                         type="text"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batch_code}
+                        defaultValue={batchCode}
                       />
                     </Form.Group>
 
@@ -371,6 +541,7 @@ const UpdateMixing = () => {
                             <Form.Control
                               type="time"
                               className="customInput"
+                              defaultValue={state.sd_4_bowser_in_time}
                               onChange={handleChange}
                             />
                           </Form.Group>
@@ -388,6 +559,7 @@ const UpdateMixing = () => {
                             <Form.Control
                               type="number"
                               className="customInput"
+                              defaultValue={state.sd_4_batches_in_bowser}
                               onChange={handleChange}
                             />
                           </Form.Group>
@@ -457,6 +629,7 @@ const UpdateMixing = () => {
                               as="textarea"
                               rows={4}
                               className="customInput"
+                              defaultValue={state.sd_4_bowser_overall_condition}
                               onChange={handleChange}
                             />
                           </Form.Group>
@@ -561,9 +734,9 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled
                         defaultValue={state.mixing_feed_start_time}
-                        className="customInput disabled"
+                        className="customInput"
+                        onChange={handleChange}
                       />
                     </Form.Group>
 
@@ -700,7 +873,7 @@ const UpdateMixing = () => {
                       controlId="mixing_mix_details"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Mix details</Form.Label>
+                      <Form.Label className="fw-bold">Remarks</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}

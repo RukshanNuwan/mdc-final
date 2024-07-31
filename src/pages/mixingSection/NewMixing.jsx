@@ -48,6 +48,7 @@ const NewMixing = () => {
   const [isOutputTapCleaned, setIsOutputTapCleaned] = useState(false);
   const [lastBatchNumber, setLastBatchNumber] = useState();
   const [batchCode, setBatchCode] = useState();
+  const [isTransferred, setIsTransferred] = useState(false);
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -162,6 +163,21 @@ const NewMixing = () => {
     });
   }, [dateStr, lastBatchNumber, location, monthStr, year]);
 
+  const handleBatchNumberChange = (e) => {
+    setBatchNumber(Number(e.target.value));
+
+    const batchCode = `${
+      location === "mdc" ? "SD3" : "SD4"
+    }${year}${monthStr}${dateStr}${e.target.value}`;
+
+    setBatchCode(batchCode);
+    setData({
+      ...data,
+      batch_number: Number(e.target.value),
+      batch_code: batchCode,
+    });
+  };
+
   const handleChange = (e) => {
     const id = e.target.id;
     const value = e.target.value;
@@ -218,6 +234,70 @@ const NewMixing = () => {
       Number(ongoingData.wet_kernel_weight) + weightByCratesCount;
     setNewKernelWeight(newWeight);
     setAdditionalCratesCount(e.target.value);
+  };
+
+  const handleTransferredChange = (e) => {
+    setIsTransferred(e.target.checked);
+
+    let updatedDailyProductionTotalBatchInSd3 =
+      dailyProductionDataInDb.totalBatchCountInMdc;
+    let updatedDailyProductionTotalBatchInSd4 =
+      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+
+    if (e.target.checked) {
+      updatedDailyProductionTotalBatchInSd3++;
+      updatedDailyProductionTotalBatchInSd4--;
+    }
+
+    Swal.fire({
+      title: "Transfer to SD 03",
+      text: "Do you want to transferred this batch to SD 03?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#ff007f",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#0d1b2a",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const docRef = doc(db, "production_data", ongoingData.id);
+          await updateDoc(docRef, {
+            ...data,
+            location: "mdc",
+            mixing_mix_details: "Transfer from SD 04 to SD 03",
+          }).then(async () => {
+            try {
+              const docRef = doc(
+                db,
+                "daily_production",
+                dailyProductionDataInDb.id
+              );
+
+              await updateDoc(docRef, {
+                totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+                totalBatchCountInAraliyaKele:
+                  updatedDailyProductionTotalBatchInSd4,
+              }).then(() => {
+                Swal.fire({
+                  title: "Batch transferred",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+
+                navigate("/mixing-section");
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setIsTransferred(false);
+      }
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -312,13 +392,35 @@ const NewMixing = () => {
 
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
-              <div className="mb-2">
+              <div className="mb-2 d-flex align-items-center justify-content-between">
                 <Link
                   to="/mixing-section"
                   className="d-flex align-items-center customBackBtn"
                 >
                   <ArrowBackIosIcon fontSize="small" /> Back
                 </Link>
+
+                {location === "araliya_kele" && ongoingData && (
+                  <div>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="is_transferred"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold text-dark-blue">
+                        Transfer to SD 03
+                      </Form.Label>
+
+                      <Form.Switch
+                        type="switch"
+                        id="is_transferred"
+                        checked={isTransferred}
+                        onChange={handleTransferredChange}
+                      />
+                    </Form.Group>
+                  </div>
+                )}
               </div>
 
               <div className="card-body formWrapper">
@@ -388,9 +490,12 @@ const NewMixing = () => {
                         </Form.Label>
                         <Form.Control
                           type="number"
-                          disabled
+                          disabled={location === "araliya_kele"}
                           defaultValue={batchNumber}
-                          className="customInput disabled"
+                          className={`customInput ${
+                            location === "araliya_kele" && "disabled"
+                          }`}
+                          onChange={handleBatchNumberChange}
                         />
                       </Form.Group>
 
@@ -905,7 +1010,7 @@ const NewMixing = () => {
                         controlId="mixing_mix_details"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Mix details</Form.Label>
+                        <Form.Label className="fw-bold">Remarks</Form.Label>
                         <Form.Control
                           as="textarea"
                           rows={4}

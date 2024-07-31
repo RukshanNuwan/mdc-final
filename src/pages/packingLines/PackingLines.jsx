@@ -17,6 +17,7 @@ import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
+import CustomAccordion from "../../components/customAccordion/CustomAccordion";
 
 const PackingLines = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,12 +26,11 @@ const PackingLines = () => {
   const [updatedData, setUpdatedData] = useState({});
   const [packingType, setPackingType] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+  const [addedPackingLineData, setAddedPackingLineData] = useState([]);
 
   // TODO: Calculate completed powder quantity as percentage of total and show it in circular progress bar
   const [totalQuantity, setTotalQuantity] = useState(2000);
   const [currentQuantity, setCurrentQuantity] = useState(200);
-
-  
 
   let percentage = 0;
 
@@ -42,10 +42,30 @@ const PackingLines = () => {
     setSearchInput(e.target.value);
   };
 
+  const fetchAddedPackingLineData = async (param) => {
+    const q = query(
+      collection(db, "packing_line_data"),
+      where("production_batch_code", "==", param)
+    );
+    await getDocs(q).then((res) => {
+      if (res.docs.length === 0) return;
+
+      let list = [];
+      res.forEach((doc) => {
+        list.push({ id: doc.id, ...doc.data() });
+      });
+
+      setAddedPackingLineData(list);
+    });
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setData({});
+    setAddedPackingLineData([]);
+
+    fetchAddedPackingLineData(searchInput);
 
     const q = query(
       collection(db, "production_data"),
@@ -77,6 +97,15 @@ const PackingLines = () => {
     const str = e.target.value;
     const bagNumbers = str.toLowerCase().split(",");
     setUpdatedData({ ...updatedData, packing_bag_numbers: bagNumbers });
+  };
+
+  const handleCraftBagNumberChange = (e) => {
+    const str = e.target.value;
+    const craftBagNumbers = str.toLowerCase().split(",");
+    setUpdatedData({
+      ...updatedData,
+      packing_craft_bag_number: craftBagNumbers,
+    });
   };
 
   const handleChange = (e) => {
@@ -265,6 +294,16 @@ const PackingLines = () => {
 
                 <hr className="custom-hr-yellow my-2" />
 
+                {addedPackingLineData.length > 0 && (
+                  <div className="my-3">
+                    <CustomAccordion>
+                      {addedPackingLineData.map((data) => (
+                        <>{data}</>
+                      ))}
+                    </CustomAccordion>
+                  </div>
+                )}
+
                 {data.id && (
                   <div>
                     <Form onSubmit={handleSubmit}>
@@ -392,14 +431,17 @@ const PackingLines = () => {
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Craft bag code
+                              Craft bag code(s)
                             </Form.Label>
                             <Form.Control
                               type="text"
                               required={packingType === "packing_type_20"}
                               className="customInput"
-                              onChange={handleChange}
+                              onChange={handleCraftBagNumberChange}
                             />
+                            <Figure.Caption className="tooltipText">
+                              Type bag numbers with commas
+                            </Figure.Caption>
                           </Form.Group>
                         ) : (
                           <Form.Group

@@ -417,7 +417,7 @@ const MixingDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Mix details</p>
+                          <p className="bodyText">Remarks</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
