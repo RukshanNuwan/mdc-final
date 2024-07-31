@@ -529,7 +529,7 @@ const SearchResultDetails = () => {
 
                           <div className="col-sm-6 col-md-4">
                             <div className="d-flex justify-content-between">
-                              <h6>Mix details</h6>
+                              <h6>Remarks</h6>
                               <p className="text-light-blue text-capitalize">
                                 {productionData.mixing_mix_details
                                   ? productionData.mixing_mix_details
