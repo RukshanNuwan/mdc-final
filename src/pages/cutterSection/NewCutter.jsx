@@ -78,7 +78,7 @@ const NewCutter = () => {
             cutter_added_at: serverTimestamp(),
           })
             .then(async () => {
-              const ref = doc(db, "daily_production", dailyProductionData.id);
+              const ref = doc(db, "daily_production", dailyProductionData?.id);
 
               try {
                 if (data.location === "mdc") {
@@ -148,7 +148,7 @@ const NewCutter = () => {
 
   useEffect(() => {
     const fetchSubFormData = async () => {
-      if (ongoingData.date) {
+      if (ongoingData?.date) {
         try {
           const q = query(
             collection(db, "daily_production"),

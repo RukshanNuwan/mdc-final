@@ -28,6 +28,7 @@ import { db } from "../../config/firebase.config";
 const UpdateCutter = () => {
   const { state } = useLocation();
 
+
   const [data, setData] = useState({});
   const [heatValve, setHeatValve] = useState(state.cutter_heat_valve);
   const [isLoading, setIsLoading] = useState(false);
@@ -126,60 +127,34 @@ const UpdateCutter = () => {
   const handleChangeLocation = (e) => {
     setLocation(e.target.value);
 
-    // TODO: Update location function
-    setData({
-      ...data,
-      location: e.target.value,
-    });
-
     let updatedDailyProductionTotalBatchInSd3 =
       dailyProductionDataInDb.totalBatchCountInMdc;
     let updatedDailyProductionTotalBatchInSd4 =
       dailyProductionDataInDb.totalBatchCountInAraliyaKele;
-    let updatedDailyProductionTotalMilkAmountInSd3 =
-      dailyProductionDataInDb.totalMilkAmountInMdc;
-    let updatedDailyProductionTotalMilkAmountInSd4 =
-      dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
 
     if (e.target.value === "mdc") {
       updatedDailyProductionTotalBatchInSd3++;
       updatedDailyProductionTotalBatchInSd4--;
-      updatedDailyProductionTotalMilkAmountInSd3 += Number(
-        state.mixing_milk_quantity
-      );
-      updatedDailyProductionTotalMilkAmountInSd4 -= Number(
-        state.mixing_milk_quantity
-      );
 
-      // TODO:
       setUpdatedDailyProductionData({
         ...updatedDailyProductionData,
         totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
         totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
-        totalMilkAmountInMdc: updatedDailyProductionTotalMilkAmountInSd3,
-        totalMilkAmountInAraliyaKele:
-          updatedDailyProductionTotalMilkAmountInSd4,
       });
 
       setData({
         ...data,
         cutter_bowser_load_time: null,
-        sd_4_batches_in_bowser: null,
-        sd_4_bowser_in_time: null,
-        sd_4_bowser_overall_condition: null,
-        sd_4_is_bowser_filling_hole_cleaned: null,
-        sd_4_is_bowser_output_tap_cleaned: null,
       });
     } else {
-      // Change total batch count in daily production
       updatedDailyProductionTotalBatchInSd3--;
       updatedDailyProductionTotalBatchInSd4++;
-      updatedDailyProductionTotalMilkAmountInSd3 -= Number(
-        state.mixing_milk_quantity
-      );
-      updatedDailyProductionTotalMilkAmountInSd4 += Number(
-        state.mixing_milk_quantity
-      );
+
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
+        totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+        totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
+      });
     }
   };
 
@@ -202,21 +177,33 @@ const UpdateCutter = () => {
           const docRef = doc(db, "production_data", state.id);
           await updateDoc(docRef, {
             ...data,
+            location: location,
             cutter_updated_at: serverTimestamp(),
             mixing_status: "ongoing",
             mixing_added_at: serverTimestamp(),
-          }).then(() => {
-            Swal.fire({
-              title: "Changes saved",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 1500,
-            });
+          })
+            .then(async () => {
+              const docRef = doc(
+                db,
+                "daily_production",
+                dailyProductionDataInDb.id
+              );
+              await updateDoc(docRef, {
+                ...updatedDailyProductionData,
+              });
+            })
+            .then(() => {
+              Swal.fire({
+                title: "Changes saved",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
 
-            e.target.reset();
-            setIsLoading(false);
-            navigate("/cutter-section");
-          });
+              e.target.reset();
+              setIsLoading(false);
+              navigate("/cutter-section");
+            });
         }
       });
     } catch (error) {
@@ -344,7 +331,7 @@ const UpdateCutter = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue={state.location}
+                        defaultValue={location}
                         onChange={handleChangeLocation}
                       >
                         <option value="mdc">SD 03</option>
@@ -459,7 +446,7 @@ const UpdateCutter = () => {
                     <button
                       type="submit"
                       className="btn-submit customBtn customBtnUpdate"
-                      disabled={isLoading}
+                      disabled={isLoading || state.cutter_status === "ongoing"}
                     >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         {isLoading && <Spinner animation="border" size="sm" />}
