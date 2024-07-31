@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 
@@ -22,8 +31,43 @@ const UpdateCutter = () => {
   const [data, setData] = useState({});
   const [heatValve, setHeatValve] = useState(state.cutter_heat_valve);
   const [isLoading, setIsLoading] = useState(false);
+  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  const [location, setLocation] = useState(state.location);
+  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+    {}
+  );
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSubFormData = async () => {
+      if (state.date) {
+        try {
+          const q = query(
+            collection(db, "daily_production"),
+            where("date", "==", state?.date),
+            orderBy("timeStamp", "desc")
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setDailyProductionDataInDb(list[0]);
+          });
+
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchSubFormData();
+  }, [state?.date]);
 
   const handleChange = (e) => {
     const id = e.target.id;
@@ -77,6 +121,66 @@ const UpdateCutter = () => {
       cutter_expeller_process_time: processTime,
       cutter_expeller_delay_time: delayTime,
     });
+  };
+
+  const handleChangeLocation = (e) => {
+    setLocation(e.target.value);
+
+    // TODO: Update location function
+    setData({
+      ...data,
+      location: e.target.value,
+    });
+
+    let updatedDailyProductionTotalBatchInSd3 =
+      dailyProductionDataInDb.totalBatchCountInMdc;
+    let updatedDailyProductionTotalBatchInSd4 =
+      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    let updatedDailyProductionTotalMilkAmountInSd3 =
+      dailyProductionDataInDb.totalMilkAmountInMdc;
+    let updatedDailyProductionTotalMilkAmountInSd4 =
+      dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
+
+    if (e.target.value === "mdc") {
+      updatedDailyProductionTotalBatchInSd3++;
+      updatedDailyProductionTotalBatchInSd4--;
+      updatedDailyProductionTotalMilkAmountInSd3 += Number(
+        state.mixing_milk_quantity
+      );
+      updatedDailyProductionTotalMilkAmountInSd4 -= Number(
+        state.mixing_milk_quantity
+      );
+
+      // TODO:
+      setUpdatedDailyProductionData({
+        ...updatedDailyProductionData,
+        totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+        totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
+        totalMilkAmountInMdc: updatedDailyProductionTotalMilkAmountInSd3,
+        totalMilkAmountInAraliyaKele:
+          updatedDailyProductionTotalMilkAmountInSd4,
+      });
+
+      setData({
+        ...data,
+        cutter_bowser_load_time: null,
+        sd_4_batches_in_bowser: null,
+        sd_4_bowser_in_time: null,
+        sd_4_bowser_overall_condition: null,
+        sd_4_is_bowser_filling_hole_cleaned: null,
+        sd_4_is_bowser_output_tap_cleaned: null,
+      });
+    } else {
+      // Change total batch count in daily production
+      updatedDailyProductionTotalBatchInSd3--;
+      updatedDailyProductionTotalBatchInSd4++;
+      updatedDailyProductionTotalMilkAmountInSd3 -= Number(
+        state.mixing_milk_quantity
+      );
+      updatedDailyProductionTotalMilkAmountInSd4 += Number(
+        state.mixing_milk_quantity
+      );
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -237,16 +341,18 @@ const UpdateCutter = () => {
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Location</Form.Label>
-                      <Form.Control
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={
-                          state.location === "mdc" ? "SD 03" : "SD 04"
-                        }
-                      />
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={state.location}
+                        onChange={handleChangeLocation}
+                      >
+                        <option value="mdc">SD 03</option>
+                        <option value="araliya_kele">SD 04</option>
+                      </Form.Select>
                     </Form.Group>
 
-                    {state.location && state.location === "araliya_kele" && (
+                    {state.location && location === "araliya_kele" && (
                       <Form.Group
                         as={Col}
                         md="3"
@@ -258,9 +364,9 @@ const UpdateCutter = () => {
                         </Form.Label>
                         <Form.Control
                           type="time"
-                          disabled
-                          className="customInput disabled"
+                          className="customInput"
                           defaultValue={state.cutter_bowser_load_time}
+                          onChange={handleChange}
                         />
                       </Form.Group>
                     )}
