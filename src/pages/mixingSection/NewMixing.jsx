@@ -250,7 +250,7 @@ const NewMixing = () => {
     }
 
     Swal.fire({
-      title: "Transferred to SD 03",
+      title: "Transfer to SD 03",
       text: "Do you want to transferred this batch to SD 03?",
       icon: "question",
       showCancelButton: true,
@@ -264,7 +264,7 @@ const NewMixing = () => {
           await updateDoc(docRef, {
             ...data,
             location: "mdc",
-            mixing_mix_details: "Transferred from SD 04 to SD 03",
+            mixing_mix_details: "Transfer from SD 04 to SD 03",
           }).then(async () => {
             try {
               const docRef = doc(

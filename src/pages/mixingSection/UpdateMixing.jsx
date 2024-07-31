@@ -35,6 +35,7 @@ const UpdateMixing = () => {
     state.sd_4_is_bowser_output_tap_cleaned
   );
   const [isTransferred, setIsTransferred] = useState(false);
+  const [batchCode, setBatchCode] = useState();
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -81,6 +82,7 @@ const UpdateMixing = () => {
       location === "mdc" ? "SD3" : "SD4"
     }${year}${monthStr}${dateStr}${e.target.value}`;
 
+    setBatchCode(batchCode);
     setData({
       ...data,
       batch_number: Number(e.target.value),
@@ -89,19 +91,86 @@ const UpdateMixing = () => {
   };
 
   const handleTransferredChange = (e) => {
-    // PRODUCTION DATA:
-    // Change the location to SD 03
-    // Update the mixing details to "Transferred from SD 04 to SD 03"
-
-    // DAILY PRODUCTION DATA:
-    // Increase the total batch count in SD 03
-    // Decrease the total batch count in SD 04
-    // Increase the total milk amount in SD 03
-    // Decrease the total milk amount in SD 04
-
     setIsTransferred(e.target.checked);
 
-    let updatedDailyProductionTotalBatchInSd3;
+    let updatedDailyProductionTotalBatchInSd3 =
+      dailyProductionDataInDb.totalBatchCountInMdc;
+    let updatedDailyProductionTotalBatchInSd4 =
+      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    let updatedDailyProductionTotalMilkAmountInSd3 =
+      dailyProductionDataInDb.totalMilkAmountInMdc;
+    let updatedDailyProductionTotalMilkAmountInSd4 =
+      dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
+
+    if (e.target.checked) {
+      updatedDailyProductionTotalBatchInSd3++;
+      updatedDailyProductionTotalBatchInSd4--;
+      updatedDailyProductionTotalMilkAmountInSd3 += Number(
+        state.mixing_milk_quantity
+      );
+      updatedDailyProductionTotalMilkAmountInSd4 -= Number(
+        state.mixing_milk_quantity
+      );
+    }
+
+    Swal.fire({
+      title: "Transfer to SD 03",
+      text: "Do you want to transfer this batch to SD 03?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#ff007f",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#0d1b2a",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const docRef = doc(db, "production_data", state.id);
+          await updateDoc(docRef, {
+            ...data,
+            location: "mdc",
+            mixing_mix_details: "Transferred from SD 04 to SD 03",
+            sd_4_bowser_in_time: null,
+            sd_4_batches_in_bowser: null,
+            sd_4_is_bowser_filling_hole_cleaned: null,
+            sd_4_is_bowser_output_tap_cleaned: null,
+            sd_4_bowser_overall_condition: null,
+          }).then(async () => {
+            try {
+              const docRef = doc(
+                db,
+                "daily_production",
+                dailyProductionDataInDb.id
+              );
+
+              await updateDoc(docRef, {
+                totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+                totalBatchCountInAraliyaKele:
+                  updatedDailyProductionTotalBatchInSd4,
+                totalMilkAmountInMdc:
+                  updatedDailyProductionTotalMilkAmountInSd3,
+                totalMilkAmountInAraliyaKele:
+                  updatedDailyProductionTotalMilkAmountInSd4,
+              }).then(() => {
+                Swal.fire({
+                  title: "Batch transferred",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+
+                navigate("/mixing-section");
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setIsTransferred(false);
+      }
+    });
   };
 
   const handleChange = (e) => {
@@ -292,7 +361,7 @@ const UpdateMixing = () => {
                         type="text"
                         disabled
                         className="customInput disabled"
-                        defaultValue={state.batch_code}
+                        defaultValue={batchCode}
                       />
                     </Form.Group>
 
@@ -665,9 +734,9 @@ const UpdateMixing = () => {
                       </Form.Label>
                       <Form.Control
                         type="time"
-                        disabled
                         defaultValue={state.mixing_feed_start_time}
-                        className="customInput disabled"
+                        className="customInput"
+                        onChange={handleChange}
                       />
                     </Form.Group>
 
