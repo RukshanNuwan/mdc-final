@@ -90,7 +90,7 @@ export const mixingSectionColumns = [
       return (
         <div
           className={`${
-            params.row.mixing_milk_recovery > 75
+            params.row.mixing_milk_recovery >= 75
               ? "text-success"
               : "text-danger"
           }`}

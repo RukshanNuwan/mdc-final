@@ -53,12 +53,12 @@ const otherNavList = [
     icon: "bi bi-sign-turn-left",
     path: "/complaints",
   },
-  {
-    _id: 3,
-    name: "Orders",
-    icon: "bi bi-truck",
-    path: "/orders",
-  },
+  // {
+  //   _id: 3,
+  //   name: "Orders",
+  //   icon: "bi bi-truck",
+  //   path: "/orders",
+  // },
 ];
 
 export { packingLinesNavList, productionNavList, otherNavList };

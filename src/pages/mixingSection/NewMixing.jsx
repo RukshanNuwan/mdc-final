@@ -28,12 +28,14 @@ import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
 import ErrorMessage from "../../components/errorMessage/ErrorMessage";
+import { orders } from "../../constants";
 
 const NewMixing = () => {
   const [data, setData] = useState({});
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
+  const [recipeName, setRecipeName] = useState("order_1");
   const [recipeType, setRecipeType] = useState("conventional");
   const [ongoingData, setOngoingData] = useState({});
   const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
@@ -200,6 +202,7 @@ const NewMixing = () => {
     setData({
       ...data,
       [id]: value,
+      order_name: recipeName,
       order_type: recipeType,
       mixing_milk_quantity: milkQuantity,
       mixing_milk_recovery: milkRecovery,
@@ -490,11 +493,13 @@ const NewMixing = () => {
                         </Form.Label>
                         <Form.Control
                           type="number"
-                          disabled={location === "araliya_kele"}
+                          // disabled={location === "araliya_kele"}
+                          disabled
                           defaultValue={batchNumber}
-                          className={`customInput ${
-                            location === "araliya_kele" && "disabled"
-                          }`}
+                          // className={`customInput ${
+                          //   location === "araliya_kele" && "disabled"
+                          // }`}
+                          className="customInput disabled"
                           onChange={handleBatchNumberChange}
                         />
                       </Form.Group>
@@ -521,12 +526,18 @@ const NewMixing = () => {
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">Order name</Form.Label>
-                        <Form.Control
-                          type="text"
+                        <Form.Select
                           required
                           className="customInput"
-                          onChange={handleChange}
-                        />
+                          defaultValue={recipeName}
+                          onChange={(e) => setRecipeName(e.target.value)}
+                        >
+                          {orders.map((order, index) => (
+                            <option key={index} value={order.value}>
+                              {order.name}
+                            </option>
+                          ))}
+                        </Form.Select>
                       </Form.Group>
                     </Row>
 
