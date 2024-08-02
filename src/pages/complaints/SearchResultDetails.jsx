@@ -56,8 +56,6 @@ const SearchResultDetails = () => {
     fetchProductionDataById();
   }, [packingLineData.production_batch_id]);
 
-  console.log("productionData -> ", productionData);
-
   return (
     <>
       <Header />
@@ -975,8 +973,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        {/* {productionData.lab_powder_issue && ( */}
-                        {true && (
+                        {productionData.lab_powder_issue && (
                           <div className="row mt-2">
                             <div className="col-sm-6 col-md-4">
                               <div className="d-flex justify-content-between">

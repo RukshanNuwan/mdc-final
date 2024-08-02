@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Figure, Form, Row, Spinner } from "react-bootstrap";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 import Header from "../../components/header/Header";
@@ -51,7 +51,7 @@ const Complaints = () => {
       const list = [];
       const q = query(
         collection(db, "packing_line_data"),
-        where("packing_bag_numbers", "array-contains", bagNumberInput)
+        where("packing_craft_bag_number", "array-contains", bagNumberInput)
       );
 
       await getDocs(q).then((res) => {
@@ -654,8 +654,12 @@ const Complaints = () => {
                         <Form.Control
                           type="text"
                           className="customInput"
+                          placeholder="eg: 001"
                           onChange={(e) => setBagNumberInput(e.target.value)}
                         />
+                        <Figure.Caption className="tooltipText">
+                          Type only the last digits of the bag number
+                        </Figure.Caption>
                       </Form.Group>
 
                       <Form.Group

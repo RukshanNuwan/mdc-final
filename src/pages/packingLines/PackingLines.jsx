@@ -200,7 +200,7 @@ const PackingLines = () => {
                           type="text"
                           required
                           className="customInput"
-                          placeholder="Enter batch code (SD324073124)"
+                          placeholder="eg: SD324073124"
                           onChange={handleInputChange}
                         />
                       </Form.Group>
@@ -365,7 +365,7 @@ const PackingLines = () => {
                           controlId="order_name"
                           className="mb-2"
                         >
-                          <Form.Label className="fw-bold" />
+                          <Form.Label className="fw-bold">Progress</Form.Label>
                           <div
                             style={{
                               width: "50px",
@@ -388,12 +388,12 @@ const PackingLines = () => {
                       <Row>
                         <Form.Group
                           as={Col}
-                          md="4"
+                          md="3"
                           controlId="packing_bag_numbers"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Sd 03 | 04 bag number(s)
+                            Sd 03 | 04 production bag number(s)
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -408,7 +408,7 @@ const PackingLines = () => {
 
                         <Form.Group
                           as={Col}
-                          md="4"
+                          md="3"
                           controlId="packing_job_sheet_number"
                           className="mb-2"
                         >
@@ -423,15 +423,33 @@ const PackingLines = () => {
                           />
                         </Form.Group>
 
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          controlId="packing_packing_batch_code"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Packing batch code
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            required
+                            placeholder="eg: MPSnD"
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
+
                         {packingType === "packing_type_20" ? (
                           <Form.Group
                             as={Col}
-                            md="4"
+                            md="3"
                             controlId="packing_craft_bag_number"
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Craft bag code(s)
+                              Craft bag number(s)
                             </Form.Label>
                             <Form.Control
                               type="text"
@@ -446,7 +464,7 @@ const PackingLines = () => {
                         ) : (
                           <Form.Group
                             as={Col}
-                            md="4"
+                            md="3"
                             controlId="packing_carton_box_number"
                             className="mb-2"
                           >
