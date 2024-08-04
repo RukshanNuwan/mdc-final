@@ -12,3 +12,8 @@
 - Updated order name into select box
 - Disabled batch number input in mixing section
 - Updated milk recovery styles in data table
+
+## v2.5.5
+- Added new packing batch code field in packing line section
+- Renamed some fields in packing line section
+- Fixed back tracing bag number searching issue

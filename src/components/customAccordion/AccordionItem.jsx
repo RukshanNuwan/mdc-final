@@ -1,6 +1,6 @@
 const AccordionItem = ({ item }) => {
   return (
-    <div className="bg-dark-blue-2 rounded-1 p-2 text-white-50">
+    <div className="bg-dark-blue-1 rounded-1 p-2 text-white-50">
       <div className="row">
         <div className="col">
           <p className="smallText">Date</p>
