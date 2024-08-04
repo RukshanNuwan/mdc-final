@@ -182,6 +182,7 @@ const UpdateMixing = () => {
     setData({
       ...data,
       [id]: value,
+      order_name: recipeName,
       // bowser details
       sd_4_is_bowser_filling_hole_cleaned: isFillingHoleCleaned,
       sd_4_is_bowser_output_tap_cleaned: isOutputTapCleaned,
