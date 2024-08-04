@@ -21,6 +21,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
+import { orders } from "../../constants";
 
 const UpdateMixing = () => {
   const { state } = useLocation();
@@ -35,7 +36,8 @@ const UpdateMixing = () => {
     state.sd_4_is_bowser_output_tap_cleaned
   );
   const [isTransferred, setIsTransferred] = useState(false);
-  const [batchCode, setBatchCode] = useState();
+  const [batchCode, setBatchCode] = useState(state.batch_code);
+  const [recipeName, setRecipeName] = useState(state.order_name);
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -365,7 +367,7 @@ const UpdateMixing = () => {
                       />
                     </Form.Group>
 
-                    <Form.Group
+                    {/* <Form.Group
                       as={Col}
                       md="4"
                       controlId="order_name"
@@ -378,6 +380,26 @@ const UpdateMixing = () => {
                         disabled
                         className="customInput disabled"
                       />
+                    </Form.Group> */}
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="order_name"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Order name</Form.Label>
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={recipeName}
+                        onChange={(e) => setRecipeName(e.target.value)}
+                      >
+                        {orders.map((order, index) => (
+                          <option key={index} value={order.value}>
+                            {order.name}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
                   </Row>
 
