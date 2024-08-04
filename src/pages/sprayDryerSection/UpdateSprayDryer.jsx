@@ -20,6 +20,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
+import { orders } from "../../constants";
 
 const UpdateSprayDryer = () => {
   const { state } = useLocation();
@@ -283,7 +284,7 @@ const UpdateSprayDryer = () => {
                       />
                     </Form.Group>
 
-                    <Form.Group
+                    {/* <Form.Group
                       as={Col}
                       md="4"
                       controlId="order_name"
@@ -296,6 +297,25 @@ const UpdateSprayDryer = () => {
                         className="customInput text-capitalize disabled"
                         defaultValue={state.order_name}
                       />
+                    </Form.Group> */}
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="order_name"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Order name</Form.Label>
+                      <Form.Select
+                        className="customInput disabled"
+                        disabled
+                        defaultValue={state?.order_name}
+                      >
+                        {orders.map((order, index) => (
+                          <option key={index} value={order.value}>
+                            {order?.name}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
 
                     <Form.Group

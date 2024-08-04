@@ -26,6 +26,7 @@ import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
 import ErrorMessage from "../../components/errorMessage/ErrorMessage";
+import { orders } from "../../constants";
 
 const NewSprayDryer = () => {
   const [data, setData] = useState({});
@@ -290,19 +291,19 @@ const NewSprayDryer = () => {
                     </Row>
 
                     <Row>
-                      <Form.Group
+                      {/* <Form.Group
                         as={Col}
                         md="4"
                         controlId="order_name"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Order type</Form.Label>
+                        <Form.Label className="fw-bold">Order name</Form.Label>
                         <Form.Control
                           disabled
                           className="customInput text-capitalize disabled"
                           defaultValue={ongoingData?.order_name}
                         />
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group
                         as={Col}
@@ -310,13 +311,33 @@ const NewSprayDryer = () => {
                         controlId="order_type"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Order name</Form.Label>
+                        <Form.Label className="fw-bold">Order type</Form.Label>
                         <Form.Control
                           type="text"
                           disabled
                           className="customInput text-capitalize disabled"
                           defaultValue={ongoingData?.order_type}
                         />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        md="4"
+                        controlId="order_name"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Order name</Form.Label>
+                        <Form.Select
+                          className="customInput disabled"
+                          disabled
+                          defaultValue={ongoingData?.order_name}
+                        >
+                          {orders.map((order, index) => (
+                            <option key={index} value={order.value}>
+                              {order?.name}
+                            </option>
+                          ))}
+                        </Form.Select>
                       </Form.Group>
 
                       <Form.Group

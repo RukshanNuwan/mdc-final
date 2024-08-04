@@ -76,6 +76,7 @@ const PackingLines = () => {
       if (res.docs.length === 0) {
         setIsEmpty(true);
         setIsLoading(false);
+        
         return;
       }
 

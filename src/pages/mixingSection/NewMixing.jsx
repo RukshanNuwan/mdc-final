@@ -35,7 +35,7 @@ const NewMixing = () => {
   const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
-  const [recipeName, setRecipeName] = useState("order_1");
+  const [recipeName, setRecipeName] = useState("fat_60_65");
   const [recipeType, setRecipeType] = useState("conventional");
   const [ongoingData, setOngoingData] = useState({});
   const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
