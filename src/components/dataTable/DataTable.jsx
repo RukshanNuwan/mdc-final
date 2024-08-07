@@ -5,9 +5,11 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import InfoIcon from "@mui/icons-material/Info";
@@ -20,6 +22,7 @@ import { db } from "../../config/firebase.config";
 
 const DataTable = ({ columnName, location }) => {
   const [data, setData] = useState([]);
+  const [dailyProductionData, setDailyProductionData] = useState({});
 
   const navigate = useNavigate();
 
@@ -86,6 +89,15 @@ const DataTable = ({ columnName, location }) => {
 
   const handleDelete = async (data) => {
     try {
+      const q = query(
+        collection(db, "daily_production"),
+        where("date", "==", data.date)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setDailyProductionData(doc.data());
+      });
+
       Swal.fire({
         title: "Do you want to delete?",
         icon: "error",
@@ -104,9 +116,59 @@ const DataTable = ({ columnName, location }) => {
             cancelButtonColor: "#ff007f",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              await deleteDoc(doc(db, "production_data", data.id)).then(() => {
-                Swal.fire("Deleted!", "Your file has been deleted.", "success");
-              });
+              await deleteDoc(doc(db, "production_data", data.id)).then(
+                async () => {
+                  const docRef = doc(
+                    db,
+                    "daily_production",
+                    dailyProductionData?.id
+                  );
+
+                  if (data?.location === "mdc") {
+                    await updateDoc(docRef, {
+                      totalBatchCountInMdc:
+                        dailyProductionData?.totalBatchCountInMdc - 1,
+                      totalMilkAmountInMdc:
+                        dailyProductionData?.totalMilkAmountInMdc -
+                        data?.mixing_milk_quantity,
+                      totalPowderQuantityInMdc:
+                        dailyProductionData?.totalPowderQuantityInMdc -
+                        data?.sd_total_powder_quantity,
+                    }).then(() => {
+                      console.log(
+                        "Successfully updated sd3 data in daily production"
+                      );
+
+                      Swal.fire(
+                        "Deleted!",
+                        "Your file has been deleted.",
+                        "success"
+                      );
+                    });
+                  } else {
+                    await updateDoc(docRef, {
+                      totalBatchCountInAraliyaKele:
+                        dailyProductionData?.totalBatchCountInAraliyaKele - 1,
+                      totalMilkAmountInAraliyaKele:
+                        dailyProductionData?.totalMilkAmountInAraliyaKele -
+                        data?.mixing_milk_quantity,
+                      totalPowderQuantityInAraliyaKele:
+                        dailyProductionData?.totalPowderQuantityInAraliyaKele -
+                        data?.sd_total_powder_quantity,
+                    }).then(() => {
+                      console.log(
+                        "Successfully updated sd4 data in daily production"
+                      );
+
+                      Swal.fire(
+                        "Deleted!",
+                        "Your file has been deleted.",
+                        "success"
+                      );
+                    });
+                  }
+                }
+              );
             }
           });
         }
