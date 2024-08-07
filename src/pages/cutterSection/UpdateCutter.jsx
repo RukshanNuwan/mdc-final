@@ -24,10 +24,10 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
+import { calculateTimeDifference } from "../../utils";
 
 const UpdateCutter = () => {
   const { state } = useLocation();
-
 
   const [data, setData] = useState({});
   const [heatValve, setHeatValve] = useState(state.cutter_heat_valve);
@@ -80,21 +80,6 @@ const UpdateCutter = () => {
       cutter_heat_valve: heatValve,
       cutter_status: "completed",
     });
-  };
-
-  const calculateTimeDifference = (startTime, endTime) => {
-    const [hours1, minutes1] = startTime.split(":").map(Number);
-    const [hours2, minutes2] = endTime.split(":").map(Number);
-    const totalMinutes1 = hours1 * 60 + minutes1;
-    const totalMinutes2 = hours2 * 60 + minutes2;
-    const diffInMinutes = Math.abs(totalMinutes2 - totalMinutes1);
-    const hours = Math.floor(diffInMinutes / 60);
-    const minutes = diffInMinutes % 60;
-
-    return {
-      hours,
-      minutes,
-    };
   };
 
   const handleExpellerEndTime = (e) => {

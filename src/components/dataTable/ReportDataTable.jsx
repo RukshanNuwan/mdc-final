@@ -11,14 +11,20 @@ const ReportDataTable = ({ data }) => {
 
   const calculateTimeDifference = (startTime, endTime) => {
     if (startTime && endTime) {
-      const [hours1, minutes1] = startTime?.split(":").map(Number);
-      const [hours2, minutes2] = endTime?.split(":").map(Number);
+      let date1 = new Date(`1970-01-01T${startTime}:00`);
+      let date2 = new Date(`1970-01-01T${endTime}:00`);
 
-      const totalMinutes1 = hours1 * 60 + minutes1;
-      const totalMinutes2 = hours2 * 60 + minutes2;
-      const diffInMinutes = Math.abs(totalMinutes2 - totalMinutes1);
-      const hours = Math.floor(diffInMinutes / 60);
-      const minutes = diffInMinutes % 60;
+      let diff = date2 - date1;
+
+      if (diff < 0) {
+        date2.setDate(date2.getDate() + 1);
+        diff = date2 - date1;
+      }
+
+      let hours = Math.floor(diff / 3600000);
+      let minutes = Math.floor((diff % 3600000) / 60000);
+
+      // return { hours, minutes };
 
       return `${hours}h ${minutes}m`;
     }
@@ -53,13 +59,13 @@ const ReportDataTable = ({ data }) => {
               Raw milk
             </th>
             <th colSpan={7}></th>
-            <th colSpan={6} className="text-center daily-summery-bg-green">
+            <th colSpan={11} className="text-center daily-summery-bg-green">
               Mix milk
             </th>
             <th colSpan={14} className="text-center">
               Spray dryer
             </th>
-            <th colSpan={11} className="text-center daily-summery-bg-purple">
+            <th colSpan={13} className="text-center daily-summery-bg-purple">
               Milk powder
             </th>
           </tr>
@@ -95,6 +101,11 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-green">Taste</th>
             <th className="daily-summery-bg-green">Color</th>
             <th className="daily-summery-bg-green">Odor</th>
+            <th className="daily-summery-bg-green">Mix issues informed to</th>
+            <th className="daily-summery-bg-green">Details</th>
+            <th className="daily-summery-bg-green">Sample in time</th>
+            <th className="daily-summery-bg-green">Test start time</th>
+            <th className="daily-summery-bg-green">Time difference</th>
             <th>Raw milk in time</th>
             <th>Mix start time</th>
             <th>Mix finish time</th>
@@ -120,11 +131,16 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-purple">Odor</th>
             <th className="daily-summery-bg-purple">Solubility</th>
             <th className="daily-summery-bg-purple">Free flowing</th>
+            <th className="daily-summery-bg-purple">
+              Powder issue informed to
+            </th>
+            <th className="daily-summery-bg-purple">Details</th>
           </tr>
         </thead>
 
         <tbody>
           {data?.map((item, index) => {
+            console.log(item);
             return (
               <tr key={index} className="text-center text-capitalize">
                 <td>{item.primary_batch_number}</td>
@@ -146,13 +162,13 @@ const ReportDataTable = ({ data }) => {
                 </td>
                 <td>{item.expeller_finish_time}</td>
                 <td>
-                  {item.cutter_expeller_process_time.hours < 10
-                    ? `0${item.cutter_expeller_process_time.hours}`
-                    : item.cutter_expeller_process_time.hours}
+                  {item.cutter_expeller_process_time?.hours < 10
+                    ? `0${item.cutter_expeller_process_time?.hours}`
+                    : item.cutter_expeller_process_time?.hours}
                   :
-                  {item.cutter_expeller_process_time.minutes < 10
-                    ? `0${item.cutter_expeller_process_time.minutes}`
-                    : item.cutter_expeller_process_time.minutes}
+                  {item.cutter_expeller_process_time?.minutes < 10
+                    ? `0${item.cutter_expeller_process_time?.minutes}`
+                    : item.cutter_expeller_process_time?.minutes}
                 </td>
                 <td>{item.cutter_expeller_delay_time}</td>
                 <td>{item.lab_raw_ph}</td>
@@ -179,8 +195,8 @@ const ReportDataTable = ({ data }) => {
                     <CloseIcon className="text-danger" />
                   )}
                 </td>
-                <td>{item.cutter_bowser_load_time}</td>
-                <td>{item.sd_4_bowser_in_time}</td>
+                <td>{item.cutter_bowser_load_time || "-"}</td>
+                <td>{item.sd_4_bowser_in_time || "-"}</td>
                 {item.location === "araliya_kele" ? (
                   <td>
                     {calculateTimeDifference(
@@ -191,7 +207,7 @@ const ReportDataTable = ({ data }) => {
                 ) : (
                   <td>-</td>
                 )}
-                <td>{item.sd_4_batches_in_bowser}</td>
+                <td>{item.sd_4_batches_in_bowser || "-"}</td>
                 <td>
                   {item.sd_4_is_bowser_filling_hole_cleaned ? (
                     <CheckIcon className="text-success" />
@@ -206,7 +222,7 @@ const ReportDataTable = ({ data }) => {
                     <CloseIcon className="text-danger" />
                   )}
                 </td>
-                <td>{item.sd_4_bowser_overall_condition}</td>
+                <td>{item.sd_4_bowser_overall_condition || "-"}</td>
                 <td>{item.lab_mix_ph}</td>
                 <td>{item.lab_mix_tss}</td>
                 <td>{item.lab_mix_fat}</td>
@@ -231,6 +247,16 @@ const ReportDataTable = ({ data }) => {
                     <CloseIcon className="text-danger" />
                   )}
                 </td>
+                <td>{item.lab_mix_issue_informed_to || "-"}</td>
+                <td>{item.lab_mix_issue_details || "-"}</td>
+                <td>{item.lab_sample_in_time}</td>
+                <td>{item.lab_test_start_time}</td>
+                <td>
+                  {calculateTimeDifference(
+                    item.lab_sample_in_time,
+                    item.lab_test_start_time
+                  )}
+                </td>
                 <td>{item.expeller_finish_time}</td>
                 <td>{item.mixing_mix_start_time}</td>
                 <td>{item.mixing_mix_finish_time}</td>
@@ -250,7 +276,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.sd_outlet_temp}&deg;C</td>
                 <td>{item.mixing_pressure_pump_value}MPa</td>
                 <td>{item.sd_atomizer_size}</td>
-                <td>{item.lab_powder_ph}</td>
+                <td>{item.lab_powder_ph || "-"}</td>
                 <td>{item.lab_powder_moisture}%</td>
                 <td>{item.lab_powder_fat}</td>
                 <td>{item.lab_powder_fat_layer}cm</td>
@@ -291,6 +317,8 @@ const ReportDataTable = ({ data }) => {
                     <CloseIcon className="text-danger" />
                   )}
                 </td>
+                <td>{item.lab_powder_issue_informed_to || "-"}</td>
+                <td>{item.lab_powder_issue_details || "-"}</td>
               </tr>
             );
           })}

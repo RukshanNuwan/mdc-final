@@ -36,7 +36,7 @@ const WetSection = () => {
   const currentDate = useCurrentDate();
 
   const calculateKernelWeight = (e) => {
-    const kernelWeight = e.target.value * 0.23;
+    const kernelWeight = e.target.value * 0.25;
     setTotalKernelWeight(kernelWeight);
     setTotalCoconut(e.target.value);
   };

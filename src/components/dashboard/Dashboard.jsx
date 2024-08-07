@@ -15,7 +15,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./dashboard.css";
 import { db } from "../../config/firebase.config";
 import TotalCard from "../card/TotalCard";
-import UseCurrentDate from "../../hooks/useCurrentDate";
 
 const Dashboard = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
@@ -30,8 +29,6 @@ const Dashboard = () => {
   const [isCutterBreakdown, setIsCutterBreakdown] = useState(false);
   const [isSd3Breakdown, setIsSd3Breakdown] = useState(false);
   const [isSd4Breakdown, setIsSd4Breakdown] = useState(false);
-
-  const currentDate = UseCurrentDate();
 
   const calculateRemainingBatches = (totalBatches) => {
     if (
@@ -231,8 +228,8 @@ const Dashboard = () => {
       try {
         const q = query(
           collection(db, "breakdowns"),
-          where("breakdown_date", "==", currentDate),
-          where("status", "==", "ongoing"),
+          where("breakdown_date", "==", date),
+          where("status" == "ongoing"),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -252,12 +249,11 @@ const Dashboard = () => {
     };
 
     fetchBreakdowns();
-  }, [currentDate]);
+  }, [date]);
 
   useEffect(() => {
     if (breakdowns.length > 0) {
       breakdowns.forEach((breakdown) => {
-        console.log(breakdown);
         if (breakdown.breakdown_section_name === "cutter") {
           setIsCutterBreakdown(true);
         } else {

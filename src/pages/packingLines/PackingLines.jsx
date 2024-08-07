@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Figure, Form, InputGroup, Row, Spinner } from "react-bootstrap";
 import {
   addDoc,
   collection,
   getDocs,
+  onSnapshot,
+  orderBy,
   query,
   serverTimestamp,
   where,
@@ -18,6 +20,70 @@ import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
 import CustomAccordion from "../../components/customAccordion/CustomAccordion";
+import { DataGrid } from "@mui/x-data-grid";
+
+// TODO: update this fields
+const packingSectionColumns = [
+  { field: "packing_production_date", headerName: "Date", width: 100 },
+  {
+    field: "packing_type",
+    headerName: "Packing type",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div>
+          {params.row.packing_type === "packing_type_20" ? "20kg" : "Other"}
+        </div>
+      );
+    },
+  },
+  {
+    field: "packing_bag_numbers",
+    headerName: "SD 3 | 4 Bag #",
+    width: 200,
+    renderCell: (params) => {
+      return <div>{params.row.packing_bag_numbers.join()}</div>;
+    },
+  },
+  {
+    field: "production_batch_code",
+    headerName: "Batch code",
+    width: 150,
+  },
+  {
+    field: "packing_job_sheet_number",
+    headerName: "Job sheet #",
+    width: 150,
+  },
+  {
+    field: "packing_craft_bag_number",
+    headerName: "Craft bag #",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div>
+          {params.row.packing_craft_bag_number
+            ? params.row.packing_craft_bag_number
+            : "-"}
+        </div>
+      );
+    },
+  },
+  {
+    field: "packing_carton_box_number",
+    headerName: "Carton box #",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div>
+          {params.row.packing_carton_box_number
+            ? params.row.packing_carton_box_number
+            : "-"}
+        </div>
+      );
+    },
+  },
+];
 
 const PackingLines = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +93,7 @@ const PackingLines = () => {
   const [packingType, setPackingType] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
   const [addedPackingLineData, setAddedPackingLineData] = useState([]);
+  const [addedData, setAddedData] = useState([]);
 
   // TODO: Calculate completed powder quantity as percentage of total and show it in circular progress bar
   const [totalQuantity, setTotalQuantity] = useState(2000);
@@ -38,11 +105,38 @@ const PackingLines = () => {
     percentage = (currentQuantity / totalQuantity) * 100;
   }
 
+  useEffect(() => {
+    const fetchAddedData = async () => {
+      try {
+        const q = query(
+          collection(db, "packing_line_data"),
+          orderBy("packing_line_added_at", "desc")
+        );
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let list = [];
+          querySnapshot.forEach((doc) => {
+            list.push({ id: doc.id, ...doc.data() });
+          });
+
+          setAddedData(list);
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchAddedData();
+  }, []);
+
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const fetchAddedPackingLineData = async (param) => {
+  const fetchAddedPackingLineDataByBatchCode = async (param) => {
     const q = query(
       collection(db, "packing_line_data"),
       where("production_batch_code", "==", param)
@@ -65,7 +159,7 @@ const PackingLines = () => {
     setData({});
     setAddedPackingLineData([]);
 
-    fetchAddedPackingLineData(searchInput);
+    fetchAddedPackingLineDataByBatchCode(searchInput);
 
     const q = query(
       collection(db, "production_data"),
@@ -76,7 +170,7 @@ const PackingLines = () => {
       if (res.docs.length === 0) {
         setIsEmpty(true);
         setIsLoading(false);
-        
+
         return;
       }
 
@@ -654,6 +748,34 @@ const PackingLines = () => {
                     </Form>
                   </div>
                 )}
+
+                <hr className="custom-hr-yellow my-4" />
+
+                <div
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    padding: "0",
+                    borderRadius: "8px",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  <DataGrid
+                    rows={addedData}
+                    columns={packingSectionColumns}
+                    initialState={{
+                      pagination: {
+                        paginationModel: { page: 0, pageSize: 25 },
+                      },
+                      sorting: {
+                        sortModel: [
+                          { field: "packing_line_added_at", sort: "desc" },
+                        ],
+                      },
+                    }}
+                    pageSizeOptions={[25, 50, 100]}
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -23,7 +23,6 @@ const DataTable = ({ columnName, location }) => {
 
   const navigate = useNavigate();
 
-  // Fetch Data from DB
   const fetchDataWithoutLocation = useCallback(async () => {
     const q = query(
       collection(db, "production_data"),
