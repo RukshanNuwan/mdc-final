@@ -24,8 +24,6 @@ const ReportDataTable = ({ data }) => {
       let hours = Math.floor(diff / 3600000);
       let minutes = Math.floor((diff % 3600000) / 60000);
 
-      // return { hours, minutes };
-
       return `${hours}h ${minutes}m`;
     }
   };
@@ -68,6 +66,9 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={13} className="text-center daily-summery-bg-purple">
               Milk powder
             </th>
+            {/* <th colSpan={3} className="text-center daily-summery-bg-red">
+              Breakdowns
+            </th> */}
           </tr>
           <tr className="text-center">
             <th className="daily-summery-bg-red">Wet</th>
@@ -136,12 +137,14 @@ const ReportDataTable = ({ data }) => {
               Powder issue informed to
             </th>
             <th className="daily-summery-bg-purple">Details</th>
+            {/* <th className="daily-summery-bg-red">Cutter breakdowns</th>
+            <th className="daily-summery-bg-red">Mixing breakdowns</th>
+            <th className="daily-summery-bg-red">Sd breakdowns</th> */}
           </tr>
         </thead>
 
         <tbody>
           {data?.map((item, index) => {
-            console.log(item);
             return (
               <tr key={index} className="text-center text-capitalize">
                 <td>{item.primary_batch_number}</td>
@@ -321,6 +324,9 @@ const ReportDataTable = ({ data }) => {
                 </td>
                 <td>{item.lab_powder_issue_informed_to || "-"}</td>
                 <td>{item.lab_powder_issue_details || "-"}</td>
+                {/* <td>{}</td>
+                <td>{}</td>
+                <td>{}</td> */}
               </tr>
             );
           })}
