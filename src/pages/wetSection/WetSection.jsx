@@ -47,12 +47,12 @@ const WetSection = () => {
 
     setSubFormData({
       ...subFormData,
-      totalBatchCountInMdc: 0,
-      totalBatchCountInAraliyaKele: 0,
-      totalMilkAmountInMdc: 0,
-      totalMilkAmountInAraliyaKele: 0,
-      totalPowderQuantityInMdc: 0,
-      totalPowderQuantityInAraliyaKele: 0,
+      // totalBatchCountInMdc: 0,
+      // totalBatchCountInAraliyaKele: 0,
+      // totalMilkAmountInMdc: 0,
+      // totalMilkAmountInAraliyaKele: 0,
+      // totalPowderQuantityInMdc: 0,
+      // totalPowderQuantityInAraliyaKele: 0,
       [id]: value,
     });
   };

@@ -9,7 +9,7 @@ import {
   collection,
   doc,
   getDocs,
-  onSnapshot,
+  // onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -32,15 +32,15 @@ import { orders } from "../../constants";
 
 const NewMixing = () => {
   const [data, setData] = useState({});
-  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
   const [recipeName, setRecipeName] = useState("fat_60_65");
   const [recipeType, setRecipeType] = useState("conventional");
   const [ongoingData, setOngoingData] = useState({});
-  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
-    {}
-  );
+  // const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+  // {}
+  // );
   const [additionalCratesCount, setAdditionalCratesCount] = useState(0);
   const [newKernelWeight, setNewKernelWeight] = useState(0);
   const [isInformed, setIsInformed] = useState(false);
@@ -90,35 +90,35 @@ const NewMixing = () => {
     fetchCurrentBatchInCutter();
   }, [location]);
 
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      if (ongoingData.date) {
-        try {
-          const q = query(
-            collection(db, "daily_production"),
-            where("date", "==", ongoingData?.date),
-            orderBy("timeStamp", "desc")
-          );
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            let list = [];
-            querySnapshot.forEach((doc) => {
-              list.push({ id: doc.id, ...doc.data() });
-            });
+  // useEffect(() => {
+  //   const fetchSubFormData = async () => {
+  //     if (ongoingData.date) {
+  //       try {
+  //         const q = query(
+  //           collection(db, "daily_production"),
+  //           where("date", "==", ongoingData?.date),
+  //           orderBy("timeStamp", "desc")
+  //         );
+  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //           let list = [];
+  //           querySnapshot.forEach((doc) => {
+  //             list.push({ id: doc.id, ...doc.data() });
+  //           });
 
-            setDailyProductionDataInDb(list[0]);
-          });
+  //           setDailyProductionDataInDb(list[0]);
+  //         });
 
-          return () => {
-            unsubscribe();
-          };
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+  //         return () => {
+  //           unsubscribe();
+  //         };
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
 
-    fetchSubFormData();
-  }, [ongoingData?.date]);
+  //   fetchSubFormData();
+  // }, [ongoingData?.date]);
 
   useEffect(() => {
     if (ongoingData?.date) {
@@ -184,20 +184,20 @@ const NewMixing = () => {
     const id = e.target.id;
     const value = e.target.value;
 
-    if (location === "mdc") {
-      setUpdatedDailyProductionData({
-        ...updatedDailyProductionData,
-        totalMilkAmountInMdc:
-          dailyProductionDataInDb?.totalMilkAmountInMdc + Number(milkQuantity),
-      });
-    } else {
-      setUpdatedDailyProductionData({
-        ...updatedDailyProductionData,
-        totalMilkAmountInAraliyaKele:
-          dailyProductionDataInDb?.totalMilkAmountInAraliyaKele +
-          Number(milkQuantity),
-      });
-    }
+    // if (location === "mdc") {
+    //   setUpdatedDailyProductionData({
+    //     ...updatedDailyProductionData,
+    //     totalMilkAmountInMdc:
+    //       dailyProductionDataInDb?.totalMilkAmountInMdc + Number(milkQuantity),
+    //   });
+    // } else {
+    //   setUpdatedDailyProductionData({
+    //     ...updatedDailyProductionData,
+    //     totalMilkAmountInAraliyaKele:
+    //       dailyProductionDataInDb?.totalMilkAmountInAraliyaKele +
+    //       Number(milkQuantity),
+    //   });
+    // }
 
     setData({
       ...data,
@@ -242,15 +242,15 @@ const NewMixing = () => {
   const handleTransferredChange = (e) => {
     setIsTransferred(e.target.checked);
 
-    let updatedDailyProductionTotalBatchInSd3 =
-      dailyProductionDataInDb.totalBatchCountInMdc;
-    let updatedDailyProductionTotalBatchInSd4 =
-      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    // let updatedDailyProductionTotalBatchInSd3 =
+    //   dailyProductionDataInDb.totalBatchCountInMdc;
+    // let updatedDailyProductionTotalBatchInSd4 =
+    //   dailyProductionDataInDb.totalBatchCountInAraliyaKele;
 
-    if (e.target.checked) {
-      updatedDailyProductionTotalBatchInSd3++;
-      updatedDailyProductionTotalBatchInSd4--;
-    }
+    // if (e.target.checked) {
+    //   updatedDailyProductionTotalBatchInSd3++;
+    //   updatedDailyProductionTotalBatchInSd4--;
+    // }
 
     Swal.fire({
       title: "Transfer to SD 03",
@@ -269,30 +269,30 @@ const NewMixing = () => {
             location: "mdc",
             mixing_mix_details: "Transfer from SD 04 to SD 03",
           }).then(async () => {
-            try {
-              const docRef = doc(
-                db,
-                "daily_production",
-                dailyProductionDataInDb.id
-              );
+            // try {
+            // const docRef = doc(
+            //   db,
+            //   "daily_production",
+            //   dailyProductionDataInDb.id
+            // );
 
-              await updateDoc(docRef, {
-                totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
-                totalBatchCountInAraliyaKele:
-                  updatedDailyProductionTotalBatchInSd4,
-              }).then(() => {
-                Swal.fire({
-                  title: "Batch transferred",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
+            // await updateDoc(docRef, {
+            //   totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+            //   totalBatchCountInAraliyaKele:
+            //     updatedDailyProductionTotalBatchInSd4,
+            // }).then(() => {
+            Swal.fire({
+              title: "Batch transferred",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
 
-                navigate("/mixing-section");
-              });
-            } catch (error) {
-              console.log(error);
-            }
+            navigate("/mixing-section");
+            // });
+            // } catch (error) {
+            //   console.log(error);
+            // }
           });
         } catch (error) {
           console.log(error);
@@ -331,20 +331,20 @@ const NewMixing = () => {
             sd_added_at: serverTimestamp(),
           })
             .then(async () => {
-              try {
-                const docRef = doc(
-                  db,
-                  "daily_production",
-                  dailyProductionDataInDb.id
-                );
-                await updateDoc(docRef, {
-                  ...updatedDailyProductionData,
-                });
+              // try {
+              //   const docRef = doc(
+              //     db,
+              //     "daily_production",
+              //     dailyProductionDataInDb.id
+              //   );
+              //   await updateDoc(docRef, {
+              //     ...updatedDailyProductionData,
+              //   });
 
-                console.log("successfully updated daily production data");
-              } catch (error) {
-                console.log(error);
-              }
+              //   console.log("successfully updated daily production data");
+              // } catch (error) {
+              //   console.log(error);
+              // }
 
               if (newKernelWeight > 0) {
                 try {

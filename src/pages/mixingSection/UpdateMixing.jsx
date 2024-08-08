@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  collection,
+  // collection,
   doc,
-  onSnapshot,
-  orderBy,
-  query,
+  // onSnapshot,
+  // orderBy,
+  // query,
   serverTimestamp,
   updateDoc,
-  where,
+  // where,
 } from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -27,7 +27,7 @@ const UpdateMixing = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(
     state.sd_4_is_bowser_filling_hole_cleaned
@@ -49,35 +49,35 @@ const UpdateMixing = () => {
   const date = currentDate.getDate();
   const dateStr = date < 10 ? "0" + date : date;
 
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      if (state.date) {
-        try {
-          const q = query(
-            collection(db, "daily_production"),
-            where("date", "==", state?.date),
-            orderBy("timeStamp", "desc")
-          );
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            let list = [];
-            querySnapshot.forEach((doc) => {
-              list.push({ id: doc.id, ...doc.data() });
-            });
+  // useEffect(() => {
+  //   const fetchSubFormData = async () => {
+  //     if (state.date) {
+  //       try {
+  //         const q = query(
+  //           collection(db, "daily_production"),
+  //           where("date", "==", state?.date),
+  //           orderBy("timeStamp", "desc")
+  //         );
+  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //           let list = [];
+  //           querySnapshot.forEach((doc) => {
+  //             list.push({ id: doc.id, ...doc.data() });
+  //           });
 
-            setDailyProductionDataInDb(list[0]);
-          });
+  //           setDailyProductionDataInDb(list[0]);
+  //         });
 
-          return () => {
-            unsubscribe();
-          };
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+  //         return () => {
+  //           unsubscribe();
+  //         };
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
 
-    fetchSubFormData();
-  }, [state?.date]);
+  //   fetchSubFormData();
+  // }, [state?.date]);
 
   const handleBatchNumberChange = (e) => {
     const batchCode = `${
@@ -95,25 +95,25 @@ const UpdateMixing = () => {
   const handleTransferredChange = (e) => {
     setIsTransferred(e.target.checked);
 
-    let updatedDailyProductionTotalBatchInSd3 =
-      dailyProductionDataInDb.totalBatchCountInMdc;
-    let updatedDailyProductionTotalBatchInSd4 =
-      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
-    let updatedDailyProductionTotalMilkAmountInSd3 =
-      dailyProductionDataInDb.totalMilkAmountInMdc;
-    let updatedDailyProductionTotalMilkAmountInSd4 =
-      dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
+    // let updatedDailyProductionTotalBatchInSd3 =
+    //   dailyProductionDataInDb.totalBatchCountInMdc;
+    // let updatedDailyProductionTotalBatchInSd4 =
+    //   dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    // let updatedDailyProductionTotalMilkAmountInSd3 =
+    //   dailyProductionDataInDb.totalMilkAmountInMdc;
+    // let updatedDailyProductionTotalMilkAmountInSd4 =
+    //   dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
 
-    if (e.target.checked) {
-      updatedDailyProductionTotalBatchInSd3++;
-      updatedDailyProductionTotalBatchInSd4--;
-      updatedDailyProductionTotalMilkAmountInSd3 += Number(
-        state.mixing_milk_quantity
-      );
-      updatedDailyProductionTotalMilkAmountInSd4 -= Number(
-        state.mixing_milk_quantity
-      );
-    }
+    // if (e.target.checked) {
+    //   updatedDailyProductionTotalBatchInSd3++;
+    //   updatedDailyProductionTotalBatchInSd4--;
+    //   updatedDailyProductionTotalMilkAmountInSd3 += Number(
+    //     state.mixing_milk_quantity
+    //   );
+    //   updatedDailyProductionTotalMilkAmountInSd4 -= Number(
+    //     state.mixing_milk_quantity
+    //   );
+    // }
 
     Swal.fire({
       title: "Transfer to SD 03",
@@ -137,34 +137,34 @@ const UpdateMixing = () => {
             sd_4_is_bowser_output_tap_cleaned: null,
             sd_4_bowser_overall_condition: null,
           }).then(async () => {
-            try {
-              const docRef = doc(
-                db,
-                "daily_production",
-                dailyProductionDataInDb.id
-              );
+            // try {
+            // const docRef = doc(
+            //   db,
+            //   "daily_production",
+            //   dailyProductionDataInDb.id
+            // );
 
-              await updateDoc(docRef, {
-                totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
-                totalBatchCountInAraliyaKele:
-                  updatedDailyProductionTotalBatchInSd4,
-                totalMilkAmountInMdc:
-                  updatedDailyProductionTotalMilkAmountInSd3,
-                totalMilkAmountInAraliyaKele:
-                  updatedDailyProductionTotalMilkAmountInSd4,
-              }).then(() => {
-                Swal.fire({
-                  title: "Batch transferred",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
+            // await updateDoc(docRef, {
+            //   totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+            //   totalBatchCountInAraliyaKele:
+            //     updatedDailyProductionTotalBatchInSd4,
+            //   totalMilkAmountInMdc:
+            //     updatedDailyProductionTotalMilkAmountInSd3,
+            //   totalMilkAmountInAraliyaKele:
+            //     updatedDailyProductionTotalMilkAmountInSd4,
+            // }).then(() => {
+            Swal.fire({
+              title: "Batch transferred",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
 
-                navigate("/mixing-section");
-              });
-            } catch (error) {
-              console.log(error);
-            }
+            navigate("/mixing-section");
+            // });
+            // } catch (error) {
+            //   console.log(error);
+            // }
           });
         } catch (error) {
           console.log(error);

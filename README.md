@@ -7,6 +7,7 @@
 - Updated calculate kernel weight formula in wet section
 - Added new sample in time, test start time, issues informed to & issue details in summary report
 - Fixed dashboard batch counts, milk amounts & powder quantities when delete a batch
+- Fixed summary report total count issue
 
 ## v2.5.6
 

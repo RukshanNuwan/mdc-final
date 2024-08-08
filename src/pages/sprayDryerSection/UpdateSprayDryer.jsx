@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  collection,
+  // collection,
   doc,
-  onSnapshot,
-  query,
+  // onSnapshot,
+  // query,
   serverTimestamp,
   updateDoc,
-  where,
+  // where,
 } from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -30,11 +30,11 @@ const UpdateSprayDryer = () => {
   const [powderRecovery, setPowderRecovery] = useState(
     state?.sd_powder_recovery
   );
-  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
-    {}
-  );
-  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
-  const [powderQuantity, setPowderQuantity] = useState(0);
+  // const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+  //   {}
+  // );
+  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  // const [powderQuantity, setPowderQuantity] = useState(0);
   const expectedPowderQuantity = state?.expected_powder_quantity
     ? state?.expected_powder_quantity
     : 120;
@@ -59,7 +59,7 @@ const UpdateSprayDryer = () => {
     recovery = ((e.target.value / expectedPowderQuantity) * 100).toFixed(2);
 
     setPowderRecovery(recovery);
-    setPowderQuantity(Number(e.target.value));
+    // setPowderQuantity(Number(e.target.value));
 
     setData({
       ...data,
@@ -72,20 +72,20 @@ const UpdateSprayDryer = () => {
     const id = e.target.id;
     const value = e.target.value;
 
-    if (location === "mdc") {
-      setUpdatedDailyProductionData({
-        ...updatedDailyProductionData,
-        totalPowderQuantityInMdc:
-          dailyProductionDataInDb?.totalPowderQuantityInMdc + powderQuantity,
-      });
-    } else {
-      setUpdatedDailyProductionData({
-        ...updatedDailyProductionData,
-        totalPowderQuantityInAraliyaKele:
-          dailyProductionDataInDb?.totalPowderQuantityInAraliyaKele +
-          powderQuantity,
-      });
-    }
+    // if (location === "mdc") {
+    //   setUpdatedDailyProductionData({
+    //     ...updatedDailyProductionData,
+    //     totalPowderQuantityInMdc:
+    //       dailyProductionDataInDb?.totalPowderQuantityInMdc + powderQuantity,
+    //   });
+    // } else {
+    //   setUpdatedDailyProductionData({
+    //     ...updatedDailyProductionData,
+    //     totalPowderQuantityInAraliyaKele:
+    //       dailyProductionDataInDb?.totalPowderQuantityInAraliyaKele +
+    //       powderQuantity,
+    //   });
+    // }
 
     setData({
       ...data,
@@ -115,18 +115,18 @@ const UpdateSprayDryer = () => {
             ...data,
             sd_updated_at: serverTimestamp(),
           })
-            .then(async () => {
-              try {
-                const docRef = doc(
-                  db,
-                  "daily_production",
-                  dailyProductionDataInDb.id
-                );
-                await updateDoc(docRef, { ...updatedDailyProductionData });
-              } catch (error) {
-                console.log(error);
-              }
-            })
+            // .then(async () => {
+            //   try {
+            //     const docRef = doc(
+            //       db,
+            //       "daily_production",
+            //       dailyProductionDataInDb.id
+            //     );
+            //     await updateDoc(docRef, { ...updatedDailyProductionData });
+            //   } catch (error) {
+            //     console.log(error);
+            //   }
+            // })
             .then(() => {
               Swal.fire({
                 title: "Changes saved",
@@ -149,32 +149,32 @@ const UpdateSprayDryer = () => {
   };
 
   // Fetch daily production data by selected object date
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      try {
-        const q = query(
-          collection(db, "daily_production"),
-          where("date", "==", state.date)
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let list = [];
-          querySnapshot.forEach((doc) => {
-            list.push({ id: doc.id, ...doc.data() });
-          });
+  // useEffect(() => {
+  //   const fetchSubFormData = async () => {
+  //     try {
+  //       const q = query(
+  //         collection(db, "daily_production"),
+  //         where("date", "==", state.date)
+  //       );
+  //       const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //         let list = [];
+  //         querySnapshot.forEach((doc) => {
+  //           list.push({ id: doc.id, ...doc.data() });
+  //         });
 
-          setDailyProductionDataInDb(list[0]);
-        });
+  //         setDailyProductionDataInDb(list[0]);
+  //       });
 
-        return () => {
-          unsubscribe();
-        };
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  //       return () => {
+  //         unsubscribe();
+  //       };
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-    fetchSubFormData();
-  }, [state.date]);
+  //   fetchSubFormData();
+  // }, [state.date]);
 
   return (
     <>
