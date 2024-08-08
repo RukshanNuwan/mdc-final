@@ -6,6 +6,7 @@
 - Updated calculate time difference functions in update cutter & daily summery report module
 - Updated calculate kernel weight formula in wet section
 - Added new sample in time, test start time, issues informed to & issue details in summary report
+- Fixed dashboard batch counts, milk amounts & powder quantities when delete a batch
 
 ## v2.5.6
 

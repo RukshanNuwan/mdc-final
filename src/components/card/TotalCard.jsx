@@ -2,15 +2,10 @@ import "../dashboard/dashboard.css";
 
 const TotalCard = ({ value_1, value_2, text }) => {
   const calculateTotalAmount = (value_1 = 0, value_2 = 0) => {
-    // console.log("1", value_1);
-    // console.log("2", value_2);
-    
     if (isNaN(value_1)) return value_2;
     if (isNaN(value_2)) return value_1;
 
-    // console.log(value_1 + value_2);
     return value_1 + value_2;
-
   };
 
   return (

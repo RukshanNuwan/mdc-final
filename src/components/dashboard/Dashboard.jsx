@@ -18,6 +18,7 @@ import TotalCard from "../card/TotalCard";
 
 const Dashboard = () => {
   const [dailyProductionData, setDailyProductionData] = useState({});
+  const [productionDataByDate, setProductionDataByDate] = useState([]);
   const [sd3Data, setSd3Data] = useState({});
   const [sd4Data, setSd4Data] = useState({});
   const [sd3LabData, setSd3LabData] = useState({});
@@ -29,15 +30,19 @@ const Dashboard = () => {
   const [isCutterBreakdown, setIsCutterBreakdown] = useState(false);
   const [isSd3Breakdown, setIsSd3Breakdown] = useState(false);
   const [isSd4Breakdown, setIsSd4Breakdown] = useState(false);
+  const [totalBatchesInSd3, setTotalBatchesInSd3] = useState(0);
+  const [totalBatchesInSd4, setTotalBatchesInSd4] = useState(0);
+  const [totalMilkAmountInSd3, setTotalMilkAmountInSd3] = useState(0);
+  const [totalMilkAmountInSd4, setTotalMilkAmountInSd4] = useState(0);
+  const [totalPowderQuantityInSd3, setTotalPowderQuantityInSd3] = useState(0);
+  const [totalPowderQuantityInSd4, setTotalPowderQuantityInSd4] = useState(0);
+
+  let totalBatchesInMdc = 0;
+  let totalBatchesInAraliyaKele = 0;
 
   const calculateRemainingBatches = (totalBatches) => {
-    if (
-      dailyProductionData?.totalBatchCountInMdc ||
-      dailyProductionData?.totalBatchCountInAraliyaKele
-    ) {
-      const currentTotalBatchCount =
-        dailyProductionData?.totalBatchCountInMdc +
-        dailyProductionData?.totalBatchCountInAraliyaKele;
+    if (totalBatchesInSd3 || totalBatchesInSd4) {
+      const currentTotalBatchCount = totalBatchesInSd3 + totalBatchesInSd4;
       const res = totalBatches - currentTotalBatchCount;
       return res.toString();
     } else {
@@ -65,6 +70,36 @@ const Dashboard = () => {
 
     fetchDate();
   }, []);
+
+  useEffect(() => {
+    const fetchProductionDataByDate = async () => {
+      if (date) {
+        try {
+          const q = query(
+            collection(db, "production_data"),
+            where("date", "==", date),
+            orderBy("wet_added_at", "desc")
+          );
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let list = [];
+            querySnapshot.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setProductionDataByDate(list);
+          });
+
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchProductionDataByDate();
+  }, [date]);
 
   useEffect(() => {
     const fetchId = async () => {
@@ -229,7 +264,7 @@ const Dashboard = () => {
         const q = query(
           collection(db, "breakdowns"),
           where("breakdown_date", "==", date),
-          where("status" == "ongoing"),
+          where("status", "==", "ongoing"),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -295,22 +330,52 @@ const Dashboard = () => {
     handleStatus();
   }, [sd3Data?.sd_status, sd4Data?.sd_status, sd3Data]);
 
+  useEffect(() => {
+    let totalMilkAmountInMdc = 0;
+    let totalMilkAmountInAraliyaKele = 0;
+    let totalPowderQuantityInMdc = 0;
+    let totalPowderQuantityInAraliyaKele = 0;
+
+    if (productionDataByDate.length > 0) {
+      productionDataByDate.forEach((data) => {
+        if (data.location === "mdc") {
+          totalBatchesInMdc++;
+          totalMilkAmountInMdc += Number(data.mixing_milk_quantity);
+          totalPowderQuantityInMdc += Number(data.sd_total_powder_quantity);
+        } else {
+          totalBatchesInAraliyaKele++;
+          totalMilkAmountInAraliyaKele += Number(data.mixing_milk_quantity);
+          totalPowderQuantityInAraliyaKele += Number(
+            data.sd_total_powder_quantity
+          );
+        }
+      });
+    }
+
+    setTotalBatchesInSd3(totalBatchesInMdc);
+    setTotalBatchesInSd4(totalBatchesInAraliyaKele);
+    setTotalMilkAmountInSd3(totalMilkAmountInMdc);
+    setTotalMilkAmountInSd4(totalMilkAmountInAraliyaKele);
+    setTotalPowderQuantityInSd3(totalPowderQuantityInMdc);
+    setTotalPowderQuantityInSd4(totalPowderQuantityInAraliyaKele);
+  }, [productionDataByDate, totalBatchesInMdc, totalBatchesInAraliyaKele]);
+
   return (
     <section>
       <div className="dashboardContainer">
         <div className="row">
           <div className="col-md-4">
             <TotalCard
-              value_1={dailyProductionData?.totalMilkAmountInMdc}
-              value_2={dailyProductionData?.totalMilkAmountInAraliyaKele}
+              value_1={totalMilkAmountInSd3}
+              value_2={totalMilkAmountInSd4}
               text="milk amount"
             />
           </div>
 
           <div className="col-md-4">
             <TotalCard
-              value_1={dailyProductionData?.totalPowderQuantityInMdc}
-              value_2={dailyProductionData?.totalPowderQuantityInAraliyaKele}
+              value_1={totalPowderQuantityInSd3}
+              value_2={totalPowderQuantityInSd4}
               text="powder quantity"
             />
           </div>
@@ -527,29 +592,21 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Total batch count</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.totalBatchCountInMdc ||
-                dailyProductionData?.totalBatchCountInAraliyaKele
-                  ? dailyProductionData?.totalBatchCountInMdc +
-                    dailyProductionData?.totalBatchCountInAraliyaKele
-                  : 0}
+                {totalBatchesInSd3 + totalBatchesInSd4 || 0}
               </p>
 
               <div className="col-12 mt-4 sectionDetailsContainer">
                 <div className="sectionSubHeadingContainer d-flex justify-content-between mt-2">
                   <p className="sectionSubHeading">SD 03 batch count</p>
                   <p className="sectionSubValue text-capitalize fw-bold">
-                    {dailyProductionData?.totalBatchCountInMdc
-                      ? dailyProductionData?.totalBatchCountInMdc
-                      : 0}
+                    {totalBatchesInSd3 || 0}
                   </p>
                 </div>
 
                 <div className="sectionSubHeadingContainer d-flex justify-content-between">
                   <p className="sectionSubHeading">SD 04 batch count</p>
                   <p className="sectionSubValue fw-bold">
-                    {dailyProductionData?.totalBatchCountInAraliyaKele
-                      ? dailyProductionData?.totalBatchCountInAraliyaKele
-                      : 0}
+                    {totalBatchesInSd4 || 0}
                   </p>
                 </div>
               </div>
