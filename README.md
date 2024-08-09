@@ -1,5 +1,11 @@
 # Change Log
 
+## v2.5.8
+
+- Added new feature for outside kernel in wet section
+- Added new feature for outside milk in sd 4 mixing section
+- Added in-house & outside kernel quantity for summary report
+
 ## v2.5.7
 
 - Showing added data in packing lines

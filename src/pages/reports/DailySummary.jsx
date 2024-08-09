@@ -166,6 +166,8 @@ const DailySummary = () => {
       fetchProductionDataByDateAndLocation().then(() => setIsLoading(false));
   };
 
+  console.log(dailyProductionDataByDate);
+
   return (
     <>
       <Header />
@@ -259,22 +261,45 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p>
-                            {dailyProductionDataByDate?.totalCoconut
-                              ? dailyProductionDataByDate?.totalCoconut
-                              : "-"}
+                            {dailyProductionDataByDate?.totalCoconut || "-"}
                           </p>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Kernel weight</p>
+                          <p className="fw-bold">Total kernel quantity</p>
                         </div>
                         <div className="col-6">
                           <p>
-                            {dailyProductionDataByDate?.totalKernelWeight
-                              ? dailyProductionDataByDate?.totalKernelWeight
+                            {dailyProductionDataByDate.totalKernelWeight ||
+                            dailyProductionDataByDate.outsideKernelQuantity
+                              ? dailyProductionDataByDate.totalKernelWeight +
+                                Number(
+                                  dailyProductionDataByDate.outsideKernelQuantity
+                                )
                               : "-"}
+                            Kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">In-house kernel</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate.totalKernelWeight || "-"}
+                            Kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">Outside kernel</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate.outsideKernelQuantity ||
+                              "-"}
                             Kg
                           </p>
                         </div>

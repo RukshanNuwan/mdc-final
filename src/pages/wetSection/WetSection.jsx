@@ -6,12 +6,14 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -31,6 +33,8 @@ const WetSection = () => {
   const [receivedData, setReceivedData] = useState({});
   const [totalKernelWeight, setTotalKernelWeight] = useState(0);
   const [totalCoconut, setTotalCoconut] = useState();
+  const [isOutsideKernelArrived, setIsOutsideKernelArrived] = useState(false);
+  const [outsideKernelQuantity, setOutsideKernelQuantity] = useState(0);
 
   const navigate = useNavigate();
   const currentDate = useCurrentDate();
@@ -39,6 +43,10 @@ const WetSection = () => {
     const kernelWeight = e.target.value * 0.25;
     setTotalKernelWeight(kernelWeight);
     setTotalCoconut(e.target.value);
+  };
+
+  const handleSwitchChange = (e) => {
+    setIsOutsideKernelArrived(e.target.checked);
   };
 
   const handleSubFormChange = (e) => {
@@ -59,7 +67,12 @@ const WetSection = () => {
 
   const handleSubForm = async (e) => {
     e.preventDefault();
-    const confirmData = `Date: ${subFormData.date} | Coconut Count: ${totalCoconut}`;
+
+    const confirmData = `${
+      isOutsideKernelArrived
+        ? `Kernel quantity: ${outsideKernelQuantity}`
+        : `Date: ${subFormData.date} | Coconut Count: ${totalCoconut}`
+    }`;
 
     if (receivedData?.date !== currentDate) {
       try {
@@ -77,6 +90,7 @@ const WetSection = () => {
               ...subFormData,
               totalCoconut,
               totalKernelWeight,
+              outsideKernelQuantity,
               timeStamp: serverTimestamp(),
             }).then(() => {
               Swal.fire({
@@ -85,7 +99,6 @@ const WetSection = () => {
                 showConfirmButton: false,
                 timer: 1500,
               });
-
               e.target.reset();
               navigate("/");
             });
@@ -108,8 +121,15 @@ const WetSection = () => {
           if (result.isConfirmed) {
             const docRef = doc(db, "daily_production", receivedData.id);
             await updateDoc(docRef, {
-              totalCoconut,
-              totalKernelWeight,
+              totalCoconut: isOutsideKernelArrived
+                ? receivedData.totalCoconut
+                : totalCoconut,
+              totalKernelWeight: isOutsideKernelArrived
+                ? receivedData.totalKernelWeight
+                : totalKernelWeight,
+              outsideKernelQuantity: isOutsideKernelArrived
+                ? outsideKernelQuantity
+                : receivedData.outsideKernelQuantity || 0,
               updatedAt: serverTimestamp(),
             }).then(() => {
               Swal.fire({
@@ -118,7 +138,6 @@ const WetSection = () => {
                 showConfirmButton: false,
                 timer: 1500,
               });
-
               e.target.reset();
               navigate("/");
             });
@@ -173,7 +192,7 @@ const WetSection = () => {
             <div className="card border-0">
               <div className="card-body p-0">
                 <div className="row d-flex justify-content-between align-items-start mb-2">
-                  <div className="d-md-flex flex-md-row-reverse align-items-center subFormWrapper">
+                  <div className="d-md-flex flex-md-row-reverse subFormWrapper">
                     <div className="col-md-4">
                       <p className="bodyText fw-bold text-white">
                         {`${receivedData?.totalKernelWeight}Kg`}
@@ -189,7 +208,7 @@ const WetSection = () => {
                     <div className="col-md-8 subFormParent">
                       <Form onSubmit={handleSubForm}>
                         <Row>
-                          <Form.Group as={Col} md="4" controlId="date">
+                          <Form.Group as={Col} md="5" controlId="date">
                             <Form.Label className="fw-bold">Date</Form.Label>
                             <Form.Control
                               type="date"
@@ -204,20 +223,57 @@ const WetSection = () => {
 
                           <Form.Group
                             as={Col}
-                            md="4"
+                            md="5"
                             controlId="totalCoconutCount"
                           >
                             <Form.Label className="fw-bold">
                               Total coconut count
                             </Form.Label>
                             <Form.Control
-                              required
                               type="number"
+                              required={!isOutsideKernelArrived}
                               className="customInput"
                               onChange={calculateKernelWeight}
                             />
                           </Form.Group>
+                        </Row>
 
+                        <Row>
+                          <Form.Group as={Col} md="5">
+                            <Form.Label className="fw-bold">
+                              Outside kernel
+                            </Form.Label>
+
+                            <Form.Switch
+                              type="switch"
+                              id="outside-kernel-switch"
+                              checked={isOutsideKernelArrived}
+                              onChange={handleSwitchChange}
+                            />
+                          </Form.Group>
+
+                          {isOutsideKernelArrived && (
+                            <Form.Group
+                              as={Col}
+                              md="5"
+                              controlId="outsideKernelQuantity"
+                            >
+                              <Form.Label className="fw-bold">
+                                Quantity
+                              </Form.Label>
+                              <Form.Control
+                                required={isOutsideKernelArrived}
+                                type="number"
+                                className="customInput"
+                                onChange={(e) =>
+                                  setOutsideKernelQuantity(e.target.value)
+                                }
+                              />
+                            </Form.Group>
+                          )}
+                        </Row>
+
+                        <Row>
                           <div className="col">
                             <button
                               type="submit"

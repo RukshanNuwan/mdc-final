@@ -389,18 +389,22 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Total coconut</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.totalCoconut
-                  ? dailyProductionData?.totalCoconut
-                  : "-"}
+                {dailyProductionData?.totalCoconut || "-"}
               </p>
 
               <div className="col-12">
                 <div className="sectionSubHeadingContainer d-flex justify-content-between mt-2">
                   <p className="sectionSubHeading">Kernel weight</p>
                   <p className="sectionSubValue fw-bold">
-                    {dailyProductionData?.totalKernelWeight
-                      ? dailyProductionData?.totalKernelWeight
-                      : "-"}
+                    {dailyProductionData?.totalKernelWeight || "-"}
+                    Kg
+                  </p>
+                </div>
+
+                <div className="sectionSubHeadingContainer d-flex justify-content-between">
+                  <p className="sectionSubHeading">Outside kernel weight</p>
+                  <p className="sectionSubValue fw-bold">
+                    {dailyProductionData?.outsideKernelQuantity || "-"}
                     Kg
                   </p>
                 </div>
@@ -409,7 +413,13 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Total batch count</p>
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.totalKernelWeight
-                      ? Math.round(dailyProductionData?.totalKernelWeight / 300)
+                      ? Math.round(
+                          (dailyProductionData?.totalKernelWeight +
+                            Number(
+                              dailyProductionData?.outsideKernelQuantity
+                            )) /
+                            300
+                        )
                       : "-"}
                   </p>
                 </div>
@@ -457,9 +467,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Running batch</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.runningBatchNumberInMdc
-                  ? dailyProductionData?.runningBatchNumberInMdc
-                  : "-"}
+                {dailyProductionData?.runningBatchNumberInMdc || "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -513,7 +521,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {sd3LabData?.lab_raw_ph ? sd3LabData?.lab_raw_ph : "-"}
+                        {sd3LabData?.lab_raw_ph || "-"}
                       </p>
                     </div>
 
@@ -521,9 +529,7 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {sd3LabData?.lab_raw_tss
-                          ? sd3LabData?.lab_raw_tss
-                          : "-"}
+                        {sd3LabData?.lab_raw_tss || "-"}
                       </p>
                     </div>
 
@@ -531,9 +537,7 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {sd3LabData?.lab_raw_fat
-                          ? sd3LabData?.lab_raw_fat
-                          : "-"}
+                        {sd3LabData?.lab_raw_fat || "-"}
                       </p>
                     </div>
                   </div>
@@ -546,7 +550,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {sd3LabData?.lab_mix_ph ? sd3LabData?.lab_mix_ph : "-"}
+                        {sd3LabData?.lab_mix_ph || "-"}
                       </p>
                     </div>
 
@@ -554,9 +558,7 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {sd3LabData?.lab_mix_tss
-                          ? sd3LabData?.lab_mix_tss
-                          : "-"}
+                        {sd3LabData?.lab_mix_tss || "-"}
                       </p>
                     </div>
 
@@ -564,9 +566,7 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {sd3LabData?.lab_mix_fat
-                          ? sd3LabData?.lab_mix_fat
-                          : "-"}
+                        {sd3LabData?.lab_mix_fat || "-"}
                       </p>
                     </div>
                   </div>
@@ -643,9 +643,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Running batch</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.runningBatchNumberInAraliyaKele
-                  ? dailyProductionData?.runningBatchNumberInAraliyaKele
-                  : "-"}
+                {dailyProductionData?.runningBatchNumberInAraliyaKele || "-"}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -698,7 +696,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {sd4LabData?.lab_raw_ph ? sd4LabData?.lab_raw_ph : "-"}
+                        {sd4LabData?.lab_raw_ph || "-"}
                       </p>
                     </div>
 
@@ -706,9 +704,7 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {sd4LabData?.lab_raw_tss
-                          ? sd4LabData?.lab_raw_tss
-                          : "-"}
+                        {sd4LabData?.lab_raw_tss || "-"}
                       </p>
                     </div>
 
@@ -716,9 +712,7 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {sd4LabData?.lab_raw_fat
-                          ? sd4LabData?.lab_raw_fat
-                          : "-"}
+                        {sd4LabData?.lab_raw_fat || "-"}
                       </p>
                     </div>
                   </div>
@@ -731,7 +725,7 @@ const Dashboard = () => {
                       <p className="text-white">pH</p>
 
                       <p className="subSectionValue">
-                        {sd4LabData?.lab_mix_ph ? sd4LabData?.lab_mix_ph : "-"}
+                        {sd4LabData?.lab_mix_ph || "-"}
                       </p>
                     </div>
 
@@ -739,9 +733,7 @@ const Dashboard = () => {
                       <p className="text-white">TSS</p>
 
                       <p className="subSectionValue">
-                        {sd4LabData?.lab_mix_tss
-                          ? sd4LabData?.lab_mix_tss
-                          : "-"}
+                        {sd4LabData?.lab_mix_tss || "-"}
                       </p>
                     </div>
 
@@ -749,9 +741,7 @@ const Dashboard = () => {
                       <p className="text-white">Fat</p>
 
                       <p className="subSectionValue">
-                        {sd4LabData?.lab_mix_fat
-                          ? sd4LabData?.lab_mix_fat
-                          : "-"}
+                        {sd4LabData?.lab_mix_fat || "-"}
                       </p>
                     </div>
                   </div>
