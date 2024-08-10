@@ -87,7 +87,7 @@ const SearchResultDetails = () => {
                       <div className="row m-0">
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
-                            <h6>Batch code</h6>
+                            <h6>SD batch code</h6>
                             <p className="text-light-blue">
                               {packingLineData.production_batch_code}
                             </p>
@@ -114,7 +114,7 @@ const SearchResultDetails = () => {
 
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
-                            <h6>Batch number</h6>
+                            <h6>SD batch number</h6>
                             <p className="text-light-blue">
                               {productionData.batch_number}
                             </p>
@@ -162,7 +162,7 @@ const SearchResultDetails = () => {
 
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
-                            <h6>Bag number range</h6>
+                            <h6>T code range</h6>
                             <p className="text-light-blue">
                               {packingLineData.packing_bag_number_range_start} -{" "}
                               {packingLineData.packing_bag_number_range_end}
@@ -187,7 +187,7 @@ const SearchResultDetails = () => {
 
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
-                            <h6>Bag number(s)</h6>
+                            <h6>SD bag number(s)</h6>
                             <p className="text-light-blue">
                               {
                                 <DataPill
@@ -195,6 +195,39 @@ const SearchResultDetails = () => {
                                   color="pink"
                                 />
                               }
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-3 mt-xs-1" />
+
+                        <div className="col-sm-6 col-md-3 mt-xs-1" />
+
+                        <div className="col-sm-6 col-md-3 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Powder collecting QC name</h6>
+                            <p className="text-light-blue">
+                              {
+                                packingLineData.packing_powder_collecting_qc_name
+                              }
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-3 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Carton packing QC name</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_carton_packing_qc_name}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-3 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Line supervisor name</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_line_supervisor_name}
                             </p>
                           </div>
                         </div>
@@ -223,7 +256,7 @@ const SearchResultDetails = () => {
                         <div className="row m-0">
                           <div className="col-sm-6 col-md-4">
                             <div className="d-flex justify-content-between">
-                              <h6>Wet batch number</h6>
+                              <h6>W batch number</h6>
                               <p className="text-light-blue">
                                 {productionData.primary_batch_number}
                               </p>
@@ -306,7 +339,7 @@ const SearchResultDetails = () => {
 
                           <div className="col-sm-6 col-md-4">
                             <div className="d-flex justify-content-between">
-                              <h6>Cuter start time</h6>
+                              <h6>Cutter start time</h6>
                               <p className="text-light-blue">
                                 {productionData.blancher_in_time}
                               </p>
@@ -1000,7 +1033,7 @@ const SearchResultDetails = () => {
                         <div className="col-sm-6 col-md-4">
                           <div className="d-flex justify-content-between">
                             <h6>Checked by</h6>
-                            <p className="text-light-blue">
+                            <p className="text-light-blue text-capitalize">
                               {productionData.lab_technician_name}
                             </p>
                           </div>

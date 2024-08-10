@@ -47,7 +47,7 @@ const packingSectionColumns = [
   },
   {
     field: "production_batch_code",
-    headerName: "Batch code",
+    headerName: "SD batch code",
     width: 150,
   },
   {
@@ -290,7 +290,7 @@ const PackingLines = () => {
                   <Form onSubmit={handleSearch}>
                     <Row>
                       <Form.Group as={Col} md="3" controlId="batch_code">
-                        <Form.Label className="fw-bold">Batch code</Form.Label>
+                        <Form.Label className="fw-bold">SD batch code</Form.Label>
                         <Form.Control
                           type="text"
                           required
@@ -427,7 +427,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Batch number
+                            SD batch number
                           </Form.Label>
                           <Form.Control
                             type="number"
@@ -488,7 +488,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Sd 03 | 04 production bag number(s)
+                            Sd 03 | 04 bag number(s)
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -525,7 +525,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Packing batch code
+                            T code
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -544,7 +544,7 @@ const PackingLines = () => {
                             className="mb-2"
                           >
                             <Form.Label className="fw-bold">
-                              Craft bag number(s)
+                              C bag number(s)
                             </Form.Label>
                             <Form.Control
                               type="text"
@@ -624,7 +624,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Bag numbers range - Start
+                            T code range - Start
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -641,7 +641,7 @@ const PackingLines = () => {
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Bag numbers range - End
+                            T code range - End
                           </Form.Label>
                           <Form.Control
                             type="text"

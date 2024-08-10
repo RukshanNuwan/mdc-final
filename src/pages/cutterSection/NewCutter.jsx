@@ -224,7 +224,7 @@ const NewCutter = () => {
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
-                          Batch number
+                          W batch number
                         </Form.Label>
                         <Form.Control
                           type="number"

@@ -290,10 +290,20 @@ const WetSection = () => {
                   </div>
                 </div>
 
-                <div className="addNewBtnWrapper">
-                  <Link to="new" className="addNewBtn customBtn">
-                    Add new
-                  </Link>
+                <div className="d-flex align-items-center gap-3 flex-wrap">
+                  <div className="addNewBtnWrapper">
+                    <Link to="new" className="addNewBtn customBtn">
+                      Add new
+                    </Link>
+                  </div>
+
+                  <div className="d-flex no-wrap">
+                    <p className="text-danger fw-bold">*</p>
+                    <p className="text-dark-blue-1 fw-bold">
+                      Please add the total coconut count before adding the first
+                      batch
+                    </p>
+                  </div>
                 </div>
 
                 <DataTable columnName={wetSectionColumns} />

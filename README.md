@@ -6,6 +6,11 @@
 - Added new feature for outside milk in sd 4 mixing section
 - Added in-house & outside kernel quantity for summary report
 - Updated select box data binding function in  new mixing module
+- Rename Wet batch number into W batch number
+- Rename Batch number into SD batch number
+- Rename Batch code into Sd batch code
+- Rename Craft bag number into T code
+- Added QC & supervisor names in back tracing module
 
 ## v2.5.7
 

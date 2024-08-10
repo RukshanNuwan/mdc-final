@@ -412,7 +412,8 @@ const Dashboard = () => {
                 <div className="sectionSubHeadingContainer d-flex justify-content-between">
                   <p className="sectionSubHeading">Total batch count</p>
                   <p className="sectionSubValue fw-bold">
-                    {dailyProductionData?.totalKernelWeight
+                    {dailyProductionData?.totalKernelWeight &&
+                    dailyProductionData?.outsideKernelQuantity
                       ? Math.round(
                           (dailyProductionData?.totalKernelWeight +
                             Number(
@@ -420,6 +421,8 @@ const Dashboard = () => {
                             )) /
                             300
                         )
+                      : dailyProductionData?.totalKernelWeight
+                      ? Math.round(dailyProductionData?.totalKernelWeight / 300)
                       : "-"}
                   </p>
                 </div>

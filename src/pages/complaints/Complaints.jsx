@@ -51,7 +51,7 @@ const Complaints = () => {
       const list = [];
       const q = query(
         collection(db, "packing_line_data"),
-        where("packing_craft_bag_number", "array-contains", bagNumberInput)
+        where("packing_craft_bag_number", "==", bagNumberInput)
       );
 
       await getDocs(q).then((res) => {
@@ -136,7 +136,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_job_sheet_number", "==", jobSheetNumberInput),
-        where("packing_bag_numbers", "array-contains", bagNumberInput)
+        where("packing_bag_numbers", "==", bagNumberInput)
       );
 
       await getDocs(q).then((res) => {
@@ -164,7 +164,7 @@ const Complaints = () => {
       const list = [];
       const q = query(
         collection(db, "packing_line_data"),
-        where("packing_bag_numbers", "array-contains", bagNumberInput),
+        where("packing_bag_numbers", "==", bagNumberInput),
         where("packing_packet_time_range_start", "<=", timeInput),
         where("packing_packet_time_range_end", ">=", timeInput)
       );
@@ -254,7 +254,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_production_date", "==", productionDateInput),
-        where("packing_bag_numbers", "array-contains", bagNumberInput)
+        where("packing_bag_numbers", "==", bagNumberInput)
       );
 
       await getDocs(q).then((res) => {
@@ -313,7 +313,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_job_sheet_number", "==", jobSheetNumberInput),
-        where("packing_bag_numbers", "array-contains", bagNumberInput),
+        where("packing_bag_numbers", "==", bagNumberInput),
         where("packing_packet_time_range_start", "<=", timeInput),
         where("packing_packet_time_range_end", ">=", timeInput)
       );
@@ -375,7 +375,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_production_date", "==", productionDateInput),
-        where("packing_bag_numbers", "array-contains", bagNumberInput),
+        where("packing_bag_numbers", "==", bagNumberInput),
         where("packing_packet_time_range_start", "<=", timeInput),
         where("packing_packet_time_range_end", ">=", timeInput)
       );
@@ -406,7 +406,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_production_date", "==", productionDateInput),
-        where("packing_bag_numbers", "array-contains", bagNumberInput),
+        where("packing_bag_numbers", "==", bagNumberInput),
         where("packing_job_sheet_number", "==", jobSheetNumberInput)
       );
 
@@ -437,7 +437,7 @@ const Complaints = () => {
         const q = query(
           collection(db, "packing_line_data"),
           where("packing_production_date", "==", productionDateInput),
-          where("packing_bag_numbers", "array-contains", bagNumberInput),
+          where("packing_bag_numbers", "==", bagNumberInput),
           where("packing_job_sheet_number", "==", jobSheetNumberInput),
           where("packing_packet_time_range_start", "<=", timeInput),
           where("packing_packet_time_range_end", ">=", timeInput)
@@ -649,17 +649,14 @@ const Complaints = () => {
                         className="mt-2"
                       >
                         <Form.Label className="fw-bold">
-                          Bag number <span className="text-info">*</span>
+                          T code <span className="text-info">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"
                           className="customInput"
-                          placeholder="eg: 001"
+                          placeholder="eg: MPSnD001"
                           onChange={(e) => setBagNumberInput(e.target.value)}
                         />
-                        <Figure.Caption className="tooltipText">
-                          Type only the last digits of the bag number
-                        </Figure.Caption>
                       </Form.Group>
 
                       <Form.Group

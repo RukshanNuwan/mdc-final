@@ -146,23 +146,27 @@
   }
 
   .daily-summery-bg-red {
-    background-color: #EC7063;
+    background-color: #ec7063;
   }
-  
+
   .daily-summery-bg-blue {
-    background-color: #7FB3D5;
+    background-color: #7fb3d5;
   }
 
   .daily-summery-bg-orange {
-    background-color: #F0B27A;
+    background-color: #f0b27a;
   }
 
   .daily-summery-bg-green {
-    background-color: #82E0AA;
+    background-color: #82e0aa;
   }
 
   .daily-summery-bg-purple {
-    background-color: #C39BD3;
+    background-color: #c39bd3;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: var(--bright-yellow);
   }
 }
 

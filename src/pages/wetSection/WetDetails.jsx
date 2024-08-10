@@ -56,7 +56,7 @@ const WetDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Batch number</p>
+                          <p className="bodyText">W Batch number</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">

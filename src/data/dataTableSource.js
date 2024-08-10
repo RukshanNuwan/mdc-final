@@ -1,5 +1,5 @@
 export const wetSectionColumns = [
-  { field: "primary_batch_number", headerName: "Batch#", width: 100 },
+  { field: "primary_batch_number", headerName: "W batch#", width: 100 },
   {
     field: "wet_kernel_weight",
     headerName: "Kernel weight",
@@ -28,7 +28,7 @@ export const wetSectionColumns = [
 ];
 
 export const cutterSectionColumns = [
-  { field: "primary_batch_number", headerName: "Wet batch #", width: 100 },
+  { field: "primary_batch_number", headerName: "W batch #", width: 100 },
   {
     field: "wet_added_at",
     headerName: "Date & Time",
@@ -67,8 +67,8 @@ export const cutterSectionColumns = [
 ];
 
 export const mixingSectionColumns = [
-  { field: "primary_batch_number", headerName: "Wet batch #", width: 100 },
-  { field: "batch_number", headerName: "Mixing Batch #", width: 130 },
+  { field: "primary_batch_number", headerName: "W batch #", width: 100 },
+  { field: "batch_number", headerName: "SD batch #", width: 130 },
   {
     field: "wet_added_at",
     headerName: "Date & Time",
@@ -109,7 +109,7 @@ export const mixingSectionColumns = [
 ];
 
 export const sprayDryerSectionColumns = [
-  { field: "batch_number", headerName: "Batch #", width: 100 },
+  { field: "batch_number", headerName: "SD batch #", width: 100 },
   {
     field: "wet_added_at",
     headerName: "Date & Time",
@@ -133,7 +133,7 @@ export const sprayDryerSectionColumns = [
 ];
 
 export const laboratorySectionColumns = [
-  { field: "batch_number", headerName: "Batch #", width: 100 },
+  { field: "batch_number", headerName: "SD batch #", width: 100 },
   {
     field: "wet_added_at",
     headerName: "Date & Time",
