@@ -36,8 +36,7 @@ const UpdateMixing = () => {
     state.sd_4_is_bowser_output_tap_cleaned
   );
   const [isTransferred, setIsTransferred] = useState(false);
-  const [batchCode, setBatchCode] = useState(state.batch_code);
-  const [recipeName, setRecipeName] = useState(state.order_name);
+  const [batchCode, setBatchCode] = useState();
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -80,6 +79,8 @@ const UpdateMixing = () => {
   // }, [state?.date]);
 
   const handleBatchNumberChange = (e) => {
+    console.log(e.target.value);
+
     const batchCode = `${
       location === "mdc" ? "SD3" : "SD4"
     }${year}${monthStr}${dateStr}${e.target.value}`;
@@ -182,10 +183,19 @@ const UpdateMixing = () => {
     setData({
       ...data,
       [id]: value,
-      order_name: recipeName,
       // bowser details
       sd_4_is_bowser_filling_hole_cleaned: isFillingHoleCleaned,
       sd_4_is_bowser_output_tap_cleaned: isOutputTapCleaned,
+    });
+  };
+
+  const handleSelectChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setData({
+      ...data,
+      [id]: value,
     });
   };
 
@@ -364,24 +374,11 @@ const UpdateMixing = () => {
                         type="text"
                         disabled
                         className="customInput disabled"
-                        defaultValue={batchCode}
+                        defaultValue={state.batch_code}
+                        value={batchCode}
                       />
                     </Form.Group>
 
-                    {/* <Form.Group
-                      as={Col}
-                      md="4"
-                      controlId="order_name"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Order name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        defaultValue={state.order_name}
-                        disabled
-                        className="customInput disabled"
-                      />
-                    </Form.Group> */}
                     <Form.Group
                       as={Col}
                       md="4"
@@ -392,8 +389,8 @@ const UpdateMixing = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue={recipeName}
-                        onChange={(e) => setRecipeName(e.target.value)}
+                        defaultValue={state.order_name}
+                        onChange={handleSelectChange}
                       >
                         {orders.map((order, index) => (
                           <option key={index} value={order.value}>
@@ -412,15 +409,17 @@ const UpdateMixing = () => {
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Order type</Form.Label>
-                      <Form.Control
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={
-                          state.order_type === "organic"
-                            ? "Organic"
-                            : "Conventional"
-                        }
-                      />
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={state.order_type}
+                        onChange={handleSelectChange}
+                      >
+                        <option value="conventional">
+                          Conventional Recipe
+                        </option>
+                        <option value="organic">Organic Recipe</option>
+                      </Form.Select>
                     </Form.Group>
 
                     <Form.Group

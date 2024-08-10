@@ -76,8 +76,8 @@ export const mixingSectionColumns = [
     renderCell: (params) => {
       return (
         <div>
-          {params.row.mixing_added_at &&
-            new Date(params.row.mixing_added_at?.toDate()).toLocaleString()}
+          {params.row.wet_added_at &&
+            new Date(params.row.wet_added_at?.toDate()).toLocaleString()}
         </div>
       );
     },

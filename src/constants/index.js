@@ -31,8 +31,8 @@ export const orders = [
   },
   {
     _id: 7,
-    name: "Wikey plantation",
-    value: "wikey_plantation",
+    name: "Wichey plantation",
+    value: "wichey_plantation",
   },
   {
     _id: 8,

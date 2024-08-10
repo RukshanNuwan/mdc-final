@@ -71,6 +71,7 @@ const NewWet = () => {
 
     setData({
       ...data,
+      [id]: value,
       // common data
       date,
       primary_batch_number: Number(nextBatchNumber),
@@ -82,7 +83,6 @@ const NewWet = () => {
       location: "",
 
       // wet section data
-      [id]: value,
       wet_kernel_weight: kernelWeight,
       wet_kernel_quality: quality,
 

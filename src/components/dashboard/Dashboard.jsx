@@ -394,7 +394,7 @@ const Dashboard = () => {
 
               <div className="col-12">
                 <div className="sectionSubHeadingContainer d-flex justify-content-between mt-2">
-                  <p className="sectionSubHeading">Kernel weight</p>
+                  <p className="sectionSubHeading">In-house kernel</p>
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.totalKernelWeight || "-"}
                     Kg
@@ -402,7 +402,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="sectionSubHeadingContainer d-flex justify-content-between">
-                  <p className="sectionSubHeading">Outside kernel weight</p>
+                  <p className="sectionSubHeading">Outside kernel</p>
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.outsideKernelQuantity || "-"}
                     Kg

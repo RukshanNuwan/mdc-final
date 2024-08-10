@@ -6,6 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
+  addDoc,
   collection,
   doc,
   getDocs,
@@ -51,13 +52,20 @@ const NewMixing = () => {
   const [lastBatchNumber, setLastBatchNumber] = useState();
   const [batchCode, setBatchCode] = useState();
   const [isTransferred, setIsTransferred] = useState(false);
+  const [productionDate, setProductionDate] = useState();
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
   const { location } = useParams();
 
-  const currentDate = new Date(ongoingData?.date);
+  let currentDate;
+
+  if (ongoingData?.date) {
+    currentDate = new Date(ongoingData?.date);
+  } else {
+    currentDate = new Date(productionDate);
+  }
   const year = ("" + currentDate.getFullYear()).substring(2);
   const month = currentDate.getMonth() + 1;
   const monthStr = month < 10 ? "0" + month : month;
@@ -165,6 +173,11 @@ const NewMixing = () => {
     });
   }, [dateStr, lastBatchNumber, location, monthStr, year]);
 
+  const handleDateChange = (e) => {
+    setProductionDate(e.target.value);
+    setData({ ...data, date: e.target.value });
+  };
+
   const handleBatchNumberChange = (e) => {
     setBatchNumber(Number(e.target.value));
 
@@ -222,10 +235,16 @@ const NewMixing = () => {
   };
 
   const handleMilkRecovery = (e) => {
-    const recovery = (
-      (e.target.value / ongoingData.wet_kernel_weight) *
-      100
-    ).toFixed(2);
+    let recovery;
+
+    if (ongoingData?.wet_kernel_weight) {
+      recovery = (
+        (e.target.value / ongoingData?.wet_kernel_weight) *
+        100
+      ).toFixed(2);
+    } else {
+      recovery = ((e.target.value / 300) * 100).toFixed(2);
+    }
 
     setMilkQuantity(e.target.value);
     setMilkRecovery(recovery);
@@ -322,44 +341,108 @@ const NewMixing = () => {
         if (result.isConfirmed) {
           setIsLoading(true);
 
-          const docRef = doc(db, "production_data", ongoingData.id);
-          await updateDoc(docRef, {
-            ...data,
-            lab_status: "ongoing",
-            lab_added_at: serverTimestamp(),
-            sd_status: "ongoing",
-            sd_added_at: serverTimestamp(),
-          })
-            .then(async () => {
-              // try {
-              //   const docRef = doc(
-              //     db,
-              //     "daily_production",
-              //     dailyProductionDataInDb.id
-              //   );
-              //   await updateDoc(docRef, {
-              //     ...updatedDailyProductionData,
-              //   });
-
-              //   console.log("successfully updated daily production data");
-              // } catch (error) {
-              //   console.log(error);
-              // }
-
-              if (newKernelWeight > 0) {
-                try {
-                  const docRef = doc(db, "production_data", ongoingData.id);
-                  await updateDoc(docRef, {
-                    wet_kernel_weight: newKernelWeight,
-                  });
-
-                  console.log("successfully updated kernel weight");
-                } catch (error) {
-                  console.log(error);
-                }
-              }
+          if (ongoingData) {
+            const docRef = doc(db, "production_data", ongoingData.id);
+            await updateDoc(docRef, {
+              ...data,
+              lab_status: "ongoing",
+              lab_added_at: serverTimestamp(),
+              sd_status: "ongoing",
+              sd_added_at: serverTimestamp(),
             })
-            .then(async () => {
+              .then(async () => {
+                // try {
+                //   const docRef = doc(
+                //     db,
+                //     "daily_production",
+                //     dailyProductionDataInDb.id
+                //   );
+                //   await updateDoc(docRef, {
+                //     ...updatedDailyProductionData,
+                //   });
+                //   console.log("successfully updated daily production data");
+                // } catch (error) {
+                //   console.log(error);
+                // }
+                if (newKernelWeight > 0) {
+                  try {
+                    const docRef = doc(db, "production_data", ongoingData.id);
+                    await updateDoc(docRef, {
+                      wet_kernel_weight: newKernelWeight,
+                    });
+                    console.log("successfully updated kernel weight");
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }
+              })
+              .then(async () => {
+                Swal.fire({
+                  title: "Changes saved",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+
+                e.target.reset();
+                setIsLoading(false);
+                navigate(`/mixing-section/${location}`);
+              });
+          } else {
+            await addDoc(collection(db, "production_data"), {
+              ...data,
+              expected_powder_quantity: 0,
+              location: "araliya_kele",
+              wet_added_at: serverTimestamp(),
+              primary_batch_number: null,
+              mixing_mix_details: "Outside milk",
+              lab_sample_in_time: "",
+              lab_test_start_time: "",
+              lab_raw_ph: "",
+              lab_raw_tss: "",
+              lab_raw_fat: "",
+              lab_row_taste: false,
+              lab_row_color: false,
+              lab_row_odor: false,
+              lab_mix_ph: "",
+              lab_mix_tss: "",
+              lab_mix_fat: "",
+              lab_mix_taste: false,
+              lab_mix_color: false,
+              lab_mix_odor: false,
+              lab_mix_issue: false,
+              lab_mix_issue_informed_to: "",
+              lab_mix_issue_details: "",
+              lab_powder_moisture: "",
+              lab_powder_fat: "",
+              lab_powder_fat_layer: "",
+              lab_powder_fat_layer_time: "",
+              lab_powder_taste: false,
+              lab_powder_color: false,
+              lab_powder_odor: false,
+              lab_powder_solubility: false,
+              lab_powder_free_flowing: false,
+              lab_powder_bulk_density: "",
+              lab_powder_issue: false,
+              lab_powder_issue_informed_to: "",
+              lab_powder_issue_details: "",
+              lab_technician_name: "",
+              lab_status: "ongoing",
+              lab_added_at: serverTimestamp(),
+              sd_powder_spray_start_time: "",
+              sd_atomizer_size: "",
+              sd_inlet_temp: "",
+              sd_outlet_temp: "",
+              sd_operator_names: null,
+              sd_other_details: "",
+              sd_total_powder_quantity: "",
+              sd_powder_recovery: "",
+              sd_rp_quantity: "",
+              sd_batch_finish_time: "",
+              sd_special_notes: "",
+              sd_status: "ongoing",
+              sd_added_at: serverTimestamp(),
+            }).then(() => {
               Swal.fire({
                 title: "Changes saved",
                 icon: "success",
@@ -371,6 +454,7 @@ const NewMixing = () => {
               setIsLoading(false);
               navigate(`/mixing-section/${location}`);
             });
+          }
         }
       });
     } catch (error) {
@@ -439,9 +523,12 @@ const NewMixing = () => {
                         <Form.Label className="fw-bold">Date</Form.Label>
                         <Form.Control
                           type="date"
-                          disabled
-                          className="customInput disabled"
+                          disabled={location === "mdc"}
+                          className={`customInput ${
+                            location === "mdc" && "disabled"
+                          }`}
                           defaultValue={ongoingData?.date}
+                          onChange={handleDateChange}
                         />
                       </Form.Group>
 
@@ -474,9 +561,12 @@ const NewMixing = () => {
                         </Form.Label>
                         <Form.Control
                           type="time"
-                          disabled
-                          className="customInput disabled"
+                          disabled={location === "mdc"}
+                          className={`customInput ${
+                            location === "mdc" && "disabled"
+                          }`}
                           defaultValue={ongoingData?.expeller_finish_time}
+                          onChange={handleChange}
                         />
                       </Form.Group>
                     </Row>
@@ -493,13 +583,14 @@ const NewMixing = () => {
                         </Form.Label>
                         <Form.Control
                           type="number"
-                          // disabled={location === "araliya_kele"}
-                          disabled
+                          disabled={location === "mdc"}
                           defaultValue={batchNumber}
                           // className={`customInput ${
                           //   location === "araliya_kele" && "disabled"
                           // }`}
-                          className="customInput disabled"
+                          className={`customInput ${
+                            location === "mdc" && "disabled"
+                          }`}
                           onChange={handleBatchNumberChange}
                         />
                       </Form.Group>

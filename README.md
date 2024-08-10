@@ -5,6 +5,7 @@
 - Added new feature for outside kernel in wet section
 - Added new feature for outside milk in sd 4 mixing section
 - Added in-house & outside kernel quantity for summary report
+- Updated select box data binding function in  new mixing module
 
 ## v2.5.7
 
