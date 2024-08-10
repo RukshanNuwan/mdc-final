@@ -246,7 +246,7 @@ const NewSprayDryer = () => {
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
-                          Wet batch number
+                          W batch number
                         </Form.Label>
                         <Form.Control
                           type="number"
@@ -264,7 +264,7 @@ const NewSprayDryer = () => {
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
-                          Batch number
+                          SD batch number
                         </Form.Label>
                         <Form.Control
                           type="number"
@@ -280,7 +280,7 @@ const NewSprayDryer = () => {
                         controlId="batch_number"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">Batch code</Form.Label>
+                        <Form.Label className="fw-bold">SD batch code</Form.Label>
                         <Form.Control
                           type="text"
                           disabled

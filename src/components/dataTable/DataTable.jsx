@@ -23,7 +23,6 @@ const DataTable = ({ columnName, location }) => {
 
   const navigate = useNavigate();
 
-  // Fetch Data from DB
   const fetchDataWithoutLocation = useCallback(async () => {
     const q = query(
       collection(db, "production_data"),
@@ -105,9 +104,7 @@ const DataTable = ({ columnName, location }) => {
             cancelButtonColor: "#ff007f",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              await deleteDoc(doc(db, "production_data", data.id)).then(() => {
-                Swal.fire("Deleted!", "Your file has been deleted.", "success");
-              });
+              await deleteDoc(doc(db, "production_data", data.id));
             }
           });
         }

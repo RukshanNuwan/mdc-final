@@ -30,14 +30,14 @@ const AccordionItem = ({ item }) => {
         <>
           <div className="row">
             <div className="col">
-              <p className="smallText">Craft bag code</p>
+              <p className="smallText">T code</p>
               <p className="smallText fw-bold text-white">
                 {item.packing_craft_bag_number}
               </p>
             </div>
 
             <div className="col">
-              <p className="smallText">Bag number(s)</p>
+              <p className="smallText">SD bag number(s)</p>
               <p className="smallText fw-bold text-white">
                 {item.packing_bag_numbers.join(", ")}
               </p>
@@ -46,14 +46,14 @@ const AccordionItem = ({ item }) => {
 
           <div className="row">
             <div className="col">
-              <p className="smallText">Bag # range start</p>
+              <p className="smallText">T code range - start</p>
               <p className="smallText fw-bold text-white">
                 {item.packing_bag_number_range_start}
               </p>
             </div>
 
             <div className="col">
-              <p className="smallText">Bag # range end</p>
+              <p className="smallText">T code range - end</p>
               <p className="smallText fw-bold text-white">
                 {item.packing_bag_number_range_end}
               </p>

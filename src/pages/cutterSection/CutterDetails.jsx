@@ -56,7 +56,7 @@ const CutterDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Batch number</p>
+                          <p className="bodyText">W batch number</p>
                         </div>
                         <div className="col-1" />
                         <div className="col-4">

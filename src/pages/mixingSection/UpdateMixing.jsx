@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  collection,
+  // collection,
   doc,
-  onSnapshot,
-  orderBy,
-  query,
+  // onSnapshot,
+  // orderBy,
+  // query,
   serverTimestamp,
   updateDoc,
-  where,
+  // where,
 } from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -27,7 +27,7 @@ const UpdateMixing = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(
     state.sd_4_is_bowser_filling_hole_cleaned
@@ -36,8 +36,7 @@ const UpdateMixing = () => {
     state.sd_4_is_bowser_output_tap_cleaned
   );
   const [isTransferred, setIsTransferred] = useState(false);
-  const [batchCode, setBatchCode] = useState(state.batch_code);
-  const [recipeName, setRecipeName] = useState(state.order_name);
+  const [batchCode, setBatchCode] = useState();
 
   const navigate = useNavigate();
   const { location } = useParams();
@@ -49,37 +48,39 @@ const UpdateMixing = () => {
   const date = currentDate.getDate();
   const dateStr = date < 10 ? "0" + date : date;
 
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      if (state.date) {
-        try {
-          const q = query(
-            collection(db, "daily_production"),
-            where("date", "==", state?.date),
-            orderBy("timeStamp", "desc")
-          );
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            let list = [];
-            querySnapshot.forEach((doc) => {
-              list.push({ id: doc.id, ...doc.data() });
-            });
+  // useEffect(() => {
+  //   const fetchSubFormData = async () => {
+  //     if (state.date) {
+  //       try {
+  //         const q = query(
+  //           collection(db, "daily_production"),
+  //           where("date", "==", state?.date),
+  //           orderBy("timeStamp", "desc")
+  //         );
+  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //           let list = [];
+  //           querySnapshot.forEach((doc) => {
+  //             list.push({ id: doc.id, ...doc.data() });
+  //           });
 
-            setDailyProductionDataInDb(list[0]);
-          });
+  //           setDailyProductionDataInDb(list[0]);
+  //         });
 
-          return () => {
-            unsubscribe();
-          };
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+  //         return () => {
+  //           unsubscribe();
+  //         };
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
 
-    fetchSubFormData();
-  }, [state?.date]);
+  //   fetchSubFormData();
+  // }, [state?.date]);
 
   const handleBatchNumberChange = (e) => {
+    console.log(e.target.value);
+
     const batchCode = `${
       location === "mdc" ? "SD3" : "SD4"
     }${year}${monthStr}${dateStr}${e.target.value}`;
@@ -95,25 +96,25 @@ const UpdateMixing = () => {
   const handleTransferredChange = (e) => {
     setIsTransferred(e.target.checked);
 
-    let updatedDailyProductionTotalBatchInSd3 =
-      dailyProductionDataInDb.totalBatchCountInMdc;
-    let updatedDailyProductionTotalBatchInSd4 =
-      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
-    let updatedDailyProductionTotalMilkAmountInSd3 =
-      dailyProductionDataInDb.totalMilkAmountInMdc;
-    let updatedDailyProductionTotalMilkAmountInSd4 =
-      dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
+    // let updatedDailyProductionTotalBatchInSd3 =
+    //   dailyProductionDataInDb.totalBatchCountInMdc;
+    // let updatedDailyProductionTotalBatchInSd4 =
+    //   dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    // let updatedDailyProductionTotalMilkAmountInSd3 =
+    //   dailyProductionDataInDb.totalMilkAmountInMdc;
+    // let updatedDailyProductionTotalMilkAmountInSd4 =
+    //   dailyProductionDataInDb.totalMilkAmountInAraliyaKele;
 
-    if (e.target.checked) {
-      updatedDailyProductionTotalBatchInSd3++;
-      updatedDailyProductionTotalBatchInSd4--;
-      updatedDailyProductionTotalMilkAmountInSd3 += Number(
-        state.mixing_milk_quantity
-      );
-      updatedDailyProductionTotalMilkAmountInSd4 -= Number(
-        state.mixing_milk_quantity
-      );
-    }
+    // if (e.target.checked) {
+    //   updatedDailyProductionTotalBatchInSd3++;
+    //   updatedDailyProductionTotalBatchInSd4--;
+    //   updatedDailyProductionTotalMilkAmountInSd3 += Number(
+    //     state.mixing_milk_quantity
+    //   );
+    //   updatedDailyProductionTotalMilkAmountInSd4 -= Number(
+    //     state.mixing_milk_quantity
+    //   );
+    // }
 
     Swal.fire({
       title: "Transfer to SD 03",
@@ -137,34 +138,34 @@ const UpdateMixing = () => {
             sd_4_is_bowser_output_tap_cleaned: null,
             sd_4_bowser_overall_condition: null,
           }).then(async () => {
-            try {
-              const docRef = doc(
-                db,
-                "daily_production",
-                dailyProductionDataInDb.id
-              );
+            // try {
+            // const docRef = doc(
+            //   db,
+            //   "daily_production",
+            //   dailyProductionDataInDb.id
+            // );
 
-              await updateDoc(docRef, {
-                totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
-                totalBatchCountInAraliyaKele:
-                  updatedDailyProductionTotalBatchInSd4,
-                totalMilkAmountInMdc:
-                  updatedDailyProductionTotalMilkAmountInSd3,
-                totalMilkAmountInAraliyaKele:
-                  updatedDailyProductionTotalMilkAmountInSd4,
-              }).then(() => {
-                Swal.fire({
-                  title: "Batch transferred",
-                  icon: "success",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
+            // await updateDoc(docRef, {
+            //   totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+            //   totalBatchCountInAraliyaKele:
+            //     updatedDailyProductionTotalBatchInSd4,
+            //   totalMilkAmountInMdc:
+            //     updatedDailyProductionTotalMilkAmountInSd3,
+            //   totalMilkAmountInAraliyaKele:
+            //     updatedDailyProductionTotalMilkAmountInSd4,
+            // }).then(() => {
+            Swal.fire({
+              title: "Batch transferred",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
 
-                navigate("/mixing-section");
-              });
-            } catch (error) {
-              console.log(error);
-            }
+            navigate("/mixing-section");
+            // });
+            // } catch (error) {
+            //   console.log(error);
+            // }
           });
         } catch (error) {
           console.log(error);
@@ -182,10 +183,19 @@ const UpdateMixing = () => {
     setData({
       ...data,
       [id]: value,
-      order_name: recipeName,
       // bowser details
       sd_4_is_bowser_filling_hole_cleaned: isFillingHoleCleaned,
       sd_4_is_bowser_output_tap_cleaned: isOutputTapCleaned,
+    });
+  };
+
+  const handleSelectChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setData({
+      ...data,
+      [id]: value,
     });
   };
 
@@ -341,7 +351,7 @@ const UpdateMixing = () => {
                       controlId="batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Batch number</Form.Label>
+                      <Form.Label className="fw-bold">SD batch number</Form.Label>
                       <Form.Control
                         type="number"
                         disabled={location === "araliya_kele"}
@@ -359,29 +369,16 @@ const UpdateMixing = () => {
                       controlId="batch_code"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Batch code</Form.Label>
+                      <Form.Label className="fw-bold">SD batch code</Form.Label>
                       <Form.Control
                         type="text"
                         disabled
                         className="customInput disabled"
-                        defaultValue={batchCode}
+                        defaultValue={state.batch_code}
+                        value={batchCode}
                       />
                     </Form.Group>
 
-                    {/* <Form.Group
-                      as={Col}
-                      md="4"
-                      controlId="order_name"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Order name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        defaultValue={state.order_name}
-                        disabled
-                        className="customInput disabled"
-                      />
-                    </Form.Group> */}
                     <Form.Group
                       as={Col}
                       md="4"
@@ -392,8 +389,8 @@ const UpdateMixing = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue={recipeName}
-                        onChange={(e) => setRecipeName(e.target.value)}
+                        defaultValue={state.order_name}
+                        onChange={handleSelectChange}
                       >
                         {orders.map((order, index) => (
                           <option key={index} value={order.value}>
@@ -412,15 +409,17 @@ const UpdateMixing = () => {
                       className="mb-2"
                     >
                       <Form.Label className="fw-bold">Order type</Form.Label>
-                      <Form.Control
-                        disabled
-                        className="customInput disabled"
-                        defaultValue={
-                          state.order_type === "organic"
-                            ? "Organic"
-                            : "Conventional"
-                        }
-                      />
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={state.order_type}
+                        onChange={handleSelectChange}
+                      >
+                        <option value="conventional">
+                          Conventional Recipe
+                        </option>
+                        <option value="organic">Organic Recipe</option>
+                      </Form.Select>
                     </Form.Group>
 
                     <Form.Group

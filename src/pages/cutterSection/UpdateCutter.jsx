@@ -5,14 +5,14 @@ import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
-  collection,
+  // collection,
   doc,
-  onSnapshot,
-  orderBy,
-  query,
+  // onSnapshot,
+  // orderBy,
+  // query,
   serverTimestamp,
   updateDoc,
-  where,
+  // where,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
@@ -24,51 +24,51 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
+import { calculateTimeDifference } from "../../utils";
 
 const UpdateCutter = () => {
   const { state } = useLocation();
 
-
   const [data, setData] = useState({});
   const [heatValve, setHeatValve] = useState(state.cutter_heat_valve);
   const [isLoading, setIsLoading] = useState(false);
-  const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
+  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [location, setLocation] = useState(state.location);
-  const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
-    {}
-  );
+  // const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
+  // {}
+  // );
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      if (state.date) {
-        try {
-          const q = query(
-            collection(db, "daily_production"),
-            where("date", "==", state?.date),
-            orderBy("timeStamp", "desc")
-          );
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            let list = [];
-            querySnapshot.forEach((doc) => {
-              list.push({ id: doc.id, ...doc.data() });
-            });
+  // useEffect(() => {
+  //   const fetchSubFormData = async () => {
+  //     if (state.date) {
+  //       try {
+  //         const q = query(
+  //           collection(db, "daily_production"),
+  //           where("date", "==", state?.date),
+  //           orderBy("timeStamp", "desc")
+  //         );
+  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //           let list = [];
+  //           querySnapshot.forEach((doc) => {
+  //             list.push({ id: doc.id, ...doc.data() });
+  //           });
 
-            setDailyProductionDataInDb(list[0]);
-          });
+  //           setDailyProductionDataInDb(list[0]);
+  //         });
 
-          return () => {
-            unsubscribe();
-          };
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+  //         return () => {
+  //           unsubscribe();
+  //         };
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
 
-    fetchSubFormData();
-  }, [state?.date]);
+  //   fetchSubFormData();
+  // }, [state?.date]);
 
   const handleChange = (e) => {
     const id = e.target.id;
@@ -80,21 +80,6 @@ const UpdateCutter = () => {
       cutter_heat_valve: heatValve,
       cutter_status: "completed",
     });
-  };
-
-  const calculateTimeDifference = (startTime, endTime) => {
-    const [hours1, minutes1] = startTime.split(":").map(Number);
-    const [hours2, minutes2] = endTime.split(":").map(Number);
-    const totalMinutes1 = hours1 * 60 + minutes1;
-    const totalMinutes2 = hours2 * 60 + minutes2;
-    const diffInMinutes = Math.abs(totalMinutes2 - totalMinutes1);
-    const hours = Math.floor(diffInMinutes / 60);
-    const minutes = diffInMinutes % 60;
-
-    return {
-      hours,
-      minutes,
-    };
   };
 
   const handleExpellerEndTime = (e) => {
@@ -127,34 +112,33 @@ const UpdateCutter = () => {
   const handleChangeLocation = (e) => {
     setLocation(e.target.value);
 
-    let updatedDailyProductionTotalBatchInSd3 =
-      dailyProductionDataInDb.totalBatchCountInMdc;
-    let updatedDailyProductionTotalBatchInSd4 =
-      dailyProductionDataInDb.totalBatchCountInAraliyaKele;
+    // let updatedDailyProductionTotalBatchInSd3 =
+    //   dailyProductionDataInDb.totalBatchCountInMdc;
+    // let updatedDailyProductionTotalBatchInSd4 =
+    //   dailyProductionDataInDb.totalBatchCountInAraliyaKele;
 
     if (e.target.value === "mdc") {
-      updatedDailyProductionTotalBatchInSd3++;
-      updatedDailyProductionTotalBatchInSd4--;
+      // updatedDailyProductionTotalBatchInSd3++;
+      // updatedDailyProductionTotalBatchInSd4--;
 
-      setUpdatedDailyProductionData({
-        ...updatedDailyProductionData,
-        totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
-        totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
-      });
+      // setUpdatedDailyProductionData({
+      //   ...updatedDailyProductionData,
+      //   totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+      //   totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
+      // });
 
       setData({
         ...data,
         cutter_bowser_load_time: null,
       });
     } else {
-      updatedDailyProductionTotalBatchInSd3--;
-      updatedDailyProductionTotalBatchInSd4++;
-
-      setUpdatedDailyProductionData({
-        ...updatedDailyProductionData,
-        totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
-        totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
-      });
+      // updatedDailyProductionTotalBatchInSd3--;
+      // updatedDailyProductionTotalBatchInSd4++;
+      // setUpdatedDailyProductionData({
+      //   ...updatedDailyProductionData,
+      //   totalBatchCountInMdc: updatedDailyProductionTotalBatchInSd3,
+      //   totalBatchCountInAraliyaKele: updatedDailyProductionTotalBatchInSd4,
+      // });
     }
   };
 
@@ -182,16 +166,16 @@ const UpdateCutter = () => {
             mixing_status: "ongoing",
             mixing_added_at: serverTimestamp(),
           })
-            .then(async () => {
-              const docRef = doc(
-                db,
-                "daily_production",
-                dailyProductionDataInDb.id
-              );
-              await updateDoc(docRef, {
-                ...updatedDailyProductionData,
-              });
-            })
+            // .then(async () => {
+            //   const docRef = doc(
+            //     db,
+            //     "daily_production",
+            //     dailyProductionDataInDb.id
+            //   );
+            //   await updateDoc(docRef, {
+            //     ...updatedDailyProductionData,
+            //   });
+            // })
             .then(() => {
               Swal.fire({
                 title: "Changes saved",
@@ -257,7 +241,7 @@ const UpdateCutter = () => {
                       controlId="primary_batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Batch number</Form.Label>
+                      <Form.Label className="fw-bold">W batch number</Form.Label>
                       <Form.Control
                         type="number"
                         disabled

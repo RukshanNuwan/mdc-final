@@ -9,7 +9,7 @@ import {
   doc,
   getDocs,
   limit,
-  onSnapshot,
+  // onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -33,7 +33,7 @@ const NewCutter = () => {
   const [ongoingData, setOngoingData] = useState({});
   const [location, setLocation] = useState("mdc");
   const [heatValve, setHeatValve] = useState(true);
-  const [dailyProductionData, setDailyProductionData] = useState({});
+  // const [dailyProductionData, setDailyProductionData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -77,27 +77,27 @@ const NewCutter = () => {
             ...data,
             cutter_added_at: serverTimestamp(),
           })
-            .then(async () => {
-              const ref = doc(db, "daily_production", dailyProductionData?.id);
+            // .then(async () => {
+            //   const ref = doc(db, "daily_production", dailyProductionData?.id);
 
-              try {
-                if (data.location === "mdc") {
-                  await updateDoc(ref, {
-                    ...dailyProductionData,
-                    totalBatchCountInMdc:
-                      dailyProductionData.totalBatchCountInMdc + 1,
-                  });
-                } else {
-                  await updateDoc(ref, {
-                    ...dailyProductionData,
-                    totalBatchCountInAraliyaKele:
-                      dailyProductionData.totalBatchCountInAraliyaKele + 1,
-                  });
-                }
-              } catch (error) {
-                console.log(error);
-              }
-            })
+            //   try {
+            //     if (data.location === "mdc") {
+            //       await updateDoc(ref, {
+            //         ...dailyProductionData,
+            //         totalBatchCountInMdc:
+            //           dailyProductionData.totalBatchCountInMdc + 1,
+            //       });
+            //     } else {
+            //       await updateDoc(ref, {
+            //         ...dailyProductionData,
+            //         totalBatchCountInAraliyaKele:
+            //           dailyProductionData.totalBatchCountInAraliyaKele + 1,
+            //       });
+            //     }
+            //   } catch (error) {
+            //     console.log(error);
+            //   }
+            // })
             .then(() => {
               Swal.fire({
                 title: "Changes saved",
@@ -146,35 +146,35 @@ const NewCutter = () => {
     fetchCurrentBatchInWet();
   }, []);
 
-  useEffect(() => {
-    const fetchSubFormData = async () => {
-      if (ongoingData?.date) {
-        try {
-          const q = query(
-            collection(db, "daily_production"),
-            where("date", "==", ongoingData?.date),
-            orderBy("timeStamp", "desc")
-          );
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            let list = [];
-            querySnapshot.forEach((doc) => {
-              list.push({ id: doc.id, ...doc.data() });
-            });
+  // useEffect(() => {
+  //   const fetchSubFormData = async () => {
+  //     if (ongoingData?.date) {
+  //       try {
+  //         const q = query(
+  //           collection(db, "daily_production"),
+  //           where("date", "==", ongoingData?.date),
+  //           orderBy("timeStamp", "desc")
+  //         );
+  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //           let list = [];
+  //           querySnapshot.forEach((doc) => {
+  //             list.push({ id: doc.id, ...doc.data() });
+  //           });
 
-            setDailyProductionData(list[0]);
-          });
+  //           setDailyProductionData(list[0]);
+  //         });
 
-          return () => {
-            unsubscribe();
-          };
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+  //         return () => {
+  //           unsubscribe();
+  //         };
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
 
-    fetchSubFormData();
-  }, [ongoingData?.date]);
+  //   fetchSubFormData();
+  // }, [ongoingData?.date]);
 
   return (
     <>
@@ -224,7 +224,7 @@ const NewCutter = () => {
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
-                          Batch number
+                          W batch number
                         </Form.Label>
                         <Form.Control
                           type="number"

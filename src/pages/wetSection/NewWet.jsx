@@ -71,6 +71,7 @@ const NewWet = () => {
 
     setData({
       ...data,
+      [id]: value,
       // common data
       date,
       primary_batch_number: Number(nextBatchNumber),
@@ -82,7 +83,6 @@ const NewWet = () => {
       location: "",
 
       // wet section data
-      [id]: value,
       wet_kernel_weight: kernelWeight,
       wet_kernel_quality: quality,
 
@@ -250,7 +250,7 @@ const NewWet = () => {
                       controlId="primary_batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Batch number</Form.Label>
+                      <Form.Label className="fw-bold">W Batch number</Form.Label>
                       <Form.Control
                         required
                         type="number"

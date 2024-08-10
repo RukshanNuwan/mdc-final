@@ -118,7 +118,7 @@ const UpdateWet = () => {
                       controlId="primary_batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Batch number</Form.Label>
+                      <Form.Label className="fw-bold">W Batch number</Form.Label>
                       <Form.Control
                         type="number"
                         disabled

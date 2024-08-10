@@ -20,8 +20,45 @@ const DailySummary = () => {
     {}
   );
   const [productionData, setProductionData] = useState([]);
+  const [totalBatchesInSd3, setTotalBatchesInSd3] = useState(0);
+  const [totalBatchesInSd4, setTotalBatchesInSd4] = useState(0);
+  const [totalMilkAmountInSd3, setTotalMilkAmountInSd3] = useState(0);
+  const [totalMilkAmountInSd4, setTotalMilkAmountInSd4] = useState(0);
+  const [totalPowderQuantityInSd3, setTotalPowderQuantityInSd3] = useState(0);
+  const [totalPowderQuantityInSd4, setTotalPowderQuantityInSd4] = useState(0);
 
-  // Fetch daily production data by date
+  const setTotalValues = (list) => {
+    if (list.length > 0) {
+      let totalBatchesInMdc = 0;
+      let totalBatchesInAraliyaKele = 0;
+      let totalMilkAmountInMdc = 0;
+      let totalMilkAmountInAraliyaKele = 0;
+      let totalPowderQuantityInMdc = 0;
+      let totalPowderQuantityInAraliyaKele = 0;
+
+      list.forEach((item) => {
+        if (item.location === "mdc") {
+          totalBatchesInMdc++;
+          totalMilkAmountInMdc += Number(item.mixing_milk_quantity);
+          totalPowderQuantityInMdc += Number(item.sd_total_powder_quantity);
+        } else {
+          totalBatchesInAraliyaKele++;
+          totalMilkAmountInAraliyaKele += Number(item.mixing_milk_quantity);
+          totalPowderQuantityInAraliyaKele += Number(
+            item.sd_total_powder_quantity
+          );
+        }
+      });
+
+      setTotalBatchesInSd3(totalBatchesInMdc);
+      setTotalBatchesInSd4(totalBatchesInAraliyaKele);
+      setTotalMilkAmountInSd3(totalMilkAmountInMdc);
+      setTotalMilkAmountInSd4(totalMilkAmountInAraliyaKele);
+      setTotalPowderQuantityInSd3(totalPowderQuantityInMdc);
+      setTotalPowderQuantityInSd4(totalPowderQuantityInAraliyaKele);
+    }
+  };
+
   const fetchDailyProductionDataByDate = async () => {
     try {
       const q = query(
@@ -60,6 +97,7 @@ const DailySummary = () => {
       });
 
       setProductionData(list);
+      setTotalValues(list);
     } catch (error) {
       console.log(error);
     }
@@ -83,24 +121,10 @@ const DailySummary = () => {
       });
 
       setProductionData(list);
+      setTotalValues(list);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const renderTotalPowderQuantity = () => {
-    if (isNaN(dailyProductionDataByDate?.totalPowderQuantityInMdc)) {
-      return dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele;
-    }
-
-    if (isNaN(dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele)) {
-      return dailyProductionDataByDate?.totalPowderQuantityInMdc;
-    }
-
-    return (
-      dailyProductionDataByDate?.totalPowderQuantityInMdc +
-      dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
-    );
   };
 
   const renderMilkExpellerEfficiency = () => {
@@ -141,6 +165,8 @@ const DailySummary = () => {
     if (date && location)
       fetchProductionDataByDateAndLocation().then(() => setIsLoading(false));
   };
+
+  console.log(dailyProductionDataByDate);
 
   return (
     <>
@@ -235,22 +261,45 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p>
-                            {dailyProductionDataByDate?.totalCoconut
-                              ? dailyProductionDataByDate?.totalCoconut
-                              : "-"}
+                            {dailyProductionDataByDate?.totalCoconut || "-"}
                           </p>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Kernel weight</p>
+                          <p className="fw-bold">Total kernel quantity</p>
                         </div>
                         <div className="col-6">
                           <p>
-                            {dailyProductionDataByDate?.totalKernelWeight
-                              ? dailyProductionDataByDate?.totalKernelWeight
+                            {dailyProductionDataByDate.totalKernelWeight ||
+                            dailyProductionDataByDate.outsideKernelQuantity
+                              ? dailyProductionDataByDate.totalKernelWeight +
+                                Number(
+                                  dailyProductionDataByDate.outsideKernelQuantity
+                                )
                               : "-"}
+                            Kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">In-house kernel</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate.totalKernelWeight || "-"}
+                            Kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">Outside kernel</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {dailyProductionDataByDate.outsideKernelQuantity ||
+                              "-"}
                             Kg
                           </p>
                         </div>
@@ -262,10 +311,8 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p>
-                            {dailyProductionDataByDate?.totalBatchCountInMdc ||
-                            dailyProductionDataByDate?.totalBatchCountInAraliyaKele
-                              ? dailyProductionDataByDate?.totalBatchCountInMdc +
-                                dailyProductionDataByDate?.totalBatchCountInAraliyaKele
+                            {totalBatchesInSd3 || totalBatchesInSd4
+                              ? totalBatchesInSd3 + totalBatchesInSd4
                               : "-"}
                           </p>
                         </div>
@@ -274,22 +321,14 @@ const DailySummary = () => {
                           <p className="subText">SD 03</p>
                         </div>
                         <div className="col-6">
-                          <p className="subText">
-                            {dailyProductionDataByDate?.totalBatchCountInMdc
-                              ? dailyProductionDataByDate?.totalBatchCountInMdc
-                              : "-"}
-                          </p>
+                          <p className="subText">{totalBatchesInSd3 || "-"}</p>
                         </div>
 
                         <div className="col-6 d-flex justify-content-end">
                           <p className="subText">SD 04</p>
                         </div>
                         <div className="col-6">
-                          <p className="subText">
-                            {dailyProductionDataByDate?.totalBatchCountInAraliyaKele
-                              ? dailyProductionDataByDate?.totalBatchCountInAraliyaKele
-                              : "-"}
-                          </p>
+                          <p className="subText">{totalBatchesInSd4 || "-"}</p>
                         </div>
                       </div>
 
@@ -299,10 +338,8 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p>
-                            {dailyProductionDataByDate?.totalMilkAmountInMdc ||
-                            dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
-                              ? dailyProductionDataByDate?.totalMilkAmountInMdc +
-                                dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
+                            {totalMilkAmountInSd3 || totalMilkAmountInSd4
+                              ? totalMilkAmountInSd3 + totalMilkAmountInSd4
                               : "-"}
                             Kg
                           </p>
@@ -313,9 +350,7 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p className="subText">
-                            {dailyProductionDataByDate?.totalMilkAmountInMdc
-                              ? dailyProductionDataByDate?.totalMilkAmountInMdc
-                              : "-"}
+                            {totalMilkAmountInSd3 || "-"}
                             Kg
                           </p>
                         </div>
@@ -325,9 +360,7 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p className="subText">
-                            {dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
-                              ? dailyProductionDataByDate?.totalMilkAmountInAraliyaKele
-                              : "-"}
+                            {totalMilkAmountInSd4 || "-"}
                             Kg
                           </p>
                         </div>
@@ -349,7 +382,14 @@ const DailySummary = () => {
                           <p className="fw-bold">Total powder quantity</p>
                         </div>
                         <div className="col-6">
-                          <p>{renderTotalPowderQuantity()}Kg</p>
+                          <p>
+                            {totalPowderQuantityInSd3 ||
+                            totalPowderQuantityInSd4
+                              ? totalPowderQuantityInSd3 +
+                                totalPowderQuantityInSd4
+                              : "-"}
+                            Kg
+                          </p>
                         </div>
 
                         <div className="col-6 d-flex justify-content-end">
@@ -357,9 +397,7 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p className="subText">
-                            {dailyProductionDataByDate?.totalPowderQuantityInMdc
-                              ? dailyProductionDataByDate?.totalPowderQuantityInMdc
-                              : "-"}
+                            {totalPowderQuantityInSd3 || "-"}
                             Kg
                           </p>
                         </div>
@@ -369,9 +407,7 @@ const DailySummary = () => {
                         </div>
                         <div className="col-6">
                           <p className="subText">
-                            {dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
-                              ? dailyProductionDataByDate?.totalPowderQuantityInAraliyaKele
-                              : "-"}
+                            {totalPowderQuantityInSd4 || "-"}
                             Kg
                           </p>
                         </div>

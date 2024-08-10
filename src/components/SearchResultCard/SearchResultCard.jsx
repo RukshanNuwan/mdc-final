@@ -15,7 +15,7 @@ const SearchResultCard = ({ data }) => {
 
         <div className="d-flex flex-wrap gap-4">
           <div className="d-flex flex-column justify-content-center">
-            <div className="text-white">Batch code</div>
+            <div className="text-white">SD batch code</div>
             <div className="text-light-blue">{data?.production_batch_code}</div>
           </div>
 

@@ -58,7 +58,7 @@ const LaboratoryDetails = () => {
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Wet batch number</p>
+                          <p className="bodyText">W batch number</p>
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold">
@@ -69,7 +69,7 @@ const LaboratoryDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Batch number</p>
+                          <p className="bodyText">SD batch number</p>
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold">
@@ -80,7 +80,7 @@ const LaboratoryDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
-                          <p className="bodyText">Batch code</p>
+                          <p className="bodyText">SD batch code</p>
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold">
