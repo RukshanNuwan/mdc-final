@@ -511,7 +511,7 @@ const NewMixing = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {ongoingData ? (
+                {ongoingData || location === "araliya_kele" ? (
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Form.Group
@@ -601,7 +601,9 @@ const NewMixing = () => {
                         controlId="batch_code"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">SD batch code</Form.Label>
+                        <Form.Label className="fw-bold">
+                          SD batch code
+                        </Form.Label>
                         <Form.Control
                           type="text"
                           disabled
