@@ -81,9 +81,9 @@ const WetSection = () => {
           text: confirmData,
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
+          confirmButtonColor: "#ff007f",
           confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
+          cancelButtonColor: "#0d1b2a",
         }).then((result) => {
           if (result.isConfirmed) {
             addDoc(collection(db, "daily_production"), {
@@ -114,9 +114,9 @@ const WetSection = () => {
           text: confirmData,
           icon: "question",
           showCancelButton: true,
-          confirmButtonColor: "#0d1b2a",
+          confirmButtonColor: "#ff007f",
           confirmButtonText: "Yes",
-          cancelButtonColor: "#ff007f",
+          cancelButtonColor: "#0d1b2a",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const docRef = doc(db, "daily_production", receivedData.id);

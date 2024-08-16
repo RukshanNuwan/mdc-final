@@ -37,7 +37,13 @@ const packingLinesNavList = [
     name: "Packing Lines",
     icon: "bi bi-box-fill",
     path: "/packing-lines",
-  }
+  },
+  {
+    _id: 2,
+    name: "Verification",
+    icon: "bi-card-checklist",
+    path: "/verification",
+  },
 ];
 
 const otherNavList = [

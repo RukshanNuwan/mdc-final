@@ -1,11 +1,18 @@
 # Change Log
 
+## v2.5.9
+
+- Updated sd batch code label in update spray dryer module
+- Added verification module for packing line
+- Fixed width of added packing line data table fields
+- Updated Swal button colors
+
 ## v2.5.8
 
 - Added new feature for outside kernel in wet section
 - Added new feature for outside milk in sd 4 mixing section
 - Added in-house & outside kernel quantity for summary report
-- Updated select box data binding function in  new mixing module
+- Updated select box data binding function in new mixing module
 - Rename Wet batch number into W batch number
 - Rename Batch number into SD batch number
 - Rename Batch code into Sd batch code

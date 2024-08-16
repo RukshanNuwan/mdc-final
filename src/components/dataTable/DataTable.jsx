@@ -90,18 +90,18 @@ const DataTable = ({ columnName, location }) => {
         title: "Do you want to delete?",
         icon: "error",
         showCancelButton: true,
-        confirmButtonColor: "#0d1b2a",
+        confirmButtonColor: "#ff007f",
         confirmButtonText: "Yes",
-        cancelButtonColor: "#ff007f",
+        cancelButtonColor: "#0d1b2a",
       }).then(async (result) => {
         if (result.isConfirmed) {
           Swal.fire({
             title: "Do you get any permission to delete this data?",
             icon: "error",
             showCancelButton: true,
-            confirmButtonColor: "#0d1b2a",
+            confirmButtonColor: "#ff007f",
             confirmButtonText: "Yes",
-            cancelButtonColor: "#ff007f",
+            cancelButtonColor: "#0d1b2a",
           }).then(async (result) => {
             if (result.isConfirmed) {
               await deleteDoc(doc(db, "production_data", data.id));

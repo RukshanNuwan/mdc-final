@@ -244,7 +244,9 @@ const UpdateSprayDryer = () => {
                       controlId="batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">SD batch number</Form.Label>
+                      <Form.Label className="fw-bold">
+                        SD batch number
+                      </Form.Label>
                       <Form.Control
                         type="number"
                         disabled
@@ -261,7 +263,7 @@ const UpdateSprayDryer = () => {
                     >
                       <Form.Label className="fw-bold">SD batch code</Form.Label>
                       <Form.Control
-                        type="number"
+                        type="text"
                         disabled
                         className="customInput disabled"
                         defaultValue={state.batch_code}
