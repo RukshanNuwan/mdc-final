@@ -24,7 +24,7 @@ const SideBar = () => {
           <NavItem data={nav} key={index} />
         ))}
 
-        <li className="nav-heading">Packing Lines</li>
+        <li className="nav-heading">Packings & Loadings</li>
         {packingLinesNavList.map((nav, index) => (
           <NavItem data={nav} key={index} />
         ))}
