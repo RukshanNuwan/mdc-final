@@ -1,0 +1,7 @@
+wet batch           = w batch
+mixing batch        = sd batch
+mixing batch code   = sd batch code
+production bag      = sd bag
+customer batch code = c batch code
+packing bag         = c bag
+office batch code   = t code

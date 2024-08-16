@@ -53,31 +53,31 @@ const packingSectionColumns = [
   {
     field: "packing_job_sheet_number",
     headerName: "Job sheet #",
-    width: 150,
+    width: 100,
   },
   {
-    field: "packing_craft_bag_number",
-    headerName: "Craft bag #",
-    width: 200,
+    field: "packing_packing_batch_code",
+    headerName: "T code",
+    width: 100,
     renderCell: (params) => {
       return (
         <div>
-          {params.row.packing_craft_bag_number
-            ? params.row.packing_craft_bag_number
+          {params.row.packing_packing_batch_code
+            ? params.row.packing_packing_batch_code
             : "-"}
         </div>
       );
     },
   },
   {
-    field: "packing_carton_box_number",
-    headerName: "Carton box #",
-    width: 100,
+    field: "packing_craft_bag_number",
+    headerName: "C bag #",
+    width: 300,
     renderCell: (params) => {
       return (
         <div>
-          {params.row.packing_carton_box_number
-            ? params.row.packing_carton_box_number
+          {params.row.packing_craft_bag_number
+            ? params.row.packing_craft_bag_number.join()
             : "-"}
         </div>
       );
@@ -290,7 +290,9 @@ const PackingLines = () => {
                   <Form onSubmit={handleSearch}>
                     <Row>
                       <Form.Group as={Col} md="3" controlId="batch_code">
-                        <Form.Label className="fw-bold">SD batch code</Form.Label>
+                        <Form.Label className="fw-bold">
+                          SD batch code
+                        </Form.Label>
                         <Form.Control
                           type="text"
                           required
@@ -524,9 +526,7 @@ const PackingLines = () => {
                           controlId="packing_packing_batch_code"
                           className="mb-2"
                         >
-                          <Form.Label className="fw-bold">
-                            T code
-                          </Form.Label>
+                          <Form.Label className="fw-bold">T code</Form.Label>
                           <Form.Control
                             type="text"
                             required
@@ -769,7 +769,7 @@ const PackingLines = () => {
                       },
                       sorting: {
                         sortModel: [
-                          { field: "packing_line_added_at", sort: "desc" },
+                          { field: "packing_production_date", sort: "desc" },
                         ],
                       },
                     }}

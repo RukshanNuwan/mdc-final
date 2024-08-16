@@ -351,7 +351,9 @@ const UpdateMixing = () => {
                       controlId="batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">SD batch number</Form.Label>
+                      <Form.Label className="fw-bold">
+                        SD batch number
+                      </Form.Label>
                       <Form.Control
                         type="number"
                         disabled={location === "araliya_kele"}

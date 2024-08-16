@@ -166,8 +166,6 @@ const DailySummary = () => {
       fetchProductionDataByDateAndLocation().then(() => setIsLoading(false));
   };
 
-  console.log(dailyProductionDataByDate);
-
   return (
     <>
       <Header />
