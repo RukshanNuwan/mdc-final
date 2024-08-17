@@ -360,6 +360,21 @@ const Dashboard = () => {
     setTotalPowderQuantityInSd4(totalPowderQuantityInAraliyaKele);
   }, [productionDataByDate, totalBatchesInMdc, totalBatchesInAraliyaKele]);
 
+  const renderCurrentBatchNumberInSd = (location) => {
+    let currentBatchNumber = 0;
+
+    productionDataByDate.forEach((data) => {
+      if (data.location === location) {
+        if (data.sd_status && data.sd_status !== "ongoing") {
+          currentBatchNumber++;
+        }
+      }
+    });
+
+    console.log("currentBatchNumber -> ", currentBatchNumber);
+    return currentBatchNumber;
+  };
+
   return (
     <section>
       <div className="dashboardContainer">
@@ -474,7 +489,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Batch number</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.runningBatchNumberInMdc || "-"}
+                {renderCurrentBatchNumberInSd("mdc")}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -650,7 +665,7 @@ const Dashboard = () => {
               <p className="sectionHeading text-white">Batch number</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.runningBatchNumberInAraliyaKele || "-"}
+                {renderCurrentBatchNumberInSd("araliya_kele")}
               </p>
 
               <div className="col-12 sectionDetailsContainer">

@@ -4,6 +4,7 @@
 
 - Updated Running batch into Batch number in dashboard
 - Added DC batches in wet section, dashboard & summary report
+- Updated render function for current batch number of spray dryers in dashboard
 <!-- - Added to insert data for outside milk in sd 3 mixing section -->
 
 ## v2.5.9
