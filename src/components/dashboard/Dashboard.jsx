@@ -413,13 +413,17 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Total batch count</p>
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.totalKernelWeight &&
-                    dailyProductionData?.outsideKernelQuantity
+                    dailyProductionData?.outsideKernelQuantity &&
+                    dailyProductionData?.desiccatedCoconutQuantity
                       ? Math.round(
                           (dailyProductionData?.totalKernelWeight +
                             Number(
                               dailyProductionData?.outsideKernelQuantity
                             )) /
-                            300
+                            300 -
+                            Number(
+                              dailyProductionData?.desiccatedCoconutQuantity
+                            )
                         )
                       : dailyProductionData?.totalKernelWeight
                       ? Math.round(dailyProductionData?.totalKernelWeight / 300)
