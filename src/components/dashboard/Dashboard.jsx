@@ -467,7 +467,7 @@ const Dashboard = () => {
                 </span>
               </div>
 
-              <p className="sectionHeading text-white">Running batch</p>
+              <p className="sectionHeading text-white">Batch number</p>
 
               <p className="sectionMainValue text-center">
                 {dailyProductionData?.runningBatchNumberInMdc || "-"}
@@ -643,7 +643,7 @@ const Dashboard = () => {
                 </span>
               </div>
 
-              <p className="sectionHeading text-white">Running batch</p>
+              <p className="sectionHeading text-white">Batch number</p>
 
               <p className="sectionMainValue text-center">
                 {dailyProductionData?.runningBatchNumberInAraliyaKele || "-"}

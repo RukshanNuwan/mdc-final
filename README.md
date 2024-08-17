@@ -1,5 +1,10 @@
 # Change Log
 
+## 2v.6.0
+
+- Updated Running batch into Batch number in dashboard
+<!-- - Added to insert data for outside milk in sd 3 mixing section -->
+
 ## v2.5.9
 
 - Updated sd batch code label in update spray dryer module
