@@ -34,7 +34,9 @@ const WetSection = () => {
   const [totalKernelWeight, setTotalKernelWeight] = useState(0);
   const [totalCoconut, setTotalCoconut] = useState();
   const [isOutsideKernelArrived, setIsOutsideKernelArrived] = useState(false);
+  const [isDesiccatedCoconutCut, setIsDesiccatedCoconutCut] = useState(false);
   const [outsideKernelQuantity, setOutsideKernelQuantity] = useState(0);
+  const [desiccatedCoconutQuantity, setDesiccatedCoconutQuantity] = useState(0);
 
   const navigate = useNavigate();
   const currentDate = useCurrentDate();
@@ -47,6 +49,10 @@ const WetSection = () => {
 
   const handleSwitchChange = (e) => {
     setIsOutsideKernelArrived(e.target.checked);
+  };
+
+  const handleDCSwitchChange = (e) => {
+    setIsDesiccatedCoconutCut(e.target.checked);
   };
 
   const handleSubFormChange = (e) => {
@@ -71,6 +77,8 @@ const WetSection = () => {
     const confirmData = `${
       isOutsideKernelArrived
         ? `Kernel quantity: ${outsideKernelQuantity}`
+        : isDesiccatedCoconutCut
+        ? `DC batch: ${desiccatedCoconutQuantity}`
         : `Date: ${subFormData.date} | Coconut Count: ${totalCoconut}`
     }`;
 
@@ -91,6 +99,7 @@ const WetSection = () => {
               totalCoconut,
               totalKernelWeight,
               outsideKernelQuantity,
+              desiccatedCoconutQuantity,
               timeStamp: serverTimestamp(),
             }).then(() => {
               Swal.fire({
@@ -121,15 +130,20 @@ const WetSection = () => {
           if (result.isConfirmed) {
             const docRef = doc(db, "daily_production", receivedData.id);
             await updateDoc(docRef, {
-              totalCoconut: isOutsideKernelArrived
-                ? receivedData.totalCoconut
-                : totalCoconut,
-              totalKernelWeight: isOutsideKernelArrived
-                ? receivedData.totalKernelWeight
-                : totalKernelWeight,
+              totalCoconut:
+                isOutsideKernelArrived || isDesiccatedCoconutCut
+                  ? receivedData.totalCoconut
+                  : totalCoconut,
+              totalKernelWeight:
+                isOutsideKernelArrived || isDesiccatedCoconutCut
+                  ? receivedData.totalKernelWeight
+                  : totalKernelWeight,
               outsideKernelQuantity: isOutsideKernelArrived
                 ? outsideKernelQuantity
                 : receivedData.outsideKernelQuantity || 0,
+              desiccatedCoconutQuantity: isDesiccatedCoconutCut
+                ? desiccatedCoconutQuantity
+                : receivedData.desiccatedCoconutQuantity || 0,
               updatedAt: serverTimestamp(),
             }).then(() => {
               Swal.fire({
@@ -231,7 +245,10 @@ const WetSection = () => {
                             </Form.Label>
                             <Form.Control
                               type="number"
-                              required={!isOutsideKernelArrived}
+                              required={
+                                !isOutsideKernelArrived &&
+                                !isDesiccatedCoconutCut
+                              }
                               className="customInput"
                               onChange={calculateKernelWeight}
                             />
@@ -267,6 +284,41 @@ const WetSection = () => {
                                 className="customInput"
                                 onChange={(e) =>
                                   setOutsideKernelQuantity(e.target.value)
+                                }
+                              />
+                            </Form.Group>
+                          )}
+                        </Row>
+
+                        <Row>
+                          <Form.Group as={Col} md="5">
+                            <Form.Label className="fw-bold">
+                              Desiccated coconut
+                            </Form.Label>
+
+                            <Form.Switch
+                              type="switch"
+                              id="desiccated-coconut-switch"
+                              checked={isDesiccatedCoconutCut}
+                              onChange={handleDCSwitchChange}
+                            />
+                          </Form.Group>
+
+                          {isDesiccatedCoconutCut && (
+                            <Form.Group
+                              as={Col}
+                              md="5"
+                              controlId="desiccatedCoconutQuantity"
+                            >
+                              <Form.Label className="fw-bold">
+                                DC batches
+                              </Form.Label>
+                              <Form.Control
+                                required={isDesiccatedCoconutCut}
+                                type="number"
+                                className="customInput"
+                                onChange={(e) =>
+                                  setDesiccatedCoconutQuantity(e.target.value)
                                 }
                               />
                             </Form.Group>

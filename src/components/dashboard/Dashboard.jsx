@@ -360,6 +360,21 @@ const Dashboard = () => {
     setTotalPowderQuantityInSd4(totalPowderQuantityInAraliyaKele);
   }, [productionDataByDate, totalBatchesInMdc, totalBatchesInAraliyaKele]);
 
+  const renderCurrentBatchNumberInSd = (location) => {
+    let currentBatchNumber = 0;
+
+    productionDataByDate.forEach((data) => {
+      if (data.location === location) {
+        if (data.sd_status && data.sd_status !== "ongoing") {
+          currentBatchNumber++;
+        }
+      }
+    });
+
+    console.log("currentBatchNumber -> ", currentBatchNumber);
+    return currentBatchNumber;
+  };
+
   return (
     <section>
       <div className="dashboardContainer">
@@ -413,13 +428,17 @@ const Dashboard = () => {
                   <p className="sectionSubHeading">Total batch count</p>
                   <p className="sectionSubValue fw-bold">
                     {dailyProductionData?.totalKernelWeight &&
-                    dailyProductionData?.outsideKernelQuantity
+                    dailyProductionData?.outsideKernelQuantity &&
+                    dailyProductionData?.desiccatedCoconutQuantity
                       ? Math.round(
                           (dailyProductionData?.totalKernelWeight +
                             Number(
                               dailyProductionData?.outsideKernelQuantity
                             )) /
-                            300
+                            300 -
+                            Number(
+                              dailyProductionData?.desiccatedCoconutQuantity
+                            )
                         )
                       : dailyProductionData?.totalKernelWeight
                       ? Math.round(dailyProductionData?.totalKernelWeight / 300)
@@ -467,10 +486,10 @@ const Dashboard = () => {
                 </span>
               </div>
 
-              <p className="sectionHeading text-white">Running batch</p>
+              <p className="sectionHeading text-white">Batch number</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.runningBatchNumberInMdc || "-"}
+                {renderCurrentBatchNumberInSd("mdc")}
               </p>
 
               <div className="col-12 sectionDetailsContainer">
@@ -643,10 +662,10 @@ const Dashboard = () => {
                 </span>
               </div>
 
-              <p className="sectionHeading text-white">Running batch</p>
+              <p className="sectionHeading text-white">Batch number</p>
 
               <p className="sectionMainValue text-center">
-                {dailyProductionData?.runningBatchNumberInAraliyaKele || "-"}
+                {renderCurrentBatchNumberInSd("araliya_kele")}
               </p>
 
               <div className="col-12 sectionDetailsContainer">

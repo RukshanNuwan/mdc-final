@@ -305,6 +305,18 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
+                          <p className="fw-bold">Total DC batch count</p>
+                        </div>
+                        <div className="col-6">
+                          <p>
+                            {dailyProductionDataByDate.desiccatedCoconutQuantity ||
+                              "-"}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-6 d-flex justify-content-end">
                           <p className="fw-bold">Total milk batch count</p>
                         </div>
                         <div className="col-6">
