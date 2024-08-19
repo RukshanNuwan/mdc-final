@@ -1,6 +1,6 @@
 # Change Log
 
-## 2v.6.0
+## v2.6.0
 
 - Updated Running batch into Batch number in dashboard
 - Added DC batches in wet section, dashboard & summary report
