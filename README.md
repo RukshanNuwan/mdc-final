@@ -5,6 +5,7 @@
 - Updated font family of the app into Inter
 - Updated sidebar icons
 - Added new report for breakdowns
+- Added new recipe for mixing section
 
 ## v2.6.0
 
