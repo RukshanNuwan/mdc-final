@@ -1,7 +1,5 @@
 import { useRef } from "react";
 import { Table } from "react-bootstrap";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 
 import "./dataTable.css";
