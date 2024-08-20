@@ -14,7 +14,13 @@ const SideBar = () => {
       <ul className="sidebar-nav" id="sidebar-nav">
         <li className="nav-item">
           <Link to="/" className="nav-link">
-            <i className="bi bi-grid"></i>
+            <img
+              src="/assets/home.svg"
+              alt="home"
+              width={20}
+              height={20}
+              className="me-2"
+            />
             <span>Home</span>
           </Link>
         </li>

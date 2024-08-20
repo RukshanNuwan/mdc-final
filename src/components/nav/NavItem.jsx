@@ -4,7 +4,13 @@ const NavItem = ({ data }) => {
   return (
     <li className="nav-item">
       <Link to={data.path} className="nav-link collapsed">
-        <i className={data.icon} />
+        <img
+          src={data.icon}
+          alt={data.name}
+          width={20}
+          height={20}
+          className="me-2"
+        />
         <span>{data.name}</span>
       </Link>
     </li>

@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.6.1
+
+- Updated font family of the app into Inter
+- Updated sidebar icons
+
 ## v2.6.0
 
 - Updated Running batch into Batch number in dashboard

@@ -2,31 +2,31 @@ const productionNavList = [
   {
     _id: 1,
     name: "Wet Section",
-    icon: "bi bi-circle",
+    icon: "/assets/wet.svg",
     path: "/wet-section",
   },
   {
     _id: 2,
     name: "Cutter Section",
-    icon: "bi bi-bullseye",
+    icon: "/assets/cutter.svg",
     path: "/cutter-section",
   },
   {
     _id: 3,
     name: "Mixing Section",
-    icon: "bi bi-basket",
+    icon: "/assets/mixing.svg",
     path: "/mixing-section",
   },
   {
     _id: 4,
     name: "Spray Dryer",
-    icon: "bi bi-box-seam",
+    icon: "/assets/dryer.svg",
     path: "/sd-section",
   },
   {
     _id: 5,
     name: "Laboratory",
-    icon: "bi bi-file-earmark-spreadsheet-fill",
+    icon: "/assets/lab.svg",
     path: "/lab-section",
   },
 ];
@@ -35,13 +35,13 @@ const packingLinesNavList = [
   {
     _id: 1,
     name: "Packing Lines",
-    icon: "bi bi-box-fill",
+    icon: "/assets/packing.svg",
     path: "/packing-lines",
   },
   {
     _id: 2,
     name: "Verification",
-    icon: "bi-card-checklist",
+    icon: "/assets/verification.svg",
     path: "/verification",
   },
 ];
@@ -50,13 +50,13 @@ const otherNavList = [
   {
     _id: 1,
     name: "Reports",
-    icon: "bi bi-file-text",
+    icon: "/assets/report.svg",
     path: "/reports",
   },
   {
     _id: 2,
     name: "Back trace",
-    icon: "bi bi-sign-turn-left",
+    icon: "/assets/trace.svg",
     path: "/complaints",
   },
   // {
