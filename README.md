@@ -8,6 +8,7 @@
 - Added new recipe for mixing section
 - Updated fetch function for breakdowns in dashboard
 - Updated details of wet section
+- Updated breakdown module
 
 ## v2.6.0
 

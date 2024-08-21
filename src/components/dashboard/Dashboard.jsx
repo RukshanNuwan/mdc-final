@@ -315,6 +315,8 @@ const Dashboard = () => {
     }
   }, [breakdowns]);
 
+  console.log("breakdowns ->", breakdowns);
+
   useEffect(() => {
     const handleStatus = () => {
       if (sd3Data?.sd_status && sd3Data?.sd_status !== "completed")
@@ -370,7 +372,6 @@ const Dashboard = () => {
       }
     });
 
-    console.log("currentBatchNumber -> ", currentBatchNumber);
     return currentBatchNumber;
   };
 
@@ -819,7 +820,7 @@ const Dashboard = () => {
                           <p className="text-secondary text-sm">
                             Start time :
                             <span className="fw-bold text-capitalize textSuccessGreen">
-                              {breakdown.timeStamp?.toDate().toLocaleString()}
+                              {breakdown.startTime}
                             </span>
                           </p>
 
@@ -827,7 +828,7 @@ const Dashboard = () => {
                             <p className="text-secondary text-sm">
                               End time :
                               <span className="fw-bold text-capitalize textSuccessGreen">
-                                {breakdown.updatedAt?.toDate().toLocaleString()}
+                                {breakdown.finishTime}
                               </span>
                             </p>
                           )}

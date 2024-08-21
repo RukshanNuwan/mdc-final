@@ -13,16 +13,17 @@ import { db } from "../../config/firebase.config";
 import BreakdownReportTable from "../../components/dataTable/BreakdownReportTable";
 
 const Breakdowns = () => {
-  const [date, setDate] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [breakdownsInDb, setBreakdownsInDb] = useState([]);
 
-  const fetchBreakdownsByDate = async () => {
+  const fetchBreakdownsByStartDate = async () => {
     try {
       const list = [];
       const q = query(
         collection(db, "breakdowns"),
-        where("breakdown_date", "==", date),
+        where("breakdown_date", "==", startDate),
         orderBy("timeStamp", "desc")
       );
 
@@ -38,13 +39,37 @@ const Breakdowns = () => {
     }
   };
 
-  console.log("breakdownsInDb -> ", breakdownsInDb);
+  const fetchBreakdownsByDateRange = async () => {
+    try {
+      const list = [];
+      const q = query(
+        collection(db, "breakdowns"),
+        where("breakdown_date", ">=", startDate),
+        where("breakdown_date", "<=", endDate),
+        orderBy("timeStamp", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
+      });
+
+      setBreakdownsInDb(list);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (date) fetchBreakdownsByDate().then(() => setIsLoading(false));
+    if (startDate) fetchBreakdownsByStartDate().then(() => setIsLoading(false));
+    if (startDate && endDate)
+      fetchBreakdownsByDateRange().then(() => setIsLoading(false));
+
+    if (!startDate && !endDate) setIsLoading(false);
   };
 
   return (
@@ -77,14 +102,28 @@ const Breakdowns = () => {
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="date"
+                      controlId="startDate"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Date</Form.Label>
+                      <Form.Label className="fw-bold">Start date</Form.Label>
                       <Form.Control
                         type="date"
                         className="customInput"
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="endDate"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">End date</Form.Label>
+                      <Form.Control
+                        type="date"
+                        className="customInput"
+                        onChange={(e) => setEndDate(e.target.value)}
                       />
                     </Form.Group>
 
@@ -115,6 +154,12 @@ const Breakdowns = () => {
                         ) : (
                           "Generate"
                         )}
+                      </button>
+                    </Form.Group>
+
+                    <Form.Group as={Col} className="d-flex align-items-end">
+                      <button type="reset" className="customBtn customBtnPrint">
+                        Reset
                       </button>
                     </Form.Group>
                   </Row>

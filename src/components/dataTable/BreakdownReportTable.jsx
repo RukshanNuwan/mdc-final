@@ -26,21 +26,6 @@ const BreakdownReportTable = ({ data }) => {
     }
   };
 
-  const convertTimeStampIntoTime = (timeStamp) => {
-    const firestoreTimestamp = timeStamp;
-    const date = firestoreTimestamp.toDate();
-
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-
-    const timeString = `${formattedHours}:${formattedMinutes}`;
-
-    return timeString;
-  };
-
   return (
     <div
       style={{ height: "100%", width: "100%" }}
@@ -66,6 +51,7 @@ const BreakdownReportTable = ({ data }) => {
             <th>Finish time</th>
             <th>Breakdown time</th>
             <th>Informed to</th>
+            <th>Supervisor name</th>
           </tr>
         </thead>
 
@@ -78,15 +64,13 @@ const BreakdownReportTable = ({ data }) => {
                 <td>{item.location === "mdc" ? "MDC" : "Araliya Kele"}</td>
                 <td>{item.status}</td>
                 <td>{item.breakdownDetails}</td>
-                <td>{convertTimeStampIntoTime(item.timeStamp)}</td>
+                <td>{item.startTime}</td>
                 <td>{item.finishTime}</td>
                 <td>
-                  {calculateTimeDifference(
-                    convertTimeStampIntoTime(item.timeStamp),
-                    item.finishTime
-                  )}
+                  {calculateTimeDifference(item.startTime, item.finishTime)}
                 </td>
                 <td>{item.informedTo}</td>
+                <td>{item.supervisorName}</td>
               </tr>
             );
           })}

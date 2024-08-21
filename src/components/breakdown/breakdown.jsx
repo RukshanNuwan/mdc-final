@@ -7,9 +7,10 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+
 import { db } from "../../config/firebase.config";
 import useCurrentDate from "../../hooks/useCurrentDate";
-import { useNavigate } from "react-router-dom";
 import "./breakdown.css";
 
 const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
@@ -27,12 +28,12 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
 
     setData({
       ...data,
+      [id]: value,
       breakdown_date: currentDate,
-      // addedBy: loggedInUser,
       breakdown_section_name: section,
       location: location,
       status: "ongoing",
-      [id]: value,
+      // addedBy: loggedInUser,
     });
   };
 
@@ -56,7 +57,6 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
         timeStamp: serverTimestamp(),
         updatedAt: serverTimestamp(),
       }).then(() => {
-        console.log("data added successfully");
         e.target.reset();
         navigate("/");
       });
@@ -85,6 +85,18 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
     <div className="mb-3 p-4 dangerZone">
       <Form onSubmit={handleBreakdownSubmit}>
         <Row>
+          <Form.Group as={Col} md="4" controlId="startTime" className="mb-2">
+            <Form.Label className="fw-bold">Start time</Form.Label>
+
+            <Form.Control
+              type="time"
+              defaultValue={ongoingBreakdown?.startTime}
+              disabled={ongoingBreakdown?.status === "ongoing"}
+              required={isBreakdown}
+              onChange={handleBreakdownChange}
+            />
+          </Form.Group>
+
           <Form.Group as={Col} md="4" controlId="informedTo" className="mb-2">
             <Form.Label className="fw-bold">Informed to</Form.Label>
 
@@ -99,10 +111,22 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
 
           <Form.Group
             as={Col}
-            md="8"
-            controlId="breakdownDetails"
+            md="4"
+            controlId="supervisorName"
             className="mb-2"
           >
+            <Form.Label className="fw-bold">Supervisor name</Form.Label>
+
+            <Form.Control
+              type="text"
+              defaultValue={ongoingBreakdown?.supervisorName}
+              disabled={ongoingBreakdown?.status === "ongoing"}
+              required={isBreakdown}
+              onChange={handleBreakdownChange}
+            />
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="breakdownDetails" className="mb-2">
             <Form.Label className="fw-bold">Details</Form.Label>
 
             <Form.Control
