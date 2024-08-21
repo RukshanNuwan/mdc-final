@@ -6,14 +6,12 @@ import {
   addDoc,
   collection,
   doc,
-  getDocs,
   limit,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
   updateDoc,
-  where,
 } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -209,9 +207,32 @@ const WetSection = () => {
                   <div className="d-md-flex flex-md-row-reverse subFormWrapper">
                     <div className="col-md-4">
                       <p className="bodyText fw-bold text-white">
-                        {`${receivedData?.totalKernelWeight}Kg`}
+                        Total coconut count:{" "}
+                        <span className="text-info">
+                          {receivedData?.totalCoconut}
+                        </span>
                       </p>
-                      <p className="bodyText text-white">
+
+                      <p className="bodyText fw-bold text-white">
+                        Total kernel weight:{" "}
+                        <span className="text-info">{`${receivedData?.totalKernelWeight}Kg`}</span>
+                      </p>
+
+                      {receivedData.outsideKernelQuantity > 0 && (
+                        <p className="bodyText fw-bold text-white">
+                          Outside kernel quantity:{" "}
+                          <span className="text-info">{`${receivedData?.outsideKernelQuantity}Kg`}</span>
+                        </p>
+                      )}
+
+                      {receivedData.desiccatedCoconutQuantity > 0 && (
+                        <p className="bodyText fw-bold text-white">
+                          Desiccated coconut batches:{" "}
+                          <span className="text-info">{`${receivedData?.desiccatedCoconutQuantity}`}</span>
+                        </p>
+                      )}
+
+                      <p className="bodyText smallText text-white mt-4">
                         Last updated at{" "}
                         {receivedData?.updatedAt
                           ? receivedData?.updatedAt?.toDate().toLocaleString()
