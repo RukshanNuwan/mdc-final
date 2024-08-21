@@ -264,7 +264,6 @@ const Dashboard = () => {
         const q = query(
           collection(db, "breakdowns"),
           where("breakdown_date", "==", date),
-          where("status", "==", "ongoing"),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
