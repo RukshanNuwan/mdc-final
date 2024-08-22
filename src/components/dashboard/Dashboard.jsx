@@ -264,7 +264,6 @@ const Dashboard = () => {
         const q = query(
           collection(db, "breakdowns"),
           where("breakdown_date", "==", date),
-          where("status", "==", "ongoing"),
           orderBy("timeStamp", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -315,6 +314,8 @@ const Dashboard = () => {
       });
     }
   }, [breakdowns]);
+
+  console.log("breakdowns ->", breakdowns);
 
   useEffect(() => {
     const handleStatus = () => {
@@ -371,7 +372,6 @@ const Dashboard = () => {
       }
     });
 
-    console.log("currentBatchNumber -> ", currentBatchNumber);
     return currentBatchNumber;
   };
 
@@ -820,7 +820,7 @@ const Dashboard = () => {
                           <p className="text-secondary text-sm">
                             Start time :
                             <span className="fw-bold text-capitalize textSuccessGreen">
-                              {breakdown.timeStamp?.toDate().toLocaleString()}
+                              {breakdown.startTime}
                             </span>
                           </p>
 
@@ -828,7 +828,7 @@ const Dashboard = () => {
                             <p className="text-secondary text-sm">
                               End time :
                               <span className="fw-bold text-capitalize textSuccessGreen">
-                                {breakdown.updatedAt?.toDate().toLocaleString()}
+                                {breakdown.finishTime}
                               </span>
                             </p>
                           )}

@@ -1,11 +1,20 @@
 # Change Log
 
+## v2.6.1
+
+- Updated font family of the app into Inter
+- Updated sidebar icons
+- Added new report for breakdowns
+- Added new recipe for mixing section
+- Updated fetch function for breakdowns in dashboard
+- Updated details of wet section
+- Updated breakdown module
+
 ## v2.6.0
 
 - Updated Running batch into Batch number in dashboard
 - Added DC batches in wet section, dashboard & summary report
 - Updated render function for current batch number of spray dryers in dashboard
-<!-- - Added to insert data for outside milk in sd 3 mixing section -->
 
 ## v2.5.9
 
