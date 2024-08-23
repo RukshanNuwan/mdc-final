@@ -26,6 +26,9 @@ const DailySummary = () => {
   const [totalMilkAmountInSd4, setTotalMilkAmountInSd4] = useState(0);
   const [totalPowderQuantityInSd3, setTotalPowderQuantityInSd3] = useState(0);
   const [totalPowderQuantityInSd4, setTotalPowderQuantityInSd4] = useState(0);
+  const [totalOutsideMilkAmount, setTotalOutsideMilkAmount] = useState(0);
+  const [totalOutsideMilkBatchCount, setTotalOutsideMilkBatchCount] =
+    useState(0);
 
   const setTotalValues = (list) => {
     if (list.length > 0) {
@@ -35,8 +38,15 @@ const DailySummary = () => {
       let totalMilkAmountInAraliyaKele = 0;
       let totalPowderQuantityInMdc = 0;
       let totalPowderQuantityInAraliyaKele = 0;
+      let totalOutsideMilk = 0;
+      let totalOutsideMilkBatches = 0;
 
       list.forEach((item) => {
+        if (item.primary_batch_number === null) {
+          totalOutsideMilk += Number(item.mixing_milk_quantity);
+          totalOutsideMilkBatches++;
+        }
+
         if (item.location === "mdc") {
           totalBatchesInMdc++;
           totalMilkAmountInMdc += Number(item.mixing_milk_quantity);
@@ -56,6 +66,8 @@ const DailySummary = () => {
       setTotalMilkAmountInSd4(totalMilkAmountInAraliyaKele);
       setTotalPowderQuantityInSd3(totalPowderQuantityInMdc);
       setTotalPowderQuantityInSd4(totalPowderQuantityInAraliyaKele);
+      setTotalOutsideMilkAmount(totalOutsideMilk);
+      setTotalOutsideMilkBatchCount(totalOutsideMilkBatches);
     }
   };
 
@@ -324,8 +336,19 @@ const DailySummary = () => {
                         <div className="col-6">
                           <p>
                             {totalBatchesInSd3 || totalBatchesInSd4
-                              ? totalBatchesInSd3 + totalBatchesInSd4
+                              ? totalBatchesInSd3 +
+                                totalBatchesInSd4 +
+                                totalOutsideMilkBatchCount
                               : "-"}
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">Outside milk batch count</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {totalOutsideMilkBatchCount || "-"}
                           </p>
                         </div>
 
@@ -351,8 +374,20 @@ const DailySummary = () => {
                         <div className="col-6">
                           <p>
                             {totalMilkAmountInSd3 || totalMilkAmountInSd4
-                              ? totalMilkAmountInSd3 + totalMilkAmountInSd4
+                              ? totalMilkAmountInSd3 +
+                                totalMilkAmountInSd4 +
+                                totalOutsideMilkAmount
                               : "-"}
+                            Kg
+                          </p>
+                        </div>
+
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="subText">Outside milk amount</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="subText">
+                            {totalOutsideMilkAmount || "-"}
                             Kg
                           </p>
                         </div>

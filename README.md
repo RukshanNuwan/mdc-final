@@ -3,6 +3,7 @@
 ## v2.6.2
 
 - Removed commented code lines
+- Added outside milk data to daily summary report
 
 ## v2.6.1
 
