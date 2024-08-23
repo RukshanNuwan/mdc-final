@@ -9,6 +9,8 @@
 - Updated fetch function for breakdowns in dashboard
 - Updated details of wet section
 - Updated breakdown module
+- Updated calculate time difference function in daily summary & breakdown report
+- Added total breakdown time for breakdown report
 
 ## v2.6.0
 

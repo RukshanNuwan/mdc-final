@@ -5,28 +5,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 
 import "./dataTable.css";
+import { calculateTimeDifferenceForReports } from "../../utils";
 
 const ReportDataTable = ({ data }) => {
   const tableRef = useRef(null);
-
-  const calculateTimeDifference = (startTime, endTime) => {
-    if (startTime && endTime) {
-      let date1 = new Date(`1970-01-01T${startTime}:00`);
-      let date2 = new Date(`1970-01-01T${endTime}:00`);
-
-      let diff = date2 - date1;
-
-      if (diff < 0) {
-        date2.setDate(date2.getDate() + 1);
-        diff = date2 - date1;
-      }
-
-      let hours = Math.floor(diff / 3600000);
-      let minutes = Math.floor((diff % 3600000) / 60000);
-
-      return `${hours}h ${minutes}m`;
-    }
-  };
 
   return (
     <div
@@ -66,9 +48,6 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={13} className="text-center daily-summery-bg-purple">
               Milk powder
             </th>
-            {/* <th colSpan={3} className="text-center daily-summery-bg-red">
-              Breakdowns
-            </th> */}
           </tr>
           <tr className="text-center">
             <th className="daily-summery-bg-red">Wet</th>
@@ -137,9 +116,6 @@ const ReportDataTable = ({ data }) => {
               Powder issue informed to
             </th>
             <th className="daily-summery-bg-purple">Details</th>
-            {/* <th className="daily-summery-bg-red">Cutter breakdowns</th>
-            <th className="daily-summery-bg-red">Mixing breakdowns</th>
-            <th className="daily-summery-bg-red">Sd breakdowns</th> */}
           </tr>
         </thead>
 
@@ -203,7 +179,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.sd_4_bowser_in_time || "-"}</td>
                 {item.location === "araliya_kele" ? (
                   <td>
-                    {calculateTimeDifference(
+                    {calculateTimeDifferenceForReports(
                       item?.cutter_bowser_load_time,
                       item?.sd_4_bowser_in_time
                     )}
@@ -256,7 +232,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.lab_sample_in_time}</td>
                 <td>{item.lab_test_start_time}</td>
                 <td>
-                  {calculateTimeDifference(
+                  {calculateTimeDifferenceForReports(
                     item.lab_sample_in_time,
                     item.lab_test_start_time
                   )}
@@ -269,7 +245,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.sd_powder_spray_start_time}</td>
                 <td>{item.sd_batch_finish_time}</td>
                 <td>
-                  {calculateTimeDifference(
+                  {calculateTimeDifferenceForReports(
                     item.sd_powder_spray_start_time,
                     item.sd_batch_finish_time
                   )}
@@ -324,9 +300,6 @@ const ReportDataTable = ({ data }) => {
                 </td>
                 <td>{item.lab_powder_issue_informed_to || "-"}</td>
                 <td>{item.lab_powder_issue_details || "-"}</td>
-                {/* <td>{}</td>
-                <td>{}</td>
-                <td>{}</td> */}
               </tr>
             );
           })}

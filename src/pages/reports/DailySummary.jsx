@@ -164,6 +164,8 @@ const DailySummary = () => {
 
     if (date && location)
       fetchProductionDataByDateAndLocation().then(() => setIsLoading(false));
+
+    if (!date && !location) setIsLoading(false);
   };
 
   return (
@@ -249,7 +251,7 @@ const DailySummary = () => {
                           <p className="fw-bold">Date</p>
                         </div>
                         <div className="col-6">
-                          <p>{date}</p>
+                          <p>{date || "-"}</p>
                         </div>
                       </div>
 
@@ -437,9 +439,13 @@ const DailySummary = () => {
                   )}
 
                   <div className="table-container">
-                    <Card body className="mb-2">
-                      <ReportDataTable data={productionData} />
-                    </Card>
+                    {productionData.length > 0 ? (
+                      <Card body className="mb-2">
+                        <ReportDataTable data={productionData} />
+                      </Card>
+                    ) : (
+                      <p className="text-center">No data found</p>
+                    )}
                   </div>
                 </div>
               </div>
