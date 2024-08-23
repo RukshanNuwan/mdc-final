@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -11,12 +11,15 @@ import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
 import BreakdownReportTable from "../../components/dataTable/BreakdownReportTable";
+import { calculateTimeDifference } from "../../utils";
 
 const Breakdowns = () => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [breakdownsInDb, setBreakdownsInDb] = useState([]);
+  const [totalHours, setTotalHours] = useState(0);
+  const [totalMinutes, setTotalMinutes] = useState(0);
 
   const fetchBreakdownsByStartDate = async () => {
     try {
@@ -71,6 +74,31 @@ const Breakdowns = () => {
 
     if (!startDate && !endDate) setIsLoading(false);
   };
+
+  useEffect(() => {
+    const calculateTotalBreakdownTime = () => {
+      let totalHours = 0;
+      let totalMinutes = 0;
+
+      breakdownsInDb.forEach((breakdown) => {
+        const timeDifference = calculateTimeDifference(
+          breakdown.startTime,
+          breakdown.finishTime
+        );
+
+        totalHours += timeDifference.hours;
+        totalMinutes += timeDifference.minutes;
+
+        totalHours += Math.floor(totalMinutes / 60);
+        totalMinutes = totalMinutes % 60;
+
+        setTotalHours(totalHours);
+        setTotalMinutes(totalMinutes);
+      });
+    };
+
+    if (breakdownsInDb.length > 0) calculateTotalBreakdownTime();
+  }, [breakdownsInDb]);
 
   return (
     <>
@@ -127,23 +155,6 @@ const Breakdowns = () => {
                       />
                     </Form.Group>
 
-                    {/* <Form.Group
-                      as={Col}
-                      md="4"
-                      controlId="type"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Location</Form.Label>
-                      <Form.Select
-                        className="customInput"
-                        onChange={(e) => setLocation(e.target.value)}
-                      >
-                        <option>Select location</option>
-                        <option value="mdc">SD - 03</option>
-                        <option value="araliya_kele">SD - 04</option>
-                      </Form.Select>
-                    </Form.Group> */}
-
                     <Form.Group as={Col} className="d-flex align-items-end">
                       <button type="submit" className="btn-submit customBtn">
                         {isLoading ? (
@@ -168,6 +179,39 @@ const Breakdowns = () => {
                 <hr className="custom-hr-yellow" />
 
                 <div className="report-container">
+                  {breakdownsInDb && (
+                    <div className="summary-container">
+                      <div className="row">
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="fw-bold">Start date</p>
+                        </div>
+                        <div className="col-6">
+                          <p>{startDate || "-"}</p>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="fw-bold">End date</p>
+                        </div>
+                        <div className="col-6">
+                          <p>{endDate || "-"}</p>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-6 d-flex justify-content-end">
+                          <p className="fw-bold">Total breakdown time</p>
+                        </div>
+                        <div className="col-6">
+                          <p className="fw-bold text-danger">
+                            {totalHours || 0}h {totalMinutes || 0}m
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="table-container">
                     {breakdownsInDb.length > 0 ? (
                       <Card body className="mb-2">
