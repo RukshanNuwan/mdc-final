@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Figure, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Form, Row, Spinner } from "react-bootstrap";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 import Header from "../../components/header/Header";

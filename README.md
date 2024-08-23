@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.2
+
+- Removed commented code lines
+
 ## v2.6.1
 
 - Updated font family of the app into Inter

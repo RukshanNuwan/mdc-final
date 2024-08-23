@@ -1,14 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  // collection,
-  doc,
-  // onSnapshot,
-  // orderBy,
-  // query,
-  serverTimestamp,
-  updateDoc,
-  // where,
-} from "firebase/firestore";
+import React, { useState } from "react";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -27,7 +18,6 @@ const UpdateMixing = () => {
   const { state } = useLocation();
 
   const [data, setData] = useState({});
-  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isFillingHoleCleaned, setIsFillingHoleCleaned] = useState(
     state.sd_4_is_bowser_filling_hole_cleaned
@@ -47,36 +37,6 @@ const UpdateMixing = () => {
   const monthStr = month < 10 ? "0" + month : month;
   const date = currentDate.getDate();
   const dateStr = date < 10 ? "0" + date : date;
-
-  // useEffect(() => {
-  //   const fetchSubFormData = async () => {
-  //     if (state.date) {
-  //       try {
-  //         const q = query(
-  //           collection(db, "daily_production"),
-  //           where("date", "==", state?.date),
-  //           orderBy("timeStamp", "desc")
-  //         );
-  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //           let list = [];
-  //           querySnapshot.forEach((doc) => {
-  //             list.push({ id: doc.id, ...doc.data() });
-  //           });
-
-  //           setDailyProductionDataInDb(list[0]);
-  //         });
-
-  //         return () => {
-  //           unsubscribe();
-  //         };
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchSubFormData();
-  // }, [state?.date]);
 
   const handleBatchNumberChange = (e) => {
     console.log(e.target.value);

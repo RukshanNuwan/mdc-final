@@ -10,7 +10,6 @@ import {
   collection,
   doc,
   getDocs,
-  // onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -33,15 +32,11 @@ import { orders } from "../../constants";
 
 const NewMixing = () => {
   const [data, setData] = useState({});
-  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
   const [recipeName, setRecipeName] = useState("fat_60_65");
   const [recipeType, setRecipeType] = useState("conventional");
   const [ongoingData, setOngoingData] = useState({});
-  // const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
-  // {}
-  // );
   const [additionalCratesCount, setAdditionalCratesCount] = useState(0);
   const [newKernelWeight, setNewKernelWeight] = useState(0);
   const [isInformed, setIsInformed] = useState(false);
@@ -97,36 +92,6 @@ const NewMixing = () => {
 
     fetchCurrentBatchInCutter();
   }, [location]);
-
-  // useEffect(() => {
-  //   const fetchSubFormData = async () => {
-  //     if (ongoingData.date) {
-  //       try {
-  //         const q = query(
-  //           collection(db, "daily_production"),
-  //           where("date", "==", ongoingData?.date),
-  //           orderBy("timeStamp", "desc")
-  //         );
-  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //           let list = [];
-  //           querySnapshot.forEach((doc) => {
-  //             list.push({ id: doc.id, ...doc.data() });
-  //           });
-
-  //           setDailyProductionDataInDb(list[0]);
-  //         });
-
-  //         return () => {
-  //           unsubscribe();
-  //         };
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchSubFormData();
-  // }, [ongoingData?.date]);
 
   useEffect(() => {
     if (ongoingData?.date) {
@@ -351,19 +316,6 @@ const NewMixing = () => {
               sd_added_at: serverTimestamp(),
             })
               .then(async () => {
-                // try {
-                //   const docRef = doc(
-                //     db,
-                //     "daily_production",
-                //     dailyProductionDataInDb.id
-                //   );
-                //   await updateDoc(docRef, {
-                //     ...updatedDailyProductionData,
-                //   });
-                //   console.log("successfully updated daily production data");
-                // } catch (error) {
-                //   console.log(error);
-                // }
                 if (newKernelWeight > 0) {
                   try {
                     const docRef = doc(db, "production_data", ongoingData.id);
@@ -585,9 +537,6 @@ const NewMixing = () => {
                           type="number"
                           disabled={location === "mdc"}
                           defaultValue={batchNumber}
-                          // className={`customInput ${
-                          //   location === "araliya_kele" && "disabled"
-                          // }`}
                           className={`customInput ${
                             location === "mdc" && "disabled"
                           }`}

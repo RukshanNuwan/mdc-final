@@ -315,8 +315,6 @@ const Dashboard = () => {
     }
   }, [breakdowns]);
 
-  console.log("breakdowns ->", breakdowns);
-
   useEffect(() => {
     const handleStatus = () => {
       if (sd3Data?.sd_status && sd3Data?.sd_status !== "completed")

@@ -280,7 +280,9 @@ const NewSprayDryer = () => {
                         controlId="batch_number"
                         className="mb-2"
                       >
-                        <Form.Label className="fw-bold">SD batch code</Form.Label>
+                        <Form.Label className="fw-bold">
+                          SD batch code
+                        </Form.Label>
                         <Form.Control
                           type="text"
                           disabled
@@ -291,20 +293,6 @@ const NewSprayDryer = () => {
                     </Row>
 
                     <Row>
-                      {/* <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="order_name"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Order name</Form.Label>
-                        <Form.Control
-                          disabled
-                          className="customInput text-capitalize disabled"
-                          defaultValue={ongoingData?.order_name}
-                        />
-                      </Form.Group> */}
-
                       <Form.Group
                         as={Col}
                         md="4"
