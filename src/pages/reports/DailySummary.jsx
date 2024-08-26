@@ -336,9 +336,7 @@ const DailySummary = () => {
                         <div className="col-6">
                           <p>
                             {totalBatchesInSd3 || totalBatchesInSd4
-                              ? totalBatchesInSd3 +
-                                totalBatchesInSd4 +
-                                totalOutsideMilkBatchCount
+                              ? totalBatchesInSd3 + totalBatchesInSd4
                               : "-"}
                           </p>
                         </div>
