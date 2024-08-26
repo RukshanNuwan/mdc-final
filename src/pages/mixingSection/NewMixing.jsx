@@ -10,7 +10,6 @@ import {
   collection,
   doc,
   getDocs,
-  // onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -28,20 +27,15 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
-import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 import { orders } from "../../constants";
 
 const NewMixing = () => {
   const [data, setData] = useState({});
-  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
   const [recipeName, setRecipeName] = useState("fat_60_65");
   const [recipeType, setRecipeType] = useState("conventional");
   const [ongoingData, setOngoingData] = useState({});
-  // const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
-  // {}
-  // );
   const [additionalCratesCount, setAdditionalCratesCount] = useState(0);
   const [newKernelWeight, setNewKernelWeight] = useState(0);
   const [isInformed, setIsInformed] = useState(false);
@@ -97,36 +91,6 @@ const NewMixing = () => {
 
     fetchCurrentBatchInCutter();
   }, [location]);
-
-  // useEffect(() => {
-  //   const fetchSubFormData = async () => {
-  //     if (ongoingData.date) {
-  //       try {
-  //         const q = query(
-  //           collection(db, "daily_production"),
-  //           where("date", "==", ongoingData?.date),
-  //           orderBy("timeStamp", "desc")
-  //         );
-  //         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //           let list = [];
-  //           querySnapshot.forEach((doc) => {
-  //             list.push({ id: doc.id, ...doc.data() });
-  //           });
-
-  //           setDailyProductionDataInDb(list[0]);
-  //         });
-
-  //         return () => {
-  //           unsubscribe();
-  //         };
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchSubFormData();
-  // }, [ongoingData?.date]);
 
   useEffect(() => {
     if (ongoingData?.date) {
@@ -351,19 +315,6 @@ const NewMixing = () => {
               sd_added_at: serverTimestamp(),
             })
               .then(async () => {
-                // try {
-                //   const docRef = doc(
-                //     db,
-                //     "daily_production",
-                //     dailyProductionDataInDb.id
-                //   );
-                //   await updateDoc(docRef, {
-                //     ...updatedDailyProductionData,
-                //   });
-                //   console.log("successfully updated daily production data");
-                // } catch (error) {
-                //   console.log(error);
-                // }
                 if (newKernelWeight > 0) {
                   try {
                     const docRef = doc(db, "production_data", ongoingData.id);
@@ -511,641 +462,611 @@ const NewMixing = () => {
               </div>
 
               <div className="card-body formWrapper">
-                {ongoingData || location === "araliya_kele" ? (
-                  <Form onSubmit={handleSubmit}>
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="date"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Date</Form.Label>
-                        <Form.Control
-                          type="date"
-                          disabled={location === "mdc"}
-                          className={`customInput ${
-                            location === "mdc" && "disabled"
-                          }`}
-                          defaultValue={ongoingData?.date}
-                          onChange={handleDateChange}
-                        />
-                      </Form.Group>
+                <Form onSubmit={handleSubmit}>
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="date"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Date</Form.Label>
+                      <Form.Control
+                        type="date"
+                        className="customInput"
+                        defaultValue={ongoingData?.date}
+                        onChange={handleDateChange}
+                      />
+                    </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="primary_batch_number"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          W batch number
-                        </Form.Label>
-                        <Form.Control
-                          type="number"
-                          disabled
-                          min={1}
-                          defaultValue={ongoingData?.primary_batch_number}
-                          className="customInput disabled"
-                        />
-                      </Form.Group>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="primary_batch_number"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        W batch number
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        disabled
+                        min={1}
+                        defaultValue={ongoingData?.primary_batch_number}
+                        className="customInput disabled"
+                      />
+                    </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="expeller_finish_time"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Raw milk in time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          disabled={location === "mdc"}
-                          className={`customInput ${
-                            location === "mdc" && "disabled"
-                          }`}
-                          defaultValue={ongoingData?.expeller_finish_time}
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-                    </Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="expeller_finish_time"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Raw milk in time
+                      </Form.Label>
+                      <Form.Control
+                        type="time"
+                        className="customInput"
+                        defaultValue={ongoingData?.expeller_finish_time}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Row>
 
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="batch_number"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          SD batch number
-                        </Form.Label>
-                        <Form.Control
-                          type="number"
-                          disabled={location === "mdc"}
-                          defaultValue={batchNumber}
-                          // className={`customInput ${
-                          //   location === "araliya_kele" && "disabled"
-                          // }`}
-                          className={`customInput ${
-                            location === "mdc" && "disabled"
-                          }`}
-                          onChange={handleBatchNumberChange}
-                        />
-                      </Form.Group>
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="batch_number"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        SD batch number
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        defaultValue={batchNumber}
+                        className="customInput"
+                        onChange={handleBatchNumberChange}
+                      />
+                    </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="batch_code"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          SD batch code
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          disabled
-                          defaultValue={batchCode}
-                          className="customInput disabled"
-                        />
-                      </Form.Group>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="batch_code"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">SD batch code</Form.Label>
+                      <Form.Control
+                        type="text"
+                        disabled
+                        defaultValue={batchCode}
+                        className="customInput disabled"
+                      />
+                    </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="order_name"
-                        className="mb-2"
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="order_name"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Order name</Form.Label>
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={recipeName}
+                        onChange={(e) => setRecipeName(e.target.value)}
                       >
-                        <Form.Label className="fw-bold">Order name</Form.Label>
-                        <Form.Select
-                          required
-                          className="customInput"
-                          defaultValue={recipeName}
-                          onChange={(e) => setRecipeName(e.target.value)}
-                        >
-                          {orders.map((order, index) => (
-                            <option key={index} value={order.value}>
-                              {order.name}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    </Row>
-
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="order_type"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Order type</Form.Label>
-                        <Form.Select
-                          required
-                          className="customInput"
-                          defaultValue={recipeType}
-                          onChange={(e) => setRecipeType(e.target.value)}
-                        >
-                          <option value="conventional">
-                            Conventional Recipe
+                        {orders.map((order, index) => (
+                          <option key={index} value={order.value}>
+                            {order.name}
                           </option>
-                          <option value="organic">Organic Recipe</option>
-                        </Form.Select>
-                      </Form.Group>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Row>
 
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="order_type"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Order type</Form.Label>
+                      <Form.Select
+                        required
+                        className="customInput"
+                        defaultValue={recipeType}
+                        onChange={(e) => setRecipeType(e.target.value)}
+                      >
+                        <option value="conventional">
+                          Conventional Recipe
+                        </option>
+                        <option value="organic">Organic Recipe</option>
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_milk_quantity"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Milk quantity</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="number"
+                          aria-label="milk quantity"
+                          aria-describedby="addon"
+                          required
+                          className="customInput"
+                          defaultValue={milkQuantity}
+                          onChange={handleMilkRecovery}
+                        />
+                        <InputGroup.Text
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
+                        >
+                          Kg
+                        </InputGroup.Text>
+                      </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_milk_recovery"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Milk recovery</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="number"
+                          aria-label="milk recovery"
+                          aria-describedby="addon"
+                          disabled
+                          className="customInput"
+                          value={milkRecovery}
+                        />
+                        <InputGroup.Text
+                          id="addon"
+                          style={{
+                            borderTopRightRadius: "0.25rem",
+                            borderBottomRightRadius: "0.25rem",
+                            color: "#0d1b2a",
+                          }}
+                        >
+                          %
+                        </InputGroup.Text>
+                      </InputGroup>
+                    </Form.Group>
+                  </Row>
+
+                  {location === "mdc" ? (
+                    <Row>
                       <Form.Group
                         as={Col}
                         md="4"
-                        controlId="mixing_milk_quantity"
+                        controlId="mixing_additional_crates_count"
                         className="mb-2"
                       >
                         <Form.Label className="fw-bold">
-                          Milk quantity
+                          Additional crates count
                         </Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type="number"
-                            aria-label="milk quantity"
-                            aria-describedby="addon"
-                            required
-                            className="customInput"
-                            defaultValue={milkQuantity}
-                            onChange={handleMilkRecovery}
-                          />
-                          <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: "#0d1b2a",
-                            }}
-                          >
-                            Kg
-                          </InputGroup.Text>
-                        </InputGroup>
+                        <Form.Control
+                          type="number"
+                          defaultValue={additionalCratesCount}
+                          className="customInput"
+                          onChange={handleAdditionalCratesCountChange}
+                        />
                       </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_milk_recovery"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Milk recovery
-                        </Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type="number"
-                            aria-label="milk recovery"
-                            aria-describedby="addon"
-                            disabled
-                            className="customInput"
-                            value={milkRecovery}
-                          />
-                          <InputGroup.Text
-                            id="addon"
-                            style={{
-                              borderTopRightRadius: "0.25rem",
-                              borderBottomRightRadius: "0.25rem",
-                              color: "#0d1b2a",
-                            }}
+                      {additionalCratesCount > 0 && (
+                        <>
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="mixing_additional_crates_is_informed"
+                            className="mb-2"
                           >
-                            %
-                          </InputGroup.Text>
-                        </InputGroup>
-                      </Form.Group>
+                            <Form.Label className="fw-bold">
+                              Is informed
+                            </Form.Label>
+
+                            <Form.Switch
+                              type="switch"
+                              id="is_informed"
+                              label={
+                                isInformed === true
+                                  ? "Informed"
+                                  : "Not informed"
+                              }
+                              checked={isInformed}
+                              onChange={(e) => setIsInformed(e.target.checked)}
+                            />
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="4"
+                            controlId="mixing_additional_crates_informed_to"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Informed to
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="customInput"
+                              onChange={handleChange}
+                            />
+                          </Form.Group>
+                        </>
+                      )}
                     </Row>
+                  ) : (
+                    <>
+                      <hr className="custom-hr-yellow" />
 
-                    {location === "mdc" ? (
                       <Row>
                         <Form.Group
                           as={Col}
-                          md="4"
-                          controlId="mixing_additional_crates_count"
+                          md="3"
+                          controlId="sd_4_bowser_in_time"
                           className="mb-2"
                         >
                           <Form.Label className="fw-bold">
-                            Additional crates count
+                            Bowser in time
                           </Form.Label>
+
                           <Form.Control
-                            type="number"
-                            defaultValue={additionalCratesCount}
+                            type="time"
+                            required
                             className="customInput"
-                            onChange={handleAdditionalCratesCountChange}
+                            onChange={handleChange}
                           />
                         </Form.Group>
 
-                        {additionalCratesCount > 0 && (
-                          <>
-                            <Form.Group
-                              as={Col}
-                              md="4"
-                              controlId="mixing_additional_crates_is_informed"
-                              className="mb-2"
-                            >
-                              <Form.Label className="fw-bold">
-                                Is informed
-                              </Form.Label>
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          controlId="sd_4_batches_in_bowser"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            batches in bowser
+                          </Form.Label>
 
-                              <Form.Switch
-                                type="switch"
-                                id="is_informed"
-                                label={
-                                  isInformed === true
-                                    ? "Informed"
-                                    : "Not informed"
-                                }
-                                checked={isInformed}
-                                onChange={(e) =>
-                                  setIsInformed(e.target.checked)
-                                }
-                              />
-                            </Form.Group>
+                          <Form.Control
+                            type="number"
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
 
-                            <Form.Group
-                              as={Col}
-                              md="4"
-                              controlId="mixing_additional_crates_informed_to"
-                              className="mb-2"
-                            >
-                              <Form.Label className="fw-bold">
-                                Informed to
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="customInput"
-                                onChange={handleChange}
-                              />
-                            </Form.Group>
-                          </>
-                        )}
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          controlId="sd_4_is_bowser_filling_hole_cleaned"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Filling hole cleaning
+                          </Form.Label>
+
+                          <Form.Switch
+                            type="switch"
+                            id="is_informed"
+                            label={
+                              isFillingHoleCleaned === true
+                                ? "Clean"
+                                : "Not clean"
+                            }
+                            checked={isFillingHoleCleaned}
+                            onChange={(e) =>
+                              setIsFillingHoleCleaned(e.target.checked)
+                            }
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          controlId="sd_4_is_bowser_output_tap_cleaned"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Output tap cleaning
+                          </Form.Label>
+
+                          <Form.Switch
+                            type="switch"
+                            id="is_informed"
+                            label={
+                              isOutputTapCleaned === true
+                                ? "Clean"
+                                : "Not clean"
+                            }
+                            checked={isOutputTapCleaned}
+                            onChange={(e) =>
+                              setIsOutputTapCleaned(e.target.checked)
+                            }
+                          />
+                        </Form.Group>
                       </Row>
-                    ) : (
-                      <>
-                        <hr className="custom-hr-yellow" />
 
-                        <Row>
-                          <Form.Group
-                            as={Col}
-                            md="3"
-                            controlId="sd_4_bowser_in_time"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold">
-                              Bowser in time
-                            </Form.Label>
+                      <Row>
+                        <Form.Group
+                          as={Col}
+                          md="12"
+                          controlId="sd_4_bowser_overall_condition"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Overall condition
+                          </Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={4}
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
+                      </Row>
 
-                            <Form.Control
-                              type="time"
-                              required
-                              className="customInput"
-                              onChange={handleChange}
-                            />
-                          </Form.Group>
+                      <hr className="custom-hr-yellow" />
+                    </>
+                  )}
 
-                          <Form.Group
-                            as={Col}
-                            md="3"
-                            controlId="sd_4_batches_in_bowser"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold">
-                              batches in bowser
-                            </Form.Label>
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_tank_in_time"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Mixing tank in time
+                      </Form.Label>
+                      <Form.Control
+                        type="time"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
 
-                            <Form.Control
-                              type="number"
-                              className="customInput"
-                              onChange={handleChange}
-                            />
-                          </Form.Group>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_mix_start_time"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Mix start time
+                      </Form.Label>
+                      <Form.Control
+                        type="time"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
 
-                          <Form.Group
-                            as={Col}
-                            md="3"
-                            controlId="sd_4_is_bowser_filling_hole_cleaned"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold">
-                              Filling hole cleaning
-                            </Form.Label>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_mix_finish_time"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Mix finish time
+                      </Form.Label>
+                      <Form.Control
+                        type="time"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Row>
 
-                            <Form.Switch
-                              type="switch"
-                              id="is_informed"
-                              label={
-                                isFillingHoleCleaned === true
-                                  ? "Clean"
-                                  : "Not clean"
-                              }
-                              checked={isFillingHoleCleaned}
-                              onChange={(e) =>
-                                setIsFillingHoleCleaned(e.target.checked)
-                              }
-                            />
-                          </Form.Group>
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_feeding_tank_in_time"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Feeding tank in time
+                      </Form.Label>
+                      <Form.Control
+                        type="time"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
 
-                          <Form.Group
-                            as={Col}
-                            md="3"
-                            controlId="sd_4_is_bowser_output_tap_cleaned"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold">
-                              Output tap cleaning
-                            </Form.Label>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_feed_start_time"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Feed start time
+                      </Form.Label>
+                      <Form.Control
+                        type="time"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
 
-                            <Form.Switch
-                              type="switch"
-                              id="is_informed"
-                              label={
-                                isOutputTapCleaned === true
-                                  ? "Clean"
-                                  : "Not clean"
-                              }
-                              checked={isOutputTapCleaned}
-                              onChange={(e) =>
-                                setIsOutputTapCleaned(e.target.checked)
-                              }
-                            />
-                          </Form.Group>
-                        </Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_operator_names"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Operator name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        required
+                        className="customInput"
+                        onChange={handleOperatorsChange}
+                      />
+                      <Figure.Caption className="tooltipText">
+                        Type names with comma
+                      </Figure.Caption>
+                    </Form.Group>
+                  </Row>
 
-                        <Row>
-                          <Form.Group
-                            as={Col}
-                            md="12"
-                            controlId="sd_4_bowser_overall_condition"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold">
-                              Overall condition
-                            </Form.Label>
-                            <Form.Control
-                              as="textarea"
-                              rows={4}
-                              className="customInput"
-                              onChange={handleChange}
-                            />
-                          </Form.Group>
-                        </Row>
+                  {batchNumber > 1 && (
+                    <div
+                      className="p-3 mb-3"
+                      style={{
+                        width: "auto",
+                        backgroundColor: "#ffd800",
+                        borderRadius: "0.25rem",
+                      }}
+                    >
+                      <span className="sectionTitle sectionTitlePink text-uppercase">
+                        Previous batch raw milk details
+                      </span>
 
-                        <hr className="custom-hr-yellow" />
-                      </>
-                    )}
+                      <Row className="mt-3 mb-0">
+                        <Form.Group
+                          as={Col}
+                          md="6"
+                          controlId="mixing_prev_batch_raw_ph"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            pH value
+                          </Form.Label>
 
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_tank_in_time"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Mixing tank in time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
+                          <Form.Control
+                            type="number"
+                            step=".01"
+                            required
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            5.7-5.9
+                          </Figure.Caption>
+                        </Form.Group>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_mix_start_time"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Mix start time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
+                        <Form.Group
+                          as={Col}
+                          md="6"
+                          controlId="mixing_prev_batch_raw_tss"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold textDarkBlue">
+                            TSS
+                          </Form.Label>
 
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_mix_finish_time"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Mix finish time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-                    </Row>
-
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_feeding_tank_in_time"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Feeding tank in time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_feed_start_time"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Feed start time
-                        </Form.Label>
-                        <Form.Control
-                          type="time"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_operator_names"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Operator name
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          required
-                          className="customInput"
-                          onChange={handleOperatorsChange}
-                        />
-                        <Figure.Caption className="tooltipText">
-                          Type names with comma
-                        </Figure.Caption>
-                      </Form.Group>
-                    </Row>
-
-                    {batchNumber > 1 && (
-                      <div
-                        className="p-3 mb-3"
-                        style={{
-                          width: "auto",
-                          backgroundColor: "#ffd800",
-                          borderRadius: "0.25rem",
-                        }}
-                      >
-                        <span className="sectionTitle sectionTitlePink text-uppercase">
-                          Previous batch raw milk details
-                        </span>
-
-                        <Row className="mt-3 mb-0">
-                          <Form.Group
-                            as={Col}
-                            md="6"
-                            controlId="mixing_prev_batch_raw_ph"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">
-                              pH value
-                            </Form.Label>
-
-                            <Form.Control
-                              type="number"
-                              step=".01"
-                              required
-                              onChange={handleChange}
-                            />
-                            <Figure.Caption className="tooltipTextPink">
-                              5.7-5.9
-                            </Figure.Caption>
-                          </Form.Group>
-
-                          <Form.Group
-                            as={Col}
-                            md="6"
-                            controlId="mixing_prev_batch_raw_tss"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold textDarkBlue">
-                              TSS
-                            </Form.Label>
-
-                            <Form.Control
-                              type="number"
-                              step=".01"
-                              onChange={handleChange}
-                            />
-                            <Figure.Caption className="tooltipTextPink">
-                              (42-50)%
-                            </Figure.Caption>
-                          </Form.Group>
-                        </Row>
-                      </div>
-                    )}
-
-                    <Row>
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_steam_pressure_value"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Steam pressure
-                        </Form.Label>
-
-                        <Form.Control
-                          type="number"
-                          step=".01"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                        <Figure.Caption className="tooltipText">
-                          (4-5)MPa
-                        </Figure.Caption>
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_pressure_pump_value"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">
-                          Pressure pump
-                        </Form.Label>
-
-                        <Form.Control
-                          type="number"
-                          required
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                        <Figure.Caption className="tooltipText">
-                          20MPa
-                        </Figure.Caption>
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="mixing_mix_details"
-                        className="mb-2"
-                      >
-                        <Form.Label className="fw-bold">Remarks</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={4}
-                          className="customInput"
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-                    </Row>
-
-                    <div className="mt-5">
-                      <button
-                        type="submit"
-                        className="btn-submit customBtn"
-                        disabled={isLoading}
-                      >
-                        <div className="d-flex align-items-center justify-content-center gap-2">
-                          {isLoading && (
-                            <Spinner animation="border" size="sm" />
-                          )}
-                          <p>Continue</p>
-                        </div>
-                      </button>
-
-                      <button type="reset" className="customBtn customClearBtn">
-                        Clear
-                      </button>
+                          <Form.Control
+                            type="number"
+                            step=".01"
+                            onChange={handleChange}
+                          />
+                          <Figure.Caption className="tooltipTextPink">
+                            (42-50)%
+                          </Figure.Caption>
+                        </Form.Group>
+                      </Row>
                     </div>
-                  </Form>
-                ) : (
-                  <ErrorMessage />
-                )}
+                  )}
+
+                  <Row>
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_steam_pressure_value"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">
+                        Steam pressure
+                      </Form.Label>
+
+                      <Form.Control
+                        type="number"
+                        step=".01"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                      <Figure.Caption className="tooltipText">
+                        (4-5)MPa
+                      </Figure.Caption>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_pressure_pump_value"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Pressure pump</Form.Label>
+
+                      <Form.Control
+                        type="number"
+                        required
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                      <Figure.Caption className="tooltipText">
+                        20MPa
+                      </Figure.Caption>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="mixing_mix_details"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">Remarks</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={4}
+                        className="customInput"
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Row>
+
+                  <div className="mt-5">
+                    <button
+                      type="submit"
+                      className="btn-submit customBtn"
+                      disabled={isLoading}
+                    >
+                      <div className="d-flex align-items-center justify-content-center gap-2">
+                        {isLoading && <Spinner animation="border" size="sm" />}
+                        <p>Continue</p>
+                      </div>
+                    </button>
+
+                    <button type="reset" className="customBtn customClearBtn">
+                      Clear
+                    </button>
+                  </div>
+                </Form>
               </div>
             </div>
           </div>

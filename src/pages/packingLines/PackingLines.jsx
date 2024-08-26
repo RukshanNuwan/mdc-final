@@ -523,6 +523,23 @@ const PackingLines = () => {
                         <Form.Group
                           as={Col}
                           md="3"
+                          controlId="packing_total_number_of_pieces"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Total number of pieces
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            required
+                            className="customInput"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="3"
                           controlId="packing_packing_batch_code"
                           className="mb-2"
                         >

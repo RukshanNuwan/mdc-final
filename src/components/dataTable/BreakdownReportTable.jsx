@@ -1,27 +1,28 @@
-import { useRef } from "react";
 import { Table } from "react-bootstrap";
-import { DownloadTableExcel } from "react-export-table-to-excel";
+import * as XLSX from "xlsx";
 
 import "./dataTable.css";
 import { calculateTimeDifferenceForReports } from "../../utils";
 
 const BreakdownReportTable = ({ data }) => {
-  const tableRef = useRef(null);
+  const exportToExcel = () => {
+    const table = document.getElementById("tblSummary");
+    const workbook = XLSX.utils.table_to_book(table, {
+      sheet: `${data[0]?.date}`,
+    });
+    XLSX.writeFile(workbook, `${data[0]?.date} summary report.xlsx`);
+  };
 
   return (
     <div
       style={{ height: "100%", width: "100%" }}
       className="mt-2 d-flex flex-column"
     >
-      <DownloadTableExcel
-        filename={`${data[0]?.date} breakdowns report`}
-        sheet={`${data[0]?.date}`}
-        currentTableRef={tableRef.current}
-      >
-        <button className="mb-2 customBtn customBtnPrint">Export excel</button>
-      </DownloadTableExcel>
+      <button className="mb-2 customBtn customBtnPrint" onClick={exportToExcel}>
+        Export excel
+      </button>
 
-      <Table responsive bordered hover size="sm" ref={tableRef}>
+      <Table responsive bordered hover size="sm">
         <thead>
           <tr className="text-center">
             <th>Date</th>

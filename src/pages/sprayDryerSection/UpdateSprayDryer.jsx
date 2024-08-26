@@ -30,11 +30,6 @@ const UpdateSprayDryer = () => {
   const [powderRecovery, setPowderRecovery] = useState(
     state?.sd_powder_recovery
   );
-  // const [updatedDailyProductionData, setUpdatedDailyProductionData] = useState(
-  //   {}
-  // );
-  // const [dailyProductionDataInDb, setDailyProductionDataInDb] = useState({});
-  // const [powderQuantity, setPowderQuantity] = useState(0);
   const expectedPowderQuantity = state?.expected_powder_quantity
     ? state?.expected_powder_quantity
     : 120;
@@ -148,34 +143,6 @@ const UpdateSprayDryer = () => {
     }
   };
 
-  // Fetch daily production data by selected object date
-  // useEffect(() => {
-  //   const fetchSubFormData = async () => {
-  //     try {
-  //       const q = query(
-  //         collection(db, "daily_production"),
-  //         where("date", "==", state.date)
-  //       );
-  //       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //         let list = [];
-  //         querySnapshot.forEach((doc) => {
-  //           list.push({ id: doc.id, ...doc.data() });
-  //         });
-
-  //         setDailyProductionDataInDb(list[0]);
-  //       });
-
-  //       return () => {
-  //         unsubscribe();
-  //       };
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchSubFormData();
-  // }, [state.date]);
-
   return (
     <>
       <Header />
@@ -286,20 +253,6 @@ const UpdateSprayDryer = () => {
                       />
                     </Form.Group>
 
-                    {/* <Form.Group
-                      as={Col}
-                      md="4"
-                      controlId="order_name"
-                      className="mb-2"
-                    >
-                      <Form.Label className="fw-bold">Order name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        disabled
-                        className="customInput text-capitalize disabled"
-                        defaultValue={state.order_name}
-                      />
-                    </Form.Group> */}
                     <Form.Group
                       as={Col}
                       md="4"
@@ -591,67 +544,6 @@ const UpdateSprayDryer = () => {
                       </InputGroup>
                     </Form.Group>
                   </Row>
-
-                  {/* TODO: create a separate component 
-                      - .map(8 raws)
-                      - bind to the object using index as the id
-                      - wena karanna widiyak mathak wenne ne
-                    */}
-                  {/* <Row>
-                  <div
-                    className="p-2 rounded"
-                    style={{ backgroundColor: "#dae2f9" }}
-                  >
-                    <span className="sectionTitle sectionTitleBlue text-uppercase">
-                      Bag details
-                    </span>
-
-                    <div className="row fw-bold mt-2">
-                      <div className="col-md-2">Number</div>
-                      <div className="col-md-3">Quantity</div>
-                      <div className="col-md-2 ">Quality</div>
-                      <div className="col-md-2 ">Tag</div>
-                      <div className="col-md-3">Remark</div>
-                    </div>
-
-                    <div className="d-flex justify-content-evenly">
-                      <div className="col-md-2">1</div>
-                      <div className="col-md-3">
-                        <Form.Control
-                          size="sm"
-                          type="number"
-                          required
-                          onChange={handleSingleBagQuantity}
-                        />
-                      </div>
-                      <div className="col-md-2">
-                        <Form.Switch
-                          type="switch"
-                          controlId="firstBagQuality"
-                          checked={quality}
-                          className="text-center"
-                          onChange={(e) => setQuality(e.target.checked)}
-                        />
-                      </div>
-                      <div className="col-md-2">
-                        <Form.Switch
-                          type="switch"
-                          controlId="firstBagTag"
-                          checked={tag}
-                          className="text-center"
-                          onChange={(e) => setTag(e.target.checked)}
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <Form.Control
-                          size="sm"
-                          type="text"
-                          // onChange={handleSingleBagQuantity}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </Row> */}
 
                   <Row>
                     <Form.Group

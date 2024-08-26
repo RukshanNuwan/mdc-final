@@ -213,13 +213,6 @@ const SprayDryerDetails = () => {
                       </div>
                     </div>
 
-                    {/* <div className="dataItemWrapper"> */}
-                    {/* 
-                      TODO: show data by bag wise
-                            - .map(new component ekak hadanna)
-                       */}
-                    {/* </div> */}
-
                     <div className="dataItemWrapper">
                       <div className="row py-1">
                         <div className="col-7">
