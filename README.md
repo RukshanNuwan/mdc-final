@@ -4,6 +4,10 @@
 
 - Removed commented code lines
 - Added outside milk data to daily summary report
+- Changed layout of verification module
+- Changed atomizer nozzle size in spray dryer
+- Installed xlsx package for download summary report as excel file
+- Updated daily summary report export function
 
 ## v2.6.1
 

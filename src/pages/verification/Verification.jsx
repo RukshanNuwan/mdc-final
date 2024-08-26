@@ -73,6 +73,11 @@ const Verification = () => {
     });
   };
 
+  // TODO:
+  // save -> tcode
+  // when entered job sheet number, fetch data from packing_line_data
+  // job sheet number [packing_line_data] -> tcode === tcode [verification_data] -> checkedList
+
   const handleSearch = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -100,9 +105,9 @@ const Verification = () => {
   const handleContinue = async () => {
     if (checkedList.length === 0) {
       Swal.fire({
-        title: "Error",
-        text: "Please select at least one item",
-        icon: "error",
+        title: "Warning",
+        text: "Please select at least one option",
+        icon: "info",
         confirmButtonColor: "#ff007f",
       });
     } else {
@@ -193,28 +198,33 @@ const Verification = () => {
 
                   <hr className="my-4 custom-hr-yellow" />
 
-                  {data &&
-                    data?.map((item) =>
-                      item.packing_craft_bag_number?.map((i, index) => (
-                        <Form.Group
-                          key={index}
-                          controlId={`${item.packing_packing_batch_code}${i}`}
-                        >
-                          <Form.Label className="fw-bold">
-                            <>{`${item.packing_packing_batch_code} ${i}`}</>
-                          </Form.Label>
+                  <div className="d-flex flex-wrap">
+                    {data &&
+                      data?.map((item) =>
+                        item.packing_craft_bag_number?.map((i, index) => (
+                          <Form.Group
+                            key={index}
+                            as={Col}
+                            md="4"
+                            xs="6"
+                            controlId={`${item.packing_packing_batch_code}${i}`}
+                          >
+                            <Form.Label className="fw-bold">
+                              <>{`${item.packing_packing_batch_code} ${i}`}</>
+                            </Form.Label>
 
-                          <Form.Switch
-                            type="switch"
-                            id={`${item.packing_packing_batch_code}${i}`}
-                            defaultChecked={checkedList.includes(
-                              `${item.packing_packing_batch_code}${i}`
-                            )}
-                            onChange={handleVerificationToggle}
-                          />
-                        </Form.Group>
-                      ))
-                    )}
+                            <Form.Switch
+                              type="switch"
+                              id={`${item.packing_packing_batch_code}${i}`}
+                              defaultChecked={checkedList.includes(
+                                `${item.packing_packing_batch_code}${i}`
+                              )}
+                              onChange={handleVerificationToggle}
+                            />
+                          </Form.Group>
+                        ))
+                      )}
+                  </div>
 
                   {data.length > 0 && (
                     <div className="col">

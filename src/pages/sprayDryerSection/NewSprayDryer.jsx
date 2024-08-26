@@ -358,7 +358,8 @@ const NewSprayDryer = () => {
                         </Form.Label>
                         <InputGroup>
                           <Form.Control
-                            type="text"
+                            type="number"
+                            step=".01"
                             aria-label="atomizer size"
                             aria-describedby="addon"
                             required
