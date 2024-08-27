@@ -32,7 +32,7 @@ const UpdateSprayDryer = () => {
   );
   const expectedPowderQuantity = state?.expected_powder_quantity
     ? state?.expected_powder_quantity
-    : 120;
+    : 150;
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -499,7 +499,6 @@ const UpdateSprayDryer = () => {
                           defaultValue={state.sd_total_powder_quantity}
                           required={state.sd_status === "updated"}
                           className="customInput"
-                          disabled={state.sd_status === "completed"}
                           onChange={handlePowderQuantity}
                         />
                         <InputGroup.Text
@@ -529,7 +528,7 @@ const UpdateSprayDryer = () => {
                           aria-describedby="addon"
                           disabled
                           className="customInput"
-                          defaultValue={powderRecovery}
+                          value={powderRecovery}
                         />
                         <InputGroup.Text
                           id="addon"
@@ -559,7 +558,6 @@ const UpdateSprayDryer = () => {
                           aria-label="rp"
                           aria-describedby="addon"
                           className="customInput"
-                          disabled={state.sd_status === "completed"}
                           defaultValue={state.sd_rp_quantity}
                           onChange={handleChange}
                         />

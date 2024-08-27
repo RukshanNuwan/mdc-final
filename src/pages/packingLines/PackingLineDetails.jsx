@@ -11,8 +11,6 @@ import DataPill from "../../components/dataPIll/DataPill";
 const PackingLineDetails = () => {
   const { state } = useLocation();
 
-  console.log(state);
-
   return (
     <>
       <Header />

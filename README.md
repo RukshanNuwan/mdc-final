@@ -11,6 +11,7 @@
 - Fixed breakdown function duplication issue
 - Fixed required date field of add new function in mixing section
 - Added details component in packing line added data table
+- Updated default expected powder quantity in update sd module
 
 ## v2.6.1
 
