@@ -18,6 +18,8 @@ const SearchResultDetails = () => {
 
   const { id } = useParams();
 
+  console.log(packingLineData.packing_carton_box_number);
+
   useEffect(() => {
     const fetchPackingLineDataById = async () => {
       const docRef = doc(db, "packing_line_data", id);
@@ -124,8 +126,8 @@ const SearchResultDetails = () => {
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
                             <h6>Order name</h6>
-                            <p className="text-light-blue">
-                              {productionData.order_name}
+                            <p className="text-light-blue text-capitalize">
+                              {productionData.order_name?.replace(/_/g, " ")}
                             </p>
                           </div>
                         </div>
@@ -153,9 +155,21 @@ const SearchResultDetails = () => {
                             </h6>
                             <p className="text-light-blue">
                               {packingLineData.packing_type ===
-                              "packing_type_20"
-                                ? packingLineData.packing_craft_bag_number
-                                : packingLineData.packing_carton_box_number}
+                              "packing_type_20" ? (
+                                <DataPill
+                                  data={
+                                    packingLineData.packing_craft_bag_number
+                                  }
+                                  color="pink"
+                                />
+                              ) : (
+                                <DataPill
+                                  data={packingLineData.packing_carton_box_number?.split(
+                                    ","
+                                  )}
+                                  color="pink"
+                                />
+                              )}
                             </p>
                           </div>
                         </div>
@@ -170,7 +184,8 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        {packingLineData.packing_type === "packing_type_20" && (
+                        {packingLineData.packing_type ===
+                          "packing_type_other" && (
                           <div className="col-sm-6 col-md-3">
                             <div className="d-flex justify-content-between">
                               <h6>Time range</h6>
@@ -188,7 +203,7 @@ const SearchResultDetails = () => {
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
                             <h6>SD bag number(s)</h6>
-                            <p className="text-light-bleu">
+                            <p className="text-light-blue">
                               {
                                 <DataPill
                                   data={packingLineData.packing_bag_numbers}
