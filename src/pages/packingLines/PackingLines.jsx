@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import InfoIcon from "@mui/icons-material/Info";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
@@ -24,7 +26,7 @@ import CustomAccordion from "../../components/customAccordion/CustomAccordion";
 
 // TODO: update this fields
 const packingSectionColumns = [
-  { field: "packing_production_date", headerName: "Date", width: 100 },
+  { field: "packing_production_date", headerName: "Date", width: 150 },
   {
     field: "packing_type",
     headerName: "Packing type",
@@ -40,7 +42,7 @@ const packingSectionColumns = [
   {
     field: "packing_bag_numbers",
     headerName: "SD 3 | 4 Bag #",
-    width: 200,
+    width: 250,
     renderCell: (params) => {
       return <div>{params.row.packing_bag_numbers.join()}</div>;
     },
@@ -69,20 +71,6 @@ const packingSectionColumns = [
       );
     },
   },
-  {
-    field: "packing_craft_bag_number",
-    headerName: "C bag #",
-    width: 300,
-    renderCell: (params) => {
-      return (
-        <div>
-          {params.row.packing_craft_bag_number
-            ? params.row.packing_craft_bag_number.join()
-            : "-"}
-        </div>
-      );
-    },
-  },
 ];
 
 const PackingLines = () => {
@@ -99,6 +87,9 @@ const PackingLines = () => {
   const [totalQuantity, setTotalQuantity] = useState(2000);
   const [currentQuantity, setCurrentQuantity] = useState(200);
 
+  const navigate = useNavigate();
+
+  // TODO: this is only a sample value
   let percentage = 0;
 
   if (totalQuantity > 0 && currentQuantity < totalQuantity) {
@@ -271,6 +262,30 @@ const PackingLines = () => {
       console.log(error);
     }
   };
+
+  const handleView = (data) => {
+    navigate("view", { state: data });
+  };
+
+  const actionColumn = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <div className="d-flex gap-4">
+            <div>
+              <InfoIcon
+                className="tableAction"
+                onClick={() => handleView(params.row)}
+              />
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <>
@@ -608,7 +623,6 @@ const PackingLines = () => {
                               <Form.Control
                                 type="time"
                                 step="1"
-                                required
                                 className="customInput"
                                 onChange={handleChange}
                               />
@@ -626,7 +640,6 @@ const PackingLines = () => {
                               <Form.Control
                                 type="time"
                                 step="1"
-                                required
                                 className="customInput"
                                 onChange={handleChange}
                               />
@@ -779,7 +792,7 @@ const PackingLines = () => {
                 >
                   <DataGrid
                     rows={addedData}
-                    columns={packingSectionColumns}
+                    columns={packingSectionColumns.concat(actionColumn)}
                     initialState={{
                       pagination: {
                         paginationModel: { page: 0, pageSize: 25 },

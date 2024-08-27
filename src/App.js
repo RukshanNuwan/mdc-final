@@ -40,6 +40,7 @@ import SearchResultDetails from "./pages/complaints/SearchResultDetails";
 import Verification from "./pages/verification/Verification";
 import Breakdowns from "./pages/reports/Breakdowns";
 import Verifications from "./pages/reports/Verifications";
+import PackingLineDetails from "./pages/packingLines/PackingLineDetails";
 
 function App() {
   const Layout = () => {
@@ -104,6 +105,7 @@ function App() {
 
             <Route path="packing-lines">
               <Route index element={<PackingLines />} />
+              <Route path="view" element={<PackingLineDetails />} />
             </Route>
 
             <Route path="verification">

@@ -188,7 +188,7 @@ const SearchResultDetails = () => {
                         <div className="col-sm-6 col-md-3">
                           <div className="d-flex justify-content-between">
                             <h6>SD bag number(s)</h6>
-                            <p className="text-light-blue">
+                            <p className="text-light-bleu">
                               {
                                 <DataPill
                                   data={packingLineData.packing_bag_numbers}

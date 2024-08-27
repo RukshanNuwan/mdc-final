@@ -10,6 +10,7 @@
 - Updated daily summary report export function
 - Fixed breakdown function duplication issue
 - Fixed required date field of add new function in mixing section
+- Added details component in packing line added data table
 
 ## v2.6.1
 
