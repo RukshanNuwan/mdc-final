@@ -39,6 +39,7 @@ import Complaints from "./pages/complaints/Complaints";
 import SearchResultDetails from "./pages/complaints/SearchResultDetails";
 import Verification from "./pages/verification/Verification";
 import Breakdowns from "./pages/reports/Breakdowns";
+import Verifications from "./pages/reports/Verifications";
 
 function App() {
   const Layout = () => {
@@ -113,6 +114,7 @@ function App() {
               <Route index element={<Reports />} />
               <Route path="daily-summary" element={<DailySummary />} />
               <Route path="breakdowns" element={<Breakdowns />} />
+              <Route path="verifications" element={<Verifications />} />
             </Route>
 
             <Route path="complaints">

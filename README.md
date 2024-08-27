@@ -8,6 +8,7 @@
 - Changed atomizer nozzle size in spray dryer
 - Installed xlsx package for download summary report as excel file
 - Updated daily summary report export function
+- Fixed breakdown function duplication issue
 
 ## v2.6.1
 

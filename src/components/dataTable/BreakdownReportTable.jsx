@@ -1,12 +1,15 @@
 import { Table } from "react-bootstrap";
 import * as XLSX from "xlsx";
+import { useRef } from "react";
 
 import "./dataTable.css";
 import { calculateTimeDifferenceForReports } from "../../utils";
 
 const BreakdownReportTable = ({ data }) => {
+  const tableRef = useRef(null);
+
   const exportToExcel = () => {
-    const table = document.getElementById("tblSummary");
+    const table = tableRef.current;
     const workbook = XLSX.utils.table_to_book(table, {
       sheet: `${data[0]?.date}`,
     });
@@ -22,7 +25,7 @@ const BreakdownReportTable = ({ data }) => {
         Export excel
       </button>
 
-      <Table responsive bordered hover size="sm">
+      <Table responsive bordered hover size="sm" ref={tableRef}>
         <thead>
           <tr className="text-center">
             <th>Date</th>

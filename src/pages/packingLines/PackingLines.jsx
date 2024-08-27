@@ -13,6 +13,7 @@ import {
 import Swal from "sweetalert2";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { DataGrid } from "@mui/x-data-grid";
 
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
@@ -20,7 +21,6 @@ import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
 import CustomAccordion from "../../components/customAccordion/CustomAccordion";
-import { DataGrid } from "@mui/x-data-grid";
 
 // TODO: update this fields
 const packingSectionColumns = [

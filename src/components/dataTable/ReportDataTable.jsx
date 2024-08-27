@@ -2,13 +2,16 @@ import { Table } from "react-bootstrap";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import * as XLSX from "xlsx";
+import { useRef } from "react";
 
 import "./dataTable.css";
 import { calculateTimeDifferenceForReports } from "../../utils";
 
 const ReportDataTable = ({ data }) => {
+  const tableRef = useRef(null);
+
   const exportToExcel = () => {
-    const table = document.getElementById("tblSummary");
+    const table = tableRef.current;
     const workbook = XLSX.utils.table_to_book(table, {
       sheet: `${data[0]?.date}`,
     });
@@ -24,7 +27,7 @@ const ReportDataTable = ({ data }) => {
         Export excel
       </button>
 
-      <Table responsive bordered hover size="sm" id="tblSummary">
+      <Table responsive bordered hover size="sm" ref={tableRef}>
         <thead>
           <tr>
             <th colSpan={2} className="text-center daily-summery-bg-red">
@@ -139,7 +142,7 @@ const ReportDataTable = ({ data }) => {
                       : "text-success"
                   }`}
                 >
-                  {item.mixing_milk_recovery}%
+                  {item.mixing_milk_recovery}
                 </td>
                 <td>{item.expeller_finish_time}</td>
                 <td>
@@ -259,7 +262,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.mixing_steam_pressure_value}MPa</td>
                 <td>{item.sd_atomizer_size}</td>
                 <td>{item.lab_powder_ph || "-"}</td>
-                <td>{item.lab_powder_moisture}%</td>
+                <td>{item.lab_powder_moisture}</td>
                 <td>{item.lab_powder_fat}</td>
                 <td>{item.lab_powder_fat_layer}cm</td>
                 <td>{item.lab_powder_fat_layer_time}min</td>
