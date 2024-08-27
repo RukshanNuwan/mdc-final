@@ -130,7 +130,7 @@ const ReportDataTable = ({ data }) => {
                 <td>{item.primary_batch_number}</td>
                 <td>{item.batch_number}</td>
                 <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
-                <td>{item.order_name}</td>
+                <td>{item.order_name.replace(/_/g, " ")}</td>
                 <td>{item.wet_kernel_weight}Kg</td>
                 <td>{item.blancher_in_time}</td>
                 <td>{item.cutter_expeller_start_time}</td>

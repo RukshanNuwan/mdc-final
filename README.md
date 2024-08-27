@@ -13,6 +13,7 @@
 - Added details component in packing line added data table
 - Updated default expected powder quantity in update sd module
 - Updated search result card in complains
+- Updated recipe name in sd data table & daily summary report
 
 ## v2.6.1
 

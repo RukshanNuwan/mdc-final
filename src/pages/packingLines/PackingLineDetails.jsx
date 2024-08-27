@@ -33,6 +33,7 @@ const PackingLineDetails = () => {
                 </Link>
               </div>
 
+              {/* TODO: Update this layout */}
               <div className="card-body formWrapper">
                 <div className="row">
                   <div className="col d-xs-none"></div>
