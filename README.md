@@ -14,6 +14,7 @@
 - Updated default expected powder quantity in update sd module
 - Updated search result card in complains
 - Updated recipe name in sd data table & daily summary report
+- Fixed t code search function in complains
 
 ## v2.6.1
 

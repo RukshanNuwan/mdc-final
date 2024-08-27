@@ -18,8 +18,6 @@ const SearchResultDetails = () => {
 
   const { id } = useParams();
 
-  console.log(packingLineData.packing_carton_box_number);
-
   useEffect(() => {
     const fetchPackingLineDataById = async () => {
       const docRef = doc(db, "packing_line_data", id);
@@ -214,7 +212,14 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3 mt-xs-1" />
+                        <div className="col-sm-6 col-md-3">
+                          <div className="d-flex justify-content-between">
+                            <h6>T code</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_packing_batch_code?.trim()}
+                            </p>
+                          </div>
+                        </div>
 
                         <div className="col-sm-6 col-md-3 mt-xs-1" />
 
