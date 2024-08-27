@@ -474,6 +474,7 @@ const NewMixing = () => {
                       <Form.Control
                         type="date"
                         className="customInput"
+                        required
                         defaultValue={ongoingData?.date}
                         onChange={handleDateChange}
                       />

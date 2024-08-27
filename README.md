@@ -9,6 +9,7 @@
 - Installed xlsx package for download summary report as excel file
 - Updated daily summary report export function
 - Fixed breakdown function duplication issue
+- Fixed required date field of add new function in mixing section
 
 ## v2.6.1
 
