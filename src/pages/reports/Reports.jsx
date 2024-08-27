@@ -39,6 +39,10 @@ const Reports = () => {
                   <div className="col-md-3">
                     <ReportTile title="Breakdowns" link="breakdowns" />
                   </div>
+
+                  <div className="col-md-3">
+                    <ReportTile title="Verifications" link="verifications" />
+                  </div>
                 </div>
               </div>
             </div>

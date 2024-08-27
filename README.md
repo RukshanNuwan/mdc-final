@@ -8,6 +8,13 @@
 - Changed atomizer nozzle size in spray dryer
 - Installed xlsx package for download summary report as excel file
 - Updated daily summary report export function
+- Fixed breakdown function duplication issue
+- Fixed required date field of add new function in mixing section
+- Added details component in packing line added data table
+- Updated default expected powder quantity in update sd module
+- Updated search result card in complains
+- Updated recipe name in sd data table & daily summary report
+- Fixed t code search function in complains
 
 ## v2.6.1
 

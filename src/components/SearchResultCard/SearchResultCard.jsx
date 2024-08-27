@@ -33,8 +33,8 @@ const SearchResultCard = ({ data }) => {
             </div>
             <div className="text-yellow">
               {data?.packing_type === "packing_type_20"
-                ? data?.packing_craft_bag_number
-                : data?.packing_carton_box_number}
+                ? data?.packing_craft_bag_number.join(", ")
+                : data?.packing_carton_box_number.split(",").join(", ")}
             </div>
           </div>
         </div>

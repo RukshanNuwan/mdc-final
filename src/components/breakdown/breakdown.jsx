@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row, Spinner } from "react-bootstrap";
 import {
   addDoc,
   collection,
@@ -16,6 +16,7 @@ import "./breakdown.css";
 const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
   const [data, setData] = useState({});
   const [updatedData, setUpdatedData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const currentDate = useCurrentDate();
   // const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -50,6 +51,7 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
 
   const handleBreakdownSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       await addDoc(collection(db, "breakdowns"), {
@@ -59,6 +61,7 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
       }).then(() => {
         e.target.reset();
         navigate("/");
+        setIsLoading(false);
       });
     } catch (error) {
       console.log(error);
@@ -67,6 +70,7 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
 
   const handleBreakdownUpdate = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const docRef = doc(db, "breakdowns", ongoingBreakdown?.id);
@@ -76,6 +80,7 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
       });
 
       navigate("/");
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -155,14 +160,25 @@ const Breakdown = ({ section, location, isBreakdown, ongoingBreakdown }) => {
           {ongoingBreakdown?.status === "ongoing" ? (
             <button
               type="submit"
+              disabled={isLoading}
               className="btn-submit customBtn redZoneBtn"
               onClick={handleBreakdownUpdate}
             >
-              Continue
+              <div className="d-flex align-items-center justify-content-center gap-2">
+                {isLoading && <Spinner animation="border" size="sm" />}
+                <p>Continue</p>
+              </div>
             </button>
           ) : (
-            <button type="submit" className="btn-submit customBtn redZoneBtn">
-              Continue
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="btn-submit customBtn redZoneBtn"
+            >
+              <div className="d-flex align-items-center justify-content-center gap-2">
+                {isLoading && <Spinner animation="border" size="sm" />}
+                <p>Continue</p>
+              </div>
             </button>
           )}
         </div>

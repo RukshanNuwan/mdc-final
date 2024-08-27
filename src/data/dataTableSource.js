@@ -123,7 +123,18 @@ export const sprayDryerSectionColumns = [
     },
   },
   { field: "sd_powder_spray_start_time", headerName: "Start time", width: 150 },
-  { field: "order_name", headerName: "Order", width: 150 },
+  {
+    field: "order_name",
+    headerName: "Order",
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <div className="text-capitalize">
+          {params.row.order_name.replace(/_/g, " ")}
+        </div>
+      );
+    },
+  },
   {
     field: "sd_total_powder_quantity",
     headerName: "Powder quantity",

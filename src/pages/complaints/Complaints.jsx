@@ -13,7 +13,7 @@ const Complaints = () => {
   const [productionDateInput, setProductionDateInput] = useState("");
   const [timeInput, setTimeInput] = useState("");
   const [jobSheetNumberInput, setJobSheetNumberInput] = useState("");
-  const [bagNumberInput, setBagNumberInput] = useState("");
+  const [tCodeInput, setTCodeInput] = useState("");
   const [data, setData] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
 
@@ -51,7 +51,7 @@ const Complaints = () => {
       const list = [];
       const q = query(
         collection(db, "packing_line_data"),
-        where("packing_craft_bag_number", "==", bagNumberInput)
+        where("packing_packing_batch_code", "==", tCodeInput)
       );
 
       await getDocs(q).then((res) => {
@@ -136,7 +136,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_job_sheet_number", "==", jobSheetNumberInput),
-        where("packing_bag_numbers", "==", bagNumberInput)
+        where("packing_packing_batch_code", "==", tCodeInput)
       );
 
       await getDocs(q).then((res) => {
@@ -164,7 +164,7 @@ const Complaints = () => {
       const list = [];
       const q = query(
         collection(db, "packing_line_data"),
-        where("packing_bag_numbers", "==", bagNumberInput),
+        where("packing_packing_batch_code", "==", tCodeInput),
         where("packing_packet_time_range_start", "<=", timeInput),
         where("packing_packet_time_range_end", ">=", timeInput)
       );
@@ -254,7 +254,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_production_date", "==", productionDateInput),
-        where("packing_bag_numbers", "==", bagNumberInput)
+        where("packing_packing_batch_code", "==", tCodeInput)
       );
 
       await getDocs(q).then((res) => {
@@ -313,7 +313,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_job_sheet_number", "==", jobSheetNumberInput),
-        where("packing_bag_numbers", "==", bagNumberInput),
+        where("packing_packing_batch_code", "==", tCodeInput),
         where("packing_packet_time_range_start", "<=", timeInput),
         where("packing_packet_time_range_end", ">=", timeInput)
       );
@@ -375,7 +375,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_production_date", "==", productionDateInput),
-        where("packing_bag_numbers", "==", bagNumberInput),
+        where("packing_packing_batch_code", "==", tCodeInput),
         where("packing_packet_time_range_start", "<=", timeInput),
         where("packing_packet_time_range_end", ">=", timeInput)
       );
@@ -406,7 +406,7 @@ const Complaints = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_production_date", "==", productionDateInput),
-        where("packing_bag_numbers", "==", bagNumberInput),
+        where("packing_packing_batch_code", "==", tCodeInput),
         where("packing_job_sheet_number", "==", jobSheetNumberInput)
       );
 
@@ -437,7 +437,7 @@ const Complaints = () => {
         const q = query(
           collection(db, "packing_line_data"),
           where("packing_production_date", "==", productionDateInput),
-          where("packing_bag_numbers", "==", bagNumberInput),
+          where("packing_packing_batch_code", "==", tCodeInput),
           where("packing_job_sheet_number", "==", jobSheetNumberInput),
           where("packing_packet_time_range_start", "<=", timeInput),
           where("packing_packet_time_range_end", ">=", timeInput)
@@ -473,12 +473,12 @@ const Complaints = () => {
           timeInput &&
           !productionDateInput &&
           !jobSheetNumberInput &&
-          !bagNumberInput,
+          !tCodeInput,
         fetch: fetchDataByTime,
       },
       {
         check: () =>
-          bagNumberInput &&
+          tCodeInput &&
           !productionDateInput &&
           !timeInput &&
           !jobSheetNumberInput,
@@ -487,7 +487,7 @@ const Complaints = () => {
       {
         check: () =>
           productionDateInput &&
-          !bagNumberInput &&
+          !tCodeInput &&
           !timeInput &&
           !jobSheetNumberInput,
         fetch: fetchDataByProductionDate,
@@ -496,13 +496,13 @@ const Complaints = () => {
         check: () =>
           jobSheetNumberInput &&
           !productionDateInput &&
-          !bagNumberInput &&
+          !tCodeInput &&
           !timeInput,
         fetch: fetchDataByJobSheetNumber,
       },
       {
         check: () =>
-          bagNumberInput &&
+          tCodeInput &&
           timeInput &&
           !jobSheetNumberInput &&
           !productionDateInput,
@@ -513,7 +513,7 @@ const Complaints = () => {
           productionDateInput &&
           timeInput &&
           !jobSheetNumberInput &&
-          !bagNumberInput,
+          !tCodeInput,
         fetch: fetchDataByProductionDateAndTime,
       },
       {
@@ -521,13 +521,13 @@ const Complaints = () => {
           productionDateInput &&
           jobSheetNumberInput &&
           !timeInput &&
-          !bagNumberInput,
+          !tCodeInput,
         fetch: fetchDataByProductionDateAndJobSheetNumber,
       },
       {
         check: () =>
           productionDateInput &&
-          bagNumberInput &&
+          tCodeInput &&
           !timeInput &&
           !jobSheetNumberInput,
         fetch: fetchDataByProductionDateAndBagNumber,
@@ -537,12 +537,12 @@ const Complaints = () => {
           timeInput &&
           jobSheetNumberInput &&
           !productionDateInput &&
-          !bagNumberInput,
+          !tCodeInput,
         fetch: fetchDataByTimeAndJobSheetNumber,
       },
       {
         check: () =>
-          bagNumberInput &&
+          tCodeInput &&
           jobSheetNumberInput &&
           !timeInput &&
           !productionDateInput,
@@ -553,13 +553,13 @@ const Complaints = () => {
           productionDateInput &&
           jobSheetNumberInput &&
           timeInput &&
-          !bagNumberInput,
+          !tCodeInput,
         fetch: fetchDataByProductionDateAndJobSheetNumberAndTime,
       },
       {
         check: () =>
           productionDateInput &&
-          bagNumberInput &&
+          tCodeInput &&
           timeInput &&
           !jobSheetNumberInput,
         fetch: fetchDataByProductionDateAndBagNumberAndTime,
@@ -567,7 +567,7 @@ const Complaints = () => {
       {
         check: () =>
           jobSheetNumberInput &&
-          bagNumberInput &&
+          tCodeInput &&
           timeInput &&
           !productionDateInput,
         fetch: fetchDataByTimeAndBagNumberAndJobSheetNumber,
@@ -575,17 +575,14 @@ const Complaints = () => {
       {
         check: () =>
           productionDateInput &&
-          bagNumberInput &&
+          tCodeInput &&
           jobSheetNumberInput &&
           !timeInput,
         fetch: fetchDataByProductionDateAndBagNumberAndJobSheetNumber,
       },
       {
         check: () =>
-          productionDateInput &&
-          bagNumberInput &&
-          jobSheetNumberInput &&
-          timeInput,
+          productionDateInput && tCodeInput && jobSheetNumberInput && timeInput,
         fetch: fetchDataByProductionDateAndBagNumberAndJobSheetNumberAndTime,
       },
     ];
@@ -607,7 +604,7 @@ const Complaints = () => {
 
   const handleClear = () => {
     setTimeInput("");
-    setBagNumberInput("");
+    setTCodeInput("");
     setProductionDateInput("");
     setJobSheetNumberInput("");
   };
@@ -654,8 +651,8 @@ const Complaints = () => {
                         <Form.Control
                           type="text"
                           className="customInput"
-                          placeholder="eg: MPSnD001"
-                          onChange={(e) => setBagNumberInput(e.target.value)}
+                          placeholder="eg: MPSnD"
+                          onChange={(e) => setTCodeInput(e.target.value)}
                         />
                       </Form.Group>
 
