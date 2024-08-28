@@ -15,6 +15,7 @@
 - Updated search result card in complains
 - Updated recipe name in sd data table & daily summary report
 - Fixed t code search function in complains
+- Added verification report
 
 ## v2.6.1
 

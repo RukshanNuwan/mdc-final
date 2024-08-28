@@ -72,14 +72,14 @@ const PackingLineDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-md-4">
-                          <p className="bodyText fw-bold">
+                          <span className="bodyText fw-bold">
                             {
                               <DataPill
                                 data={state?.packing_bag_numbers}
                                 color="pink"
                               />
                             }
-                          </p>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -155,14 +155,14 @@ const PackingLineDetails = () => {
                           </div>
                           <div className="col-1" />
                           <div className="col-4">
-                            <p className="bodyText fw-bold">
+                            <span className="bodyText fw-bold">
                               {
                                 <DataPill
                                   data={state?.packing_craft_bag_number}
                                   color="pink"
                                 />
                               }
-                            </p>
+                            </span>
                           </div>
                         </div>
                       )}
@@ -175,7 +175,7 @@ const PackingLineDetails = () => {
                             </div>
                             <div className="col-1" />
                             <div className="col-md-4">
-                              <p className="bodyText fw-bold">
+                              <span className="bodyText fw-bold">
                                 {
                                   <DataPill
                                     data={state?.packing_carton_box_number.split(
@@ -184,7 +184,7 @@ const PackingLineDetails = () => {
                                     color="pink"
                                   />
                                 }
-                              </p>
+                              </span>
                             </div>
                           </div>
 

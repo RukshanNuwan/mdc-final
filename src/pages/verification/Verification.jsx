@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   collection,
   doc,
@@ -72,11 +72,6 @@ const Verification = () => {
       setIsEmpty(false);
     });
   };
-
-  // TODO:
-  // save -> tcode
-  // when entered job sheet number, fetch data from packing_line_data
-  // job sheet number [packing_line_data] -> tcode === tcode [verification_data] -> checkedList
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -200,30 +195,58 @@ const Verification = () => {
 
                   <div className="d-flex flex-wrap">
                     {data &&
-                      data?.map((item) =>
-                        item.packing_craft_bag_number?.map((i, index) => (
-                          <Form.Group
-                            key={index}
-                            as={Col}
-                            md="4"
-                            xs="6"
-                            controlId={`${item.packing_packing_batch_code}${i}`}
-                          >
-                            <Form.Label className="fw-bold">
-                              <>{`${item.packing_packing_batch_code} ${i}`}</>
-                            </Form.Label>
+                      data?.map((item, index) => (
+                        <React.Fragment key={index}>
+                          {item.packing_craft_bag_number?.map((i, subIndex) => (
+                            <Form.Group
+                              key={`${item.packing_packing_batch_code}${i}`}
+                              as={Col}
+                              md="4"
+                              xs="6"
+                              controlId={`${item.packing_packing_batch_code}${i}`}
+                            >
+                              <Form.Label className="fw-bold">
+                                {`${item.packing_packing_batch_code} ${i}`}
+                              </Form.Label>
 
-                            <Form.Switch
-                              type="switch"
-                              id={`${item.packing_packing_batch_code}${i}`}
-                              defaultChecked={checkedList.includes(
-                                `${item.packing_packing_batch_code}${i}`
-                              )}
-                              onChange={handleVerificationToggle}
-                            />
-                          </Form.Group>
-                        ))
-                      )}
+                              <Form.Switch
+                                type="switch"
+                                id={`${item.packing_packing_batch_code}${i}`}
+                                defaultChecked={checkedList.includes(
+                                  `${item.packing_packing_batch_code}${i}`
+                                )}
+                                onChange={handleVerificationToggle}
+                              />
+                            </Form.Group>
+                          ))}
+
+                          {item.packing_carton_box_number &&
+                            item.packing_carton_box_number
+                              .split(",")
+                              .map((i, subIndex) => (
+                                <Form.Group
+                                  key={`${item.packing_packing_batch_code}${i}`}
+                                  as={Col}
+                                  md="4"
+                                  xs="6"
+                                  controlId={`${item.packing_packing_batch_code}${i}`}
+                                >
+                                  <Form.Label className="fw-bold">
+                                    {`${item.packing_packing_batch_code} ${i}`}
+                                  </Form.Label>
+
+                                  <Form.Switch
+                                    type="switch"
+                                    id={`${item.packing_packing_batch_code}${i}`}
+                                    defaultChecked={checkedList.includes(
+                                      `${item.packing_packing_batch_code}${i}`
+                                    )}
+                                    onChange={handleVerificationToggle}
+                                  />
+                                </Form.Group>
+                              ))}
+                        </React.Fragment>
+                      ))}
                   </div>
 
                   {data.length > 0 && (
