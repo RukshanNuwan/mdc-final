@@ -4,6 +4,7 @@
 
 - Updated version
 - Updated complaint details ui
+- Update generate button in verification report module
 
 ## v2.6.2
 

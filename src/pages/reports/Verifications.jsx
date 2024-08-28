@@ -106,7 +106,7 @@ const Verifications = () => {
                       <button type="submit" className="btn-submit customBtn">
                         {isLoading ? (
                           <div className="d-flex align-items-center gap-2">
-                            <Spinner animation="border" size="sm" />
+                            <Spinner animation="border" size="sm" /> Generating...
                           </div>
                         ) : (
                           "Generate"
