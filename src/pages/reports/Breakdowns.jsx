@@ -183,28 +183,28 @@ const Breakdowns = () => {
                     <div className="summary-container">
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Start date</p>
+                          <p>Start date</p>
                         </div>
                         <div className="col-6">
-                          <p>{startDate || "-"}</p>
+                          <p className="fw-bold">{startDate || "-"}</p>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">End date</p>
+                          <p>End date</p>
                         </div>
                         <div className="col-6">
-                          <p>{endDate || "-"}</p>
+                          <p className="fw-bold">{endDate || "-"}</p>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total breakdown time</p>
+                          <p>Total breakdown time</p>
                         </div>
                         <div className="col-6">
-                          <p className="fw-bold text-danger">
+                          <p className="fw-bold">
                             {totalHours || 0}h {totalMinutes || 0}m
                           </p>
                         </div>

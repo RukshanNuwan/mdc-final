@@ -11,9 +11,12 @@ const BreakdownReportTable = ({ data }) => {
   const exportToExcel = () => {
     const table = tableRef.current;
     const workbook = XLSX.utils.table_to_book(table, {
-      sheet: `${data[0]?.date}`,
+      sheet: `${data[0]?.breakdown_date}`,
     });
-    XLSX.writeFile(workbook, `${data[0]?.date} summary report.xlsx`);
+    XLSX.writeFile(
+      workbook,
+      `${data[0]?.breakdown_date} - ${data[0]} breakdown report.xlsx`
+    );
   };
 
   return (
