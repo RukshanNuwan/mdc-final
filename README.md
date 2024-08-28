@@ -16,6 +16,7 @@
 - Updated recipe name in sd data table & daily summary report
 - Fixed t code search function in complains
 - Added verification report
+- Updated view ui of daily summary report
 
 ## v2.6.1
 
