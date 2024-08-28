@@ -85,7 +85,7 @@ const SearchResultDetails = () => {
 
                     <div className="mt-4 text-white">
                       <div className="row m-0">
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>SD batch code</h6>
                             <p className="text-light-blue">
@@ -94,7 +94,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>Job sheet number</h6>
                             <p className="text-light-blue">
@@ -103,7 +103,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>Production date</h6>
                             <p className="text-light-blue">
@@ -112,7 +112,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>SD batch number</h6>
                             <p className="text-light-blue">
@@ -121,7 +121,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>Order name</h6>
                             <p className="text-light-blue text-capitalize">
@@ -130,7 +130,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>Packing type</h6>
                             <p className="text-light-blue">
@@ -142,7 +142,100 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-3">
+                        <div className="col-sm-6 col-md-4 mb-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>T code range</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_bag_number_range_start} -{" "}
+                              {packingLineData.packing_bag_number_range_end}
+                            </p>
+                          </div>
+                        </div>
+
+                        {packingLineData.packing_type ===
+                          "packing_type_other" && (
+                          <div className="col-sm-6 col-md-4 mb-1">
+                            <div className="d-flex justify-content-between">
+                              <h6>Time range</h6>
+                              <p className="text-light-blue">
+                                {
+                                  packingLineData.packing_packet_time_range_start
+                                }{" "}
+                                -{" "}
+                                {packingLineData.packing_packet_time_range_end}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="col-sm-6 col-md-4 mb-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>T code</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_packing_batch_code?.trim()}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-4 mb-1 mt-xs-1" />
+
+                        <div className="col-sm-6 col-md-4 mb-1 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Powder collecting QC name</h6>
+                            <p className="text-light-blue">
+                              {
+                                packingLineData.packing_powder_collecting_qc_name
+                              }
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-4 mb-1 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Carton packing QC name</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_carton_packing_qc_name}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-4 mb-1 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Line supervisor name</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_line_supervisor_name}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-4 mb-1 mt-xs-1">
+                          <div className="d-flex justify-content-between">
+                            <h6>Added at</h6>
+                            <p className="text-light-blue">
+                              {packingLineData.packing_line_added_at
+                                ?.toDate()
+                                .toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row mt-3">
+                        <div className="col-sm-6 col-md-4 mb-3">
+                          <div className="d-flex justify-content-between">
+                            <h6>SD bag number(s)</h6>
+                            <span className="text-light-blue">
+                              {
+                                <DataPill
+                                  data={packingLineData.packing_bag_numbers}
+                                  color="pink"
+                                />
+                              }
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6 col-md-4">
                           <div className="d-flex justify-content-between">
                             <h6>
                               {packingLineData.packing_type ===
@@ -171,97 +264,6 @@ const SearchResultDetails = () => {
                             </span>
                           </div>
                         </div>
-
-                        <div className="col-sm-6 col-md-3">
-                          <div className="d-flex justify-content-between">
-                            <h6>T code range</h6>
-                            <p className="text-light-blue">
-                              {packingLineData.packing_bag_number_range_start} -{" "}
-                              {packingLineData.packing_bag_number_range_end}
-                            </p>
-                          </div>
-                        </div>
-
-                        {packingLineData.packing_type ===
-                          "packing_type_other" && (
-                          <div className="col-sm-6 col-md-3">
-                            <div className="d-flex justify-content-between">
-                              <h6>Time range</h6>
-                              <p className="text-light-blue">
-                                {
-                                  packingLineData.packing_packet_time_range_start
-                                }{" "}
-                                -{" "}
-                                {packingLineData.packing_packet_time_range_end}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="col-sm-6 col-md-3">
-                          <div className="d-flex justify-content-between">
-                            <h6>SD bag number(s)</h6>
-                            <span className="text-light-blue">
-                              {
-                                <DataPill
-                                  data={packingLineData.packing_bag_numbers}
-                                  color="pink"
-                                />
-                              }
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="col-sm-6 col-md-3">
-                          <div className="d-flex justify-content-between">
-                            <h6>T code</h6>
-                            <p className="text-light-blue">
-                              {packingLineData.packing_packing_batch_code?.trim()}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="col-sm-6 col-md-3 mt-xs-1" />
-
-                        <div className="col-sm-6 col-md-3 mt-xs-1">
-                          <div className="d-flex justify-content-between">
-                            <h6>Powder collecting QC name</h6>
-                            <p className="text-light-blue">
-                              {
-                                packingLineData.packing_powder_collecting_qc_name
-                              }
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="col-sm-6 col-md-3 mt-xs-1">
-                          <div className="d-flex justify-content-between">
-                            <h6>Carton packing QC name</h6>
-                            <p className="text-light-blue">
-                              {packingLineData.packing_carton_packing_qc_name}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="col-sm-6 col-md-3 mt-xs-1">
-                          <div className="d-flex justify-content-between">
-                            <h6>Line supervisor name</h6>
-                            <p className="text-light-blue">
-                              {packingLineData.packing_line_supervisor_name}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="col-sm-6 col-md-3 mt-xs-1">
-                          <div className="d-flex justify-content-between">
-                            <h6>Added at</h6>
-                            <p className="text-light-blue">
-                              {packingLineData.packing_line_added_at
-                                ?.toDate()
-                                .toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -274,7 +276,7 @@ const SearchResultDetails = () => {
 
                       <div className="mt-4 text-white">
                         <div className="row m-0">
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>W batch number</h6>
                               <p className="text-light-blue">
@@ -283,7 +285,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Tank number</h6>
                               <p className="text-light-blue">
@@ -292,7 +294,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Kernel weight</h6>
                               <p className="text-light-blue">
@@ -301,7 +303,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Blancher in time</h6>
                               <p className="text-light-blue">
@@ -310,7 +312,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Kernel quality</h6>
                               <p className="text-light-blue">
@@ -323,7 +325,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Remarks</h6>
                               <p className="text-light-blue text-capitalize">
@@ -346,7 +348,7 @@ const SearchResultDetails = () => {
 
                       <div className="mt-4 text-white">
                         <div className="row m-0">
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Location</h6>
                               <p className="text-light-blue">
@@ -357,7 +359,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Cutter start time</h6>
                               <p className="text-light-blue">
@@ -366,7 +368,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Cutter finish time</h6>
                               <p className="text-light-blue">
@@ -375,7 +377,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Expeller start time</h6>
                               <p className="text-light-blue">
@@ -384,7 +386,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Expeller finish time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -393,7 +395,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Process time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -414,7 +416,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Delay time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -423,7 +425,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Heat valve</h6>
                               <p className="text-light-blue text-capitalize">
@@ -438,7 +440,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Special notes</h6>
                               <p className="text-light-blue text-capitalize">
@@ -461,7 +463,7 @@ const SearchResultDetails = () => {
 
                       <div className="mt-4 text-white">
                         <div className="row m-0">
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Milk amount</h6>
                               <p className="text-light-blue">
@@ -470,7 +472,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Expeller efficiency</h6>
                               <p className="text-light-blue">
@@ -482,7 +484,7 @@ const SearchResultDetails = () => {
                           {productionData.mixing_additional_crates_count !==
                             0 && (
                             <>
-                              <div className="col-sm-6 col-md-4">
+                              <div className="col-md-6 mb-1">
                                 <div className="d-flex justify-content-between">
                                   <h6>Additionally added crates count</h6>
                                   <p className="text-light-blue">
@@ -493,7 +495,7 @@ const SearchResultDetails = () => {
                                 </div>
                               </div>
 
-                              <div className="col-sm-6 col-md-4">
+                              <div className="col-md-6 mb-1">
                                 <div className="d-flex justify-content-between">
                                   <h6>Informed to</h6>
                                   <p className="text-light-blue">
@@ -506,7 +508,7 @@ const SearchResultDetails = () => {
                             </>
                           )}
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Raw milk in time</h6>
                               <p className="text-light-blue">
@@ -515,7 +517,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Mixing tank in time</h6>
                               <p className="text-light-blue">
@@ -524,7 +526,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Mix start time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -533,7 +535,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Mix finish time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -542,7 +544,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Feeding tank in time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -551,7 +553,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Feed start time</h6>
                               <p className="text-light-blue text-capitalize">
@@ -560,7 +562,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Pressure pump</h6>
                               <p className="text-light-blue text-capitalize">
@@ -569,7 +571,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Steam pressure</h6>
                               <p className="text-light-blue text-capitalize">
@@ -578,7 +580,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Remarks</h6>
                               <p className="text-light-blue text-capitalize">
@@ -601,7 +603,7 @@ const SearchResultDetails = () => {
 
                       <div className="mt-4 text-white">
                         <div className="row m-0">
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Powder spray start time</h6>
                               <p className="text-light-blue">
@@ -610,7 +612,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Powder spray finish time</h6>
                               <p className="text-light-blue">
@@ -619,7 +621,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Powder quantity</h6>
                               <p className="text-light-blue">
@@ -628,7 +630,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Expected powder quantity</h6>
                               <p className="text-light-blue">
@@ -637,7 +639,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>RP</h6>
                               <p className="text-light-blue">
@@ -646,7 +648,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Powder recovery</h6>
                               <p className="text-light-blue">
@@ -655,7 +657,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Atomizer size</h6>
                               <p className="text-light-blue">
@@ -664,7 +666,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Inlet temperature</h6>
                               <p className="text-light-blue">
@@ -673,7 +675,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Outlet temperature</h6>
                               <p className="text-light-blue">
@@ -682,7 +684,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Other details</h6>
                               <p className="text-light-blue">
@@ -693,7 +695,7 @@ const SearchResultDetails = () => {
                             </div>
                           </div>
 
-                          <div className="col-sm-6 col-md-4">
+                          <div className="col-md-6 mb-1">
                             <div className="d-flex justify-content-between">
                               <h6>Special notes</h6>
                               <p className="text-light-blue">
@@ -715,7 +717,7 @@ const SearchResultDetails = () => {
 
                     <div className="mt-4 text-white">
                       <div className="row m-0">
-                        <div className="col-sm-6 col-md-4">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>Sample in time</h6>
                             <p className="text-light-blue">
@@ -724,7 +726,7 @@ const SearchResultDetails = () => {
                           </div>
                         </div>
 
-                        <div className="col-sm-6 col-md-4">
+                        <div className="col-sm-6 col-md-4 mb-1">
                           <div className="d-flex justify-content-between">
                             <h6>Test start time</h6>
                             <p className="text-light-blue">

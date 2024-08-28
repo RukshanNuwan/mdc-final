@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.6.3
+
+- Updated version
+- Updated complaint details ui
+
 ## v2.6.2
 
 - Removed commented code lines

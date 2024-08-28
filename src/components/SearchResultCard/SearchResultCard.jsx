@@ -31,7 +31,7 @@ const SearchResultCard = ({ data }) => {
                 : "Carton"}{" "}
               number
             </div>
-            <div className="text-yellow">
+            <div className="text-yellow carton-number-section">
               {data?.packing_type === "packing_type_20"
                 ? data?.packing_craft_bag_number.join(", ")
                 : data?.packing_carton_box_number.split(",").join(", ")}

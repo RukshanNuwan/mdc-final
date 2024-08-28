@@ -147,6 +147,12 @@ label.form-label {
   border: 2px solid var(--pink) !important;
 }
 
+.carton-number-section {
+  width: 80vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media only screen and (max-width: 600px) {
   button.btn-submit,
   button.subform-btn-submit {
