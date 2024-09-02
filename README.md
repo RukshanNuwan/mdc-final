@@ -2,9 +2,10 @@
 
 ## v2.6.3
 
-- Updated version
 - Updated complaint details ui
 - Update generate button in verification report module
+- Added loading icon for wet section coconut count add button
+- Creating production summary report - temporary closed
 
 ## v2.6.2
 

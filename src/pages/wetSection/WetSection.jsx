@@ -25,6 +25,7 @@ import BackToTop from "../../components/backToTop/BackToTop";
 import { wetSectionColumns } from "../../data/dataTableSource";
 import { db } from "../../config/firebase.config";
 import useCurrentDate from "../../hooks/useCurrentDate";
+import { Spinner } from "react-bootstrap";
 
 const WetSection = () => {
   const [subFormData, setSubFormData] = useState({});
@@ -35,6 +36,7 @@ const WetSection = () => {
   const [isDesiccatedCoconutCut, setIsDesiccatedCoconutCut] = useState(false);
   const [outsideKernelQuantity, setOutsideKernelQuantity] = useState(0);
   const [desiccatedCoconutQuantity, setDesiccatedCoconutQuantity] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const currentDate = useCurrentDate();
@@ -71,6 +73,7 @@ const WetSection = () => {
 
   const handleSubForm = async (e) => {
     e.preventDefault();
+    setIsLoading(false);
 
     const confirmData = `${
       isOutsideKernelArrived
@@ -92,6 +95,8 @@ const WetSection = () => {
           cancelButtonColor: "#0d1b2a",
         }).then((result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             addDoc(collection(db, "daily_production"), {
               ...subFormData,
               totalCoconut,
@@ -107,6 +112,7 @@ const WetSection = () => {
                 timer: 1500,
               });
               e.target.reset();
+              setIsLoading(false);
               navigate("/");
             });
           }
@@ -126,6 +132,8 @@ const WetSection = () => {
           cancelButtonColor: "#0d1b2a",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            setIsLoading(true);
+
             const docRef = doc(db, "daily_production", receivedData.id);
             await updateDoc(docRef, {
               totalCoconut:
@@ -151,6 +159,7 @@ const WetSection = () => {
                 timer: 1500,
               });
               e.target.reset();
+              setIsLoading(false);
               navigate("/");
             });
           }
@@ -351,10 +360,18 @@ const WetSection = () => {
                             <button
                               type="submit"
                               className="subform-btn-submit customBtn mt-md-4"
+                              disabled={isLoading}
                             >
-                              {receivedData?.date !== currentDate
-                                ? "Add"
-                                : "Update"}
+                              <div className="d-flex align-items-center justify-content-center gap-2">
+                                {isLoading && (
+                                  <Spinner animation="border" size="sm" />
+                                )}
+                              </div>
+                              <p>
+                                {receivedData?.date !== currentDate
+                                  ? "Add"
+                                  : "Update"}
+                              </p>
                             </button>
                           </div>
                         </Row>
