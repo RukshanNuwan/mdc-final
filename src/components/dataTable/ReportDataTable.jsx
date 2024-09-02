@@ -33,6 +33,7 @@ const ReportDataTable = ({ data }) => {
             <th colSpan={2} className="text-center daily-summery-bg-red">
               Batch number
             </th>
+            <th colSpan={1} className="text-center daily-summery-bg-red"></th>
             <th colSpan={7} className="text-center daily-summery-bg-red">
               Wet
             </th>
@@ -56,6 +57,7 @@ const ReportDataTable = ({ data }) => {
           <tr className="text-center">
             <th className="daily-summery-bg-red">Wet</th>
             <th className="daily-summery-bg-red">SD</th>
+            <th className="daily-summery-bg-red">SD batch code</th>
             <th className="daily-summery-bg-red">Location</th>
             <th className="daily-summery-bg-red">Order name</th>
             <th className="daily-summery-bg-red">Kernel weight</th>
@@ -129,6 +131,7 @@ const ReportDataTable = ({ data }) => {
               <tr key={index} className="text-center text-capitalize">
                 <td>{item.primary_batch_number}</td>
                 <td>{item.batch_number}</td>
+                <td>{item.batch_code}</td>
                 <td>{item.location === "mdc" ? "SD - 03" : "SD - 04"}</td>
                 <td>{item.order_name.replace(/_/g, " ")}</td>
                 <td>{item.wet_kernel_weight}Kg</td>

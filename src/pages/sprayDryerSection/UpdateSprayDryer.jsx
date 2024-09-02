@@ -1,13 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  // collection,
-  doc,
-  // onSnapshot,
-  // query,
-  serverTimestamp,
-  updateDoc,
-  // where,
-} from "firebase/firestore";
+import React, { useState } from "react";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -54,7 +46,6 @@ const UpdateSprayDryer = () => {
     recovery = ((e.target.value / expectedPowderQuantity) * 100).toFixed(2);
 
     setPowderRecovery(recovery);
-    // setPowderQuantity(Number(e.target.value));
 
     setData({
       ...data,
