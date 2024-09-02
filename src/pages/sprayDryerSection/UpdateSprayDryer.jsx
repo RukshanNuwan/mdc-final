@@ -586,11 +586,8 @@ const UpdateSprayDryer = () => {
                       <Form.Control
                         type="time"
                         required={state.sd_status === "updated"}
-                        disabled={state.sd_status === "completed"}
                         defaultValue={state?.sd_batch_finish_time}
-                        className={`customInput ${
-                          state.sd_status === "completed" && "disabled"
-                        }`}
+                        className="customInput"
                         onChange={handleChange}
                       />
                     </Form.Group>

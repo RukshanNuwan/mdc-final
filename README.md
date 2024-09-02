@@ -6,6 +6,7 @@
 - Update generate button in verification report module
 - Added loading spinner for wet section coconut count add button
 - Updated packing line data table (add batch number)
+- Enabled to update finish time in sd module
 - Creating production summary report - temporary closed
 
 ## v2.6.2
