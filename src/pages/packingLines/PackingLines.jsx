@@ -48,6 +48,14 @@ const packingSectionColumns = [
     },
   },
   {
+    headerName: "SD batch #",
+    width: 100,
+    renderCell: (params) => {
+      const resultString = params?.row?.production_batch_code.slice(9);
+      return <div>{resultString}</div>;
+    },
+  },
+  {
     field: "production_batch_code",
     headerName: "SD batch code",
     width: 150,

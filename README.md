@@ -4,7 +4,8 @@
 
 - Updated complaint details ui
 - Update generate button in verification report module
-- Added loading icon for wet section coconut count add button
+- Added loading spinner for wet section coconut count add button
+- Updated packing line data table (add batch number)
 - Creating production summary report - temporary closed
 
 ## v2.6.2
