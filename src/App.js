@@ -41,6 +41,7 @@ import Verification from "./pages/verification/Verification";
 import Breakdowns from "./pages/reports/Breakdowns";
 import Verifications from "./pages/reports/Verifications";
 import PackingLineDetails from "./pages/packingLines/PackingLineDetails";
+import ProductionSummary from "./pages/reports/ProductionSummary";
 
 function App() {
   const Layout = () => {
@@ -114,6 +115,10 @@ function App() {
 
             <Route path="reports">
               <Route index element={<Reports />} />
+              <Route
+                path="production-summary"
+                element={<ProductionSummary />}
+              />
               <Route path="daily-summary" element={<DailySummary />} />
               <Route path="breakdowns" element={<Breakdowns />} />
               <Route path="verifications" element={<Verifications />} />

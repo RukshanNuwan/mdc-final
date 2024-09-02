@@ -260,19 +260,19 @@ const DailySummary = () => {
                     <div className="summary-container">
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Date</p>
+                          <p>Date</p>
                         </div>
                         <div className="col-6">
-                          <p>{date || "-"}</p>
+                          <p className="fw-bold">{date || "-"}</p>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total coconut count</p>
+                          <p>Total coconut count</p>
                         </div>
                         <div className="col-6">
-                          <p>
+                          <p className="fw-bold">
                             {dailyProductionDataByDate?.totalCoconut || "-"}
                           </p>
                         </div>
@@ -280,10 +280,10 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total kernel quantity</p>
+                          <p>Total kernel quantity</p>
                         </div>
                         <div className="col-6">
-                          <p>
+                          <p className="fw-bold">
                             {dailyProductionDataByDate.totalKernelWeight ||
                             dailyProductionDataByDate.outsideKernelQuantity
                               ? dailyProductionDataByDate.totalKernelWeight +
@@ -319,10 +319,10 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total DC batch count</p>
+                          <p>Total DC batch count</p>
                         </div>
                         <div className="col-6">
-                          <p>
+                          <p className="fw-bold">
                             {dailyProductionDataByDate.desiccatedCoconutQuantity ||
                               "-"}
                           </p>
@@ -331,10 +331,10 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total milk batch count</p>
+                          <p>Total milk batch count</p>
                         </div>
                         <div className="col-6">
-                          <p>
+                          <p className="fw-bold">
                             {totalBatchesInSd3 || totalBatchesInSd4
                               ? totalBatchesInSd3 + totalBatchesInSd4
                               : "-"}
@@ -367,10 +367,10 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total milk amount</p>
+                          <p>Total milk amount</p>
                         </div>
                         <div className="col-6">
-                          <p>
+                          <p className="fw-bold">
                             {totalMilkAmountInSd3 || totalMilkAmountInSd4
                               ? totalMilkAmountInSd3 +
                                 totalMilkAmountInSd4 +
@@ -413,7 +413,7 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Avg. expeller efficiency</p>
+                          <p>Avg. expeller efficiency</p>
                         </div>
                         <div className="col-6">
                           <span className="sectionTitle sectionTitleBlue">
@@ -424,10 +424,10 @@ const DailySummary = () => {
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
-                          <p className="fw-bold">Total powder quantity</p>
+                          <p>Total powder quantity</p>
                         </div>
                         <div className="col-6">
-                          <p>
+                          <p className="fw-bold">
                             {totalPowderQuantityInSd3 ||
                             totalPowderQuantityInSd4
                               ? totalPowderQuantityInSd3 +

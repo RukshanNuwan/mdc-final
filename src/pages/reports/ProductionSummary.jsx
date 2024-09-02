@@ -1,33 +1,32 @@
-import { useEffect, useState } from "react";
-import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
 
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import BackToTop from "../../components/backToTop/BackToTop";
+import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
+import ProductionSummaryTable from "../../components/dataTable/ProductionSummaryTable";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase.config";
-import BreakdownReportTable from "../../components/dataTable/BreakdownReportTable";
-import { calculateTimeDifference } from "../../utils";
 
-const Breakdowns = () => {
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+const ProductionSummary = () => {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [breakdownsInDb, setBreakdownsInDb] = useState([]);
-  const [totalHours, setTotalHours] = useState(0);
-  const [totalMinutes, setTotalMinutes] = useState(0);
+  const [productionData, setProductionData] = useState([]);
+  const [dailyProductionData, setDailyProductionData] = useState([]);
 
-  const fetchBreakdownsByStartDate = async () => {
+  const fetchProductionDataByDateRange = async () => {
     try {
       const list = [];
       const q = query(
-        collection(db, "breakdowns"),
-        where("breakdown_date", "==", startDate),
-        orderBy("timeStamp", "desc")
+        collection(db, "production_data"),
+        where("date", ">=", startDate),
+        where("date", "<=", endDate),
+        orderBy("wet_added_at", "desc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -35,20 +34,20 @@ const Breakdowns = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setBreakdownsInDb(list);
+      setProductionData(list);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchBreakdownsByDateRange = async () => {
+  const fetchDailyProductionDataByDateRange = async () => {
     try {
       const list = [];
       const q = query(
-        collection(db, "breakdowns"),
-        where("breakdown_date", ">=", startDate),
-        where("breakdown_date", "<=", endDate),
+        collection(db, "daily_production"),
+        where("date", ">=", startDate),
+        where("date", "<=", endDate),
         orderBy("timeStamp", "desc")
       );
 
@@ -56,8 +55,7 @@ const Breakdowns = () => {
       querySnapshot.forEach((doc) => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
-
-      setBreakdownsInDb(list);
+      setDailyProductionData(list);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -68,37 +66,12 @@ const Breakdowns = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (startDate) fetchBreakdownsByStartDate().then(() => setIsLoading(false));
-    if (startDate && endDate)
-      fetchBreakdownsByDateRange().then(() => setIsLoading(false));
-
+    if (startDate && endDate) {
+      fetchProductionDataByDateRange().then(() => setIsLoading(false));
+      fetchDailyProductionDataByDateRange().then(() => setIsLoading(false));
+    }
     if (!startDate && !endDate) setIsLoading(false);
   };
-
-  useEffect(() => {
-    const calculateTotalBreakdownTime = () => {
-      let totalHours = 0;
-      let totalMinutes = 0;
-
-      breakdownsInDb.forEach((breakdown) => {
-        const timeDifference = calculateTimeDifference(
-          breakdown.startTime,
-          breakdown.finishTime
-        );
-
-        totalHours += timeDifference.hours;
-        totalMinutes += timeDifference.minutes;
-
-        totalHours += Math.floor(totalMinutes / 60);
-        totalMinutes = totalMinutes % 60;
-
-        setTotalHours(totalHours);
-        setTotalMinutes(totalMinutes);
-      });
-    };
-
-    if (breakdownsInDb.length > 0) calculateTotalBreakdownTime();
-  }, [breakdownsInDb]);
 
   return (
     <>
@@ -108,7 +81,7 @@ const Breakdowns = () => {
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
           <div className="col-md-12">
-            <Breadcrumb title="Reports / Breakdowns" />
+            <Breadcrumb title="Reports / Production summary" />
           </div>
 
           <div className="pe-0 px-xs-0">
@@ -123,7 +96,7 @@ const Breakdowns = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <p className="display-6 mb-4 text-white">Breakdowns</p>
+                <p className="display-6 mb-4 text-white">Production summary</p>
 
                 <Form onSubmit={handleSubmit}>
                   <Row>
@@ -152,7 +125,7 @@ const Breakdowns = () => {
                         type="date"
                         className="customInput"
                         onChange={(e) => setEndDate(e.target.value)}
-                      />
+                      ></Form.Control>
                     </Form.Group>
 
                     <Form.Group as={Col} className="d-flex align-items-end">
@@ -167,58 +140,24 @@ const Breakdowns = () => {
                         )}
                       </button>
                     </Form.Group>
-
-                    <Form.Group as={Col} className="d-flex align-items-end">
-                      <button type="reset" className="customBtn customBtnPrint">
-                        Reset
-                      </button>
-                    </Form.Group>
                   </Row>
                 </Form>
 
                 <hr className="custom-hr-yellow" />
 
                 <div className="report-container">
-                  {breakdownsInDb && (
-                    <div className="summary-container">
-                      <div className="row">
-                        <div className="col-6 d-flex justify-content-end">
-                          <p>Start date</p>
-                        </div>
-                        <div className="col-6">
-                          <p className="fw-bold">{startDate || "-"}</p>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-6 d-flex justify-content-end">
-                          <p>End date</p>
-                        </div>
-                        <div className="col-6">
-                          <p className="fw-bold">{endDate || "-"}</p>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-6 d-flex justify-content-end">
-                          <p>Total breakdown time</p>
-                        </div>
-                        <div className="col-6">
-                          <p className="fw-bold">
-                            {totalHours || 0}h {totalMinutes || 0}m
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   <div className="table-container">
-                    {breakdownsInDb.length > 0 ? (
+                    {productionData.length > 0 ? (
                       <Card body className="mb-2">
-                        <BreakdownReportTable data={breakdownsInDb} />
+                        <ProductionSummaryTable
+                          productionData={productionData}
+                          dailyProductionData={dailyProductionData}
+                          startDate={startDate}
+                          endDate={endDate}
+                        />
                       </Card>
                     ) : (
-                      <p className="text-center">No breakdowns found</p>
+                      <p className="text-center">No data found</p>
                     )}
                   </div>
                 </div>
@@ -234,4 +173,4 @@ const Breakdowns = () => {
   );
 };
 
-export default Breakdowns;
+export default ProductionSummary;

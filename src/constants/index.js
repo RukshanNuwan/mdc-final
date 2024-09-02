@@ -74,4 +74,9 @@ export const orders = [
     name: "Sample recipe",
     value: "sample_recipe",
   },
+  {
+    _id: 16,
+    name: "Coco ceylon",
+    value: "coco_ceylon",
+  },
 ];

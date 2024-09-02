@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.6.3
+
+- Updated complaint details ui
+- Update generate button in verification report module
+- Added loading spinner for wet section coconut count add button
+- Updated packing line data table (add batch number)
+- Enabled to update finish time in sd module
+- Added batch code in daily summary report
+- Added new recipe name for mixing section
+- Creating production summary report - temporary closed
+
 ## v2.6.2
 
 - Removed commented code lines
@@ -15,6 +26,9 @@
 - Updated search result card in complains
 - Updated recipe name in sd data table & daily summary report
 - Fixed t code search function in complains
+- Added verification report
+- Updated view ui of daily summary report
+- Updated breakdown report
 
 ## v2.6.1
 

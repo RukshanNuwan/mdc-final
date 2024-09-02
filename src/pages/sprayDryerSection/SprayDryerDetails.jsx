@@ -258,9 +258,9 @@ const SprayDryerDetails = () => {
                         </div>
                         <div className="col-1" />
                         <div className="col-4">
-                          <p className="bodyText fw-bold">
+                          <span className="bodyText fw-bold">
                             {<DataPill data={state.sd_operator_names} />}
-                          </p>
+                          </span>
                         </div>
                       </div>
 
