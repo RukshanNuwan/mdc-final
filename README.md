@@ -8,6 +8,7 @@
 - Updated packing line data table (add batch number)
 - Enabled to update finish time in sd module
 - Added batch code in daily summary report
+- Added new recipe name for mixing section
 - Creating production summary report - temporary closed
 
 ## v2.6.2
