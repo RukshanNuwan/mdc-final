@@ -32,12 +32,12 @@ const Reports = () => {
 
               <div className="card-body formWrapper">
                 <div className="row">
-                  <div className="col-md-3 mb-2">
+                  {/* <div className="col-md-3 mb-2">
                     <ReportTile
                       title="Production summary"
                       link="production-summary"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="col-md-3 mb-2">
                     <ReportTile title="Daily summary" link="daily-summary" />
