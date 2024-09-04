@@ -53,8 +53,6 @@ const NewMixing = () => {
   const navigate = useNavigate();
   const { location } = useParams();
 
-  console.log("location -> ", location);
-
   let currentDate;
 
   if (ongoingData?.date) {
