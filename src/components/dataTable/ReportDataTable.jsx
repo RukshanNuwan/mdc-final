@@ -44,7 +44,7 @@ const ReportDataTable = ({ data }) => {
               Raw milk
             </th>
             <th colSpan={7}></th>
-            <th colSpan={11} className="text-center daily-summery-bg-green">
+            <th colSpan={8} className="text-center daily-summery-bg-green">
               Mix milk
             </th>
             <th colSpan={15} className="text-center">
@@ -89,9 +89,9 @@ const ReportDataTable = ({ data }) => {
             <th className="daily-summery-bg-green">Odor</th>
             <th className="daily-summery-bg-green">Mix issues informed to</th>
             <th className="daily-summery-bg-green">Details</th>
-            <th className="daily-summery-bg-green">Sample in time</th>
+            {/* <th className="daily-summery-bg-green">Sample in time</th>
             <th className="daily-summery-bg-green">Test start time</th>
-            <th className="daily-summery-bg-green">Time difference</th>
+            <th className="daily-summery-bg-green">Time difference</th> */}
             <th>Raw milk in time</th>
             <th>Mix start time</th>
             <th>Mix finish time</th>
@@ -236,14 +236,14 @@ const ReportDataTable = ({ data }) => {
                 </td>
                 <td>{item.lab_mix_issue_informed_to || "-"}</td>
                 <td>{item.lab_mix_issue_details || "-"}</td>
-                <td>{item.lab_sample_in_time}</td>
+                {/* <td>{item.lab_sample_in_time}</td>
                 <td>{item.lab_test_start_time}</td>
                 <td>
                   {calculateTimeDifferenceForReports(
                     item.lab_sample_in_time,
                     item.lab_test_start_time
                   )}
-                </td>
+                </td> */}
                 <td>{item.expeller_finish_time}</td>
                 <td>{item.mixing_mix_start_time}</td>
                 <td>{item.mixing_mix_finish_time}</td>

@@ -9,6 +9,7 @@
 - Enabled to update finish time in sd module
 - Added batch code in daily summary report
 - Added new recipe name for mixing section
+- Removed sample in time, test start time & time difference in daily summary
 - Creating production summary report - temporary closed
 
 ## v2.6.2
