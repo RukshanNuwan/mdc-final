@@ -53,6 +53,8 @@ const NewMixing = () => {
   const navigate = useNavigate();
   const { location } = useParams();
 
+  console.log("location -> ", location);
+
   let currentDate;
 
   if (ongoingData?.date) {
@@ -343,7 +345,7 @@ const NewMixing = () => {
             await addDoc(collection(db, "production_data"), {
               ...data,
               expected_powder_quantity: 0,
-              location: "araliya_kele",
+              location: location,
               wet_added_at: serverTimestamp(),
               primary_batch_number: null,
               mixing_mix_details: "Outside milk",
