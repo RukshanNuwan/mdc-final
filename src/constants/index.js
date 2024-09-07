@@ -21,7 +21,7 @@ export const orders = [
   },
   {
     _id: 5,
-    name: "Rp recipe",
+    name: "RP recipe",
     value: "rp_recipe",
   },
   {
@@ -78,5 +78,10 @@ export const orders = [
     _id: 16,
     name: "Coco ceylon",
     value: "coco_ceylon",
+  },
+  {
+    _id: 17,
+    name: "Organic B+",
+    value: "organic_b_+",
   },
 ];
