@@ -11,6 +11,7 @@
 - Added new recipe name for mixing section
 - Removed sample in time, test start time & time difference in daily summary
 - Fixed location issue in newly added batch (outside) in mixing module
+- Updated RP recipe name
 - Creating production summary report - temporary closed
 
 ## v2.6.2

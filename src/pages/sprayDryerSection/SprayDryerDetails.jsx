@@ -127,7 +127,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.order_name}
+                            {state?.order_name.replace(/_/g, " ")}
                           </p>
                         </div>
                       </div>

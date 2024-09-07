@@ -119,7 +119,7 @@ const LaboratoryDetails = () => {
                         </div>
                         <div className="col-5">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state.order_name}
+                            {state.order_name.replace(/_/g, " ")}
                           </p>
                         </div>
                       </div>

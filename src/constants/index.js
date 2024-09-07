@@ -21,7 +21,7 @@ export const orders = [
   },
   {
     _id: 5,
-    name: "Rp recipe",
+    name: "RP recipe",
     value: "rp_recipe",
   },
   {
