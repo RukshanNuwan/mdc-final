@@ -12,6 +12,7 @@
 - Removed sample in time, test start time & time difference in daily summary
 - Fixed location issue in newly added batch (outside) in mixing module
 - Updated RP recipe name
+- Added print method for packing line added data
 - Creating production summary report - temporary closed
 
 ## v2.6.2

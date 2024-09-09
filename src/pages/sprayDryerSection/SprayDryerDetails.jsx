@@ -65,7 +65,7 @@ const SprayDryerDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold">
-                            {state?.primary_batch_number}
+                            {state?.primary_batch_number || "-"}
                           </p>
                         </div>
                       </div>
