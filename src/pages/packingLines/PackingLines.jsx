@@ -13,7 +13,7 @@ import {
 import Swal from "sweetalert2";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 
@@ -26,11 +26,11 @@ import CustomAccordion from "../../components/customAccordion/CustomAccordion";
 
 // TODO: update this fields
 const packingSectionColumns = [
-  { field: "packing_production_date", headerName: "Date", width: 150 },
+  { field: "packing_production_date", headerName: "Date", width: 110 },
   {
     field: "packing_type",
-    headerName: "Packing type",
-    width: 100,
+    headerName: "Type",
+    width: 70,
     renderCell: (params) => {
       return (
         <div>
@@ -40,16 +40,8 @@ const packingSectionColumns = [
     },
   },
   {
-    field: "packing_bag_numbers",
-    headerName: "SD 3 | 4 Bag #",
-    width: 250,
-    renderCell: (params) => {
-      return <div>{params.row.packing_bag_numbers.join()}</div>;
-    },
-  },
-  {
     headerName: "SD batch #",
-    width: 100,
+    width: 90,
     renderCell: (params) => {
       const resultString = params?.row?.production_batch_code.slice(9);
       return <div>{resultString}</div>;
@@ -58,17 +50,17 @@ const packingSectionColumns = [
   {
     field: "production_batch_code",
     headerName: "SD batch code",
-    width: 150,
+    width: 130,
   },
   {
     field: "packing_job_sheet_number",
-    headerName: "Job sheet #",
-    width: 100,
+    headerName: "JS #",
+    width: 80,
   },
   {
     field: "packing_packing_batch_code",
     headerName: "T code",
-    width: 100,
+    width: 80,
     renderCell: (params) => {
       return (
         <div>
@@ -77,6 +69,14 @@ const packingSectionColumns = [
             : "-"}
         </div>
       );
+    },
+  },
+  {
+    field: "packing_bag_numbers",
+    headerName: "SD 3 | 4 Bag #",
+    width: 300,
+    renderCell: (params) => {
+      return <div>{params.row.packing_bag_numbers.join()}</div>;
     },
   },
 ];
@@ -812,6 +812,7 @@ const PackingLines = () => {
                       },
                     }}
                     pageSizeOptions={[25, 50, 100]}
+                    slots={{ toolbar: GridToolbar }}
                   />
                 </div>
               </div>
