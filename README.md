@@ -14,6 +14,7 @@
 - Updated RP recipe name
 - Added print method for packing line added data
 - Added packing date & T code range in packing line data table
+- Updated packing type in packing line data details view
 
 ## v2.6.2
 
