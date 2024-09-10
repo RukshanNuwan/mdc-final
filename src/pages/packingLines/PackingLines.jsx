@@ -13,7 +13,7 @@ import {
 import Swal from "sweetalert2";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 
@@ -26,7 +26,21 @@ import CustomAccordion from "../../components/customAccordion/CustomAccordion";
 
 // TODO: update this fields
 const packingSectionColumns = [
-  { field: "packing_production_date", headerName: "Date", width: 110 },
+  {
+    field: "packing_production_date",
+    headerName: "Production date",
+    width: 110,
+  },
+  {
+    field: "packing_line_added_at",
+    headerName: "Packing date & time",
+    width: 170,
+    renderCell: (params) => {
+      return (
+        <div>{params.row.packing_line_added_at.toDate().toLocaleString()}</div>
+      );
+    },
+  },
   {
     field: "packing_type",
     headerName: "Type",
@@ -62,11 +76,19 @@ const packingSectionColumns = [
     headerName: "T code",
     width: 80,
     renderCell: (params) => {
+      return <div>{params.row.packing_packing_batch_code || "-"}</div>;
+    },
+  },
+  {
+    field: "packing_bag_number_range_start",
+    headerName: "T code range",
+    width: 100,
+    renderCell: (params) => {
       return (
         <div>
-          {params.row.packing_packing_batch_code
-            ? params.row.packing_packing_batch_code
-            : "-"}
+          {params.row.packing_bag_number_range_start}
+          {" - "}
+          {params.row.packing_bag_number_range_end}
         </div>
       );
     },
@@ -812,7 +834,6 @@ const PackingLines = () => {
                       },
                     }}
                     pageSizeOptions={[25, 50, 100]}
-                    slots={{ toolbar: GridToolbar }}
                   />
                 </div>
               </div>
