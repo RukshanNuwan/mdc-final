@@ -2,31 +2,31 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
-import BackToTop from "../../components/backToTop/BackToTop";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
-import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
-import ProductionSummaryTable from "../../components/dataTable/ProductionSummaryTable";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import PackingLineReportTable from "../../components/dataTable/PackingLineReportTable";
 import { db } from "../../config/firebase.config";
 
-const ProductionSummary = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+const PackingLineReport = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [productionData, setProductionData] = useState([]);
-  const [dailyProductionData, setDailyProductionData] = useState([]);
+  const [tCode, setTCode] = useState("");
+  const [packingDate, setPackingDate] = useState("");
+  const [packingData, setPackingData] = useState([]);
 
-  const fetchProductionDataByDateRange = async () => {
+  const fetchPackingData = async () => {
+    setPackingData([]);
+
     try {
       const list = [];
       const q = query(
-        collection(db, "production_data"),
-        where("date", ">=", startDate),
-        where("date", "<=", endDate),
-        orderBy("wet_added_at", "desc")
+        collection(db, "packing_line_data"),
+        where("packing_packing_batch_code", "==", tCode),
+        // TODO: remove comment
+        // where("packing_line_date", "==", packingDate),
+        orderBy("packing_line_added_at", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -34,28 +34,7 @@ const ProductionSummary = () => {
         if (doc.data()) list.push({ id: doc.id, ...doc.data() });
       });
 
-      setProductionData(list);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchDailyProductionDataByDateRange = async () => {
-    try {
-      const list = [];
-      const q = query(
-        collection(db, "daily_production"),
-        where("date", ">=", startDate),
-        where("date", "<=", endDate),
-        orderBy("timeStamp", "desc")
-      );
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
-      });
-      setDailyProductionData(list);
+      setPackingData(list);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -66,15 +45,8 @@ const ProductionSummary = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (startDate && endDate) {
-      fetchProductionDataByDateRange().then(() => setIsLoading(false));
-      fetchDailyProductionDataByDateRange().then(() => setIsLoading(false));
-    }
-    if (!startDate && !endDate) setIsLoading(false);
+    fetchPackingData();
   };
-
-  console.log("productionData -> ", productionData);
-  console.log("dailyProductionData -> ", dailyProductionData);
 
   return (
     <>
@@ -84,7 +56,7 @@ const ProductionSummary = () => {
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
           <div className="col-md-12">
-            <Breadcrumb title="Reports / Production summary" />
+            <Breadcrumb title="Reports / Packing line" />
           </div>
 
           <div className="pe-0 px-xs-0">
@@ -99,36 +71,37 @@ const ProductionSummary = () => {
               </div>
 
               <div className="card-body formWrapper">
-                <p className="display-6 mb-4 text-white">Production summary</p>
+                <p className="display-6 mb-4 text-white">Packing line</p>
 
                 <Form onSubmit={handleSubmit}>
                   <Row>
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="startDate"
+                      controlId="tCode"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Start date</Form.Label>
+                      <Form.Label className="fw-bold">T code</Form.Label>
                       <Form.Control
-                        type="date"
+                        type="text"
+                        required
                         className="customInput"
-                        onChange={(e) => setStartDate(e.target.value)}
+                        onChange={(e) => setTCode(e.target.value)}
                       />
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
                       md="4"
-                      controlId="endDate"
+                      controlId="packingDate"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">End date</Form.Label>
+                      <Form.Label className="fw-bold">Packing date</Form.Label>
                       <Form.Control
                         type="date"
                         className="customInput"
-                        onChange={(e) => setEndDate(e.target.value)}
-                      ></Form.Control>
+                        onChange={(e) => setPackingDate(e.target.value)}
+                      />
                     </Form.Group>
 
                     <Form.Group as={Col} className="d-flex align-items-end">
@@ -150,13 +123,11 @@ const ProductionSummary = () => {
 
                 <div className="report-container">
                   <div className="table-container">
-                    {productionData.length > 0 ? (
+                    {packingData?.length > 0 ? (
                       <Card body className="mb-2">
-                        <ProductionSummaryTable
-                          productionData={productionData}
-                          dailyProductionData={dailyProductionData}
-                          startDate={startDate}
-                          endDate={endDate}
+                        <PackingLineReportTable
+                          packingData={packingData}
+                          packingDate={packingDate}
                         />
                       </Card>
                     ) : (
@@ -169,11 +140,8 @@ const ProductionSummary = () => {
           </div>
         </div>
       </main>
-
-      <Footer />
-      <BackToTop />
     </>
   );
 };
 
-export default ProductionSummary;
+export default PackingLineReport;

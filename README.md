@@ -13,7 +13,8 @@
 - Fixed location issue in newly added batch (outside) in mixing module
 - Updated RP recipe name
 - Added print method for packing line added data
-- Creating production summary report - temporary closed
+- Added packing date & T code range in packing line data table
+- Updated packing type in packing line data details view
 
 ## v2.6.2
 

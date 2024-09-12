@@ -95,7 +95,6 @@ const ProductionSummaryTable = ({
   }, [dailyProductionData, productionData]);
 
   // console.log("dailySummaryDataArray -> ", dailyProductionDataArray);
-  console.log("productionDataArray -> ", productionDataArray);
 
   const exportReport = () => {
     const table = tableRef.current;

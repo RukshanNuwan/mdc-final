@@ -143,7 +143,9 @@ const PackingLineDetails = () => {
                         <div className="col-1" />
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
-                            {state?.packing_type.replace(/_/g, " ") || "-"}
+                            {state?.packing_type === "packing_type_20"
+                              ? "20kg"
+                              : "Other"}
                           </p>
                         </div>
                       </div>
