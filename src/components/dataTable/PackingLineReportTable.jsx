@@ -62,7 +62,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
                 <td>{item.packing_line_date || "-"}</td>
                 <td>{item.packing_packing_batch_code}</td>
                 <td>
-                  {item.packing_bag_number_range_start} -{" "}
+                  {item.packing_bag_number_range_start} {" - "}
                   {item.packing_bag_number_range_end}
                 </td>
                 <td>
