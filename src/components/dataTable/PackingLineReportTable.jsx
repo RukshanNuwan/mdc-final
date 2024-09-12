@@ -54,7 +54,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
                 <td>{item.packing_production_date}</td>
                 <td>{item.production_batch_code}</td>
                 <td>{getBatchNumber(item.production_batch_code)}</td>
-                <td className="d-flex">{item.packing_bag_numbers.join()}</td>
+                <td>{item.packing_bag_numbers.join(", ")}</td>
                 <td>{item.packing_job_sheet_number}</td>
                 <td>
                   {item.packing_type === "packing_type_20" ? "20kg" : "Other"}
