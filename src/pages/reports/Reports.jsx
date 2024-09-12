@@ -50,6 +50,10 @@ const Reports = () => {
                   <div className="col-md-3">
                     <ReportTile title="Verifications" link="verifications" />
                   </div>
+
+                  <div className="col-md-3">
+                    <ReportTile title="Packing lines" link="packing-lines" />
+                  </div>
                 </div>
               </div>
             </div>

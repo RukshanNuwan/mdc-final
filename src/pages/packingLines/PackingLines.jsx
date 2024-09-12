@@ -23,8 +23,8 @@ import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
 import CustomAccordion from "../../components/customAccordion/CustomAccordion";
+import useCurrentDate from "../../hooks/useCurrentDate";
 
-// TODO: update this fields
 const packingSectionColumns = [
   {
     field: "packing_production_date",
@@ -96,7 +96,7 @@ const packingSectionColumns = [
   {
     field: "packing_bag_numbers",
     headerName: "SD 3 | 4 Bag #",
-    width: 300,
+    width: 230,
     renderCell: (params) => {
       return <div>{params.row.packing_bag_numbers.join()}</div>;
     },
@@ -118,6 +118,7 @@ const PackingLines = () => {
   const [currentQuantity, setCurrentQuantity] = useState(200);
 
   const navigate = useNavigate();
+  const currentDate = useCurrentDate();
 
   // TODO: this is only a sample value
   let percentage = 0;
@@ -274,6 +275,7 @@ const PackingLines = () => {
         if (result.isConfirmed) {
           await addDoc(collection(db, "packing_line_data"), {
             ...updatedData,
+            packing_line_date: currentDate,
             packing_line_added_at: serverTimestamp(),
           }).then(() => {
             Swal.fire({
