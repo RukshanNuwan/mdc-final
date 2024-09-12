@@ -37,7 +37,9 @@ const packingSectionColumns = [
     width: 170,
     renderCell: (params) => {
       return (
-        <div>{params.row.packing_line_added_at?.toDate().toLocaleString()}</div>
+        <div>
+          {params.row?.packing_line_added_at?.toDate().toLocaleString()}
+        </div>
       );
     },
   },

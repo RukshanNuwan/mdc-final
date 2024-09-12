@@ -3,6 +3,7 @@
 ## v2.6.4
 
 - Updated packing line add form
+- Updated dashboard
 
 ## v2.6.3
 

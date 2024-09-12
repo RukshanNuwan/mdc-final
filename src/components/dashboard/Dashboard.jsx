@@ -27,7 +27,6 @@ const Dashboard = () => {
   const [sd4Status, setSd4Status] = useState(false);
   const [breakdowns, setBreakdowns] = useState([]);
   const [date, setDate] = useState();
-  const [isCutterBreakdown, setIsCutterBreakdown] = useState(false);
   const [isSd3Breakdown, setIsSd3Breakdown] = useState(false);
   const [isSd4Breakdown, setIsSd4Breakdown] = useState(false);
   const [totalBatchesInSd3, setTotalBatchesInSd3] = useState(0);
@@ -288,12 +287,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (breakdowns.length > 0) {
       breakdowns.forEach((breakdown) => {
-        if (breakdown.breakdown_section_name === "cutter") {
-          setIsCutterBreakdown(true);
-        } else {
-          setIsCutterBreakdown(false);
-        }
-
         if (
           breakdown.breakdown_section_name === "sd" &&
           breakdown.location === "mdc"
@@ -600,12 +593,6 @@ const Dashboard = () => {
               <div className="d-flex justify-content-between">
                 <span className="sectionTitle sectionTitleYellow text-uppercase">
                   Cutter section
-                </span>
-
-                <span className={`status ${isCutterBreakdown && "stopped"}`}>
-                  <p className={`${isCutterBreakdown ? "d-block" : "d-none"}`}>
-                    Stopped
-                  </p>
                 </span>
               </div>
 
