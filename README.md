@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.4
+
+- Updated packing line add form
+
 ## v2.6.3
 
 - Updated complaint details ui
