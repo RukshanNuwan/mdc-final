@@ -37,7 +37,7 @@ const packingSectionColumns = [
     width: 170,
     renderCell: (params) => {
       return (
-        <div>{params.row.packing_line_added_at.toDate().toLocaleString()}</div>
+        <div>{params.row.packing_line_added_at?.toDate().toLocaleString()}</div>
       );
     },
   },
@@ -236,6 +236,7 @@ const PackingLines = () => {
       packing_production_date: data?.date,
       production_batch_code: data?.batch_code,
       production_batch_id: data?.id,
+      packing_line_date: currentDate,
     });
   };
 
@@ -275,7 +276,6 @@ const PackingLines = () => {
         if (result.isConfirmed) {
           await addDoc(collection(db, "packing_line_data"), {
             ...updatedData,
-            packing_line_date: currentDate,
             packing_line_added_at: serverTimestamp(),
           }).then(() => {
             Swal.fire({
@@ -499,7 +499,7 @@ const PackingLines = () => {
                             type="text"
                             disabled
                             className="customInput text-capitalize disabled"
-                            defaultValue={data.order_name}
+                            defaultValue={data.order_name.replace(/_/g, " ")}
                           />
                         </Form.Group>
 
