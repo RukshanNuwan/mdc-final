@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Form, Row, Spinner, Table } from "react-bootstrap";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
 import BackToTop from "../../components/backToTop/BackToTop";
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
-import ProductionSummaryTable from "../../components/dataTable/ProductionSummaryTable";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase.config";
 
 const ProductionSummary = () => {
@@ -18,6 +16,15 @@ const ProductionSummary = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [productionData, setProductionData] = useState([]);
   const [dailyProductionData, setDailyProductionData] = useState([]);
+  const [expellerRecovery, setExpellerRecovery] = useState([]);
+  const [sd3TotalPowderQuantity, setSd3TotalPowderQuantity] = useState([]);
+  const [sd3PowderQuantityRecovery, setSd3PowderQuantityRecovery] = useState(
+    []
+  );
+  const [sd4TotalPowderQuantity, setSd4TotalPowderQuantity] = useState([]);
+  const [sd4PowderQuantityRecovery, setSd4PowderQuantityRecovery] = useState(
+    []
+  );
 
   const fetchProductionDataByDateRange = async () => {
     try {
@@ -48,7 +55,7 @@ const ProductionSummary = () => {
         collection(db, "daily_production"),
         where("date", ">=", startDate),
         where("date", "<=", endDate),
-        orderBy("timeStamp", "desc")
+        orderBy("timeStamp", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -73,8 +80,63 @@ const ProductionSummary = () => {
     if (!startDate && !endDate) setIsLoading(false);
   };
 
-  console.log("productionData -> ", productionData);
-  console.log("dailyProductionData -> ", dailyProductionData);
+  useEffect(() => {
+    if (productionData.length > 0 && dailyProductionData.length > 0) {
+      const calculate = () => {
+        const productionDataMap = new Map();
+        const sd3PowderQuantityMap = new Map();
+        const sd4PowderQuantityMap = new Map();
+        let avgExpellerRecovery = 0;
+
+        dailyProductionData.forEach((data) => {
+          let index = 0;
+          let expellerRecoverySum = 0;
+          let sd3PowderQuantity = 0;
+          let sd3PowderQuantityRecovery = 0;
+          let sd4PowderQuantity = 0;
+          let sd4PowderQuantityRecovery = 0;
+
+          productionData.forEach((item) => {
+            if (data.date === item.date) {
+              index++;
+              expellerRecoverySum += Number(item.mixing_milk_recovery);
+
+              if (item.location === "mdc") {
+                sd3PowderQuantity += Number(item.sd_total_powder_quantity);
+                // sd3PowderQuantityRecovery += Number(item.sd_powder_recovery);
+              } else {
+                sd4PowderQuantity += Number(item.sd_total_powder_quantity);
+                // sd4PowderQuantityRecovery += Number(item.sd_powder_recovery);
+              }
+            }
+          });
+
+          avgExpellerRecovery = expellerRecoverySum / index;
+          productionDataMap.set(data.date, avgExpellerRecovery);
+          sd3PowderQuantityMap.set(data.date, sd3PowderQuantity);
+          sd4PowderQuantityMap.set(data.date, sd4PowderQuantity);
+        });
+
+        const expellerRecoveryArr = dailyProductionData.map((item) => {
+          return productionDataMap.get(item.date) || null;
+        });
+
+        const sd3PowderQuantityArr = dailyProductionData.map((item) => {
+          return sd3PowderQuantityMap.get(item.date) || null;
+        });
+
+        const sd4PowderQuantityArr = dailyProductionData.map((item) => {
+          return sd4PowderQuantityMap.get(item.date) || null;
+        });
+
+        setExpellerRecovery(expellerRecoveryArr);
+        setSd3TotalPowderQuantity(sd3PowderQuantityArr);
+        setSd4TotalPowderQuantity(sd4PowderQuantityArr);
+      };
+
+      calculate();
+    }
+  }, [dailyProductionData, productionData]);
 
   return (
     <>
@@ -83,10 +145,6 @@ const ProductionSummary = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Reports / Production summary" />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="mb-2">
@@ -151,14 +209,85 @@ const ProductionSummary = () => {
                 <div className="report-container">
                   <div className="table-container">
                     {productionData.length > 0 ? (
-                      <Card body className="mb-2">
-                        <ProductionSummaryTable
-                          productionData={productionData}
-                          dailyProductionData={dailyProductionData}
-                          startDate={startDate}
-                          endDate={endDate}
-                        />
-                      </Card>
+                      <div className="container">
+                        <Table striped bordered hover>
+                          <thead>
+                            <tr>
+                              <th></th>
+                              {dailyProductionData?.map((item, index) => (
+                                <th key={index}>{item.date}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th>Cut nuts</th>
+                              {dailyProductionData?.map((item, index) => (
+                                <td key={index}>{item.totalCoconut}</td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <th>Kernel weight</th>
+                              {dailyProductionData?.map((item, index) => (
+                                <td key={index}>{item.totalKernelWeight}kg</td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <th>Outside kernel weight</th>
+                              {dailyProductionData?.map((item, index) => (
+                                <td key={index}>
+                                  {item.outsideKernelQuantity}kg
+                                </td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <th>Kernel recovery</th>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>Expeller recovery</th>
+                              {expellerRecovery?.map((item, index) => (
+                                <td key={index}>{item.toFixed(2)}%</td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <th>SD 03 Powder quantity</th>
+                              {sd3TotalPowderQuantity?.map((item, index) => (
+                                <td key={index}>{item}kg</td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <th>SD 03 Recovery</th>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>SD 04 Powder quantity</th>
+                              {sd4TotalPowderQuantity?.map((item, index) => (
+                                <td key={index}>{item}kg</td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <th>SD 04 Recovery</th>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
                     ) : (
                       <p className="text-center">No data found</p>
                     )}

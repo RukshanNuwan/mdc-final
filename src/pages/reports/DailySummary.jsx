@@ -139,18 +139,18 @@ const DailySummary = () => {
     }
   };
 
-  const renderMilkExpellerEfficiency = () => {
-    let sum = 0;
-    let index = 0;
+  // const renderMilkExpellerEfficiency = () => {
+  //   let sum = 0;
+  //   let index = 0;
 
-    productionData.forEach((data) => {
-      if (data?.mixing_milk_recovery)
-        sum = sum + Number(data?.mixing_milk_recovery);
-      index++;
-    });
+  //   productionData.forEach((data) => {
+  //     if (data?.mixing_milk_recovery)
+  //       sum = sum + Number(data?.mixing_milk_recovery);
+  //     index++;
+  //   });
 
-    return (sum / index).toFixed(2);
-  };
+  //   return (sum / index).toFixed(2);
+  // };
 
   // Calculate milk powder recovery
   // const renderPowderRecovery = () => {
@@ -411,7 +411,7 @@ const DailySummary = () => {
                         </div>
                       </div>
 
-                      <div className="row">
+                      {/* <div className="row">
                         <div className="col-6 d-flex justify-content-end">
                           <p>Avg. expeller efficiency</p>
                         </div>
@@ -420,7 +420,7 @@ const DailySummary = () => {
                             {renderMilkExpellerEfficiency()}%
                           </span>
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="row">
                         <div className="col-6 d-flex justify-content-end">
