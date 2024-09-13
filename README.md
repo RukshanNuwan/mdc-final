@@ -5,6 +5,7 @@
 - Updated packing line add form
 - Updated dashboard
 - Added production summary view
+- Updated date range in production summary
 
 ## v2.6.3
 

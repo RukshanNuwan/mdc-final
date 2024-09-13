@@ -26,6 +26,16 @@ const ProductionSummary = () => {
     []
   );
 
+  const calculateMaxDate = () => {
+    if (startDate) {
+      const endDate = new Date(startDate);
+      endDate.setDate(new Date(startDate).getDate() + 6);
+      const formattedEndDate = endDate.toISOString().split("T")[0];
+
+      document.getElementById("endDate").max = formattedEndDate;
+    }
+  };
+
   const fetchProductionDataByDateRange = async () => {
     try {
       const list = [];
@@ -185,6 +195,8 @@ const ProductionSummary = () => {
                       <Form.Control
                         type="date"
                         className="customInput"
+                        min={startDate}
+                        max={calculateMaxDate()}
                         onChange={(e) => setEndDate(e.target.value)}
                       ></Form.Control>
                     </Form.Group>
