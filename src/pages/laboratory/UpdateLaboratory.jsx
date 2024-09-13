@@ -25,6 +25,8 @@ import BackToTop from "../../components/backToTop/BackToTop";
 const UpdateLaboratory = () => {
   const { state } = useLocation();
 
+  console.log(state);
+
   const [data, setData] = useState({});
   const [rawMilkTaste, setRawMilkTaste] = useState(
     state.lab_row_taste ? state.lab_row_taste : false
@@ -225,7 +227,9 @@ const UpdateLaboratory = () => {
                       controlId="batch_number"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">SD batch number</Form.Label>
+                      <Form.Label className="fw-bold">
+                        SD batch number
+                      </Form.Label>
                       <Form.Control
                         type="number"
                         disabled
@@ -242,7 +246,7 @@ const UpdateLaboratory = () => {
                     >
                       <Form.Label className="fw-bold">SD batch code</Form.Label>
                       <Form.Control
-                        type="number"
+                        type="text"
                         disabled
                         className="customInput disabled"
                         defaultValue={state.batch_code}
@@ -262,7 +266,7 @@ const UpdateLaboratory = () => {
                         type="text"
                         disabled
                         className="customInput text-capitalize disabled"
-                        defaultValue={state.order_name}
+                        defaultValue={state.order_name.replace(/_/g, " ")}
                       />
                     </Form.Group>
 
@@ -714,7 +718,9 @@ const UpdateLaboratory = () => {
                       controlId="lab_powder_ph"
                       className="mb-2"
                     >
-                      <Form.Label className="fw-bold">Milk powder pH</Form.Label>
+                      <Form.Label className="fw-bold">
+                        Milk powder pH
+                      </Form.Label>
                       <InputGroup>
                         <Form.Control
                           type="number"
