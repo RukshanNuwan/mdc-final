@@ -116,10 +116,6 @@ function App() {
 
             <Route path="reports">
               <Route index element={<Reports />} />
-              <Route
-                path="production-summary"
-                element={<ProductionSummary />}
-              />
               <Route path="daily-summary" element={<DailySummary />} />
               <Route path="breakdowns" element={<Breakdowns />} />
               <Route path="verifications" element={<Verifications />} />
@@ -129,6 +125,10 @@ function App() {
             <Route path="complaints">
               <Route index element={<Complaints />} />
               <Route path=":id" element={<SearchResultDetails />} />
+            </Route>
+
+            <Route path="production-summary">
+              <Route index element={<ProductionSummary />} />
             </Route>
           </Route>
         </Route>

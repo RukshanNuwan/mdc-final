@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: "1:203820819897:web:0eb31a43caa9c6fe814268",
   measurementId: "G-J5DR9EB699",
 
-  // Testing credentials
+  // Test credentials
   // apiKey: "AIzaSyANBC7V28TG7hJ8epjWWCs7N_XlTUUiNNo",
   // authDomain: "production-tracking-syst-88fba.firebaseapp.com",
   // projectId: "production-tracking-syst-88fba",
