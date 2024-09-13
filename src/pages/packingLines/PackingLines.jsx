@@ -11,7 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
-import { CircularProgressbar } from "react-circular-progressbar";
+// import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,6 @@ import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
 import CustomAccordion from "../../components/customAccordion/CustomAccordion";
-import useCurrentDate from "../../hooks/useCurrentDate";
 
 const packingSectionColumns = [
   {
@@ -120,14 +119,13 @@ const PackingLines = () => {
   const [currentQuantity, setCurrentQuantity] = useState(200);
 
   const navigate = useNavigate();
-  const currentDate = useCurrentDate();
 
   // TODO: this is only a sample value
-  let percentage = 0;
+  // let percentage = 0;
 
-  if (totalQuantity > 0 && currentQuantity < totalQuantity) {
-    percentage = (currentQuantity / totalQuantity) * 100;
-  }
+  // if (totalQuantity > 0 && currentQuantity < totalQuantity) {
+  //   percentage = (currentQuantity / totalQuantity) * 100;
+  // }
 
   useEffect(() => {
     const fetchAddedData = async () => {
@@ -238,7 +236,6 @@ const PackingLines = () => {
       packing_production_date: data?.date,
       production_batch_code: data?.batch_code,
       production_batch_id: data?.id,
-      packing_line_date: currentDate,
     });
   };
 
@@ -508,6 +505,23 @@ const PackingLines = () => {
                         <Form.Group
                           as={Col}
                           md="3"
+                          controlId="packing_line_date"
+                          className="mb-2"
+                        >
+                          <Form.Label className="fw-bold">
+                            Packing date
+                          </Form.Label>
+                          <Form.Control
+                            type="date"
+                            required
+                            className="customInput text-capitalize"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
+
+                        {/* <Form.Group
+                          as={Col}
+                          md="3"
                           controlId="order_name"
                           className="mb-2"
                         >
@@ -528,7 +542,7 @@ const PackingLines = () => {
                               }}
                             />
                           </div>
-                        </Form.Group>
+                        </Form.Group> */}
                       </Row>
 
                       <Row>

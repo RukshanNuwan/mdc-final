@@ -6,6 +6,7 @@
 - Updated dashboard
 - Added production summary view
 - Updated date range in production summary
+- Added packing date field on add form
 
 ## v2.6.3
 
