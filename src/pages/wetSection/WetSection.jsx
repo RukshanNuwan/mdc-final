@@ -16,7 +16,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import DataTable from "../../components/dataTable/DataTable";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -205,10 +204,6 @@ const WetSection = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Wet Section" />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="card-body p-0">

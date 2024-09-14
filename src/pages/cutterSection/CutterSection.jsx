@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import DataTable from "../../components/dataTable/DataTable";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
@@ -10,7 +10,6 @@ import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
 import { cutterSectionColumns } from "../../data/dataTableSource";
 import Breakdown from "../../components/breakdown/breakdown";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase.config";
 
 const CutterSection = () => {
@@ -53,10 +52,6 @@ const CutterSection = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Cutter Section" />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="card-body p-0">

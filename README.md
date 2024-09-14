@@ -8,6 +8,7 @@
 - Updated date range in production summary
 - Added packing date field on add form
 - Fixed batch code in laboratory update module
+- Removed breadcrumb in all views
 
 ## v2.6.3
 

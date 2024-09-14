@@ -1,8 +1,0 @@
-.breadcrumb-container {
-  background-color: var(--dark-blue-1);
-  border-radius: 0.25rem;
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-  color: var(--white);
-}
