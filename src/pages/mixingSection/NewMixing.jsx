@@ -32,8 +32,6 @@ const NewMixing = () => {
   const [data, setData] = useState({});
   const [milkQuantity, setMilkQuantity] = useState();
   const [milkRecovery, setMilkRecovery] = useState("");
-  const [recipeName, setRecipeName] = useState("fat_60_65");
-  const [recipeType, setRecipeType] = useState("conventional");
   const [ongoingData, setOngoingData] = useState({});
   const [additionalCratesCount, setAdditionalCratesCount] = useState(0);
   const [newKernelWeight, setNewKernelWeight] = useState(0);
@@ -160,26 +158,9 @@ const NewMixing = () => {
     const id = e.target.id;
     const value = e.target.value;
 
-    // if (location === "mdc") {
-    //   setUpdatedDailyProductionData({
-    //     ...updatedDailyProductionData,
-    //     totalMilkAmountInMdc:
-    //       dailyProductionDataInDb?.totalMilkAmountInMdc + Number(milkQuantity),
-    //   });
-    // } else {
-    //   setUpdatedDailyProductionData({
-    //     ...updatedDailyProductionData,
-    //     totalMilkAmountInAraliyaKele:
-    //       dailyProductionDataInDb?.totalMilkAmountInAraliyaKele +
-    //       Number(milkQuantity),
-    //   });
-    // }
-
     setData({
       ...data,
       [id]: value,
-      order_name: recipeName,
-      order_type: recipeType,
       mixing_milk_quantity: milkQuantity,
       mixing_milk_recovery: milkRecovery,
       mixing_additional_crates_count: additionalCratesCount,
@@ -189,6 +170,13 @@ const NewMixing = () => {
       sd_4_is_bowser_filling_hole_cleaned: isFillingHoleCleaned,
       sd_4_is_bowser_output_tap_cleaned: isOutputTapCleaned,
     });
+  };
+
+  const handleSelectChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setData({ ...data, [id]: value });
   };
 
   const handleOperatorsChange = (e) => {
@@ -550,8 +538,8 @@ const NewMixing = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue={recipeName}
-                        onChange={(e) => setRecipeName(e.target.value)}
+                        defaultValue="fat_60_65"
+                        onChange={handleSelectChange}
                       >
                         {orders.map((order, index) => (
                           <option key={index} value={order.value}>
@@ -573,8 +561,8 @@ const NewMixing = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue={recipeType}
-                        onChange={(e) => setRecipeType(e.target.value)}
+                        defaultValue="conventional"
+                        onChange={handleSelectChange}
                       >
                         <option value="conventional">
                           Conventional Recipe

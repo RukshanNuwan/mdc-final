@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.5
+
+- Updated select handlers
+
 ## v2.6.4
 
 - Updated packing line add form

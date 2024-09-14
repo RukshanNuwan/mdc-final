@@ -152,10 +152,7 @@ const UpdateMixing = () => {
     const id = e.target.id;
     const value = e.target.value;
 
-    setData({
-      ...data,
-      [id]: value,
-    });
+    setData({ ...data, [id]: value });
   };
 
   const handleSubmit = async (e) => {
