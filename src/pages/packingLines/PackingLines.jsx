@@ -17,7 +17,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
@@ -115,8 +114,8 @@ const PackingLines = () => {
   const [addedData, setAddedData] = useState([]);
 
   // TODO: Calculate completed powder quantity as percentage of total and show it in circular progress bar
-  const [totalQuantity, setTotalQuantity] = useState(2000);
-  const [currentQuantity, setCurrentQuantity] = useState(200);
+  // const [totalQuantity, setTotalQuantity] = useState(2000);
+  // const [currentQuantity, setCurrentQuantity] = useState(200);
 
   const navigate = useNavigate();
 
@@ -325,10 +324,6 @@ const PackingLines = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Packing Lines" />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="row mb-2 subFormWrapper">

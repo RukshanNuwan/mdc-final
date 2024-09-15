@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import BackToTop from "../../components/backToTop/BackToTop";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
@@ -107,10 +106,6 @@ const Breakdowns = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb title="Reports / Breakdowns" />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="mb-2">

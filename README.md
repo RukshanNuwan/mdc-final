@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.5
+
+- Updated select handlers
+
 ## v2.6.4
 
 - Updated packing line add form
@@ -8,6 +12,7 @@
 - Updated date range in production summary
 - Added packing date field on add form
 - Fixed batch code in laboratory update module
+- Removed breadcrumb in all views
 
 ## v2.6.3
 

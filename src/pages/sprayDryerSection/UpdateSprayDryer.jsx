@@ -9,7 +9,6 @@ import { Spinner } from "react-bootstrap";
 import { db } from "../../config/firebase.config";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
-import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import Footer from "../../components/footer/Footer";
 import BackToTop from "../../components/backToTop/BackToTop";
 import { orders } from "../../constants";
@@ -141,14 +140,6 @@ const UpdateSprayDryer = () => {
 
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
-          <div className="col-md-12">
-            <Breadcrumb
-              title={`${
-                location === "mdc" ? "SD 03" : "SD 04"
-              } / Spray Dryer Section`}
-            />
-          </div>
-
           <div className="pe-0 px-xs-0">
             <div className="card border-0">
               <div className="mb-2">
