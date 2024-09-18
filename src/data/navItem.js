@@ -63,7 +63,7 @@ const otherNavList = [
     _id: 3,
     name: "Summary View",
     icon: "/assets/summary.svg",
-    path: "/production-summary",
+    path: "/summary",
   },
   // {
   //   _id: 3,

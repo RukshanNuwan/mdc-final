@@ -122,6 +122,7 @@ const ProductionSummary = () => {
           });
 
           avgExpellerRecovery = expellerRecoverySum / index;
+
           productionDataMap.set(data.date, avgExpellerRecovery);
           sd3PowderQuantityMap.set(data.date, sd3PowderQuantity);
           sd4PowderQuantityMap.set(data.date, sd4PowderQuantity);
@@ -159,7 +160,7 @@ const ProductionSummary = () => {
             <div className="card border-0">
               <div className="mb-2">
                 <Link
-                  to="/reports"
+                  to="/summary"
                   className="d-flex align-items-center customBackBtn"
                 >
                   <ArrowBackIosIcon fontSize="small" /> Back

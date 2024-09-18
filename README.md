@@ -3,6 +3,7 @@
 ## v2.6.5
 
 - Updated select handlers
+- Added new route for packing line summary
 
 ## v2.6.4
 
