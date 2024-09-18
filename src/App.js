@@ -41,8 +41,10 @@ import Verification from "./pages/verification/Verification";
 import Breakdowns from "./pages/reports/Breakdowns";
 import Verifications from "./pages/reports/Verifications";
 import PackingLineDetails from "./pages/packingLines/PackingLineDetails";
-import ProductionSummary from "./pages/reports/ProductionSummary";
 import PackingLineReport from "./pages/reports/PackingLineReport";
+import ProductionSummary from "./pages/summaryView/ProductionSummary";
+import Summary from "./pages/summaryView/Summary";
+import PackingLineSummary from "./pages/summaryView/PackingLineSummary";
 
 function App() {
   const Layout = () => {
@@ -127,8 +129,10 @@ function App() {
               <Route path=":id" element={<SearchResultDetails />} />
             </Route>
 
-            <Route path="production-summary">
-              <Route index element={<ProductionSummary />} />
+            <Route path="summary">
+              <Route index element={<Summary />} />
+              <Route path="production" element={<ProductionSummary />} />
+              <Route path="packing-lines" element={<PackingLineSummary />} />
             </Route>
           </Route>
         </Route>

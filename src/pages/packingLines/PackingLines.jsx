@@ -30,15 +30,11 @@ const packingSectionColumns = [
     width: 110,
   },
   {
-    field: "packing_line_added_at",
-    headerName: "Packing date & time",
+    field: "packing_line_date",
+    headerName: "Packing date",
     width: 170,
     renderCell: (params) => {
-      return (
-        <div>
-          {params.row?.packing_line_added_at?.toDate().toLocaleString()}
-        </div>
-      );
+      return <div>{params.row?.packing_line_date}</div>;
     },
   },
   {
