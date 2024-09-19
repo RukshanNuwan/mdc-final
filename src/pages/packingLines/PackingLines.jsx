@@ -32,7 +32,7 @@ const packingSectionColumns = [
   {
     field: "packing_line_date",
     headerName: "Packing date",
-    width: 170,
+    width: 110,
     renderCell: (params) => {
       return <div>{params.row?.packing_line_date}</div>;
     },
@@ -227,11 +227,19 @@ const PackingLines = () => {
     setUpdatedData({
       ...updatedData,
       [id]: value,
+      packing_order_name: data.order_name.replace(/_/g, " "),
       packing_type: packingType,
       packing_production_date: data?.date,
       production_batch_code: data?.batch_code,
       production_batch_id: data?.id,
     });
+  };
+
+  const handleSelectChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setUpdatedData({ ...updatedData, [id]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -725,7 +733,31 @@ const PackingLines = () => {
                         <Row>
                           <Form.Group
                             as={Col}
-                            md="4"
+                            md="3"
+                            controlId="packing_line_name"
+                            className="mb-2"
+                          >
+                            <Form.Label className="fw-bold">
+                              Packing line
+                            </Form.Label>
+                            <Form.Select
+                              required
+                              className="customInput"
+                              defaultValue="mdc_01"
+                              onChange={handleSelectChange}
+                            >
+                              <option value="mdc_01">MDC - Line 01</option>
+                              <option value="mdc_02">MDC - Line 02</option>
+                              <option value="mdc_03">MDC - Line 03</option>
+                              <option value="araliya_kele_01">
+                                Araliya kele - Line 01
+                              </option>
+                            </Form.Select>
+                          </Form.Group>
+
+                          <Form.Group
+                            as={Col}
+                            md="3"
                             controlId="packing_powder_collecting_qc_name"
                             className="mb-2"
                           >
@@ -742,7 +774,7 @@ const PackingLines = () => {
 
                           <Form.Group
                             as={Col}
-                            md="4"
+                            md="3"
                             controlId="packing_carton_packing_qc_name"
                             className="mb-2"
                           >
@@ -759,7 +791,7 @@ const PackingLines = () => {
 
                           <Form.Group
                             as={Col}
-                            md="4"
+                            md="3"
                             controlId="packing_line_supervisor_name"
                             className="mb-2"
                           >
