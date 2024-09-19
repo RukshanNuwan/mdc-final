@@ -7,6 +7,7 @@
 - Updated packing line data table & info
 - Added new packing line name field in packing line add form
 - Added status for packing line
+- Updated packing line details view
 
 ## v2.6.4
 
