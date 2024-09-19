@@ -8,6 +8,7 @@
 - Added new packing line name field in packing line add form
 - Added status for packing line
 - Updated packing line details view
+- Added remarks for packing line report
 
 ## v2.6.4
 
