@@ -5,6 +5,7 @@
 - Updated select handlers
 - Added new route for packing line summary
 - Updated packing line data table & info
+- Added new packing line name field in packing line add form
 
 ## v2.6.4
 
