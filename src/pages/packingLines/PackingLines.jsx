@@ -232,6 +232,7 @@ const PackingLines = () => {
       packing_production_date: data?.date,
       production_batch_code: data?.batch_code,
       production_batch_id: data?.id,
+      packing_status: "pending",
     });
   };
 
