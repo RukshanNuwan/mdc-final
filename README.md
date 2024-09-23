@@ -9,6 +9,7 @@
 - Added status for packing line
 - Updated packing line details view
 - Added remarks for packing line report
+- Creating packing line summary
 
 ## v2.6.4
 
