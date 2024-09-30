@@ -212,6 +212,18 @@ const PackingLineDetails = () => {
 
                           <div className="row py-1">
                             <div className="col-7">
+                              <p className="bodyText">Julian date</p>
+                            </div>
+                            <div className="col-1" />
+                            <div className="col-4">
+                              <p className="bodyText fw-bold">
+                                {state?.packing_julian_date || "-"}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="row py-1">
+                            <div className="col-7">
                               <p className="bodyText">Time range</p>
                             </div>
                             <div className="col-1" />
