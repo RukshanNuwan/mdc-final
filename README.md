@@ -13,6 +13,7 @@
 - Updated packing line report ui
 - Changed default packing status
 - Updated packing line type from radio button to select box
+- Added julian date in packing line add form and packing line details view
 
 ## v2.6.4
 

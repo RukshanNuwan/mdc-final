@@ -614,7 +614,8 @@ const PackingLines = () => {
                           />
                         </Form.Group>
 
-                        {packingType === "packing_type_20" ? (
+                        {packingType === "packing_type_20" ||
+                        packingType === "packing_type_15" ? (
                           <Form.Group
                             as={Col}
                             md="3"
@@ -626,7 +627,10 @@ const PackingLines = () => {
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              required={packingType === "packing_type_20"}
+                              required={
+                                packingType === "packing_type_20" ||
+                                packingType === "packing_type_20"
+                              }
                               className="customInput"
                               onChange={handleCraftBagNumberChange}
                             />
@@ -635,22 +639,41 @@ const PackingLines = () => {
                             </Figure.Caption>
                           </Form.Group>
                         ) : (
-                          <Form.Group
-                            as={Col}
-                            md="3"
-                            controlId="packing_carton_box_number"
-                            className="mb-2"
-                          >
-                            <Form.Label className="fw-bold">
-                              Carton box number
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              required={packingType === "packing_type_other"}
-                              className="customInput"
-                              onChange={handleChange}
-                            />
-                          </Form.Group>
+                          <>
+                            <Form.Group
+                              as={Col}
+                              md="3"
+                              controlId="packing_carton_box_number"
+                              className="mb-2"
+                            >
+                              <Form.Label className="fw-bold">
+                                Carton box number
+                              </Form.Label>
+                              <Form.Control
+                                type="text"
+                                required={packingType === "packing_type_other"}
+                                className="customInput"
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+
+                            <Form.Group
+                              as={Col}
+                              md="3"
+                              controlId="packing_julian_date"
+                              className="mb-2"
+                            >
+                              <Form.Label className="fw-bold">
+                                Julian date
+                              </Form.Label>
+                              <Form.Control
+                                type="text"
+                                required={packingType === "packing_type_other"}
+                                className="customInput"
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+                          </>
                         )}
                       </Row>
 
