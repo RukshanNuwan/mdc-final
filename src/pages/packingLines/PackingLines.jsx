@@ -745,9 +745,11 @@ const PackingLines = () => {
                             <Form.Select
                               required
                               className="customInput"
-                              defaultValue="mdc_01"
                               onChange={handleSelectChange}
                             >
+                              <option selected disabled>
+                                Select packing line
+                              </option>
                               <option value="mdc_01">MDC - Line 01</option>
                               <option value="mdc_02">MDC - Line 02</option>
                               <option value="mdc_03">MDC - Line 03</option>
