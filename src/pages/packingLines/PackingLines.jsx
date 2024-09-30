@@ -201,9 +201,10 @@ const PackingLines = () => {
     });
   };
 
-  const handleRadioButtonChange = (e) => {
-    const id = e.target.id;
-    setPackingType(id);
+  const handleTypeChange = (e) => {
+    const value = e.target.value;
+
+    setPackingType(value);
   };
 
   const handleBagNumbersChange = (e) => {
@@ -367,29 +368,25 @@ const PackingLines = () => {
                         </span>
                       )}
 
-                      <Form.Group as={Col} md="2">
-                        <div className="mt-4">
-                          <Form.Label className="fw-bold">
+                      <Form.Group
+                        as={Col}
+                        controlId="packing_type"
+                        className="mb-2"
+                      >
+                        <Form.Label className="fw-bold">Type</Form.Label>
+
+                        <Form.Select
+                          required
+                          className="customInput"
+                          onChange={handleTypeChange}
+                        >
+                          <option selected disabled>
                             Select type
-                          </Form.Label>
-
-                          <Form.Check
-                            name="group1"
-                            type="radio"
-                            id="packing_type_20"
-                            label="20kg"
-                            className="text-white"
-                            onChange={handleRadioButtonChange}
-                          />
-
-                          <Form.Check
-                            name="group1"
-                            type="radio"
-                            id="packing_type_other"
-                            label="Other"
-                            onChange={handleRadioButtonChange}
-                          />
-                        </div>
+                          </option>
+                          <option value="packing_type_15">15 kg</option>
+                          <option value="packing_type_20">20 kg</option>
+                          <option value="packing_type_other">Other</option>
+                        </Form.Select>
                       </Form.Group>
 
                       <Form.Group

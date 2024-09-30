@@ -12,6 +12,7 @@
 - Creating packing line summary
 - Updated packing line report ui
 - Changed default packing status
+- Updated packing line type from radio button to select box
 
 ## v2.6.4
 
