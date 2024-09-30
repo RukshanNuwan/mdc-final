@@ -12,7 +12,8 @@ import { db } from "../../config/firebase.config";
 const PackingLineReport = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [tCode, setTCode] = useState("");
-  const [packingDate, setPackingDate] = useState("");
+  const [sdCode, setSdCode] = useState("");
+  const [packingDate, setPackingDate] = useState();
   const [packingData, setPackingData] = useState([]);
 
   const fetchPackingData = async () => {
@@ -23,8 +24,53 @@ const PackingLineReport = () => {
       const q = query(
         collection(db, "packing_line_data"),
         where("packing_packing_batch_code", "==", tCode),
-        // TODO: remove comment
-        // where("packing_line_date", "==", packingDate),
+        where("packing_line_date", "==", packingDate),
+        orderBy("packing_line_added_at", "asc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
+      });
+
+      setPackingData(list);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPackingDataByTCode = async () => {
+    setPackingData([]);
+
+    try {
+      const list = [];
+      const q = query(
+        collection(db, "packing_line_data"),
+        where("packing_packing_batch_code", "==", tCode),
+        orderBy("packing_line_added_at", "asc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (doc.data()) list.push({ id: doc.id, ...doc.data() });
+      });
+
+      setPackingData(list);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPackingDataBySdCode = async () => {
+    setPackingData([]);
+
+    try {
+      const list = [];
+      const q = query(
+        collection(db, "packing_line_data"),
+        where("production_batch_code", "==", sdCode),
         orderBy("packing_line_added_at", "asc")
       );
 
@@ -44,7 +90,9 @@ const PackingLineReport = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    fetchPackingData();
+    if (tCode && packingDate) fetchPackingData();
+    if (tCode && !packingDate) fetchPackingDataByTCode();
+    if (sdCode && !packingDate && !tCode) fetchPackingDataBySdCode();
   };
 
   return (
@@ -79,9 +127,23 @@ const PackingLineReport = () => {
                       <Form.Label className="fw-bold">T code</Form.Label>
                       <Form.Control
                         type="text"
-                        required
                         className="customInput"
                         onChange={(e) => setTCode(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      md="4"
+                      controlId="sdCode"
+                      className="mb-2"
+                    >
+                      <Form.Label className="fw-bold">SD batch code</Form.Label>
+                      <Form.Control
+                        type="text"
+                        required
+                        className="customInput"
+                        onChange={(e) => setSdCode(e.target.value)}
                       />
                     </Form.Group>
 

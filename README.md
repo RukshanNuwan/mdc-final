@@ -7,6 +7,11 @@
 - Updated packing line data table & info
 - Added new packing line name field in packing line add form
 - Added status for packing line
+- Updated packing line details view
+- Added remarks for packing line report
+- Creating packing line summary
+- Updated packing line report ui
+- Changed default packing status
 
 ## v2.6.4
 

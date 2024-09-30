@@ -28,7 +28,6 @@ const PackingLineDetails = () => {
                 </Link>
               </div>
 
-              {/* TODO: Update this layout */}
               <div className="card-body formWrapper">
                 <div className="row">
                   <div className="col d-xs-none"></div>
@@ -228,6 +227,18 @@ const PackingLineDetails = () => {
 
                       <div className="row py-1">
                         <div className="col-7">
+                          <p className="bodyText">Status</p>
+                        </div>
+                        <div className="col-1" />
+                        <div className="col-4">
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.packing_status || "-"}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="row py-1">
+                        <div className="col-7">
                           <p className="bodyText">Remarks</p>
                         </div>
                         <div className="col-1" />
@@ -240,6 +251,20 @@ const PackingLineDetails = () => {
                     </div>
 
                     <div className="dataItemWrapper">
+                      <div className="row py-1">
+                        <div className="col-7">
+                          <p className="bodyText">Packing line name</p>
+                        </div>
+                        <div className="col-1" />
+                        <div className="col-4">
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.packing_line_name
+                              .replace(/_/g, " - Line ")
+                              .toUpperCase() || "-"}
+                          </p>
+                        </div>
+                      </div>
+
                       <div className="row py-1">
                         <div className="col-7">
                           <p className="bodyText">Powder collecting QC name</p>
@@ -272,6 +297,20 @@ const PackingLineDetails = () => {
                         <div className="col-4">
                           <p className="bodyText fw-bold text-capitalize">
                             {state?.packing_line_supervisor_name || "-"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="dataItemWrapper">
+                      <div className="row py-1">
+                        <div className="col-7">
+                          <p className="bodyText">Status</p>
+                        </div>
+                        <div className="col-1" />
+                        <div className="col-4">
+                          <p className="bodyText fw-bold text-capitalize">
+                            {state?.packing_status || "-"}
                           </p>
                         </div>
                       </div>

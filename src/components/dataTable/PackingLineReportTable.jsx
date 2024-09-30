@@ -35,7 +35,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
         <thead>
           <tr className="text-center">
             <th>Production date</th>
-            <th>Production batch code</th>
+            <th>SD batch code</th>
             <th>SD batch #</th>
             <th>Bag numbers</th>
             <th>JS #</th>
@@ -44,6 +44,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
             <th>T code</th>
             <th>Range</th>
             <th>Time range</th>
+            <th>Remark</th>
           </tr>
         </thead>
 
@@ -66,9 +67,10 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
                   {item.packing_bag_number_range_end}
                 </td>
                 <td>
-                  {item.packing_packet_time_range_start || "-"} {" - "}
-                  {item.packing_packet_time_range_end || "-"}
+                  {item.packing_packet_time_range_start} {" - "}
+                  {item.packing_packet_time_range_end}
                 </td>
+                <td>{item.packing_remarks || "-"}</td>
               </tr>
             );
           })}
