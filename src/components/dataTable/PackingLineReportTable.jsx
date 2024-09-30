@@ -35,7 +35,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
         <thead>
           <tr className="text-center">
             <th>Production date</th>
-            <th>Production batch code</th>
+            <th>SD batch code</th>
             <th>SD batch #</th>
             <th>Bag numbers</th>
             <th>JS #</th>

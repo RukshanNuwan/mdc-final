@@ -127,6 +127,7 @@ const PackingLines = () => {
       try {
         const q = query(
           collection(db, "packing_line_data"),
+          where("packing_status", "==", "packed"),
           orderBy("packing_line_added_at", "desc")
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -232,7 +233,7 @@ const PackingLines = () => {
       packing_production_date: data?.date,
       production_batch_code: data?.batch_code,
       production_batch_id: data?.id,
-      packing_status: "pending",
+      packing_status: "packed",
     });
   };
 
