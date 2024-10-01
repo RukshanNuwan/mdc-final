@@ -14,6 +14,7 @@
 - Changed default packing status
 - Updated packing line type from radio button to select box
 - Added julian date in packing line add form and packing line details view
+- Added new module for total items per day in packing line
 
 ## v2.6.4
 

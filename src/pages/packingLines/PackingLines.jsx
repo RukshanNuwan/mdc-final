@@ -108,6 +108,7 @@ const PackingLines = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [addedPackingLineData, setAddedPackingLineData] = useState([]);
   const [addedData, setAddedData] = useState([]);
+  const [subFormData, setSubFormData] = useState({});
 
   // TODO: Calculate completed powder quantity as percentage of total and show it in circular progress bar
   // const [totalQuantity, setTotalQuantity] = useState(2000);
@@ -304,6 +305,50 @@ const PackingLines = () => {
     navigate("view", { state: data });
   };
 
+  const handleSubFormChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setSubFormData({ ...subFormData, [id]: value });
+  };
+
+  const handleSubForm = async (e) => {
+    e.preventDefault();
+    setIsLoading(false);
+
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#ff007f",
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#0d1b2a",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setIsLoading(true);
+
+          addDoc(collection(db, "packing_total_data"), {
+            ...subFormData,
+            packing_total_added_at: serverTimestamp(),
+          }).then(() => {
+            Swal.fire({
+              title: "Changes saved",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+
+            e.target.reset();
+            setIsLoading(false);
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const actionColumn = [
     {
       field: "action",
@@ -332,6 +377,69 @@ const PackingLines = () => {
       <main id="main" className="main">
         <div className="container-fluid py-md-2 ps-xs-0 pe-xs-0">
           <div className="pe-0 px-xs-0">
+            <div className="card border-0">
+              <div className="row d-flex justify-content-between align-items-start mb-2">
+                <div className="subFormWrapper">
+                  <div className="col-md-8 subFormParent">
+                    <Form onSubmit={handleSubForm}>
+                      <Row>
+                        <Form.Group
+                          as={Col}
+                          md="5"
+                          controlId="packing_total_js_number"
+                        >
+                          <Form.Label className="fw-bold">
+                            Job sheet number
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            required
+                            className="customInput"
+                            onChange={handleSubFormChange}
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          md="5"
+                          controlId="packing_total_item_count"
+                        >
+                          <Form.Label className="fw-bold">
+                            Total item count
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            required
+                            className="customInput"
+                            onChange={handleSubFormChange}
+                          />
+                        </Form.Group>
+                      </Row>
+
+                      <Row>
+                        <div className="col">
+                          <button
+                            type="submit"
+                            className="subform-btn-submit customBtn mt-md-4"
+                            disabled={isLoading}
+                          >
+                            <div className="d-flex align-items-center justify-content-center gap-2">
+                              {isLoading && (
+                                <Spinner animation="border" size="sm" />
+                              )}
+                            </div>
+
+                            <p>Add</p>
+                          </button>
+                        </div>
+                      </Row>
+                    </Form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="card border-0">
               <div className="row mb-2 subFormWrapper">
                 <div className="col-md subFormParent">
@@ -370,6 +478,7 @@ const PackingLines = () => {
 
                       <Form.Group
                         as={Col}
+                        md="3"
                         controlId="packing_type"
                         className="mb-2"
                       >
@@ -391,6 +500,7 @@ const PackingLines = () => {
 
                       <Form.Group
                         as={Col}
+                        md="3"
                         controlId="packing_powder_fat"
                         className="mb-2"
                       >
