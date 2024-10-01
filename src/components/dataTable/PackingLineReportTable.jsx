@@ -35,6 +35,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
         <thead>
           <tr className="text-center">
             <th>Production date</th>
+            <th>Order name</th>
             <th>SD batch code</th>
             <th>SD batch #</th>
             <th>Bag numbers</th>
@@ -53,6 +54,7 @@ const PackingLineReportTable = ({ packingData, packingDate }) => {
             return (
               <tr key={index} className="text-center text-capitalize">
                 <td>{item.packing_production_date}</td>
+                <td>{item.packing_order_name}</td>
                 <td>{item.production_batch_code}</td>
                 <td>{getBatchNumber(item.production_batch_code)}</td>
                 <td>{item.packing_bag_numbers.join(", ")}</td>
