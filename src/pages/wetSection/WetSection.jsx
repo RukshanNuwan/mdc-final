@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 
 import DataTable from "../../components/dataTable/DataTable";
 import Header from "../../components/header/Header";
@@ -24,7 +25,6 @@ import BackToTop from "../../components/backToTop/BackToTop";
 import { wetSectionColumns } from "../../data/dataTableSource";
 import { db } from "../../config/firebase.config";
 import useCurrentDate from "../../hooks/useCurrentDate";
-import { Spinner } from "react-bootstrap";
 
 const WetSection = () => {
   const [subFormData, setSubFormData] = useState({});
