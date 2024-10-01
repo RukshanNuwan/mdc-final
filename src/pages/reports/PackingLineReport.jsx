@@ -23,7 +23,6 @@ const PackingLineReport = () => {
       const list = [];
       const q = query(
         collection(db, "packing_line_data"),
-        where("packing_packing_batch_code", "==", tCode),
         where("packing_line_date", "==", packingDate),
         orderBy("packing_line_added_at", "asc")
       );
@@ -90,9 +89,9 @@ const PackingLineReport = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (tCode && packingDate) fetchPackingData();
-    if (tCode && !packingDate) fetchPackingDataByTCode();
-    if (sdCode && !packingDate && !tCode) fetchPackingDataBySdCode();
+    if (packingDate) fetchPackingData();
+    if (tCode) fetchPackingDataByTCode();
+    if (sdCode) fetchPackingDataBySdCode();
   };
 
   return (
@@ -141,7 +140,6 @@ const PackingLineReport = () => {
                       <Form.Label className="fw-bold">SD batch code</Form.Label>
                       <Form.Control
                         type="text"
-                        required
                         className="customInput"
                         onChange={(e) => setSdCode(e.target.value)}
                       />
