@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Col, Figure, Form, InputGroup, Row, Spinner } from "react-bootstrap";
+import {
+  Accordion,
+  Col,
+  Figure,
+  Form,
+  InputGroup,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import {
   addDoc,
   collection,
@@ -16,12 +24,14 @@ import "react-circular-progressbar/dist/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
+import EditIcon from "@mui/icons-material/Edit";
 
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import Footer from "../../components/footer/Footer";
 import { db } from "../../config/firebase.config";
 import CustomAccordion from "../../components/customAccordion/CustomAccordion";
+import BackToTop from "../../components/backToTop/BackToTop";
 
 const packingSectionColumns = [
   {
@@ -44,7 +54,11 @@ const packingSectionColumns = [
     renderCell: (params) => {
       return (
         <div>
-          {params.row.packing_type === "packing_type_20" ? "20kg" : "Other"}
+          {params.row.packing_type === "packing_type_20"
+            ? "20kg"
+            : params.row.packing_type === "packing_type_15"
+            ? "15kg"
+            : "Other"}
         </div>
       );
     },
@@ -99,6 +113,33 @@ const packingSectionColumns = [
   },
 ];
 
+const packingTotalColumns = [
+  {
+    field: "packing_total_added_at",
+    headerName: "Added date",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div>
+          {new Date(
+            params.row?.packing_total_added_at?.toDate()
+          ).toLocaleString()}
+        </div>
+      );
+    },
+  },
+  {
+    field: "packing_total_js_number",
+    headerName: "Job sheet number",
+    width: 150,
+  },
+  {
+    field: "packing_total_item_count",
+    headerName: "Total count",
+    width: 150,
+  },
+];
+
 const PackingLines = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -109,6 +150,7 @@ const PackingLines = () => {
   const [addedPackingLineData, setAddedPackingLineData] = useState([]);
   const [addedData, setAddedData] = useState([]);
   const [subFormData, setSubFormData] = useState({});
+  const [packingTotalData, setPackingTotalData] = useState([]);
 
   // TODO: Calculate completed powder quantity as percentage of total and show it in circular progress bar
   // const [totalQuantity, setTotalQuantity] = useState(2000);
@@ -149,6 +191,32 @@ const PackingLines = () => {
     };
 
     fetchAddedData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPackingTotalData = async () => {
+      try {
+        const q = query(
+          collection(db, "packing_total_data"),
+          orderBy("packing_total_added_at", "desc")
+        );
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let list = [];
+          querySnapshot.forEach((doc) => {
+            list.push({ id: doc.id, ...doc.data() });
+          });
+          setPackingTotalData(list);
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPackingTotalData();
   }, []);
 
   const handleInputChange = (e) => {
@@ -349,6 +417,10 @@ const PackingLines = () => {
     }
   };
 
+  const handleUpdate = (data) => {
+    navigate("update", { state: data });
+  };
+
   const actionColumn = [
     {
       field: "action",
@@ -361,6 +433,33 @@ const PackingLines = () => {
               <InfoIcon
                 className="tableAction"
                 onClick={() => handleView(params.row)}
+              />
+            </div>
+
+            <div>
+              <EditIcon
+                className="tableAction"
+                onClick={() => handleUpdate(params.row)}
+              />
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const packingTotalActionColumn = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <div className="d-flex gap-4">
+            <div>
+              <EditIcon
+                className="tableAction"
+                onClick={() => handleUpdate(params.row)}
               />
             </div>
           </div>
@@ -380,7 +479,7 @@ const PackingLines = () => {
             <div className="card border-0">
               <div className="row d-flex justify-content-between align-items-start mb-2">
                 <div className="subFormWrapper">
-                  <div className="col-md-8 subFormParent">
+                  <div className="col-md subFormParent">
                     <Form onSubmit={handleSubForm}>
                       <Row>
                         <Form.Group
@@ -415,10 +514,8 @@ const PackingLines = () => {
                             onChange={handleSubFormChange}
                           />
                         </Form.Group>
-                      </Row>
 
-                      <Row>
-                        <div className="col">
+                        <Form.Group as={Col} md="2">
                           <button
                             type="submit"
                             className="subform-btn-submit customBtn mt-md-4"
@@ -432,7 +529,50 @@ const PackingLines = () => {
 
                             <p>Add</p>
                           </button>
-                        </div>
+                        </Form.Group>
+                      </Row>
+
+                      <Row>
+                        <Accordion>
+                          <Accordion.Item eventKey="0">
+                            <Accordion.Header>Added data</Accordion.Header>
+                            <Accordion.Body className="p-2">
+                              <div
+                                style={{
+                                  height: "100%",
+                                  width: "100%",
+                                  padding: "0",
+                                  borderRadius: "8px",
+                                  backgroundColor: "#fff",
+                                }}
+                              >
+                                <DataGrid
+                                  rows={packingTotalData}
+                                  columns={packingTotalColumns.concat(
+                                    packingTotalActionColumn
+                                  )}
+                                  initialState={{
+                                    pagination: {
+                                      paginationModel: {
+                                        page: 0,
+                                        pageSize: 10,
+                                      },
+                                    },
+                                    sorting: {
+                                      sortModel: [
+                                        {
+                                          field: "packing_total_added_at",
+                                          sort: "desc",
+                                        },
+                                      ],
+                                    },
+                                  }}
+                                  pageSizeOptions={[10, 50, 100]}
+                                />
+                              </div>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
                       </Row>
                     </Form>
                   </div>
@@ -500,7 +640,7 @@ const PackingLines = () => {
 
                       <Form.Group
                         as={Col}
-                        md="3"
+                        md="2"
                         controlId="packing_powder_fat"
                         className="mb-2"
                       >
@@ -514,6 +654,7 @@ const PackingLines = () => {
 
                       <Form.Group
                         as={Col}
+                        md="2"
                         controlId="packing_powder_fat_layer"
                         className="mb-2"
                       >
@@ -1004,7 +1145,7 @@ const PackingLines = () => {
                       },
                       sorting: {
                         sortModel: [
-                          { field: "packing_production_date", sort: "desc" },
+                          { field: "packing_line_date", sort: "desc" },
                         ],
                       },
                     }}
@@ -1018,6 +1159,7 @@ const PackingLines = () => {
       </main>
 
       <Footer />
+      <BackToTop />
     </>
   );
 };

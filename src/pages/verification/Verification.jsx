@@ -17,6 +17,7 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
+import BackToTop from "../../components/backToTop/BackToTop";
 
 const Verification = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,9 +37,15 @@ const Verification = () => {
         );
 
         const querySnapshot = await getDocs(q);
+        let list = [];
+
         querySnapshot.forEach((doc) => {
-          setCheckedList(doc.data().checkedList);
+          doc.data().checkedList.forEach((item) => {
+            list.push(item);
+          });
         });
+
+        setCheckedList(list);
       } catch (error) {
         console.log(error);
       }
@@ -84,7 +91,7 @@ const Verification = () => {
     }
   };
 
-  const handleVerificationToggle = async (e) => {
+  const handleVerificationToggle = (e) => {
     if (e.target.checked) {
       setCheckedList([...checkedList, e.target.id]);
     } else {
@@ -207,7 +214,7 @@ const Verification = () => {
                               <Form.Switch
                                 type="switch"
                                 id={`${item.packing_packing_batch_code}${i}`}
-                                defaultChecked={checkedList.includes(
+                                checked={checkedList.includes(
                                   `${item.packing_packing_batch_code}${i}`
                                 )}
                                 onChange={handleVerificationToggle}
@@ -233,7 +240,7 @@ const Verification = () => {
                                   <Form.Switch
                                     type="switch"
                                     id={`${item.packing_packing_batch_code}${i}`}
-                                    defaultChecked={checkedList.includes(
+                                    checked={checkedList.includes(
                                       `${item.packing_packing_batch_code}${i}`
                                     )}
                                     onChange={handleVerificationToggle}
@@ -264,6 +271,7 @@ const Verification = () => {
       </main>
 
       <Footer />
+      <BackToTop />
     </>
   );
 };

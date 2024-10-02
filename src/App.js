@@ -45,6 +45,7 @@ import PackingLineReport from "./pages/reports/PackingLineReport";
 import ProductionSummary from "./pages/summaryView/ProductionSummary";
 import Summary from "./pages/summaryView/Summary";
 import PackingLineSummary from "./pages/summaryView/PackingLineSummary";
+import UpdatePackingLine from "./pages/packingLines/UpdatePackingLine";
 
 function App() {
   const Layout = () => {
@@ -110,6 +111,7 @@ function App() {
             <Route path="packing-lines">
               <Route index element={<PackingLines />} />
               <Route path="view" element={<PackingLineDetails />} />
+              <Route path="update" element={<UpdatePackingLine />} />
             </Route>
 
             <Route path="verification">
