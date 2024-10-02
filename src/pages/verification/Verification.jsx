@@ -36,9 +36,15 @@ const Verification = () => {
         );
 
         const querySnapshot = await getDocs(q);
+        let list = [];
+
         querySnapshot.forEach((doc) => {
-          setCheckedList(doc.data().checkedList);
+          doc.data().checkedList.forEach((item) => {
+            list.push(item);
+          });
         });
+
+        setCheckedList(list);
       } catch (error) {
         console.log(error);
       }
@@ -207,7 +213,7 @@ const Verification = () => {
                               <Form.Switch
                                 type="switch"
                                 id={`${item.packing_packing_batch_code}${i}`}
-                                defaultChecked={checkedList.includes(
+                                checked={checkedList.includes(
                                   `${item.packing_packing_batch_code}${i}`
                                 )}
                                 onChange={handleVerificationToggle}
@@ -233,7 +239,7 @@ const Verification = () => {
                                   <Form.Switch
                                     type="switch"
                                     id={`${item.packing_packing_batch_code}${i}`}
-                                    defaultChecked={checkedList.includes(
+                                    checked={checkedList.includes(
                                       `${item.packing_packing_batch_code}${i}`
                                     )}
                                     onChange={handleVerificationToggle}

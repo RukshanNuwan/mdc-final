@@ -500,7 +500,7 @@ const PackingLines = () => {
 
                       <Form.Group
                         as={Col}
-                        md="3"
+                        md="2"
                         controlId="packing_powder_fat"
                         className="mb-2"
                       >
@@ -514,6 +514,7 @@ const PackingLines = () => {
 
                       <Form.Group
                         as={Col}
+                        md="2"
                         controlId="packing_powder_fat_layer"
                         className="mb-2"
                       >
@@ -1004,7 +1005,7 @@ const PackingLines = () => {
                       },
                       sorting: {
                         sortModel: [
-                          { field: "packing_production_date", sort: "desc" },
+                          { field: "packing_line_date", sort: "desc" },
                         ],
                       },
                     }}

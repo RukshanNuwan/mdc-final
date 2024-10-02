@@ -16,6 +16,7 @@
 - Added julian date in packing line add form and packing line details view
 - Added new module for total items per day in packing line
 - Updated fetch functions in packing line report module
+- Updated verification module data fetching function
 
 ## v2.6.4
 
