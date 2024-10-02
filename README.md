@@ -17,6 +17,7 @@
 - Added new module for total items per day in packing line
 - Updated fetch functions in packing line report module
 - Updated verification module data fetching function
+- Implemented update function in packing line
 
 ## v2.6.4
 

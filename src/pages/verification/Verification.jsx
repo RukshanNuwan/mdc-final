@@ -17,6 +17,7 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SideBar from "../../components/sideBar/SideBar";
 import { db } from "../../config/firebase.config";
+import BackToTop from "../../components/backToTop/BackToTop";
 
 const Verification = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +91,7 @@ const Verification = () => {
     }
   };
 
-  const handleVerificationToggle = async (e) => {
+  const handleVerificationToggle = (e) => {
     if (e.target.checked) {
       setCheckedList([...checkedList, e.target.id]);
     } else {
@@ -270,6 +271,7 @@ const Verification = () => {
       </main>
 
       <Footer />
+      <BackToTop />
     </>
   );
 };
