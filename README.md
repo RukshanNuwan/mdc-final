@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.6
+
+- Creating packing line summary
+
 ## v2.6.5
 
 - Updated select handlers
