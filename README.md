@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.6
+
+- Creating packing line summary
+
 ## v2.6.5
 
 - Updated select handlers
@@ -18,6 +22,7 @@
 - Updated fetch functions in packing line report module
 - Updated verification module data fetching function
 - Implemented update function in packing line
+- Updated order name select box mixing section
 
 ## v2.6.4
 
