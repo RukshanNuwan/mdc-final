@@ -538,7 +538,6 @@ const NewMixing = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue="fat_60_65"
                         onChange={handleSelectChange}
                       >
                         <option disabled selected>
