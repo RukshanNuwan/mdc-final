@@ -342,6 +342,9 @@ const UpdateMixing = () => {
                         defaultValue={state.order_name}
                         onChange={handleSelectChange}
                       >
+                        <option disabled selected>
+                          Select order name
+                        </option>
                         {orders.map((order, index) => (
                           <option key={index} value={order.value}>
                             {order.name}
