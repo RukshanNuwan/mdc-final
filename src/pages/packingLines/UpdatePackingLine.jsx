@@ -92,7 +92,6 @@ const UpdatePackingLine = () => {
                           </Form.Label>
                           <Form.Control
                             type="date"
-                            required
                             className="customInput text-capitalize"
                             defaultValue={state.packing_line_date}
                             onChange={handleChange}

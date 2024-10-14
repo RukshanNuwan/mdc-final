@@ -138,6 +138,14 @@ const packingTotalColumns = [
     headerName: "Total count",
     width: 150,
   },
+  {
+    field: "packing_total_completed_item_count",
+    headerName: "Daily completed item count",
+    width: 200,
+    renderCell: (params) => {
+      return <div>{params.row.packing_total_completed_item_count || "-"}</div>;
+    },
+  },
 ];
 
 const PackingLines = () => {
@@ -384,6 +392,11 @@ const PackingLines = () => {
     e.preventDefault();
     setIsLoading(false);
 
+    const percentage =
+      (subFormData.packing_total_completed_item_count /
+        subFormData.packing_total_item_count) *
+      100;
+
     try {
       Swal.fire({
         title: "Do you want to save the changes?",
@@ -398,6 +411,7 @@ const PackingLines = () => {
 
           addDoc(collection(db, "packing_total_data"), {
             ...subFormData,
+            packing_total_percentage: percentage,
             packing_total_added_at: serverTimestamp(),
           }).then(() => {
             Swal.fire({
@@ -484,7 +498,7 @@ const PackingLines = () => {
                       <Row>
                         <Form.Group
                           as={Col}
-                          md="5"
+                          md="4"
                           controlId="packing_total_js_number"
                         >
                           <Form.Label className="fw-bold">
@@ -500,7 +514,7 @@ const PackingLines = () => {
 
                         <Form.Group
                           as={Col}
-                          md="5"
+                          md="4"
                           controlId="packing_total_item_count"
                         >
                           <Form.Label className="fw-bold">
@@ -515,10 +529,29 @@ const PackingLines = () => {
                           />
                         </Form.Group>
 
-                        <Form.Group as={Col} md="2">
+                        <Form.Group
+                          as={Col}
+                          md="4"
+                          controlId="packing_total_completed_item_count"
+                        >
+                          <Form.Label className="fw-bold">
+                            Daily completed item count
+                          </Form.Label>
+
+                          <Form.Control
+                            type="number"
+                            required
+                            className="customInput"
+                            onChange={handleSubFormChange}
+                          />
+                        </Form.Group>
+                      </Row>
+
+                      <Row>
+                        <Form.Group as={Col}>
                           <button
                             type="submit"
-                            className="subform-btn-submit customBtn mt-md-4"
+                            className="subform-btn-submit customBtn"
                             disabled={isLoading}
                           >
                             <div className="d-flex align-items-center justify-content-center gap-2">
@@ -531,50 +564,48 @@ const PackingLines = () => {
                           </button>
                         </Form.Group>
                       </Row>
-
-                      <Row>
-                        <Accordion>
-                          <Accordion.Item eventKey="0">
-                            <Accordion.Header>Added data</Accordion.Header>
-                            <Accordion.Body className="p-2">
-                              <div
-                                style={{
-                                  height: "100%",
-                                  width: "100%",
-                                  padding: "0",
-                                  borderRadius: "8px",
-                                  backgroundColor: "#fff",
-                                }}
-                              >
-                                <DataGrid
-                                  rows={packingTotalData}
-                                  columns={packingTotalColumns.concat(
-                                    packingTotalActionColumn
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: {
-                                        page: 0,
-                                        pageSize: 10,
-                                      },
-                                    },
-                                    sorting: {
-                                      sortModel: [
-                                        {
-                                          field: "packing_total_added_at",
-                                          sort: "desc",
-                                        },
-                                      ],
-                                    },
-                                  }}
-                                  pageSizeOptions={[10, 50, 100]}
-                                />
-                              </div>
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
-                      </Row>
                     </Form>
+
+                    <Row>
+                      <Accordion>
+                        <Accordion.Item eventKey="0">
+                          <Accordion.Header>Added data</Accordion.Header>
+                          <Accordion.Body className="p-2">
+                            <div
+                              style={{
+                                height: "100%",
+                                width: "100%",
+                                padding: "0",
+                                borderRadius: "8px",
+                                backgroundColor: "#fff",
+                              }}
+                            >
+                              <DataGrid
+                                rows={packingTotalData}
+                                columns={packingTotalColumns}
+                                initialState={{
+                                  pagination: {
+                                    paginationModel: {
+                                      page: 0,
+                                      pageSize: 10,
+                                    },
+                                  },
+                                  sorting: {
+                                    sortModel: [
+                                      {
+                                        field: "packing_total_added_at",
+                                        sort: "desc",
+                                      },
+                                    ],
+                                  },
+                                }}
+                                pageSizeOptions={[10, 50, 100]}
+                              />
+                            </div>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </Row>
                   </div>
                 </div>
               </div>
