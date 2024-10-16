@@ -14,6 +14,8 @@ const PackingLineSummary = () => {
   const [nonDuplicateJobSheetNumbers, setNonDuplicateJobSheetNumbers] =
     useState([]);
   const [data, setData] = useState([]);
+  const [totalPackedItems, setTotalPackedItems] = useState([]);
+  const [status, setStatus] = useState([]);
 
   useEffect(() => {
     const getJobSheetNumbers = async () => {
@@ -93,7 +95,49 @@ const PackingLineSummary = () => {
     return <p className="text-capitalize">{orderNameObj.order_name || "-"}</p>;
   };
 
-  // console.log("data -> ", data);
+  useEffect(() => {
+    const getDailyCompletedPackedItems = async () => {
+      try {
+        const list = [];
+        const q = query(
+          collection(db, "packing_total_data"),
+          orderBy("packing_total_added_at", "asc")
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          if (doc.data()) {
+            list.push({ id: doc.id, ...doc.data() });
+          }
+        });
+
+        setTotalPackedItems(list);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getDailyCompletedPackedItems();
+  }, []);
+
+  useEffect(() => {
+    const getStatus = () => {
+      let matchingObject = [];
+
+      for (const item of data) {
+        for (const packedItem of totalPackedItems) {
+          if (packedItem.packing_total_js_number === item.id) {
+            matchingObject.push(packedItem);
+          }
+        }
+      }
+
+      setStatus(matchingObject);
+    };
+
+    if (data && totalPackedItems) {
+      getStatus();
+    }
+  }, [data, totalPackedItems]);
 
   return (
     <>
@@ -169,7 +213,13 @@ const PackingLineSummary = () => {
                         </p>
                       ))}
                     </div>
-                    <div className="col-1"></div>
+                    <div className="col-1">
+                      {status.map((status, index) => (
+                        <p key={index} className="py-1">
+                          {/* {status?.packing_total_percentage?.toFixed(2) || "-"}% */}
+                        </p>
+                      ))}
+                    </div>
                     <div className="col-1"></div>
                     <div className="col-1"></div>
                     <div className="col-1"></div>
