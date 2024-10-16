@@ -563,9 +563,11 @@ const NewMixing = () => {
                       <Form.Select
                         required
                         className="customInput"
-                        defaultValue="conventional"
                         onChange={handleSelectChange}
                       >
+                        <option selected disabled>
+                          Select order type
+                        </option>
                         <option value="conventional">
                           Conventional Recipe
                         </option>
