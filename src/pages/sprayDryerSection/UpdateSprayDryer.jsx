@@ -537,6 +537,7 @@ const UpdateSprayDryer = () => {
                       <InputGroup>
                         <Form.Control
                           type="number"
+                          step=".01"
                           aria-label="rp"
                           aria-describedby="addon"
                           className="customInput"
