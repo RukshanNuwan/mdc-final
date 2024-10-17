@@ -21,7 +21,7 @@ export const orders = [
   },
   {
     _id: 5,
-    name: "Private label 02 with RBD",
+    name: "Private label 02 with full cream milk powder",
     value: "private_label_02_with_rbd",
   },
   {
